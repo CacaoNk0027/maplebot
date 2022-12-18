@@ -3,7 +3,8 @@
   "version": "2.2.0",
   "main": "sources/app/spawnshard.js",
   "scripts": {
-    "start": "node ."
+    "start": "node .",
+    "uptogit": "git add . && git commit -am \"elementos añadidos\""
   },
   "homepage": "https://github.com/CacaoNk0027/maplebot#readme",
   "description": "Una bot multifuncional en español",
