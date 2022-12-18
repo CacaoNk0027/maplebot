@@ -1,0 +1,32 @@
+{
+  "name": "maple_bot",
+  "version": "2.2.0",
+  "main": "sources/app/spawnshard.js",
+  "scripts": {
+    "start": "node ."
+  },
+  "homepage": "https://github.com/CacaoNk0027/maplebot#readme",
+  "description": "Una bot multifuncional en español",
+  "keywords": [
+    "bot discord",
+    "maple bot"
+  ],
+  "author": "!  Piccolo Scherzo <scherzodjs@gmail.com>",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/CacaoNk0027/maplebot.git"
+  },
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/CacaoNk0027/maplebot/issues"
+  },
+  "dependencies": {
+    "discord.js": "^14.7.1",
+    "dotenv": "^16.0.3",
+    "maplebot_models": "^1.1.2",
+    "mongoose": "^6.8.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.20"
+  }
+}
