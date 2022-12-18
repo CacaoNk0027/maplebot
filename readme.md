@@ -4,7 +4,7 @@
   <p>por: ! Piccolo Scherzo#7836</p>
 </div>
 
-hey que tal? soy ! Piccolo Scherzo#7836, el desarollador oficial de maple bot y junto con KrazyGFX#8207 estamos desarrollando a la bot ya verificada para su version 2.3.0!, puedes invitar a la bot por medio de un enlace que estara
+hey que tal? soy ¡ Kuro SF#3915, el desarollador oficial de maple bot, estoy desarrollando a Maple bot y a la vez la estoy actualizando para su version 2.3.0!, puedes invitar a la bot por medio de un enlace que estara
 presente abajo de todo este texto asi como otros links que te redireccionaran a mas cosas relacionadas con la bot.
 ## categorias
 
