@@ -47,25 +47,25 @@ exports.event = {
         if (prefixes.splice(0, 2).find(v => message.content.toLowerCase().startsWith(v)) && !command) return await message.reply({
             content: 'Hola! <:mkMaple_love:836387326552440902> soy **' + client.user.username + '**, si deseas ver mis comandos escribe \`m!help\` o usa el comando de slash /help'
         }); if (!command) return;
-        var cmd = client.comandos.get(command) || client.comandos.find(c => c.query.alias.includes(command)) || client.comandos.find(c => c.query.id == command)
+        var cmd = client.comandos.get(command) || client.comandos.find(c => c.help.alias.includes(command)) || client.comandos.find(c => c.help.id == command)
         if (cmd) {
             if (!message.channel.permissionsFor(client.user.id).has('ReadMessageHistory')) return await message.channel.send({
-                content: models.utils.statusError('warn', `Recomiendo que tenga permisos de \`${permissions['ReadMessageHistory']}\` ya que generalmente me baso en respuestas`)
+                content: models.utils.statusError('warn', `Recomiendo que tenga permisos de \`${configs.permissions['ReadMessageHistory']}\` ya que generalmente me baso en respuestas`)
             }); if (cmd.help.status.code == 0 && message.author.id !== "801603753631285308") return await message.reply({
-                content: models.utils.statusError('rolplayDanger', `lo siento.. pero actualmente el comando **${cmd.query.name}** esta inactivo debido a lo siguente`) + `\n\`\`\`\nRazon: ${cmd.help.status.reason == null ? "no hay razon :c" : cmd.help.status.reason}\n\`\`\``
-            }); if (cmd.config.isNsfw == true && !message.channel.nsfw) return await message.reply({
+                content: models.utils.statusError('rolplayDanger', `lo siento.. pero actualmente el comando **${cmd.help.name}** esta inactivo debido a lo siguente`) + `\n\`\`\`\nRazon: ${cmd.help.status.reason == null ? "no hay razon :c" : cmd.help.status.reason}\n\`\`\``
+            }); if (cmd.help.isNsfw == true && !message.channel.nsfw) return await message.reply({
                 content: models.utils.statusError('error', "este comando requiere que sea ejecutado en un canal nsfw")
-            }); if (cmd.config.embeds == true && !message.channel.permissionsFor(this.client.user.id).has('EmbedLinks')) return await message.reply({
+            }); if (cmd.help.embeds == true && !message.channel.permissionsFor(client.user.id).has('EmbedLinks')) return await message.reply({
                 content: models.utils.statusError('error', `necesito el permiso \`${permissions['EmbedLinks']}\` para completar esta acción`)
             });
 
-            if (!cooldowns.has(cmd.query.name)) {
-                cooldowns.set(cmd.query.name, new discord.Collection());
+            if (!cooldown.has(cmd.help.name)) {
+                cooldown.set(cmd.help.name, new discord.Collection());
             }
 
             const currentTime = Date.now();
-            const timeStamps = cooldowns.get(cmd.query.name);
-            const cooldownAmount = (cmd.config.cooldown) * 1000;
+            const timeStamps = cooldown.get(cmd.help.name);
+            const cooldownAmount = (cmd.help.cooldown) * 1000;
 
             if (timeStamps.has(message.author.id)) {
                 const expirationTime = timeStamps.get(message.author.id) + cooldownAmount;
@@ -76,18 +76,19 @@ exports.event = {
                     const seconds = Math.floor(timeLeft / 1) % 60;
 
                     if (timeLeft > 3600) return await message.reply({
-                        content: models.utils.statusError('warn', `Por favor espera \`${hours} Horas ${minutes} Minutos ${seconds} Segundos\` antes de volver a usar el comando \`${cmd.query.name}\``)
-                    }); else if (timeLeft > 60) return await message.reply({
-                        content: models.utils.statusError('warn', `Por favor espera \`${minutes} Minutos ${seconds} Segundos\` antes de volver a usar el comando \`${cmd.query.name}\``)
-                    }); else return await message.reply({
-                        content: models.utils.statusError('warn', `Por favor espera \`${seconds} Segundos\` antes de volver a usar el comando \`${cmd.query.name}\``)
+                        content: models.utils.statusError('warn', `Por favor espera \`${hours} Horas ${minutes} Minutos ${seconds} Segundos\` antes de volver a usar el comando \`${cmd.help.name}\``)
+                    }).then(async msg => await msg.delete().catch(console.error));
+                    if (timeLeft > 60) return await message.reply({
+                        content: models.utils.statusError('warn', `Por favor espera \`${minutes} Minutos ${seconds} Segundos\` antes de volver a usar el comando \`${cmd.help.name}\``)
+                    }).then(async msg => await msg.delete().catch(console.error)); else return await message.reply({
+                        content: models.utils.statusError('warn', `Por favor espera \`${seconds} Segundos\` antes de volver a usar el comando \`${cmd.help.name}\``)
                     });
                 }
             }
             timeStamps.set(message.author.id, currentTime);
             setTimeout(() => timeStamps.delete(message.author.id), cooldownAmount)
 
-            await new cmd(this.client, message, args).exec();
+            await cmd.exec(client, message, args);
         } else {
             await message.reply({
                 content: models.utils.statusError('rolplayDanger', `no he podido reconocer el comando **${command}**`)
