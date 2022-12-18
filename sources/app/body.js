@@ -8,7 +8,7 @@ const mongoose = require('mongoose')
 // creacion del bot
 
 const client = new discord.Client({
-    intents: "34439",
+    intents: 33287,
     makeCache: discord.Options.cacheWithLimits({
         ThreadManager: 0,
         ReactionManager: 0,
