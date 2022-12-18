@@ -36,7 +36,7 @@ client.slashCommands = new discord.Collection();
 // eventos
 
 readdirSync('sources/events').filter(files => files.split('.').pop() == "js").forEach(file => {
-    const { event } = require('../events/'+file)
+    const { event } = require(`../events/${file}`)
     try {
         client.on(event.name, (...args) => event.exec(client, ...args));
     } catch (error) {
@@ -52,7 +52,7 @@ readdirSync('sources/commands').forEach(dir => {
 		let cmdTextFiles = files.filter(f => f.split(".").pop() == "js");
     	if(cmdTextFiles.length <= 0) return; 
         cmdTextFiles.forEach(file => {
-			let command = require('../commands/message/'+dir+'/'+file); 
+			let command = require(`../commands/${dir}/${file}`); 
             try {
                 client.comandos.set(command.help.name, command.text);
             } catch (error) { console.error(error) };
