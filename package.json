@@ -1,6 +1,6 @@
 {
   "name": "maple_bot",
-  "version": "2.2.0",
+  "version": "2.3.0",
   "main": "sources/app/spawnshard.js",
   "scripts": {
     "start": "node .",
