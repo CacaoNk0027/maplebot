@@ -74,5 +74,67 @@
         "ViewAuditLog": "Ver Registro de Auditoria",
         "ViewChannel": "Ver Canales",
         "ViewGuildInsights": "Ver Estadisticas del Servidor"
-    }
+    },
+    "menu_options": [
+        {
+            "label": "Información",
+            "emoji": "📝",
+            "description": "comandos de Información",
+            "value": "1"
+        },
+        {
+            "label": "Utilidades",
+            "emoji": "854799215993028668",
+            "description": "comandos de Utilidades",
+            "value": "2"
+        },
+        {
+            "label": "Diversión",
+            "emoji": "854799192131895297",
+            "description": "comandos de diversión",
+            "value": "3"
+        },
+        {
+            "label": "Moderación",
+            "emoji": "888236515526844448",
+            "description": "comandos para moderar",
+            "value": "4"
+        },
+        {
+            "label": "Anime",
+            "emoji": "916315436755349524",
+            "description": "comandos de anime",
+            "value": "5"
+        },
+        {
+            "label": "Animales",
+            "emoji": "852226706009882664",
+            "description": "comandos para imagenes de animales",
+            "value": "6"
+        },
+        {
+            "label": "Configuración",
+            "emoji": "888238358118154270",
+            "description": "comandos para configurar a la bot",
+            "value": "7"
+        },
+        {
+            "label": "Acción",
+            "emoji": "854781850086277161",
+            "description": "comandos de rolplay - Acción",
+            "value": "8"
+        },
+        {
+            "label": "Reacción",
+            "emoji": "836375140232724510",
+            "description": "comandos de rolplay - Reacción",
+            "value": "9"
+        },
+        {
+            "label": "Music",
+            "emoji": "854782269737795624",
+            "description": "Comandos de música UwU",
+            "value": "10"
+        }
+    ]
 }

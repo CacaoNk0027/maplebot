@@ -1,6 +1,7 @@
 // importaciones
 
 const discord = require('discord.js')
+const configs = require('../../utils/exports')
 const models = require('maplebot_models')
 const ms = require('ms')
 
@@ -12,9 +13,7 @@ const ms = require('ms')
  */
 exports.text = async (client, message, args) => {
     try {
-        await message.reply({
-            content: `> Pong! :ping_pong:\n> shard: \`${Math.floor(client.ws.ping).toString()} ms\`\n> mensajes: \`${(Date.now() - message.createdTimestamp).toString()} ms\``
-        })
+        
     } catch (error) {
         await models.utils.error(message, error); console.error(error);
     }
@@ -27,9 +26,7 @@ exports.text = async (client, message, args) => {
  */
 exports.slash = async (client, interaction) => {
     try {
-        await interaction.reply({
-            content: `> Pong! :ping_pong:\n> shard: \`${Math.floor(client.ws.ping).toString()} ms\`\n> mensajes: \`${(Date.now() - interaction.createdTimestamp).toString()} ms\``
-        });
+        
     } catch (error) {
         await interactionErrorMsg(interaction, error);
     }
@@ -40,17 +37,17 @@ exports.slash = async (client, interaction) => {
  */
 exports.help = {
     // nombre, alias e id del comando
-    name: "ping",
-    alias: ["latencia", "latency"],
-    id: "001",
+    name: "infobot",
+    alias: ["botinfo", "maplebot"],
+    id: "003",
     // description y categoria del comando
-    description: "comando para ver la latencia de la shard y los mensajes",
+    description: "aprende mas sobre mi",
     category: "información",
     // opciones y permisos
     options: [],
     permissions: {
         user: [],
-        bot: ["SendMessages"]
+        bot: ["SendMessages", "EmbedLinks"],
     },
     // configuraciones ( status, es nsfw?, contiene embeds?, cooldown )
     status: {

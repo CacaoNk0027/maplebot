@@ -55,7 +55,7 @@ exports.event = {
                 content: models.utils.statusError('rolplayDanger', `lo siento.. pero actualmente el comando **${cmd.help.name}** esta inactivo debido a lo siguente`) + `\n\`\`\`\nRazon: ${cmd.help.status.reason == null ? "no hay razon :c" : cmd.help.status.reason}\n\`\`\``
             }); if (cmd.help.isNsfw == true && !message.channel.nsfw) return await message.reply({
                 content: models.utils.statusError('error', "este comando requiere que sea ejecutado en un canal nsfw")
-            }); if (cmd.help.embeds == true && !message.channel.permissionsFor(client.user.id).has('EmbedLinks')) return await message.reply({
+            }); if (cmd.help.permissions.bot.find(c => c.includes('EmbedLinks') == true) && !message.channel.permissionsFor(client.user.id).has('EmbedLinks')) return await message.reply({
                 content: models.utils.statusError('error', `necesito el permiso \`${permissions['EmbedLinks']}\` para completar esta acción`)
             });
 
