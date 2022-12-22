@@ -38,17 +38,6 @@ mongoose.connection.once('open', () => console.info('Base de datos conectada'));
 client.comandos = new discord.Collection();
 client.slashCommands = new discord.Collection();
 
-// eventos
-
-readdirSync('sources/events').filter(files => files.split('.').pop() == "js").forEach(file => {
-    const { event } = require(`../events/${file}`)
-    try {
-        client.on(event.name, (...args) => event.exec(client, ...args));
-    } catch (error) {
-        console.error(error);
-    }
-})
-
 // comandos
 
 readdirSync('sources/commands').forEach(dir => {
@@ -67,6 +56,17 @@ readdirSync('sources/commands').forEach(dir => {
         });
     });
 });
+
+// eventos
+
+readdirSync('sources/events').filter(files => files.split('.').pop() == "js").forEach(file => {
+    const { event } = require(`../events/${file}`)
+    try {
+        client.on(event.name, (...args) => event.exec(client, ...args));
+    } catch (error) {
+        console.error(error);
+    }
+})
 
 // errores
 

@@ -7,4 +7,5 @@ const interactions_ = require('./assets/interactions.json')
 exports.SlashManager = async (client) => {
     let commands = await client.application?.commands.set(interactions_)
     console.info(`Se han cargado por lo menos ${commands.size} interacciones`)
+    return commands.size;
 }

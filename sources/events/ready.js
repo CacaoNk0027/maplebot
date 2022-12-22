@@ -27,7 +27,7 @@ exports.event = {
                 name: `@Maple bot 🍁 | ${package_json.version} | ${configs._random(await configs.presences(client))}`
             }]
         })
-        SlashManager(client);
+        let interactions_length = await SlashManager(client);
         console.info(`El cliente se ha iniciado correctamente como: ${client.user.username}`)
         try {
             const promises = [
@@ -51,7 +51,7 @@ exports.event = {
                         name: 'Estadisticas',
                         value: `${models.menus.stats({
                             servers: totalGuilds,
-                            interactions: client.application?.commands.cache.size,
+                            interactions: interactions_length,
                             commands: client.comandos.size,
                             users: totalMembers,
                             votos: null,
