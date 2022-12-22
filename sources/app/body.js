@@ -54,10 +54,10 @@ readdirSync('sources/commands').forEach(dir => {
         cmdTextFiles.forEach(file => {
 			let command = require(`../commands/${dir}/${file}`); 
             try {
-                client.comandos.set(command.help.name, { exec: command.text, help: command.help });
+                client.comandos.set(command.help.name, { exec: command.text, help: command.help })
             } catch (error) { console.error(error) };
             try {
-                client.slashCommands.set(command.help.name, { exec: command.slash })
+                client.slashCommands.set(command.help.name, { exec: command.slash, help: command.help })
             } catch (error) { console.error(error) }
         });
     });
