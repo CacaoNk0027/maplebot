@@ -22,6 +22,11 @@ const client = new discord.Client({
 
 client.login(process.env['token']);
 
+const events = new discord.WebhookClient({
+    id: process.env['eventsId'],
+    token: process.env['eventsToken']
+})
+
 //  conexion con MongoDB
 
 mongoose.set('strictQuery', false);
@@ -62,6 +67,31 @@ readdirSync('sources/commands').forEach(dir => {
         });
     });
 });
+
+// errores
+
+process.on('unhandledRejection', async (reason, promise) => {
+    console.error(error);
+    await events.send({
+        embeds: [{
+            title: 'Error',
+            description: `ha ocurrido un error al ejecutar una funcion... <:mkMaple_wasted:836376828222111794>`,
+            timestamp: Date.now(),
+            color: require('../utils/exports').randomColor,
+            author: {
+                name: client.user.username,
+                icon_url: client.user.avatarURL({ extension: 'png', size: 512 })
+            },
+            provider: {
+                name: '@Maple bot'
+            },
+            fields: [{
+                name: 'Informacion',
+                value: `\`\`\`\nRechazo no controlado en: ${promise}\nA razon: ${reason.message}\nRuta${reason.stack}\`\`\``
+            }]
+        }]
+    })
+})
 
 // exportacion de la constante client
 
