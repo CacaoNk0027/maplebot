@@ -1,0 +1,19 @@
+[{
+    "name": "ping",
+    "type": 1,
+    "description": "ve mi latencia en discord y em mensajes"
+}, {
+    "name": "help",
+    "type": 1,
+    "description": "ve mi menu de ayuda o ve informacion sobre comandos",
+    "options": [{
+        "name": "comando",
+        "type": 3,
+        "description": "escribe el nombre del comando para obtener mas información sobre el",
+        "required": false
+    }]
+}, {
+    "name": "infobot",
+    "type": 1,
+    "description": "ve informacion sobre mi"
+}]

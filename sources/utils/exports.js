@@ -1,4 +1,5 @@
 const configs = require('./assets/configs.json')
+const { colors } = require('./assets/colors');
 
 let defaultOptions = configs.menu_options
 
@@ -34,3 +35,5 @@ exports.menuOptions = (channel) => {
     }
 }
 exports._random = (array) => array[Math.floor(Math.random()*array.length)];
+
+exports.randomColor = this._random(colors)

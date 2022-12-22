@@ -3,6 +3,7 @@
 const discord = require('discord.js')
 const package_json = require('../../package.json')
 const configs = require('../utils/exports.js')
+const { SlashManager } = require('../utils/slashCommandManager')
 
 // exportacion de arreglo con nombre y funcion del evento
 
@@ -20,6 +21,7 @@ exports.event = {
                 name: `@Maple bot 🍁 | ${package_json.version} | ${configs._random(await configs.presences(client))}`
             }]
         })
+        SlashManager(client);
     	console.info(`El cliente se ha iniciado correctamente como: ${client.user.username}`)
     }
 }

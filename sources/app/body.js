@@ -57,7 +57,7 @@ readdirSync('sources/commands').forEach(dir => {
                 client.comandos.set(command.help.name, { exec: command.text, help: command.help });
             } catch (error) { console.error(error) };
             try {
-                client.slashCommands.set(command.help.name, command.slash)
+                client.slashCommands.set(command.help.name, { exec: command.slash })
             } catch (error) { console.error(error) }
         });
     });
