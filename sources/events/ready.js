@@ -28,6 +28,7 @@ exports.event = {
             }]
         })
         let interactions_length = await SlashManager(client);
+        console.info("total de comandos de texto cargados:", client.comandos.size)
         console.info(`El cliente se ha iniciado correctamente como: ${client.user.username}`)
         try {
             const promises = [

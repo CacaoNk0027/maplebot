@@ -34,6 +34,23 @@ exports.menuOptions = (channel) => {
         return defaultOptions;
     }
 }
-exports._random = (array) => array[Math.floor(Math.random()*array.length)];
+
+exports.interactionErrorMsg = async (interaction, error) => {
+    console.error(error)
+    await interaction.channel.send({
+        content: `> oh no!.. ha ocurrido un error.. <:002:1012749017798688878>\n\`${error}\`\npuedes reportar el error usando mi comando /report o puedes unirte al servidor de soporte y reportarlo ahi\nhttps://discord.gg/PKGhvUKaQN`,
+    });
+}
+
+/**
+ * @param {import('discord.js').ButtonInteraction} interaction
+ * @returns {Promise<boolean>}
+ */
+exports._buttonFilter = async (interaction) => {
+    let message = (await interaction.channel.messages.fetch(interaction.message.reference.messageId))
+    if(interaction.user.id !== message.author.id) return false; else true;
+}
+
+exports._random = (array) => array[Math.floor(Math.random() * array.length)];
 
 exports.randomColor = this._random(colors)

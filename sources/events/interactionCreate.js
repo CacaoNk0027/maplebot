@@ -32,6 +32,16 @@ exports.event = {
                     ephemeral: true
                 })
             }
+        } else if(interaction.isButton() == true) {
+            let button = client.buttons.get(interaction.customId);
+            if(button) {
+                await button.exec(client, interaction)
+            } else {
+                await interaction.reply({
+                    content: models.utils.statusError('error', `ha habido un error interno en mi y no he podido encontrar el ejecutable del boton, comunicate con mi desarrollador para localizar este problema`),
+                    ephemeral: true
+                })
+            }
         }
     }
 }
