@@ -16,7 +16,7 @@ exports.text = async (client, message, args) => {
                 color: 0xff0000
             }]
         })
-        if(!args.length <= 100) return await message.reply({
+        if(args.length > 100) return await message.reply({
             embeds: [{
                 description: models.utils.statusError('error', 'el texto colocado no puerde revasar las 100 palabras'),
                 color: 0xff0000
