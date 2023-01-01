@@ -1,6 +1,7 @@
 // importaciones
 
 const discord = require('discord.js')
+const { args } = require('../../typings/index')
 const models = require('maplebot_models')
 const ms = require('ms')
 
@@ -8,7 +9,7 @@ const ms = require('ms')
  * exportacion del comando en text command
  * @param {discord.Client} client 
  * @param {discord.Message} message 
- * @param {string[]} args 
+ * @param {args} args 
  */
 exports.text = async (client, message, args) => {
     try {

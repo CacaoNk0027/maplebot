@@ -1,4 +1,5 @@
 const discord = require('discord.js')
+const { args } = require('../../typings/index')
 const models = require('maplebot_models')
 const ms = require('ms')
 const configs = require('../../utils/exports')
@@ -7,7 +8,7 @@ const nekoapi = require('cacao_nekoapi')
 /**
  * @param {discord.Client} client
  * @param {discord.Message} message
- * @param {string[]} args
+ * @param {args} args
  */
 exports.text = async (client, message, args) => {
     try {
