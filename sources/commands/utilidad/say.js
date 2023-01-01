@@ -29,7 +29,7 @@ exports.text = async (client, message, args) => {
         }).then(async () => await message.delete().catch(error => error));
     } catch (error) {
         console.error(error)
-        await models.utils.error(message, error)
+        await models.utils.error(message, error);
     }
 }
 
