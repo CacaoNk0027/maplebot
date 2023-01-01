@@ -38,7 +38,7 @@ exports.event = {
             let results = await Promise.all(promises);
             let totalGuilds = results[0].reduce((acc, guildCount) => acc + guildCount, 0);
             let totalMembers = results[1].reduce((acc, memberCount) => acc + memberCount, 0);
-            await Webhook.send({
+            let msg = await Webhook.send({
                 embeds: [{
                     author: {
                         name: client.user.username,
@@ -61,6 +61,7 @@ exports.event = {
                     }]
                 }]
             })
+            console.log(JSON.stringify(discord.MessagePayload.create('', {})))
             await client.channels.cache.get('863902846294163490').setName(`⌠🔔 servers⌡: ${totalGuilds}`)
         } catch (error) {
             console.error(error)
