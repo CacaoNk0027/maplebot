@@ -88,7 +88,7 @@ readdirSync('sources/events').filter(files => files.split('.').pop() == "js").fo
 // errores
 
 process.on('unhandledRejection', async (reason, promise) => {
-    console.error(error);
+    console.error(reason);
     // await events.send({
     //     embeds: [{
     //         title: 'Error',
