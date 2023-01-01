@@ -1,5 +1,4 @@
 const discord = require('discord.js')
-const { args } = require('../../typings/index.d.ts')
 const models = require('maplebot_models')
 const configs = require('../../utils/exports')
 const booru = require('booru')
@@ -8,7 +7,7 @@ const ms = require('ms')
 /**
  * @param {discord.Client} client 
  * @param {discord.Message} message 
- * @param {args} args 
+ * @param {import('../../typings').args} args 
  */
 exports.text = async (client, message, args) => {
     try {

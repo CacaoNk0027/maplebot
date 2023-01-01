@@ -1,5 +1,4 @@
 const discord = require('discord.js')
-const { args } = require('../../typings/index.d.ts')
 const models = require('maplebot_models')
 const ms = require('ms')
 const configs = require('../../utils/exports')
