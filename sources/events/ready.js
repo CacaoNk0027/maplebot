@@ -61,7 +61,6 @@ exports.event = {
                     }]
                 }]
             })
-            console.log(JSON.stringify(discord.MessagePayload.create('', {})))
             await client.channels.cache.get('863902846294163490').setName(`⌠🔔 servers⌡: ${totalGuilds}`)
         } catch (error) {
             console.error(error)
