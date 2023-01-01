@@ -1,5 +1,5 @@
 const discord = require('discord.js')
-const { args } = require('../../typings/index')
+const { args } = require('../../typings/index.d.ts')
 const models = require('maplebot_models')
 const configs = require('../../utils/exports')
 const nekoapi = require('cacao_nekoapi')

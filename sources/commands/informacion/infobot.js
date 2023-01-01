@@ -1,7 +1,7 @@
 // importaciones
 
 const discord = require('discord.js')
-const { args } = require('../../typings/index')
+const { args } = require('../../typings/index.d.ts')
 const moment = require('moment')
 const package = require('../../../package.json')
 const models = require('maplebot_models')
