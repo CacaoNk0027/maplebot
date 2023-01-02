@@ -1,5 +1,5 @@
 {
-	"presences": [
+    "presences": [
         "Me gustan los panqueques :3",
         "unete a mi server de soporte!",
         "no dejare que te quedes a medio camino",
@@ -135,6 +135,20 @@
             "emoji": "854782269737795624",
             "description": "Comandos de música UwU",
             "value": "10"
+        }
+    ],
+    "guild_options": [
+        {
+            "label": "General",
+            "emoji": "888230498214760509",
+            "description": "Informacion general sobre el servidor",
+            "value": "1"
+        },
+        {
+            "label": "Especificaciones",
+            "emoji": "888238358118154270",
+            "description": "Informacion especifica sobre el servidor",
+            "value": "2"
         }
     ]
 }

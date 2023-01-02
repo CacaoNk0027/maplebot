@@ -1,7 +1,9 @@
 const configs = require('./assets/configs.json')
 const { colors } = require('./assets/colors');
+const { Guild, ButtonInteraction } = require('discord.js');
 
 let defaultOptions = configs.menu_options
+let guildDefaultOptions = configs.guild_options
 
 let one_ = {
     "label": "Nsfw",
@@ -14,6 +16,12 @@ let two_ = {
     "emoji": "869814289727381575",
     "description": "comandos para rolplay nsfw",
     "value": "12"
+}
+let g_one_ = {
+    "label": "Comunidad",
+    "emoji": "888230718780633108",
+    "description": "Infomacion sobre el servidor ( Comunidad )",
+    "value": "3"
 }
 
 exports.presences = async (client) => {
@@ -43,7 +51,7 @@ exports.interactionErrorMsg = async (interaction, error) => {
 }
 
 /**
- * @param {import('discord.js').ButtonInteraction} interaction
+ * @param {ButtonInteraction} interaction
  * @returns {Promise<boolean>}
  */
 exports._buttonFilter = async (interaction) => {
@@ -54,3 +62,14 @@ exports._buttonFilter = async (interaction) => {
 exports._random = (array) => array[Math.floor(Math.random() * array.length)];
 
 exports.randomColor = this._random(colors)
+
+/**
+ * 
+ * @param {Guild} guild 
+ */
+exports.guildMenuOptions = (guild) => {
+    if(!guild.features.includes('COMMUNITY')) return guildDefaultOptions; else {
+        guildDefaultOptions.push(g_one_);
+        return guildDefaultOptions;
+    }
+}

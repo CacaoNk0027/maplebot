@@ -5,7 +5,7 @@
   "scripts": {
     "start": "node .",
     "uptogit": "git add . && git commit -am \"elementos añadidos\"",
-    "test": "nodemon npm start"
+    "test": "nodemon ./test/sharding.js"
   },
   "homepage": "https://github.com/CacaoNk0027/maplebot#readme",
   "description": "Una bot multifuncional en español",
@@ -28,6 +28,7 @@
     "canvas": "^2.10.2",
     "discord.js": "^14.7.1",
     "dotenv": "^16.0.3",
+    "emoji-regex": "^10.2.1",
     "maplebot_models": "^1.1.2",
     "moment": "^2.29.4",
     "moment-duration-format": "^2.3.2",

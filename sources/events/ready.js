@@ -38,7 +38,7 @@ exports.event = {
             let results = await Promise.all(promises);
             let totalGuilds = results[0].reduce((acc, guildCount) => acc + guildCount, 0);
             let totalMembers = results[1].reduce((acc, memberCount) => acc + memberCount, 0);
-            let msg = await Webhook.send({
+            await Webhook.send({
                 embeds: [{
                     author: {
                         name: client.user.username,
