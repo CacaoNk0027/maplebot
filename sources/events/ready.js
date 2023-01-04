@@ -5,6 +5,7 @@ const discord = require('discord.js')
 const models = require('maplebot_models')
 const package_json = require('../../package.json')
 const configs = require('../utils/exports.js')
+const { sdk } = require('../app/body')
 const { SlashManager } = require('../utils/slashCommandManager')
 const Webhook = new discord.WebhookClient({
     id: process.env['eventsId'],
@@ -33,11 +34,15 @@ exports.event = {
         try {
             const promises = [
                 client.shard.fetchClientValues('guilds.cache.size'),
-                client.shard.broadcastEval(c => c.guilds.cache.reduce((acc, guild) => acc + guild.memberCount, 0))
+                client.shard.broadcastEval(c => c.guilds.cache.reduce((acc, guild) => acc + guild.memberCount, 0)),
+                (await sdk.getBot(client.user?.id)),
+                (await sdk.getStats(client.user?.id))
             ]
             let results = await Promise.all(promises);
             let totalGuilds = results[0].reduce((acc, guildCount) => acc + guildCount, 0);
             let totalMembers = results[1].reduce((acc, memberCount) => acc + memberCount, 0);
+            let topgg_client = results[2];
+            let topgg_stats = results[3];
             await Webhook.send({
                 embeds: [{
                     author: {
@@ -55,8 +60,8 @@ exports.event = {
                             interactions: interactions_length,
                             commands: client.comandos.size,
                             users: totalMembers,
-                            votos: null,
-                            shards: null
+                            votos: (topgg_client.monthlyPoints),
+                            shards: (topgg_stats.shardCount)
                         })}`
                     }]
                 }]

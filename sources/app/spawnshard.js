@@ -14,7 +14,7 @@ const manager = new discord.ShardingManager('./sources/app/body.js', {
 const topApi = AutoPoster(process.env['topgg_token'], manager)
 
 topApi.on('posted', (data) => {
-    console.info(`stats posteadas correctamente en top.gg\n\n${data}\n\n`);
+    console.info(`stats posteadas correctamente en top.gg\n\n${JSON.stringify(data)}\n\n`);
 })
 
 topApi.on('error', console.error);
