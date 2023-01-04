@@ -46,7 +46,7 @@ exports.event = {
                     },
                     description: 'Me he vuelo a iniciar correctamente con... <:006:1012749025398759425>',
                     title: 'Reinicio de la bot',
-                    color: configs.randomColor,
+                    color: configs.randomColor(),
                     timestamp: new Date(),
                     fields: [{
                         name: 'Estadisticas',

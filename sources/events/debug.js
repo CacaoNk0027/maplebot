@@ -15,7 +15,6 @@ exports.event = {
      */
     exec: async (client, info) => {
         if(info.match('HeartbeatTimer')) return;
-        console.info(info);
         await webhook.send({
             embeds: [{
                 description: `\`\`\`\n${info}\n\`\`\``,

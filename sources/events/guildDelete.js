@@ -18,7 +18,7 @@ exports.event = {
             embeds: [{
                 title: 'Servidor eliminado',
                 description: 'Me han sacado de un servidor... <:002:1012749017798688878>',
-                color: configs.randomColor,
+                color: configs.randomColor(),
                 author: {
                     name: client.user.username,
                     icon_url: client.user.avatarURL({ size: 512, extension: 'png' })

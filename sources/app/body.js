@@ -3,6 +3,7 @@
 require('dotenv').config()
 const discord = require('discord.js')
 const { readdir, readdirSync } = require('fs')
+const top_gg = require('@top-gg/sdk')
 const mongoose = require('mongoose')
 
 // creacion del bot
@@ -32,6 +33,10 @@ const events = new discord.WebhookClient({
 mongoose.set('strictQuery', false);
 mongoose.connect(process.env['uri']);
 mongoose.connection.once('open', () => console.info('Base de datos conectada'));
+
+// conexion con la api de top.gg
+
+exports.sdk = new top_gg.Api(process.env['topgg_token'])
 
 // arreglos temporales
 
@@ -94,7 +99,7 @@ process.on('unhandledRejection', async (reason, promise) => {
             title: 'Error',
             description: `ha ocurrido un error al ejecutar una funcion... <:mkMaple_wasted:836376828222111794>`,
             timestamp: Date.now(),
-            color: require('../utils/exports').randomColor,
+            color: require('../utils/exports').randomColor(),
             author: {
                 name: client.user.username,
                 icon_url: client.user.avatarURL({ extension: 'png', size: 512 })

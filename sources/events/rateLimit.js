@@ -18,7 +18,7 @@ exports.event = {
             embeds: [{
                 title: 'RateLimit',
                 description: `Se me ha dado un limite de velocidad en hacer peticiones <:011:1012749035037261844>`,
-                color: configs.randomColor,
+                color: configs.randomColor(),
                 timestamp: new Date(),
                 provider: {
                     name: '@Maple bot'

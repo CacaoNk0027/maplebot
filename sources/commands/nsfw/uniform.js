@@ -14,7 +14,7 @@ exports.text = async (client, message, args) => {
         let img = (await nekoapi.NSFW.nsfw.uniform())
         await message.reply({
             embeds: [{
-                color: configs.randomColor,
+                color: configs.randomColor(),
                 description: "chicas con uniforme..",
                 image: {
                     url: img.url

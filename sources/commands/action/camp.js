@@ -14,7 +14,7 @@ exports.text = async (client, message, args) => {
         let img_ = await nekoapi.SFW.action_1.camp()
         const onlyAuthor = () => message.reply({
             embeds: [{
-                color: configs.randomColor,
+                color: configs.randomColor(),
                 description: configs._random([
                     `**${message.author.username}** ha salido de campamento UwU`,
                     `**${message.author.username}** ha empacado la mochila -w-)--b`,
