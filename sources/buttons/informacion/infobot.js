@@ -12,10 +12,6 @@ const Canvas = require('canvas')
  */
 exports.exec = async (client, interaction) => {
     try {
-        if (await configs._buttonFilter(interaction) == false) return await interaction.reply({
-            content: models.utils.statusError('rolplayMe', "esta interaccion no va dirigida a ti"),
-            ephemeral: true
-        });
         let prefix; try {
             prefix = (await models.schemas.SetPrefix.findOne({ guildID: interaction.guildId }).exec()).prefix;
         } catch (error) { prefix = 'sin prefix personalizado' };

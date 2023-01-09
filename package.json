@@ -30,7 +30,7 @@
     "discord.js": "^14.7.1",
     "dotenv": "^16.0.3",
     "emoji-regex": "^10.2.1",
-    "maplebot_models": "^1.1.2",
+    "maplebot_models": "^1.2.1",
     "moment": "^2.29.4",
     "moment-duration-format": "^2.3.2",
     "mongoose": "^6.8.1",

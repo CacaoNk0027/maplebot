@@ -12,7 +12,7 @@ format(moment)
 /**
  * @param {discord.Client} client
  * @param {discord.Message} message
- * @param {args} args
+ * @param {import('../../../typings').args} args
  */
 exports.text = async (client, message, args) => {
     try {

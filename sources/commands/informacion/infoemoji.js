@@ -8,23 +8,23 @@ const moment = require('moment')
 /**
  * @param {discord.Client} client 
  * @param {discord.Message} message 
- * @param {import('../../typings').args} args 
+ * @param {import('../../../typings').args} args 
  */
 exports.text = async (client, message, args) => {
     try {
         if(!args[0]) return await message.reply({ embeds: [{
             description: models.utils.statusError('error', 'no haz colocado ningun emoji'),
             color: 0xff0000
-        }] }); else if(emoji_regex.test(args[0]) == true || !args[0].match(/<a:.+?:\d{18}>|<:.+?:\d{18}>/g)) return await message.reply({ embeds: [{
+        }] }); else if(emoji_regex.test(args[0]) == true || !args[0].match(/<a:.+?:\d{19}>|<:.+?:\d{19}>|<a:.+?:\d{18}>|<:.+?:\d{18}>/g)) return await message.reply({ embeds: [{
             description: models.utils.statusError('error', 'el emoji debe de ser personalizado no preterminado'),
             color: 0xff0000
         }] }); else {
             let emoji_collection = (await message.guild.emojis.fetch())
-            if(!emoji_collection.has(args[0].match(/\d{18}/g)[0])) return await message.reply({ embeds: [{
+            if(!emoji_collection.has(args[0].match(/\d{19}|\d{18}/g)[0])) return await message.reply({ embeds: [{
                 description: models.utils.statusError('error', 'el emoji debe de ser de este servidor'),
                 color: 0xff0000
             }] }); else {
-                let emoji = emoji_collection.get(args[0].match(/\d{18}/g)[0]);
+                let emoji = emoji_collection.get(args[0].match(/\d{19}|\d{18}/g)[0]);
                 await message.reply({
                     embeds: [{
                         author: {

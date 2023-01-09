@@ -5,6 +5,7 @@ const discord = require('discord.js')
 const { readdir, readdirSync } = require('fs')
 const top_gg = require('@top-gg/sdk')
 const mongoose = require('mongoose')
+const configs = require('../utils/exports')
 
 // creacion del bot
 
@@ -40,9 +41,7 @@ exports.sdk = new top_gg.Api(process.env['topgg_token'])
 
 // arreglos temporales
 
-client.comandos = new discord.Collection();
-client.slashCommands = new discord.Collection();
-client.buttons = new discord.Collection();
+configs.createCollections(client);
 
 // comandos
 

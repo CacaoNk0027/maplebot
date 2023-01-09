@@ -33,6 +33,10 @@ exports.event = {
                 })
             }
         } else if(interaction.isButton() == true) {
+            if (await configs._buttonFilter(interaction) == false) return await interaction.reply({
+                content: models.utils.statusError('rolplayMe', "esta interaccion no va dirigida a ti"),
+                ephemeral: true
+            });
             let button = client.buttons.get(interaction.customId);
             if(button) {
                 await button.exec(client, interaction)
