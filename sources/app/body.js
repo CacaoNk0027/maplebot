@@ -8,7 +8,7 @@ const mongoose = require('mongoose')
 const configs = require('../utils/exports')
 const Canvas = require('canvas')
 
-Canvas.registerFont('sources/utils/assets/fonts/Honey.otf', {
+Canvas.registerFont('sources/utils/assets/fonts/honey.otf', {
     family: 'Honey'
 })
 
