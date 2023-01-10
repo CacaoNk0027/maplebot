@@ -231,4 +231,5 @@ exports.createCollections = (client) => {
     client.slashCommands = new Collection();
     client.buttons = new Collection();
     client.avatars = new Collection();
+    client.channels_pages = new Collection();
 }
