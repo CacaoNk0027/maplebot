@@ -25,7 +25,7 @@ exports.text = async (client, message, args) => {
                 color: 0xfcf5d4,
                 description: `[Guild_Banner URL](${message.guild.bannerURL({ forceStatic: false, size: 2048 })})`,
                 image: {
-                    url: message.guild.bannerURL({ forceStatic: false })
+                    url: message.guild.bannerURL({ forceStatic: false, size: 2048 })
                 },
                 title: `Banner de ${message.guild.name}`
             }]

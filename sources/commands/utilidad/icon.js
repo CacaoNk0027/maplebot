@@ -25,7 +25,7 @@ exports.text = async (client, message, args) => {
                 color: 0xfcf5d4,
                 description: `[Guild_Icon URL](${message.guild.iconURL({ forceStatic: false, size: 2048 })})`,
                 image: {
-                    url: message.guild.iconURL({ forceStatic: false })
+                    url: message.guild.iconURL({ forceStatic: false, size: 2048 })
                 },
                 title: `Icono de ${message.guild.name}`
             }]
