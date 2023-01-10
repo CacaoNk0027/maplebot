@@ -26,10 +26,7 @@ let g_one_ = {
 }
 
 exports.presences = async (client) => {
-    var json_string = JSON.stringify(configs.presences);
-    json_string.replace('$developer', (await client.application?.fetch()).owner.username);
-    json_string.replace('$guilds', (client.guilds.cache.size))
-    json_string.replace('$commands', client.comandos.size)
+    var json_string = JSON.stringify(configs.presences).replace('$developer', (await client.application?.fetch()).owner.username).replace('$guilds', (client.guilds.cache.size)).replace('$commands', client.comandos.size)
     return JSON.parse(json_string)
 };
 
@@ -71,9 +68,9 @@ exports.fetchUser = async (options) => {
     let user;
     const { args, id, message } = options
     if (!id && message && args) {
-        if (args.length >= 1) {
+        if (message.mentions.users.size >= 1) {
             try {
-                user = await message.client.users.fetch(args[0].match(/\d{18}/g)[0])
+                user = (await message.mentions.users.first().fetch())
             } catch (error) {
                 user = await message.author.fetch()
             }
@@ -85,9 +82,9 @@ exports.fetchUser = async (options) => {
                 }
             };
         }
-        if (message.mentions.users.size >= 1) {
+        if (args.length >= 1) {
             try {
-                user = (await message.mentions.users.first().fetch())
+                user = await (await message.client.users.fetch(args[0].match(/\d{19}|\d{18}/g)[0])).fetch()
             } catch (error) {
                 user = await message.author.fetch()
             }
@@ -139,7 +136,7 @@ exports.fetchMember = async (options) => {
     if (!id && message && args) {
         if (args.length >= 1) {
             try {
-                member = await message.guild.members.fetch(args[0].match(/\d{18}/g)[0])
+                member = await (await message.guild.members.fetch(args[0].match(/\d{19}|\d{18}/g)[0])).fetch()
             } catch (error) {
                 member = null
             }
@@ -231,5 +228,17 @@ exports.createCollections = (client) => {
     client.slashCommands = new Collection();
     client.buttons = new Collection();
     client.avatars = new Collection();
-    client.channels_pages = new Collection();
+    client.chroles_pages = new Collection();
+    client.roles_pages = new Collection();
+}
+
+let fontPath = (file) => `sources/utils/assets/fonts/${file}`
+
+exports.fonts = () => {
+    Canvas.registerFont(fontPath('honey.otf'), { family: 'Honey' })
+    Canvas.registerFont(fontPath('violet_smile.otf'), { family: 'Violet Smile' })
+    Canvas.registerFont(fontPath('arial.ttf'), { family: 'Arial' })
+    Canvas.registerFont(fontPath('product_sans_regular.ttf'), { family: 'Product Sans Regular' })
+    Canvas.registerFont(fontPath('roboto_regular.ttf'), { family: 'Roboto Regular' })
+    Canvas.registerFont(fontPath('minecraft.ttf'), { family: 'FontCraft'})
 }

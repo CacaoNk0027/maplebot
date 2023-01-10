@@ -30,7 +30,7 @@ exports.exec = async (client, interaction) => {
                 }]
             }]
         })
-        client.channels_pages.delete(interaction.message.id)
+        client.chroles_pages.delete(interaction.message.id)
     } catch (error) {
         await configs.interactionErrorMsg(interaction, error)
     }

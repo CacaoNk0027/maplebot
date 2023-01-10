@@ -6,12 +6,6 @@ const { readdir, readdirSync } = require('fs')
 const top_gg = require('@top-gg/sdk')
 const mongoose = require('mongoose')
 const configs = require('../utils/exports')
-const Canvas = require('canvas')
-
-Canvas.registerFont('sources/utils/assets/fonts/honey.otf', {
-    family: 'Honey'
-})
-
 // creacion del bot
 
 const client = new discord.Client({
@@ -44,9 +38,10 @@ mongoose.connection.once('open', () => console.info('Base de datos conectada'));
 
 exports.sdk = new top_gg.Api(process.env['topgg_token'])
 
-// arreglos temporales
+// arreglos temporales y configuraciones adicionales
 
 configs.createCollections(client);
+configs.fonts()
 
 // comandos
 

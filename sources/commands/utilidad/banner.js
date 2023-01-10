@@ -10,23 +10,48 @@ const ms = require('ms')
  */
 exports.text = async (client, message, args) => {
     try {
-        const { user } = await config.fetchUser({ message: message, args: args })
-        let img;
-        if (user.banner == null && user.accentColor !== (null || undefined)) img = await config.newColorImage(user.hexAccentColor); else img = { embedUrl: null, attachment: null };
-        let embed = new discord.EmbedBuilder({
-            author: {
-                name: message.author.username,
-                icon_url: message.author.avatarURL({ forceStatic: false })
-            },
-            color: user.banner ? 0xfcf5d4 : (user.accentColor ? user.accentColor : 0xff0000),
-            description: user.id == message.author.id ? (user.banner ? `[Banner URL](${user.bannerURL({ forceStatic: false, size: 2048 })})` : (user.accentColor ? `No cuentas con un banner pero si con un color personalizado :3` : models.utils.statusError('error', `No cuentas con un banner`))) : (user.banner ? `[Banner URL](${user.bannerURL({ forceStatic: false, size: 2048 })})` : (user.accentColor ? `**${user.username}** no cuenta con un banner pero si un color personalizado :3` : models.utils.statusError('error', `**${user.username}** no cuenta con un banner`))),
-            title: user.id == message.author.id ? (user.banner ? 'Tu banner' : (user.accentColor ? `Tu color de banner` : `Pff...`)) : (user.banner ? `Banner de ${user.username}` : (user.accentColor ? `Color de banner de ${user.username}` : "Pff...")),
-            image: { url: user.banner ? user.bannerURL({ forceStatic: false, size: 2048 }) : (user.accentColor ? img.embedUrl : null) },
-            footer: { text: (user.banner ? null : (user.accentColor ? `Color: ${user.hexAccentColor}` : null)), icon_url: null }
+        const { user, userIsAuthor } = await config.fetchUser({ message: message, args: args })
+        if (user.banner == null && user.accentColor == null) return await message.reply({
+            embeds: [{
+                description: models.utils.statusError('rolplayDanger', userIsAuthor() ? `Whoops... parece que no tienes un banner o un color personalizado` : `Whoops... ${user.username} no cuenta con un banner o un color personalizado`),
+                color: 0xff0000
+            }]
         })
-        if (user.banner == null && user.accentColor !== (null || undefined)) return await message.reply({
-            embeds: [embed], files: img.attachment == null ? [] : [img.attachment]
-        }); else return await message.reply({ embeds: [embed] });
+        if (user.banner == null && user.accentColor) {
+            let image = await config.newColorImage(user.hexAccentColor)
+            return await message.reply({
+                embeds: [{
+                    author: {
+                        name: message.author.username,
+                        icon_url: message.author.avatarURL({ forceStatic: false })
+                    },
+                    color: user.accentColor,
+                    description: userIsAuthor() ? `Parece que no cuentas con un banner, pero si con un color personalizado` : `Parece que **${user.username}** no cuenta con un banner, pero si con un color personalizado`,
+                    footer: {
+                        text: `color ${user.hexAccentColor}`
+                    },
+                    image: {
+                        url: image.embedUrl
+                    },
+                    title: userIsAuthor() ? 'Tu color de banner': `Color de banner de ${user.username}`
+                }],
+                files: [image.attachment]
+            })
+        }
+        if(user.banner) return await message.reply({
+            embeds: [{
+                author: {
+                    name: message.author.username,
+                    icon_url: message.author.avatarURL({ forceStatic: false })
+                },
+                color: 0xfcf5d4,
+                description: `[Banner URL](${user.bannerURL({ forceStatic: false, size: 2048 })})`,
+                image: {
+                    url: user.bannerURL({ forceStatic: false, size: 2048 })
+                },
+                title: userIsAuthor() ? 'Tu banner': `Banner de ${user.username}`
+            }]
+        })
     } catch (error) {
         console.error(error)
         await models.utils.error(message, error)
@@ -35,7 +60,7 @@ exports.text = async (client, message, args) => {
 
 exports.slash = async (client, interaction) => {
     try {
-        
+
     } catch (error) {
         await config.interactionErrorMsg(interaction, error)
     }
