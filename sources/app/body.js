@@ -6,6 +6,11 @@ const { readdir, readdirSync } = require('fs')
 const top_gg = require('@top-gg/sdk')
 const mongoose = require('mongoose')
 const configs = require('../utils/exports')
+const Canvas = require('canvas')
+
+Canvas.registerFont('sources/utils/assets/fonts/Honey.otf', {
+    family: 'Honey'
+})
 
 // creacion del bot
 
