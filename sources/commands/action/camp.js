@@ -11,23 +11,39 @@ const nekoapi = require('cacao_nekoapi')
  */
 exports.text = async (client, message, args) => {
     try {
-        let img_ = await nekoapi.SFW.action_1.camp()
-        const onlyAuthor = () => message.reply({
+        const { user, userIsAuthor } = await configs.fetchUser({ message, args })
+        let image = await nekoapi.SFW.action_1.camp()
+        if(userIsAuthor() && !args[0] && userIsAuthor() && args[0]) return await message.reply({
             embeds: [{
                 color: configs.randomColor(),
                 description: configs._random([
-                    `**${message.author.username}** ha salido de campamento UwU`,
-                    `**${message.author.username}** ha empacado la mochila -w-)--b`,
-                    `la aventura asecha a **${message.author.username}** -.-`
+                    `**${message.author.username}** ha alistado las maletas para ir a acampar`,
+                    `**${message.author.username}** fue de campamento`,
+                    `**${message.author.username}** ha salido a un dia de campamento`
+                ]),
+                image: {
+                    url: image.url
+                }
+            }]
+        })
+        if(user.id == client.user.id) return await message.reply({
+            embeds: [{
+                color: configs.randomColor(),
+                description: `no es que me moleste, pero deberias de acampar con alguien mas, de igual manera, te acompaño!`,
+                image: {
+                    url: image.url
+                }
+            }]
+        })
+        if(!userIsAuthor()) return await message.reply({
+            embeds: [{
+                color: configs.randomColor(),
+                description: configs._random([
+                    `**${message.author.username}** ha pasado un dia de campamento con **${user.username}**`,
+                    // `**${}**`
                 ])
             }]
         })
-        if(!args[0]) return onlyAuthor();
-        let friend; try {
-            friend = await message.guild.members.fetch({});
-        } catch (err) {
-            return onlyAuthor();
-        }
     } catch (error) {
         console.error(error)
         await models.utils.error(message, error)
