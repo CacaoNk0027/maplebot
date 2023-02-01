@@ -1,6 +1,6 @@
 // importaciones
 
-require('dotenv').config()
+require('dotenv').config();
 const discord = require('discord.js')
 const { readdir, readdirSync } = require('fs')
 const top_gg = require('@top-gg/sdk')
