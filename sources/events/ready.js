@@ -23,7 +23,7 @@ exports.event = {
      */
     exec: async (client) => {
         client.user.setPresence({
-            status: 'dnd',
+            status: 'online',
             activities: [{
                 name: `@Maple bot 🍁 | ${package_json.version} | ${configs._random(await configs.presences(client))}`
             }]
