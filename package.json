@@ -30,6 +30,8 @@
     "discord.js": "^14.7.1",
     "dotenv": "^16.0.3",
     "emoji-regex": "^10.2.1",
+    "hex-color-regex": "^1.1.0",
+    "hex2dec": "^1.1.2",
     "maplebot_models": "^1.2.2",
     "moment": "^2.29.4",
     "moment-duration-format": "^2.3.2",

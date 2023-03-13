@@ -1,19 +1,215 @@
-[{
-    "name": "ping",
-    "type": 1,
-    "description": "ve mi latencia en discord y em mensajes"
-}, {
-    "name": "help",
-    "type": 1,
-    "description": "ve mi menu de ayuda o ve informacion sobre comandos",
-    "options": [{
-        "name": "comando",
-        "type": 3,
-        "description": "escribe el nombre del comando para obtener mas información sobre el",
-        "required": false
-    }]
-}, {
-    "name": "infobot",
-    "type": 1,
-    "description": "ve informacion sobre mi"
-}]
+[
+    {
+        "name": "ping",
+        "type": 1,
+        "description": "ve mi latencia en discord y em mensajes"
+    },
+    {
+        "name": "help",
+        "type": 1,
+        "description": "ve mi menu de ayuda o ve informacion sobre comandos",
+        "options": [
+            {
+                "name": "comando",
+                "type": 3,
+                "description": "escribe el nombre del comando para obtener mas información sobre el",
+                "required": false
+            }
+        ]
+    },
+    {
+        "name": "infobot",
+        "type": 1,
+        "description": "ve informacion sobre mi"
+    },
+    {
+        "name": "set",
+        "type": 1,
+        "default_member_permissions": "16",
+        "description": "establece alguna configuracion para la bot o el servidor",
+        "options": [
+            {
+                "name": "welcome",
+                "type": 2,
+                "description": "establece un sistema de bienvenidas en tu servidor",
+                "options": [
+                    {
+                        "name": "channel",
+                        "type": 1,
+                        "description": "canal de bienvenidas",
+                        "options": [
+                            {
+                                "name": "select",
+                                "type": 7,
+                                "description": "selecciona el canal donde se enviaran las bienvenidas",
+                                "required": true
+                            }
+                        ]
+                    },
+                    {
+                        "name": "message",
+                        "description": "mensaje aparte de la imagem o embed",
+                        "type": 1,
+                        "options": [
+                            {
+                                "name": "text",
+                                "type": 3,
+                                "description": "escribe el mensaje de bienvenida que va aparte de la imagen",
+                                "required": false
+                            },
+                            {
+                                "name": "delete",
+                                "type": 5,
+                                "description": "¿Quieres eliminar el mensaje opcional de la imagen / embed?",
+                                "required": false
+                            }
+                        ]
+                    },
+                    {
+                        "name": "type",
+                        "description": "elige un tipo de bienvenida",
+                        "type": 1,
+                        "options": [
+                            {
+                                "name": "select",
+                                "description": "selecciona un tipo de bienvenida",
+                                "type": 3,
+                                "required": true,
+                                "choices": [
+                                    {
+                                        "name": "Embed",
+                                        "value": "embed"
+                                    },
+                                    {
+                                        "name": "Image",
+                                        "value": "image"
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "name": "description",
+                        "description": "descripcion de las bienvenidas",
+                        "type": 1,
+                        "options": [
+                            {
+                                "name": "text",
+                                "type": 3,
+                                "description": "escribe la descripcion de la bienvenida",
+                                "required": false
+                            },
+                            {
+                                "name": "color",
+                                "type": 3,
+                                "min_length": 4,
+                                "max_length": 7,
+                                "description": "escribe el color en hexadecimal para la descripcion",
+                                "required": false
+                            },
+                            {
+                                "name": "delete",
+                                "type": 5,
+                                "description": "¿Quieres eliminar la descripcion?",
+                                "required": false
+                            }
+                        ]
+                    },
+                    {
+                        "name": "title",
+                        "description": "titulo de las bienvenidas",
+                        "type": 1,
+                        "options": [
+                            {
+                                "name": "text",
+                                "type": 3,
+                                "description": "escribe el titulo de la bienvenida",
+                                "required": false
+                            },
+                            {
+                                "name": "color",
+                                "type": 3,
+                                "description": "escribe el color en hexadecimal para el titulo",
+                                "required": false
+                            },
+                            {
+                                "name": "delete",
+                                "type": 5,
+                                "description": "¿Quieres eliminar el titulo?",
+                                "required": false
+                            }
+                        ]
+                    },
+                    {
+                        "name": "background",
+                        "type": 1,
+                        "description": "fondo de la imagen o imagen del embed",
+                        "options": [
+                            {
+                                "name": "image",
+                                "type": 11,
+                                "description": "adjunta un archivo para el fondo de la imagen",
+                                "required": false
+                            },
+                            {
+                                "name": "link",
+                                "type": 3,
+                                "description": "si no tienes un archivo pero si un link puedes escribirlo aqui",
+                                "required": false
+                            },
+                            {
+                                "name": "color",
+                                "type": 3,
+                                "description": "si deseas un color como fondo, escribe el color en hexadecimal aqui",
+                                "required": false
+                            },
+                            {
+                                "name": "delete",
+                                "type": 5,
+                                "description": "¿Quieres eliminar el fondo establecido?",
+                                "required": false
+                            }
+                        ]
+                    },
+                    {
+                        "name": "avatar",
+                        "description": "avatar de la imagen (en embeds no cambia nada)",
+                        "type": 1,
+                        "options": [
+                            {
+                                "name": "color",
+                                "type": 3,
+                                "description": "escribe el color en hexadecimal para el anillo del avatar",
+                                "required": false
+                            },
+                            {
+                                "name": "delete",
+                                "description": "¿Quieres establecer al color preterminado?",
+                                "type": 5,
+                                "required": false
+                            }
+                        ]
+                    },
+                    {
+                        "name": "test",
+                        "description": "prueba como se ve la imagen / embed de bienvenida",
+                        "type": 1
+                    },
+                    {
+                        "name": "delete",
+                        "description": "elimina el sistema de bienvenidas",
+                        "type": 1,
+                        "options": [
+                            {
+                                "name": "save",
+                                "description": "Selecciona si guardar las configuraciones [true] o eliminarlas [false]",
+                                "type": 5,
+                                "required": true
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    }
+]
