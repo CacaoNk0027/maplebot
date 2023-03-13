@@ -63,7 +63,7 @@ exports.event = {
                 allowedMentions: {
                     parse: ['users']
                 }
-            })
+            });
         }
     }
 }
