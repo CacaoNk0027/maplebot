@@ -8,14 +8,14 @@ const {
     newColorImage,
     interactionErrorMsg,
     defaultAvatar,
-    parseJson
+    farewellJson
 } = require('../../../utils/exports');
 
 /**
  * @param {discord.Client} client
  * @param {discord.CommandInteraction} interaction
  */
-exports.Welcome = async (client, interaction) => {
+exports.Farewell = async (client, interaction) => {
     try {
         let option;
         switch (interaction.options._subcommand) {
@@ -34,8 +34,8 @@ exports.Welcome = async (client, interaction) => {
                         color: 0xff0000
                     }]
                 });
-                if (await models.schemas.Welcome.findOne({ guildID: interaction.guildId }) == null) {
-                    let WlcDb = new models.schemas.Welcome({
+                if (await models.schemas.Farewell.findOne({ guildID: interaction.guildId }) == null) {
+                    let FrwDb = new models.schemas.Farewell({
                         guildID: interaction.guildId,
                         message: null,
                         type: null,
@@ -51,33 +51,33 @@ exports.Welcome = async (client, interaction) => {
                         description: null,
                         title: null
                     })
-                    await WlcDb.save();
+                    await FrwDb.save();
                 }
-                let channelWlc = await models.schemas.SetChannels.findOne({ guildID: interaction.guildId });
-                if (channelWlc == null) {
+                let channelFrw = await models.schemas.SetChannels.findOne({ guildID: interaction.guildId });
+                if (channelFrw == null) {
                     let ChannelDb = new models.schemas.SetChannels({
                         guildID: interaction.guildId,
                         suggest: null,
                         confession: null,
-                        welcome: channel.id,
-                        farewell: null
+                        welcome: null,
+                        farewell: channel.id
                     });
                     await ChannelDb.save();
                     await interaction.reply({
                         embeds: [{
-                            description: models.utils.statusError('success', `Se ha establecido <#${channel.id}> como preterminado para bienvenidas`),
+                            description: models.utils.statusError('success', `Se ha establecido <#${channel.id}> como preterminado para despedidas`),
                             color: 0x00ff00
                         }]
                     })
-                } else if (channelWlc.welcome == null) {
-                    await models.schemas.SetChannels.updateOne({ guildID: interaction.guildId }, { welcome: channel.id })
+                } else if (channelFrw.farewell == null) {
+                    await models.schemas.SetChannels.updateOne({ guildID: interaction.guildId }, { farewell: channel.id })
                     await interaction.reply({
                         embeds: [{
-                            description: models.utils.statusError('success', `Se ha establecido <#${channel.id}> como preterminado para bienvenidas`),
+                            description: models.utils.statusError('success', `Se ha establecido <#${channel.id}> como preterminado para despedidas`),
                             color: 0x00ff00
                         }]
                     })
-                } else if (channelWlc == channel.id) {
+                } else if (channelFrw == channel.id) {
                     await interaction.reply({
                         embeds: [{
                             description: models.utils.statusError('error', `El canal que haz seleccionado es exactamente igual al canal que haz establecido anteriormente`),
@@ -85,10 +85,10 @@ exports.Welcome = async (client, interaction) => {
                         }]
                     })
                 } else {
-                    await models.schemas.SetChannels.updateOne({ guildID: interaction.guildId }, { welcome: channel.id })
+                    await models.schemas.SetChannels.updateOne({ guildID: interaction.guildId }, { farewell: channel.id })
                     await interaction.reply({
                         embeds: [{
-                            description: models.utils.statusError('success', `Se ha establecido <#${channel.id}> como preterminado para bienvenidas`),
+                            description: models.utils.statusError('success', `Se ha establecido <#${channel.id}> como preterminado para despedidas`),
                             color: 0x00ff00
                         }]
                     })
@@ -104,7 +104,7 @@ exports.Welcome = async (client, interaction) => {
                                 name: interaction.user.username,
                                 icon_url: interaction.user.avatarURL({ forceStatic: false })
                             },
-                            description: "Estas en el menu de ayuda para este comando! asi que debes saber que para el comando /set welcome message hay dos opciones de las cuales debes responder solo una",
+                            description: "Estas en el menu de ayuda para este comando! asi que debes saber que para el comando /set farewell message hay dos opciones de las cuales debes responder solo una",
                             fields: [{
                                 name: "text",
                                 value: "En esta opcion debes escribir un texto que quieres que se muestre arriba de la imagen, puedes añadir ciertos parametros en el texto agregando ciertas cosas al texto para darle vida, solo puedes poner 300 palabras aqui por lo que no puede escribir mucho mas, **para mas informacion sobre los parametros presiona el boton text**"
@@ -117,7 +117,7 @@ exports.Welcome = async (client, interaction) => {
                             type: discord.ComponentType.ActionRow,
                             components: [{
                                 type: discord.ComponentType.Button,
-                                customId: "set.welcome.params",
+                                customId: "set.farewell.params",
                                 style: discord.ButtonStyle.Secondary,
                                 label: "text",
                                 emoji: "📑"
@@ -130,7 +130,7 @@ exports.Welcome = async (client, interaction) => {
                                 type: discord.ComponentType.ActionRow,
                                 components: [{
                                     type: discord.ComponentType.Button,
-                                    customId: "set.welcome.params",
+                                    customId: "set.farewell.params",
                                     style: discord.ButtonStyle.Secondary,
                                     label: "interaccion terminada",
                                     emoji: "❌",
@@ -147,13 +147,13 @@ exports.Welcome = async (client, interaction) => {
                         let text = await option.value
                         if (!text.trim().split(/ +/g).length > 300) return await interaction.reply({
                             embeds: [{
-                                description: models.utils.statusError('error', "no puedes poner mas de 300 palabras en el mensaje de bienvenida"),
+                                description: models.utils.statusError('error', "no puedes poner mas de 300 palabras en el mensaje de despedida"),
                                 color: 0xff0000
                             }]
                         })
-                        let msgWlc_1 = await models.schemas.Welcome.findOne({ guildID: interaction.guildId })
-                        if (msgWlc_1 == null) {
-                            let WlcDb = new models.schemas.Welcome({
+                        let msgFrw_1 = await models.schemas.Farewell.findOne({ guildID: interaction.guildId })
+                        if (msgFrw_1 == null) {
+                            let FrwDb = new models.schemas.Farewell({
                                 guildID: interaction.guildId,
                                 message: text,
                                 type: null,
@@ -169,22 +169,22 @@ exports.Welcome = async (client, interaction) => {
                                 description: null,
                                 title: null
                             })
-                            await WlcDb.save();
+                            await FrwDb.save();
                             await interaction.reply({
                                 embeds: [{
-                                    description: models.utils.statusError('success', `El mensaje de bienvenida sera mostrado como acontinuacion...`) + `\n${replaces_msg_i(interaction, text)}`,
+                                    description: models.utils.statusError('success', `El mensaje de despedida sera mostrado como acontinuacion...`) + `\n${replaces_msg_i(interaction, text)}`,
                                     color: 0x00ff00
                                 }]
                             })
-                        } else if (msgWlc_1.message == null) {
-                            await models.schemas.Welcome.updateOne({ guildID: interaction.guildId }, { message: text })
+                        } else if (msgFrw_1.message == null) {
+                            await models.schemas.Farewell.updateOne({ guildID: interaction.guildId }, { message: text })
                             await interaction.reply({
                                 embeds: [{
-                                    description: models.utils.statusError('success', `El mensaje de bienvenida sera mostrado como acontinuacion...`) + `\n${replaces_msg_i(interaction, text)}`,
+                                    description: models.utils.statusError('success', `El mensaje de despedida sera mostrado como acontinuacion...`) + `\n${replaces_msg_i(interaction, text)}`,
                                     color: 0x00ff00
                                 }]
                             })
-                        } else if (text == msgWlc_1.message) {
+                        } else if (text == msgFrw_1.message) {
                             await interaction.reply({
                                 embeds: [{
                                     description: models.utils.statusError('error', "no puedes escribir un mensaje similar o igual al anterior"),
@@ -192,10 +192,10 @@ exports.Welcome = async (client, interaction) => {
                                 }]
                             })
                         } else {
-                            await models.schemas.Welcome.updateOne({ guildID: interaction.guildId }, { message: text })
+                            await models.schemas.Farewell.updateOne({ guildID: interaction.guildId }, { message: text })
                             await interaction.reply({
                                 embeds: [{
-                                    description: models.utils.statusError('success', `El mensaje de bienvenida sera mostrado como acontinuacion...`) + `\n${replaces_msg_i(interaction, text)}`,
+                                    description: models.utils.statusError('success', `El mensaje de despedida sera mostrado como acontinuacion...`) + `\n${replaces_msg_i(interaction, text)}`,
                                     color: 0x00ff00
                                 }]
                             })
@@ -204,23 +204,23 @@ exports.Welcome = async (client, interaction) => {
                     case "delete":
                         switch (option.value) {
                             case true:
-                                let msgWlc_2 = await models.schemas.Welcome.findOne({ guildID: interaction.guildId });
-                                if (msgWlc_2 == null) return await interaction.reply({
+                                let msgFrw_2 = await models.schemas.Farewell.findOne({ guildID: interaction.guildId });
+                                if (msgFrw_2 == null) return await interaction.reply({
                                     embeds: [{
-                                        description: models.utils.statusError("error", "no cuentas con un sistema de bienvenidas"),
+                                        description: models.utils.statusError("error", "no cuentas con un sistema de despedidas"),
                                         color: 0xff0000
                                     }]
                                 });
-                                if (msgWlc_2.message == null) return await interaction.reply({
+                                if (msgFrw_2.message == null) return await interaction.reply({
                                     embeds: [{
                                         description: models.utils.statusError('error', "no tienes un mensaje establecido"),
                                         color: 0xff0000
                                     }]
                                 });
-                                await models.schemas.Welcome.updateOne({ guildID: interaction.guildId }, { message: null })
+                                await models.schemas.Farewell.updateOne({ guildID: interaction.guildId }, { message: null })
                                 await interaction.reply({
                                     embeds: [{
-                                        description: models.utils.statusError('success', "el mensaje de bienvenida ha sido eliminado"),
+                                        description: models.utils.statusError('success', "el mensaje de despedida ha sido eliminado"),
                                         color: 0x00ff00
                                     }]
                                 })
@@ -228,7 +228,7 @@ exports.Welcome = async (client, interaction) => {
                             case false:
                                 await interaction.reply({
                                     embeds: [{
-                                        description: models.utils.statusError('error', "no se eliminara el mensaje de bienvenida"),
+                                        description: models.utils.statusError('error', "no se eliminara el mensaje de despedida"),
                                         color: 0x00ff00
                                     }]
                                 });
@@ -242,9 +242,9 @@ exports.Welcome = async (client, interaction) => {
             case "type":
                 option = interaction.options._hoistedOptions[0];
                 let type = option.value
-                let typeWlc = await models.schemas.Welcome.findOne({ guildID: interaction.guildId })
-                if (typeWlc == null) {
-                    let WlcDb = new models.schemas.Welcome({
+                let typeFrw = await models.schemas.Farewell.findOne({ guildID: interaction.guildId })
+                if (typeFrw == null) {
+                    let FrwDb = new models.schemas.Farewell({
                         guildID: interaction.guildId,
                         message: null,
                         type: type,
@@ -260,33 +260,33 @@ exports.Welcome = async (client, interaction) => {
                         description: null,
                         title: null
                     })
-                    await WlcDb.save();
+                    await FrwDb.save();
                     await interaction.reply({
                         embeds: [{
-                            description: models.utils.statusError('success', `Haz seleccionado el tipo de bienvenidas como **${type == "image" ? "Imagen" : "Embed"}**`),
+                            description: models.utils.statusError('success', `Haz seleccionado el tipo de despedidas como **${type == "image" ? "Imagen" : "Embed"}**`),
                             color: 0x00ff00
                         }]
                     })
-                } else if (typeWlc.type == null) {
-                    await models.schemas.Welcome.updateOne({ guildID: interaction.guildId }, { type: type })
+                } else if (typeFrw.type == null) {
+                    await models.schemas.Farewell.updateOne({ guildID: interaction.guildId }, { type: type })
                     await interaction.reply({
                         embeds: [{
-                            description: models.utils.statusError('success', `Haz seleccionado el tipo de bienvenidas como **${type == "image" ? "Imagen" : "Embed"}**`),
+                            description: models.utils.statusError('success', `Haz seleccionado el tipo de despedidas como **${type == "image" ? "Imagen" : "Embed"}**`),
                             color: 0x00ff00
                         }]
                     })
-                } else if (type == typeWlc.type) {
+                } else if (type == typeFrw.type) {
                     await interaction.reply({
                         embeds: [{
-                            description: models.utils.statusError('error', `Ya haz seleccionado ese tipo de bienvenida antes`),
+                            description: models.utils.statusError('error', `Ya haz seleccionado ese tipo de despedida antes`),
                             color: 0xff0000
                         }]
                     })
                 } else {
-                    await models.schemas.Welcome.updateOne({ guildID: interaction.guildId }, { type: type })
+                    await models.schemas.Farewell.updateOne({ guildID: interaction.guildId }, { type: type })
                     await interaction.reply({
                         embeds: [{
-                            description: models.utils.statusError('success', `Haz seleccionado el tipo de bienvenidas como **${type == "image" ? "Imagen" : "Embed"}**`),
+                            description: models.utils.statusError('success', `Haz seleccionado el tipo de despedidas como **${type == "image" ? "Imagen" : "Embed"}**`),
                             color: 0x00ff00
                         }]
                     })
@@ -302,7 +302,7 @@ exports.Welcome = async (client, interaction) => {
                                 name: interaction.user.username,
                                 icon_url: interaction.user.avatarURL({ forceStatic: false })
                             },
-                            description: "Estas en el menu de ayuda para este comando! asi que debes saber que para el comando /set welcome description hay tres opciones de las cuales debes responder solo una",
+                            description: "Estas en el menu de ayuda para este comando! asi que debes saber que para el comando /set farewell description hay tres opciones de las cuales debes responder solo una",
                             fields: [{
                                 name: "text",
                                 value: "En esta opcion debes escribir un texto que quieres que se muestre como descripcion de la imagen, puedes añadir ciertos parametros en el texto agregando ciertas cosas al texto para darle vida, solo puedes poner 10 palabras aqui por lo que no se puede escribir mucho mas, **para mas informacion sobre los parametros presiona el boton text**"
@@ -318,7 +318,7 @@ exports.Welcome = async (client, interaction) => {
                             type: discord.ComponentType.ActionRow,
                             components: [{
                                 type: discord.ComponentType.Button,
-                                customId: "set.welcome.params",
+                                customId: "set.farewell.params",
                                 style: discord.ButtonStyle.Secondary,
                                 label: "text",
                                 emoji: "📑"
@@ -331,7 +331,7 @@ exports.Welcome = async (client, interaction) => {
                                 type: discord.ComponentType.ActionRow,
                                 components: [{
                                     type: discord.ComponentType.Button,
-                                    customId: "set.welcome.params",
+                                    customId: "set.farewell.params",
                                     style: discord.ButtonStyle.Secondary,
                                     label: "interaccion terminada",
                                     emoji: "❌",
@@ -348,13 +348,13 @@ exports.Welcome = async (client, interaction) => {
                         let text = option.value
                         if (!text.trim().split(/ +/g).length > 10) return await interaction.reply({
                             embeds: [{
-                                description: models.utils.statusError('error', "no puedes poner mas de 10 palabras en la descripcion de bienvenida"),
+                                description: models.utils.statusError('error', "no puedes poner mas de 10 palabras en la descripcion de despedida"),
                                 color: 0xff0000
                             }]
                         })
-                        let descWlc_1 = await models.schemas.Welcome.findOne({ guildID: interaction.guildId })
-                        if (descWlc_1 == null) {
-                            let WlcDb = new models.schemas.Welcome({
+                        let descFrw_1 = await models.schemas.Farewell.findOne({ guildID: interaction.guildId })
+                        if (descFrw_1 == null) {
+                            let FrwDb = new models.schemas.Farewell({
                                 guildID: interaction.guildId,
                                 message: null,
                                 type: null,
@@ -370,22 +370,22 @@ exports.Welcome = async (client, interaction) => {
                                 description: text,
                                 title: null
                             })
-                            await WlcDb.save();
+                            await FrwDb.save();
                             await interaction.reply({
                                 embeds: [{
-                                    description: models.utils.statusError('success', `La descripcion de la bienvenida sera mostrada como acontinuacion...`) + `\n${replaces_msg_i(interaction, text)}`,
+                                    description: models.utils.statusError('success', `La descripcion de la despedida sera mostrada como acontinuacion...`) + `\n${replaces_msg_i(interaction, text)}`,
                                     color: 0x00ff00
                                 }]
                             })
-                        } else if (descWlc_1.description == null) {
-                            await models.schemas.Welcome.updateOne({ guildID: interaction.guildId }, { description: text })
+                        } else if (descFrw_1.description == null) {
+                            await models.schemas.Farewell.updateOne({ guildID: interaction.guildId }, { description: text })
                             await interaction.reply({
                                 embeds: [{
-                                    description: models.utils.statusError('success', `La descripcion de la bienvenida sera mostrada como acontinuacion...`) + `\n${replaces_msg_i(interaction, text)}`,
+                                    description: models.utils.statusError('success', `La descripcion de la despedida sera mostrada como acontinuacion...`) + `\n${replaces_msg_i(interaction, text)}`,
                                     color: 0x00ff00
                                 }]
                             })
-                        } else if (text == descWlc_1.description) {
+                        } else if (text == descFrw_1.description) {
                             await interaction.reply({
                                 embeds: [{
                                     description: models.utils.statusError('error', "no puedes escribir una descripcion similar o igual al anterior"),
@@ -393,10 +393,10 @@ exports.Welcome = async (client, interaction) => {
                                 }]
                             })
                         } else {
-                            await models.schemas.Welcome.updateOne({ guildID: interaction.guildId }, { description: text })
+                            await models.schemas.Farewell.updateOne({ guildID: interaction.guildId }, { description: text })
                             await interaction.reply({
                                 embeds: [{
-                                    description: models.utils.statusError('success', `La descripcion de la bienvenida sera mostrada como acontinuacion...`) + `\n${replaces_msg_i(interaction, text)}`,
+                                    description: models.utils.statusError('success', `La descripcion de la despedida sera mostrada como acontinuacion...`) + `\n${replaces_msg_i(interaction, text)}`,
                                     color: 0x00ff00
                                 }]
                             })
@@ -411,9 +411,9 @@ exports.Welcome = async (client, interaction) => {
                             }]
                         });
                         let image = await newColorImage(hex_color);
-                        let descWlc_2 = await models.schemas.Welcome.findOne({ guildID: interaction.guildId })
-                        if (descWlc_2 == null) {
-                            let WlcDb = new models.schemas.Welcome({
+                        let descFrw_2 = await models.schemas.Farewell.findOne({ guildID: interaction.guildId })
+                        if (descFrw_2 == null) {
+                            let FrwDb = new models.schemas.Farewell({
                                 guildID: interaction.guildId,
                                 message: null,
                                 type: null,
@@ -429,7 +429,7 @@ exports.Welcome = async (client, interaction) => {
                                 description: null,
                                 title: null
                             })
-                            await WlcDb.save();
+                            await FrwDb.save();
                             await interaction.reply({
                                 embeds: [{
                                     description: models.utils.statusError('success', `el color de la descripcion se ha establecido correctamente a ${hex_color}`),
@@ -442,8 +442,8 @@ exports.Welcome = async (client, interaction) => {
                                     image.attachment
                                 ]
                             })
-                        } else if (descWlc_2.color.description == null) {
-                            await models.schemas.Welcome.updateOne({ guildID: interaction.guildId }, { color: { title: descWlc_2.color.title, description: hex_color, avatar: descWlc_2.color.avatar } })
+                        } else if (descFrw_2.color.description == null) {
+                            await models.schemas.Farewell.updateOne({ guildID: interaction.guildId }, { color: { title: descFrw_2.color.title, description: hex_color, avatar: descFrw_2.color.avatar } })
                             await interaction.reply({
                                 embeds: [{
                                     description: models.utils.statusError('success', `el color de la descripcion se ha establecido correctamente a ${hex_color}`),
@@ -456,7 +456,7 @@ exports.Welcome = async (client, interaction) => {
                                     image.attachment
                                 ]
                             })
-                        } else if (hex_color == descWlc_2.color.description) {
+                        } else if (hex_color == descFrw_2.color.description) {
                             await interaction.reply({
                                 embeds: [{
                                     description: models.utils.statusError('error', "el color que haz seleccionado es igual al anterior"),
@@ -464,7 +464,7 @@ exports.Welcome = async (client, interaction) => {
                                 }]
                             })
                         } else {
-                            await models.schemas.Welcome.updateOne({ guildID: interaction.guildId }, { color: { title: descWlc_2.color.title, description: hex_color, avatar: descWlc_2.color.avatar } })
+                            await models.schemas.Farewell.updateOne({ guildID: interaction.guildId }, { color: { title: descFrw_2.color.title, description: hex_color, avatar: descFrw_2.color.avatar } })
                             await interaction.reply({
                                 embeds: [{
                                     description: models.utils.statusError('success', `el color de la descripcion se ha establecido correctamente a ${hex_color}`),
@@ -482,23 +482,23 @@ exports.Welcome = async (client, interaction) => {
                     case "delete":
                         switch (option.value) {
                             case true:
-                                let descWlc_3 = await models.schemas.Welcome.findOne({ guildID: interaction.guildId });
-                                if (descWlc_3 == null) return await interaction.reply({
+                                let descFrw_3 = await models.schemas.Farewell.findOne({ guildID: interaction.guildId });
+                                if (descFrw_3 == null) return await interaction.reply({
                                     embeds: [{
-                                        description: models.utils.statusError("error", "no cuentas con un sistema de bienvenidas"),
+                                        description: models.utils.statusError("error", "no cuentas con un sistema de despedidas"),
                                         color: 0xff0000
                                     }]
                                 });
-                                if (descWlc_3.description == null) return await interaction.reply({
+                                if (descFrw_3.description == null) return await interaction.reply({
                                     embeds: [{
                                         description: models.utils.statusError('error', "no tienes una descripcion establecida"),
                                         color: 0xff0000
                                     }]
                                 });
-                                await models.schemas.Welcome.updateOne({ guildID: interaction.guildId }, { description: null })
+                                await models.schemas.Farewell.updateOne({ guildID: interaction.guildId }, { description: null })
                                 await interaction.reply({
                                     embeds: [{
-                                        description: models.utils.statusError('success', "La descripcion de la bienvenida ha sido eliminada"),
+                                        description: models.utils.statusError('success', "La descripcion de la despedida ha sido eliminada"),
                                         color: 0x00ff00
                                     }]
                                 })
@@ -506,7 +506,7 @@ exports.Welcome = async (client, interaction) => {
                             case false:
                                 await interaction.reply({
                                     embeds: [{
-                                        description: models.utils.statusError('error', "no se eliminara la descripcion de la bienvenida"),
+                                        description: models.utils.statusError('error', "no se eliminara la descripcion de la despedida"),
                                         color: 0x00ff00
                                     }]
                                 });
@@ -527,7 +527,7 @@ exports.Welcome = async (client, interaction) => {
                                 name: interaction.user.username,
                                 icon_url: interaction.user.avatarURL({ forceStatic: false })
                             },
-                            description: "Estas en el menu de ayuda para este comando! asi que debes saber que para el comando /set welcome title hay tres opciones de las cuales debes responder solo una",
+                            description: "Estas en el menu de ayuda para este comando! asi que debes saber que para el comando /set farewell title hay tres opciones de las cuales debes responder solo una",
                             fields: [{
                                 name: "text",
                                 value: "En esta opcion debes escribir un texto que quieres que se muestre como titulo de la imagen, puedes añadir ciertos parametros en el texto agregando ciertas cosas al texto para darle vida, solo puedes poner 3 palabras aqui por lo que no se puede escribir mucho mas, **para mas informacion sobre los parametros presiona el boton text**"
@@ -543,7 +543,7 @@ exports.Welcome = async (client, interaction) => {
                             type: discord.ComponentType.ActionRow,
                             components: [{
                                 type: discord.ComponentType.Button,
-                                customId: "set.welcome.params",
+                                customId: "set.farewell.params",
                                 style: discord.ButtonStyle.Secondary,
                                 label: "text",
                                 emoji: "📑"
@@ -556,7 +556,7 @@ exports.Welcome = async (client, interaction) => {
                                 type: discord.ComponentType.ActionRow,
                                 components: [{
                                     type: discord.ComponentType.Button,
-                                    customId: "set.welcome.params",
+                                    customId: "set.farewell.params",
                                     style: discord.ButtonStyle.Secondary,
                                     label: "interaccion terminada",
                                     emoji: "❌",
@@ -573,13 +573,13 @@ exports.Welcome = async (client, interaction) => {
                         let text = option.value
                         if (!text.trim().split(/ +/g).length > 3) return await interaction.reply({
                             embeds: [{
-                                description: models.utils.statusError('error', "no puedes poner mas de 3 palabras en la descripcion de bienvenida"),
+                                description: models.utils.statusError('error', "no puedes poner mas de 3 palabras en la descripcion de despedida"),
                                 color: 0xff0000
                             }]
                         })
-                        let titWlc_1 = await models.schemas.Welcome.findOne({ guildID: interaction.guildId })
-                        if (titWlc_1 == null) {
-                            let WlcDb = new models.schemas.Welcome({
+                        let titFrw_1 = await models.schemas.Farewell.findOne({ guildID: interaction.guildId })
+                        if (titFrw_1 == null) {
+                            let FrwDb = new models.schemas.Farewell({
                                 guildID: interaction.guildId,
                                 message: null,
                                 type: null,
@@ -595,22 +595,22 @@ exports.Welcome = async (client, interaction) => {
                                 description: null,
                                 title: text
                             })
-                            await WlcDb.save();
+                            await FrwDb.save();
                             await interaction.reply({
                                 embeds: [{
-                                    description: models.utils.statusError('success', `El titulo de la bienvenida sera mostrado como acontinuacion...`) + `\n${replaces_msg_i(interaction, text)}`,
+                                    description: models.utils.statusError('success', `El titulo de la despedida sera mostrado como acontinuacion...`) + `\n${replaces_msg_i(interaction, text)}`,
                                     color: 0x00ff00
                                 }]
                             })
-                        } else if (titWlc_1.title == null) {
-                            await models.schemas.Welcome.updateOne({ guildID: interaction.guildId }, { title: text })
+                        } else if (titFrw_1.title == null) {
+                            await models.schemas.Farewell.updateOne({ guildID: interaction.guildId }, { title: text })
                             await interaction.reply({
                                 embeds: [{
-                                    description: models.utils.statusError('success', `El titulo de la bienvenida sera mostrado como acontinuacion...`) + `\n${replaces_msg_i(interaction, text)}`,
+                                    description: models.utils.statusError('success', `El titulo de la despedida sera mostrado como acontinuacion...`) + `\n${replaces_msg_i(interaction, text)}`,
                                     color: 0x00ff00
                                 }]
                             })
-                        } else if (text == titWlc_1.title) {
+                        } else if (text == titFrw_1.title) {
                             await interaction.reply({
                                 embeds: [{
                                     description: models.utils.statusError('error', "no puedes escribir un titulo similar o igual al anterior"),
@@ -618,10 +618,10 @@ exports.Welcome = async (client, interaction) => {
                                 }]
                             })
                         } else {
-                            await models.schemas.Welcome.updateOne({ guildID: interaction.guildId }, { title: text })
+                            await models.schemas.Farewell.updateOne({ guildID: interaction.guildId }, { title: text })
                             await interaction.reply({
                                 embeds: [{
-                                    description: models.utils.statusError('success', `El titulo de la bienvenida sera mostrado como acontinuacion...`) + `\n${replaces_msg_i(interaction, text)}`,
+                                    description: models.utils.statusError('success', `El titulo de la despedida sera mostrado como acontinuacion...`) + `\n${replaces_msg_i(interaction, text)}`,
                                     color: 0x00ff00
                                 }]
                             })
@@ -636,9 +636,9 @@ exports.Welcome = async (client, interaction) => {
                             }]
                         });
                         let image = await newColorImage(hex_color);
-                        let titWlc_2 = await models.schemas.Welcome.findOne({ guildID: interaction.guildId })
-                        if (titWlc_2 == null) {
-                            let WlcDb = new models.schemas.Welcome({
+                        let titFrw_2 = await models.schemas.Farewell.findOne({ guildID: interaction.guildId })
+                        if (titFrw_2 == null) {
+                            let FrwDb = new models.schemas.Farewell({
                                 guildID: interaction.guildId,
                                 message: null,
                                 type: null,
@@ -654,7 +654,7 @@ exports.Welcome = async (client, interaction) => {
                                 description: null,
                                 title: null
                             })
-                            await WlcDb.save();
+                            await FrwDb.save();
                             await interaction.reply({
                                 embeds: [{
                                     description: models.utils.statusError('success', `el color del titulo se ha establecido correctamente a ${hex_color}`),
@@ -667,8 +667,8 @@ exports.Welcome = async (client, interaction) => {
                                     image.attachment
                                 ]
                             })
-                        } else if (titWlc_2.color.title == null) {
-                            await models.schemas.Welcome.updateOne({ guildID: interaction.guildId }, { color: { title: hex_color, description: titWlc_2.color.description, avatar: titWlc_2.color.avatar } })
+                        } else if (titFrw_2.color.title == null) {
+                            await models.schemas.Farewell.updateOne({ guildID: interaction.guildId }, { color: { title: hex_color, description: titFrw_2.color.description, avatar: titFrw_2.color.avatar } })
                             await interaction.reply({
                                 embeds: [{
                                     description: models.utils.statusError('success', `el color del titulo se ha establecido correctamente a ${hex_color}`),
@@ -681,7 +681,7 @@ exports.Welcome = async (client, interaction) => {
                                     image.attachment
                                 ]
                             })
-                        } else if (hex_color == titWlc_2.color.title) {
+                        } else if (hex_color == titFrw_2.color.title) {
                             await interaction.reply({
                                 embeds: [{
                                     description: models.utils.statusError('error', "el color que haz seleccionado es igual al anterior"),
@@ -689,7 +689,7 @@ exports.Welcome = async (client, interaction) => {
                                 }]
                             })
                         } else {
-                            await models.schemas.Welcome.updateOne({ guildID: interaction.guildId }, { color: { title: hex_color, description: titWlc_2.color.description, avatar: titWlc_2.color.avatar } })
+                            await models.schemas.Farewell.updateOne({ guildID: interaction.guildId }, { color: { title: hex_color, description: titFrw_2.color.description, avatar: titFrw_2.color.avatar } })
                             await interaction.reply({
                                 embeds: [{
                                     description: models.utils.statusError('success', `el color del titulo se ha establecido correctamente a ${hex_color}`),
@@ -707,23 +707,23 @@ exports.Welcome = async (client, interaction) => {
                     case "delete":
                         switch (option.value) {
                             case true:
-                                let titWlc_3 = await models.schemas.Welcome.findOne({ guildID: interaction.guildId });
-                                if (titWlc_3 == null) return await interaction.reply({
+                                let titFrw_3 = await models.schemas.Farewell.findOne({ guildID: interaction.guildId });
+                                if (titFrw_3 == null) return await interaction.reply({
                                     embeds: [{
-                                        description: models.utils.statusError("error", "no cuentas con un sistema de bienvenidas"),
+                                        description: models.utils.statusError("error", "no cuentas con un sistema de despedidas"),
                                         color: 0xff0000
                                     }]
                                 });
-                                if (titWlc_3.title == null) return await interaction.reply({
+                                if (titFrw_3.title == null) return await interaction.reply({
                                     embeds: [{
                                         description: models.utils.statusError('error', "no tienes un titulo establecido"),
                                         color: 0xff0000
                                     }]
                                 });
-                                await models.schemas.Welcome.updateOne({ guildID: interaction.guildId }, { title: null })
+                                await models.schemas.Farewell.updateOne({ guildID: interaction.guildId }, { title: null })
                                 await interaction.reply({
                                     embeds: [{
-                                        description: models.utils.statusError('success', "el titulo de la bienvenida ha sido eliminada"),
+                                        description: models.utils.statusError('success', "el titulo de la despedida ha sido eliminada"),
                                         color: 0x00ff00
                                     }]
                                 })
@@ -731,7 +731,7 @@ exports.Welcome = async (client, interaction) => {
                             case false:
                                 await interaction.reply({
                                     embeds: [{
-                                        description: models.utils.statusError('error', "no se eliminara el titulo de la bienvenida"),
+                                        description: models.utils.statusError('error', "no se eliminara el titulo de la despedida"),
                                         color: 0x00ff00
                                     }]
                                 });
@@ -752,13 +752,13 @@ exports.Welcome = async (client, interaction) => {
                                 name: interaction.user.username,
                                 icon_url: interaction.user.avatarURL({ forceStatic: false })
                             },
-                            description: "Estas en el menu de ayuda para este comando! asi que debes saber que para el comando /set welcome background hay cuatro opciones de las cuales debes responder solo una",
+                            description: "Estas en el menu de ayuda para este comando! asi que debes saber que para el comando /set farewell background hay cuatro opciones de las cuales debes responder solo una",
                             fields: [{
                                 name: "image",
                                 value: "Lo que hace esta opcion es pedirte una imagen (puede ser cualquier archivo de imagen estatico), es recomentable tratar de calcular por tanteo el tamaño de la imagen para evitar deformidades en la misma, asi mismo, evita poner archivos no compartibles para no provocar errores"
                             }, {
                                 name: "link",
-                                value: "Puede que no tengas una imagen estatica pero si un link para una imagen, entonces elige esta opcion, al igual que con el parametro image, pega un link de una imagen estatica o de un archivo de imagen compartible, todo esto para evitar fallos en el sistema de bienvenidas"
+                                value: "Puede que no tengas una imagen estatica pero si un link para una imagen, entonces elige esta opcion, al igual que con el parametro image, pega un link de una imagen estatica o de un archivo de imagen compartible, todo esto para evitar fallos en el sistema de despedidas"
                             }, {
                                 name: "color",
                                 value: "Si quieres un color de fondo puedes escribir un color hexadecimal aqui en este parametro, puedes guiarte de [HTML color codes](https://htmlcolorcodes.com/) para elegir el color de tu gusto, un ejemplo para un color seria #ffffaa (un amarillo suavizado)"
@@ -771,7 +771,7 @@ exports.Welcome = async (client, interaction) => {
                 }
                 if (interaction.options._hoistedOptions.length <= 0) return await _replytobackground();
                 option = interaction.options._hoistedOptions[0]
-                let imgWlc;
+                let imgFrw;
                 switch (option.name) {
                     case "image":
                         if (!['jpg', 'jpeg', 'png', 'webp'].includes(option.attachment.name.split('.').pop())) return await interaction.reply({
@@ -780,9 +780,9 @@ exports.Welcome = async (client, interaction) => {
                                 color: 0xff0000
                             }]
                         });
-                        imgWlc = await models.schemas.Welcome.findOne({ guildID: interaction.guildId })
-                        if (imgWlc == null) {
-                            let WlcDb = new models.schemas.Welcome({
+                        imgFrw = await models.schemas.Farewell.findOne({ guildID: interaction.guildId })
+                        if (imgFrw == null) {
+                            let FrwDb = new models.schemas.Farewell({
                                 guildID: interaction.guildId,
                                 message: null,
                                 type: null,
@@ -798,21 +798,21 @@ exports.Welcome = async (client, interaction) => {
                                 description: null,
                                 title: null
                             })
-                            await WlcDb.save();
+                            await FrwDb.save();
                             await interaction.reply({
                                 embeds: [{
-                                    description: models.utils.statusError("success", "El fondo de la imagen de bienvenida se ha establecido correctamente"),
+                                    description: models.utils.statusError("success", "El fondo de la imagen de despedida se ha establecido correctamente"),
                                     color: 0x00ff00,
                                     image: {
                                         url: option.attachment.url
                                     }
                                 }]
                             })
-                        } else if (imgWlc.background.data == null) {
-                            await models.schemas.Welcome.updateOne({ guildID: interaction.guildId }, { background: { tipo: "image", data: option.attachment.url } })
+                        } else if (imgFrw.background.data == null) {
+                            await models.schemas.Farewell.updateOne({ guildID: interaction.guildId }, { background: { tipo: "image", data: option.attachment.url } })
                             await interaction.reply({
                                 embeds: [{
-                                    description: models.utils.statusError("success", `El fondo de la imagen de bienvenida se ha establecido correctamente`),
+                                    description: models.utils.statusError("success", `El fondo de la imagen de despedida se ha establecido correctamente`),
                                     color: 0x00ff00,
                                     image: {
                                         url: option.attachment.url
@@ -820,7 +820,7 @@ exports.Welcome = async (client, interaction) => {
                                 }]
                             })
                             // esta mierda de condicion se puede dar? no creo xdxd
-                        } else if (imgWlc.background.data == option.attachment.url) {
+                        } else if (imgFrw.background.data == option.attachment.url) {
                             await interaction.reply({
                                 embeds: [{
                                     description: models.utils.statusError("error", "no puedes poner una imagen igual a la anterior"),
@@ -828,10 +828,10 @@ exports.Welcome = async (client, interaction) => {
                                 }]
                             })
                         } else {
-                            await models.schemas.Welcome.updateOne({ guildID: interaction.guildId }, { background: { tipo: "image", data: option.attachment.url } })
+                            await models.schemas.Farewell.updateOne({ guildID: interaction.guildId }, { background: { tipo: "image", data: option.attachment.url } })
                             await interaction.reply({
                                 embeds: [{
-                                    description: models.utils.statusError("success", "El fondo de la imagen de bienvenida se ha establecido correctamente"),
+                                    description: models.utils.statusError("success", "El fondo de la imagen de despedida se ha establecido correctamente"),
                                     color: 0x00ff00,
                                     image: {
                                         url: option.attachment.url
@@ -847,9 +847,9 @@ exports.Welcome = async (client, interaction) => {
                                 color: 0xff0000
                             }]
                         });
-                        imgWlc = await models.schemas.Welcome.findOne({ guildID: interaction.guildId })
-                        if (imgWlc == null) {
-                            let WlcDb = new models.schemas.Welcome({
+                        imgFrw = await models.schemas.Farewell.findOne({ guildID: interaction.guildId })
+                        if (imgFrw == null) {
+                            let FrwDb = new models.schemas.Farewell({
                                 guildID: interaction.guildId,
                                 message: null,
                                 type: null,
@@ -865,28 +865,28 @@ exports.Welcome = async (client, interaction) => {
                                 description: null,
                                 title: null
                             })
-                            await WlcDb.save();
+                            await FrwDb.save();
                             await interaction.reply({
                                 embeds: [{
-                                    description: models.utils.statusError("success", "El fondo de la imagen de bienvenida se ha establecido correctamente"),
+                                    description: models.utils.statusError("success", "El fondo de la imagen de despedida se ha establecido correctamente"),
                                     color: 0x00ff00,
                                     image: {
                                         url: option.value
                                     }
                                 }]
                             })
-                        } else if (imgWlc.background.data == null) {
-                            await models.schemas.Welcome.updateOne({ guildID: interaction.guildId }, { background: { tipo: "image", data: option.value } })
+                        } else if (imgFrw.background.data == null) {
+                            await models.schemas.Farewell.updateOne({ guildID: interaction.guildId }, { background: { tipo: "image", data: option.value } })
                             await interaction.reply({
                                 embeds: [{
-                                    description: models.utils.statusError("success", `El fondo de la imagen de bienvenida se ha establecido correctamente`),
+                                    description: models.utils.statusError("success", `El fondo de la imagen de despedida se ha establecido correctamente`),
                                     color: 0x00ff00,
                                     image: {
                                         url: option.attachment.url
                                     }
                                 }]
                             })
-                        } else if (imgWlc.background.data == option.value) {
+                        } else if (imgFrw.background.data == option.value) {
                             await interaction.reply({
                                 embeds: [{
                                     description: models.utils.statusError("error", "no puedes poner una imagen igual a la anterior"),
@@ -894,10 +894,10 @@ exports.Welcome = async (client, interaction) => {
                                 }]
                             })
                         } else {
-                            await models.schemas.Welcome.updateOne({ guildID: interaction.guildId }, { background: { tipo: "image", data: option.value } })
+                            await models.schemas.Farewell.updateOne({ guildID: interaction.guildId }, { background: { tipo: "image", data: option.value } })
                             await interaction.reply({
                                 embeds: [{
-                                    description: models.utils.statusError("success", "El fondo de la imagen de bienvenida se ha establecido correctamente"),
+                                    description: models.utils.statusError("success", "El fondo de la imagen de despedida se ha establecido correctamente"),
                                     color: 0x00ff00,
                                     image: {
                                         url: option.value
@@ -915,9 +915,9 @@ exports.Welcome = async (client, interaction) => {
                             }]
                         });
                         let image = await newColorImage(hex_color);
-                        imgWlc = await models.schemas.Welcome.findOne({ guildID: interaction.guildId })
-                        if (imgWlc == null) {
-                            let WlcDb = new models.schemas.Welcome({
+                        imgFrw = await models.schemas.Farewell.findOne({ guildID: interaction.guildId })
+                        if (imgFrw == null) {
+                            let FrwDb = new models.schemas.Farewell({
                                 guildID: interaction.guildId,
                                 message: null,
                                 type: null,
@@ -933,10 +933,10 @@ exports.Welcome = async (client, interaction) => {
                                 description: null,
                                 title: null
                             })
-                            await WlcDb.save();
+                            await FrwDb.save();
                             await interaction.reply({
                                 embeds: [{
-                                    description: models.utils.statusError("success", `El fondo de la imagen de bienvenida se ha establecido ${hex_color}`),
+                                    description: models.utils.statusError("success", `El fondo de la imagen de despedida se ha establecido ${hex_color}`),
                                     color: parseInt(require('hex2dec').hexToDec(hex_color.replace("#", "0x"))),
                                     image: {
                                         url: image.embedUrl
@@ -944,11 +944,11 @@ exports.Welcome = async (client, interaction) => {
                                 }],
                                 files: [image.attachment]
                             })
-                        } else if (imgWlc.background.data == null) {
-                            await models.schemas.Welcome.updateOne({ guildID: interaction.guildId }, { background: { tipo: "color", data: hex_color } })
+                        } else if (imgFrw.background.data == null) {
+                            await models.schemas.Farewell.updateOne({ guildID: interaction.guildId }, { background: { tipo: "color", data: hex_color } })
                             await interaction.reply({
                                 embeds: [{
-                                    description: models.utils.statusError("success", `El fondo de la imagen de bienvenida se ha establecido ${hex_color}`),
+                                    description: models.utils.statusError("success", `El fondo de la imagen de despedida se ha establecido ${hex_color}`),
                                     color: parseInt(require('hex2dec').hexToDec(hex_color.replace("#", "0x"))),
                                     image: {
                                         url: image.embedUrl
@@ -956,7 +956,7 @@ exports.Welcome = async (client, interaction) => {
                                 }],
                                 files: [image.attachment]
                             })
-                        } else if (imgWlc.background.data == hex_color) {
+                        } else if (imgFrw.background.data == hex_color) {
                             await interaction.reply({
                                 embeds: [{
                                     description: models.utils.statusError("error", "no puedes poner un color de fondo igual al anterior"),
@@ -964,10 +964,10 @@ exports.Welcome = async (client, interaction) => {
                                 }]
                             })
                         } else {
-                            await models.schemas.Welcome.updateOne({ guildID: interaction.guildId }, { background: { tipo: "color", data: hex_color } })
+                            await models.schemas.Farewell.updateOne({ guildID: interaction.guildId }, { background: { tipo: "color", data: hex_color } })
                             await interaction.reply({
                                 embeds: [{
-                                    description: models.utils.statusError("success", `El fondo de la imagen de bienvenida se ha establecido ${hex_color}`),
+                                    description: models.utils.statusError("success", `El fondo de la imagen de despedida se ha establecido ${hex_color}`),
                                     color: parseInt(require('hex2dec').hexToDec(hex_color.replace("#", "0x"))),
                                     image: {
                                         url: image.embedUrl
@@ -978,25 +978,25 @@ exports.Welcome = async (client, interaction) => {
                         }
                         break;
                     case "delete":
-                        imgWlc = await models.schemas.Welcome.findOne({ guildID: interaction.guildId })
+                        imgFrw = await models.schemas.Farewell.findOne({ guildID: interaction.guildId })
                         switch (option.value) {
                             case true:
-                                if (imgWlc == null) return await interaction.reply({
+                                if (imgFrw == null) return await interaction.reply({
                                     embeds: [{
-                                        description: models.utils.statusError("error", "tu no cuentas con un sistema de bienvenidas"),
+                                        description: models.utils.statusError("error", "tu no cuentas con un sistema de despedidas"),
                                         color: 0xff0000
                                     }]
                                 })
-                                if (imgWlc.background.data == null) return await interaction.reply({
+                                if (imgFrw.background.data == null) return await interaction.reply({
                                     embeds: [{
-                                        description: models.utils.statusError("error", "parece que no tienes ningun fondo de bienvenida establecido"),
+                                        description: models.utils.statusError("error", "parece que no tienes ningun fondo de despedida establecido"),
                                         color: 0xff0000
                                     }]
                                 })
-                                await models.schemas.Welcome.updateOne({ guildID: interaction.guildId }, { background: { tipo: null, data: null } });
+                                await models.schemas.Farewell.updateOne({ guildID: interaction.guildId }, { background: { tipo: null, data: null } });
                                 await interaction.reply({
                                     embeds: [{
-                                        description: models.utils.statusError("success", "se ha eliminado el fondo personalizado para la bienvenida"),
+                                        description: models.utils.statusError("success", "se ha eliminado el fondo personalizado para la despedida"),
                                         color: 0x00ff00
                                     }]
                                 });
@@ -1004,7 +1004,7 @@ exports.Welcome = async (client, interaction) => {
                             case false:
                                 await interaction.reply({
                                     embeds: [{
-                                        description: models.utils.statusError("success", "no se eliminara el fondo personalizado para la bienvenida"),
+                                        description: models.utils.statusError("success", "no se eliminara el fondo personalizado para la despedida"),
                                         color: 0x00ff00
                                     }]
                                 })
@@ -1024,7 +1024,7 @@ exports.Welcome = async (client, interaction) => {
                                 name: interaction.user.username,
                                 icon_url: interaction.user.avatarURL({ forceStatic: false })
                             },
-                            description: "Estas en el menu de ayuda para este comando! asi que debes saber que para el comando /set welcome avatar hay dos opciones de las cuales debes responder solo una",
+                            description: "Estas en el menu de ayuda para este comando! asi que debes saber que para el comando /set farewell avatar hay dos opciones de las cuales debes responder solo una",
                             fields: [{
                                 name: "color",
                                 value: "Aqui puedes establecer un color para el anillo del avatar, solo basta con seleccionar este parametro y escribir el color que quieras en hexadecimal, puedes guiarte de [HTML color codes](https://htmlcolorcodes.com/), un ejemplo de un color es #ff0000 (rojo)"
@@ -1037,7 +1037,7 @@ exports.Welcome = async (client, interaction) => {
                 }
                 if (interaction.options._hoistedOptions.length <= 0) return await _replytoavatar();
                 option = interaction.options._hoistedOptions[0];
-                let avatarWlc;
+                let avatarFrw;
                 switch (option.name) {
                     case "color":
                         let hex_color = option.value.toLowerCase();
@@ -1048,9 +1048,9 @@ exports.Welcome = async (client, interaction) => {
                             }]
                         });
                         let image = await newColorImage(hex_color);
-                        avatarWlc = await models.schemas.Welcome.findOne({ guildID: interaction.guildId })
-                        if (!avatarWlc) {
-                            let WlcDb = new models.schemas.Welcome({
+                        avatarFrw = await models.schemas.Farewell.findOne({ guildID: interaction.guildId })
+                        if (!avatarFrw) {
+                            let FrwDb = new models.schemas.Farewell({
                                 guildID: interaction.guildId,
                                 message: null,
                                 type: null,
@@ -1066,7 +1066,7 @@ exports.Welcome = async (client, interaction) => {
                                 description: null,
                                 title: null
                             })
-                            await WlcDb.save();
+                            await FrwDb.save();
                             await interaction.reply({
                                 embeds: [{
                                     description: models.utils.statusError('success', `el color del anillo del avatar se ha establecido correctamente a ${hex_color}`),
@@ -1079,8 +1079,8 @@ exports.Welcome = async (client, interaction) => {
                                     image.attachment
                                 ]
                             })
-                        } else if (avatarWlc.color.avatar == null) {
-                            await models.schemas.Welcome.updateOne({ guildID: interaction.guildId }, { color: { title: avatarWlc.color.title, description: avatarWlc.color.description, avatar: hex_color } })
+                        } else if (avatarFrw.color.avatar == null) {
+                            await models.schemas.Farewell.updateOne({ guildID: interaction.guildId }, { color: { title: avatarFrw.color.title, description: avatarFrw.color.description, avatar: hex_color } })
                             await interaction.reply({
                                 embeds: [{
                                     description: models.utils.statusError('success', `el color del anillo del avatar se ha establecido correctamente a ${hex_color}`),
@@ -1093,7 +1093,7 @@ exports.Welcome = async (client, interaction) => {
                                     image.attachment
                                 ]
                             })
-                        } else if (hex_color == avatarWlc.color.avatar) {
+                        } else if (hex_color == avatarFrw.color.avatar) {
                             await interaction.reply({
                                 embeds: [{
                                     description: models.utils.statusError('error', "el color que haz seleccionado es igual al anterior"),
@@ -1101,7 +1101,7 @@ exports.Welcome = async (client, interaction) => {
                                 }]
                             })
                         } else {
-                            await models.schemas.Welcome.updateOne({ guildID: interaction.guildId }, { color: { title: avatarWlc.color.title, description: avatarWlc.color.description, avatar: hex_color } })
+                            await models.schemas.Farewell.updateOne({ guildID: interaction.guildId }, { color: { title: avatarFrw.color.title, description: avatarFrw.color.description, avatar: hex_color } })
                             await interaction.reply({
                                 embeds: [{
                                     description: models.utils.statusError('success', `el color del anillo del avatar se ha establecido correctamente a ${hex_color}`),
@@ -1117,22 +1117,22 @@ exports.Welcome = async (client, interaction) => {
                         }
                         break;
                     case "delete":
-                        avatarWlc = await models.schemas.Welcome.findOne({ guildID: interaction.guildId })
+                        avatarFrw = await models.schemas.Farewell.findOne({ guildID: interaction.guildId })
                         switch (option.value) {
                             case true:
-                                if (avatarWlc == null) return await interaction.reply({
+                                if (avatarFrw == null) return await interaction.reply({
                                     embeds: [{
-                                        description: models.utils.statusError("error", "tu no cuentas con un sistema de bienvenidas"),
+                                        description: models.utils.statusError("error", "tu no cuentas con un sistema de despedidas"),
                                         color: 0xff0000
                                     }]
                                 })
-                                if (avatarWlc.color.avatar == null) return await interaction.reply({
+                                if (avatarFrw.color.avatar == null) return await interaction.reply({
                                     embeds: [{
                                         description: models.utils.statusError("error", "parece que no tienes ningun color para el aniño del avatar establecido"),
                                         color: 0xff0000
                                     }]
                                 })
-                                await models.schemas.Welcome.updateOne({ guildID: interaction.guildId }, { color: { title: avatarWlc.color.title, description: avatarWlc.color.description, avatar: null } });
+                                await models.schemas.Farewell.updateOne({ guildID: interaction.guildId }, { color: { title: avatarFrw.color.title, description: avatarFrw.color.description, avatar: null } });
                                 await interaction.reply({
                                     embeds: [{
                                         description: models.utils.statusError("success", "se ha eliminado el color personalizado para el aniño del avatar"),
@@ -1154,25 +1154,25 @@ exports.Welcome = async (client, interaction) => {
                 }
                 break;
             case "test":
-                let testWelcome = parseJson(await models.schemas.Welcome.findOne({ guildID: interaction.guildId }))
-                if (!testWelcome) return await interaction.reply({
+                let testFarewell = farewellJson(await models.schemas.Farewell.findOne({ guildID: interaction.guildId }))
+                if (!testFarewell) return await interaction.reply({
                     embeds: [{
-                        description: models.utils.statusError("warn", "para ejecutar este comando deberias de tener un sistema de bienvenidas establecido"),
+                        description: models.utils.statusError("warn", "para ejecutar este comando deberias de tener un sistema de despedidas establecido"),
                         color: 0xffff00
                     }]
                 });
-                if (testWelcome.type == null || testWelcome.type == "image") {
-                    let welcome = new nekoapi.Welcome()
-                        .setTitle(replaces_msg_i(interaction, testWelcome.title), testWelcome.colors.title, 45)
-                        .setAvatar(interaction.user.avatar ? interaction.user.avatarURL({ forceStatic: true, extension: "png" }) : defaultAvatar, testWelcome.colors.avatar)
-                        .setDescription(replaces_msg_i(interaction, testWelcome.description), testWelcome.colors.description, 35)
-                        .setBackground(testWelcome.background.type, testWelcome.background.data)
+                if (testFarewell.type == null || testFarewell.type == "image") {
+                    let farewell = new nekoapi.Welcome()
+                        .setTitle(replaces_msg_i(interaction, testFarewell.title), testFarewell.colors.title, 45)
+                        .setAvatar(interaction.user.avatar ? interaction.user.avatarURL({ forceStatic: true, extension: "png" }) : defaultAvatar, testFarewell.colors.avatar)
+                        .setDescription(replaces_msg_i(interaction, testFarewell.description), testFarewell.colors.description, 35)
+                        .setBackground(testFarewell.background.type, testFarewell.background.data)
                     let attach = new discord.AttachmentBuilder()
-                        .setFile(await welcome.get()).setName(`bienvenido_${interaction.user.id}.png`)
-                    if (!testWelcome.message) return await interaction.reply({
+                        .setFile(await farewell.get()).setName(`adios_${interaction.user.id}.png`)
+                    if (!testFarewell.message) return await interaction.reply({
                         files: [attach]
                     }); else await interaction.reply({
-                        content: replaces_msg_i(interaction, testWelcome.message),
+                        content: replaces_msg_i(interaction, testFarewell.message),
                         files: [attach],
                         allowedMentions: {
                             parse: ['users']
@@ -1180,12 +1180,12 @@ exports.Welcome = async (client, interaction) => {
                     });
                 } else {
                     let embed = new discord.EmbedBuilder()
-                    if (testWelcome.background.type == "color") {
-                        embed.setColor(testWelcome.background.data)
+                    if (testFarewell.background.type == "color") {
+                        embed.setColor(testFarewell.background.data)
                             .setImage(interaction.guild.banner ? interaction.guild.bannerURL({ forceStatic: false }) : null)
                     } else {
                         embed.setColor(randomColor())
-                            .setImage(testWelcome.background.data)
+                            .setImage(testFarewell.background.data)
                     }
                     embed.setAuthor({
                         name: interaction.guild.name,
@@ -1193,16 +1193,16 @@ exports.Welcome = async (client, interaction) => {
                             forceStatic: false
                         })
                     })
-                        .setTitle(replaces_msg_i(interaction, testWelcome.title))
+                        .setTitle(replaces_msg_i(interaction, testFarewell.title))
                         .setThumbnail(interaction.user.avatar ? interaction.user.avatarURL({
                             forceStatic: false
                         }) : defaultAvatar)
-                        .setDescription(replaces_msg_i(interaction, testWelcome.description))
+                        .setDescription(replaces_msg_i(interaction, testFarewell.description))
                         .setTimestamp()
-                    if (!testWelcome.message) return await interaction.reply({
+                    if (!testFarewell.message) return await interaction.reply({
                         embeds: [embed]
                     }); else await interaction.reply({
-                        content: replaces_msg_i(interaction, testWelcome.message),
+                        content: replaces_msg_i(interaction, testFarewell.message),
                         embeds: [embed],
                         allowedMentions: {
                             parse: ['users']
@@ -1212,51 +1212,51 @@ exports.Welcome = async (client, interaction) => {
                 break;
             case "delete":
                 option = interaction.options._hoistedOptions[0]
-                let welcome, channels;
+                let farewell, channels;
                 switch (option.value) {
                     case true:
                         channels = await models.schemas.SetChannels.findOne({ guildID: interaction.guildId })
-                        welcome = await models.schemas.Welcome.findOne({ guildID: interaction.guildId })
-                        if (!welcome) return await interaction.reply({
+                        farewell = await models.schemas.Farewell.findOne({ guildID: interaction.guildId })
+                        if (!farewell) return await interaction.reply({
                             embeds: [{
-                                description: models.utils.statusError('error', "no tienes un sistema de bienvenidas establecidos"),
+                                description: models.utils.statusError('error', "no tienes un sistema de despedidas establecidos"),
                                 color: 0xff0000
                             }]
                         })
-                        if (!channels || channels.welcome == null) return await interaction.reply({
+                        if (!channels || channels.farewell == null) return await interaction.reply({
                             embeds: [{
-                                description: models.utils.statusError('error', "no tienes un canal de bienvenida establecido"),
+                                description: models.utils.statusError('error', "no tienes un canal de despedida establecido"),
                                 color: 0xff0000
                             }]
                         })
-                        await models.schemas.SetChannels.updateOne({ guildID: interaction.guildId }, { welcome: null })
+                        await models.schemas.SetChannels.updateOne({ guildID: interaction.guildId }, { farewell: null })
                         await interaction.reply({
                             embeds: [{
-                                description: models.utils.statusError('success', "se ha eliminado solo el canal preterminado de bienvenidas de mi base de datos"),
+                                description: models.utils.statusError('success', "se ha eliminado solo el canal preterminado de despedidas de mi base de datos"),
                                 color: 0x00ff00
                             }]
                         })
                         break;
                     case false:
                         channels = await models.schemas.SetChannels.findOne({ guildID: interaction.guildId })
-                        welcome = await models.schemas.Welcome.findOne({ guildID: interaction.guildId })
-                        if (!welcome) return await interaction.reply({
+                        farewell = await models.schemas.Farewell.findOne({ guildID: interaction.guildId })
+                        if (!farewell) return await interaction.reply({
                             embeds: [{
-                                description: models.utils.statusError('error', "no tienes un sistema de bienvenidas establecido"),
+                                description: models.utils.statusError('error', "no tienes un sistema de despedidas establecido"),
                                 color: 0xff0000
                             }]
                         })
                         if (!channels || channels == null) return await interaction.reply({
                             embeds: [{
-                                description: models.utils.statusError('error', "no tienes un canal de bienvenida establecido"),
+                                description: models.utils.statusError('error', "no tienes un canal de despedida establecido"),
                                 color: 0xff0000
                             }]
                         })
-                        await models.schemas.Welcome.deleteOne({ guildID: interaction.guildId })
-                        await models.schemas.SetChannels.updateOne({ guildID: interaction.guildId }, { welcome: null })
+                        await models.schemas.Farewell.deleteOne({ guildID: interaction.guildId })
+                        await models.schemas.SetChannels.updateOne({ guildID: interaction.guildId }, { farewell: null })
                         await interaction.reply({
                             embeds: [{
-                                description: models.utils.statusError('success', "se ha eliminado el sistema completo de bienvenidas"),
+                                description: models.utils.statusError('success', "se ha eliminado el sistema completo de despedidas"),
                                 color: 0x00ff00
                             }]
                         })

@@ -2,6 +2,7 @@ const discord = require('discord.js')
 const models = require('maplebot_models')
 const ms = require('ms')
 const { Welcome } = require('./slashClases/welcome')
+const { Farewell } = require('./slashClases/farewell')
 
 /**
  * @param {discord.Client} client 
@@ -28,8 +29,11 @@ exports.slash = async (client, interaction) => {
             case "welcome":
                 Welcome(client, interaction)
                 break;
+            case "farewell":
+                Farewell(client, interaction)
+                break;
             default:
-                return interaction.reply({ content: "deberias de probar el nuevo comando /set welcome :3" })
+                return interaction.reply({ content: "deberias de probar el nuevo comando /set farewell :3" })
         }
     } catch (error) {
         await interactionErrorMsg(interaction, error);
@@ -39,7 +43,7 @@ exports.slash = async (client, interaction) => {
 exports.help = {
     name: "set",
     alias: ["set"],
-    id: "s_001",
+    id: "036",
     description: "comando complementario para los comandos de barra",
     category: "configuracion",
     options: [],

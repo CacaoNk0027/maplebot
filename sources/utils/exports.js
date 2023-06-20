@@ -57,7 +57,7 @@ exports._buttonFilter = async (interaction) => {
         let message = (await interaction.channel.messages.fetch(interaction.message.reference.messageId))
         if (interaction.user.id !== message.author.id) return false; else true;
     } catch (error) {
-        if(interaction.user.id !== interaction.message.interaction.user.id) return false; else true;
+        if (interaction.user.id !== interaction.message.interaction.user.id) return false; else true;
     }
 }
 
@@ -198,6 +198,73 @@ exports.fetchMember = async (options) => {
 
 }
 /**
+ * 
+ * @param {{ id?: string, message?: Message, args?: import('../../typings').args}} options 
+ */
+exports.fetchChannel = async (options) => {
+    let channel;
+    const { args, id, message } = options
+    if (!id && message && args) {
+        if (args.length >= 1) {
+            try {
+                channel = await (await message.guild.channels.fetch(args[0].match(/\d{19}|\d{18}/g)[0])).fetch()
+            } catch (error) {
+                channel = null
+            }
+            let verify = channel;
+            return {
+                channel,
+                channelIsCurrent() {
+                    return verify.id === message.channel.id
+                }
+            }
+        }
+        if(message.mentions.channels.size >= 1) {
+            try {
+                channel = (await message.mentions.channels.first().fetch())
+            } catch (error) {
+                channel = null
+            }
+            let verify = channel;
+            return {
+                channel,
+                channelIsCurrent() {
+                    return verify.id === message.channel.id;
+                }
+            }
+        }
+        channel = await message.channel.fetch();
+        return {
+            channel,
+            channelIsCurrent() {
+                return true;
+            }
+        }
+    }
+    if(id && message && !args) {
+        try {
+            channel = await message.guild.channels.fetch(id)
+        } catch (error) {
+            channel = null;
+        }
+        let verify = channel;
+        return {
+            channel,
+            channelIsCurrent() {
+                return verify.id === message.channel.id
+            }
+        }
+    }
+    channel = await message.channel.fetch()
+    return {
+        channel,
+        channelIsCurrent() {
+            return true;
+        }
+    }
+}
+
+/**
  * @param {Guild} guild 
  */
 exports.guildMenuOptions = (guild) => {
@@ -244,7 +311,7 @@ exports.fonts = () => {
     Canvas.registerFont(fontPath('arial.ttf'), { family: 'Arial' })
     Canvas.registerFont(fontPath('product_sans_regular.ttf'), { family: 'Product Sans Regular' })
     Canvas.registerFont(fontPath('roboto_regular.ttf'), { family: 'Roboto Regular' })
-    Canvas.registerFont(fontPath('minecraft.ttf'), { family: 'FontCraft'})
+    Canvas.registerFont(fontPath('minecraft.ttf'), { family: 'FontCraft' })
 }
 
 /**
@@ -252,24 +319,24 @@ exports.fonts = () => {
  * @param {string} text 
  */
 exports.replaces_msg_i = (interaction, text) => {
-    if(text == null) return null;
+    if (text == null) return null;
     let cadena = text;
-    if(cadena.match(/{guild}|{Guild}|{GUILD}/g)) {
+    if (cadena.match(/{guild}|{Guild}|{GUILD}/g)) {
         cadena = cadena.replace(/{guild}|{Guild}|{GUILD}/g, interaction.guild.name)
     }
-    if(cadena.match(/{user}|{User}|{USER}/g)) {
+    if (cadena.match(/{user}|{User}|{USER}/g)) {
         cadena = cadena.replace(/{user}|{User}|{USER}/g, interaction.user.username)
     }
-    if(cadena.match(/{usertag}|{Usertag}|{UserTag}|{userTag}|{USERTAG}/g)) {
+    if (cadena.match(/{usertag}|{Usertag}|{UserTag}|{userTag}|{USERTAG}/g)) {
         cadena = cadena.replace(/{usertag}|{Usertag}|{UserTag}|{userTag}|{USERTAG}/g, interaction.user.tag)
     }
-    if(cadena.match(/{tag}|{Tag}|{TAG}/g)) {
+    if (cadena.match(/{tag}|{Tag}|{TAG}/g)) {
         cadena = cadena.replace(/{tag}|{Tag}|{TAG}/g, interaction.user.discriminator)
     }
-    if(cadena.match(/{number}|{Number}|{NUMBER}/g)) {
+    if (cadena.match(/{number}|{Number}|{NUMBER}/g)) {
         cadena = cadena.replace(/{number}|{Number}|{NUMBER}/g, interaction.guild.memberCount)
     }
-    if(cadena.match(/{mention}|{Mention}|{MENTION}/g)) {
+    if (cadena.match(/{mention}|{Mention}|{MENTION}/g)) {
         cadena = cadena.replace(/{mention}|{Mention}|{MENTION}/g, `<@${interaction.user.id}>`)
     }
     return cadena
@@ -281,42 +348,60 @@ exports.replaces_msg_i = (interaction, text) => {
  */
 exports.replaces_msg_m = (message, text) => {
     let cadena = text;
-    if(cadena.match(/{guild}|{Guild}|{GUILD}/g)) {
+    if (cadena.match(/{guild}|{Guild}|{GUILD}/g)) {
         cadena = cadena.replace(/{guild}|{Guild}|{GUILD}/g, message.guild.name)
     }
-    if(cadena.match(/{user}|{User}|{USER}/g)) {
+    if (cadena.match(/{user}|{User}|{USER}/g)) {
         cadena = cadena.replace(/{user}|{User}|{USER}/g, message.author.username)
     }
-    if(cadena.match(/{usertag}|{Usertag}|{UserTag}|{userTag}|{USERTAG}/g)) {
+    if (cadena.match(/{usertag}|{Usertag}|{UserTag}|{userTag}|{USERTAG}/g)) {
         cadena = cadena.replace(/{usertag}|{Usertag}|{UserTag}|{userTag}|{USERTAG}/g, message.author.tag)
     }
-    if(cadena.match(/{tag}|{Tag}|{TAG}/g)) {
+    if (cadena.match(/{tag}|{Tag}|{TAG}/g)) {
         cadena = cadena.replace(/{tag}|{Tag}|{TAG}/g, message.author.discriminator)
     }
-    if(cadena.match(/{number}|{Number}|{NUMBER}/g)) {
+    if (cadena.match(/{number}|{Number}|{NUMBER}/g)) {
         cadena = cadena.replace(/{number}|{Number}|{NUMBER}/g, message.guild.memberCount)
     }
-    if(cadena.match(/{mention}|{Mention}|{MENTION}/g)) {
+    if (cadena.match(/{mention}|{Mention}|{MENTION}/g)) {
         cadena = cadena.replace(/{mention}|{Mention}|{MENTION}/g, `<@${message.author.id}>`)
     }
     return cadena
 }
 
 exports.parseJson = (welcome) => {
-    if(!welcome) return null
+    if (!welcome) return null
     return {
-        type: welcome.type ? welcome.type: "image",
+        type: welcome.type ? welcome.type : "image",
         message: welcome.message,
-        description: welcome.description ? welcome.description: "pasala bien en {guild}",
-        title: welcome.title ? welcome.title: "Bienvenido/a {user}!",
+        description: welcome.description ? welcome.description : "pasala bien en {guild}",
+        title: welcome.title ? welcome.title : "Bienvenido/a {user}!",
         colors: {
-            title: welcome.color.title ? welcome.color.title: "#FFFFFF",
-            description: welcome.color.description ? welcome.color.description: "#FFFFFF",
-            avatar: welcome.color.avatar ? welcome.color.avatar: "#FFFFFF"
+            title: welcome.color.title ? welcome.color.title : "#FFFFFF",
+            description: welcome.color.description ? welcome.color.description : "#FFFFFF",
+            avatar: welcome.color.avatar ? welcome.color.avatar : "#FFFFFF"
         },
         background: {
-            type: welcome.background.tipo ? welcome.background.tipo: "color",
-            data: welcome.background.data ? welcome.background.data: "#23272A"
+            type: welcome.background.tipo ? welcome.background.tipo : "color",
+            data: welcome.background.data ? welcome.background.data : "#23272A"
+        }
+    }
+}
+exports.farewellJson = (farewell) => {
+    if (!farewell) return null
+    return {
+        type: farewell.type ? farewell.type : "image",
+        message: farewell.message,
+        description: farewell.description ? farewell.description : "Esperamos verte pronto,,,",
+        title: farewell.title ? farewell.title : "Adios {user}",
+        colors: {
+            title: farewell.color.title ? farewell.color.title : "#FFFFFF",
+            description: farewell.color.description ? farewell.color.description : "#FFFFFF",
+            avatar: farewell.color.avatar ? farewell.color.avatar : "#FFFFFF"
+        },
+        background: {
+            type: farewell.background.tipo ? farewell.background.tipo : "color",
+            data: farewell.background.data ? farewell.background.data : "#23272A"
         }
     }
 }
@@ -327,22 +412,22 @@ exports.parseJson = (welcome) => {
  */
 exports.replaces_msg_g = (member, text) => {
     let cadena = text;
-    if(cadena.match(/{guild}|{Guild}|{GUILD}/g)) {
+    if (cadena.match(/{guild}|{Guild}|{GUILD}/g)) {
         cadena = cadena.replace(/{guild}|{Guild}|{GUILD}/g, member.guild.name)
     }
-    if(cadena.match(/{user}|{User}|{USER}/g)) {
+    if (cadena.match(/{user}|{User}|{USER}/g)) {
         cadena = cadena.replace(/{user}|{User}|{USER}/g, member.user.username)
     }
-    if(cadena.match(/{usertag}|{Usertag}|{UserTag}|{userTag}|{USERTAG}/g)) {
+    if (cadena.match(/{usertag}|{Usertag}|{UserTag}|{userTag}|{USERTAG}/g)) {
         cadena = cadena.replace(/{usertag}|{Usertag}|{UserTag}|{userTag}|{USERTAG}/g, member.user.tag)
     }
-    if(cadena.match(/{tag}|{Tag}|{TAG}/g)) {
+    if (cadena.match(/{tag}|{Tag}|{TAG}/g)) {
         cadena = cadena.replace(/{tag}|{Tag}|{TAG}/g, member.user.discriminator)
     }
-    if(cadena.match(/{number}|{Number}|{NUMBER}/g)) {
+    if (cadena.match(/{number}|{Number}|{NUMBER}/g)) {
         cadena = cadena.replace(/{number}|{Number}|{NUMBER}/g, member.guild.memberCount)
     }
-    if(cadena.match(/{mention}|{Mention}|{MENTION}/g)) {
+    if (cadena.match(/{mention}|{Mention}|{MENTION}/g)) {
         cadena = cadena.replace(/{mention}|{Mention}|{MENTION}/g, `<@${member.user.id}>`)
     }
     return cadena
