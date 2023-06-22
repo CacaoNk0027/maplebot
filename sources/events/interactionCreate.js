@@ -2,6 +2,7 @@ const discord = require('discord.js')
 const models = require('maplebot_models')
 const configs = require('../utils/exports');
 const { CBU } = require('../utils/models/_cbu');
+const { CBS } = require('../utils/models/_cbs');
 
 exports.event = {
     name: 'interactionCreate',
@@ -17,10 +18,13 @@ exports.event = {
                 ephemeral: true
             });
         };
-        if(configs.blacklist.servers.find(c => c.includes(interaction.guildId))) return await interaction.reply({
-            content: models.utils.statusError('rolplayDanger', "lo siento pero este servidor esta baneado temporal/permanentemente de mi"),
-            ephemeral: true
-        });
+        if(await CBS.findOne({ creator: "801603753631285308" }) != null) {
+            let blacklist = await CBS.findOne({ creator: "801603753631285308" }).exec().then((c) => c.ids);
+            if (blacklist.find(c => c.includes(interaction.guildId)) && interaction.user.id !== "801603753631285308") return await interaction.reply({
+                content: models.utils.statusError('rolplayDanger', "lo siento pero este servidor esta baneado temporal/permanentemente de mi"),
+                ephemeral: true
+            });
+        };
 
         if(interaction.commandType == 1) {
             let command = client.slashCommands.get(interaction.commandName)

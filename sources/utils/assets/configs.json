@@ -24,12 +24,6 @@
         "こんにちは世界",
         "Usa cubrebocas y lavate las manos"
     ],
-    "blacklist": {
-        "servers": [
-            "871406430933110805"
-        ],
-        "users": []
-    },
     "permissions": {
         "AddReactions": "Añadir Reacciones",
         "Administrator": "Administrador",

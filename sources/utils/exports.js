@@ -13,7 +13,6 @@ exports.presences = async (client) => {
     return JSON.parse(json_string)
 };
 
-exports.blacklist = configs.blacklist;
 exports.permissions = configs.permissions;
 
 exports.menuOptions = (channel) => {

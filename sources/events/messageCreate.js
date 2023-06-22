@@ -4,6 +4,7 @@ const discord = require('discord.js')
 const models = require('maplebot_models')
 const configs = require('../utils/exports.js')
 const { CBU } = require('../utils/models/_cbu.js')
+const { CBS } = require('../utils/models/_cbs.js')
 
 // arreglo temporal de usuarios con cooldown en x comando
 
@@ -24,8 +25,10 @@ exports.event = {
             let blacklist = await CBU.findOne({ creator: "801603753631285308" }).exec().then((c) => c.ids);
             if (blacklist.find(c => c.includes(message.author.id))) return;
         };
-        if (configs.blacklist.servers.find(c => c.includes(message.guildId))) return;
-        if (configs.blacklist.users.find(c => c.includes(message.author.id))) return;
+        if(await CBS.findOne({ creator: "801603753631285308" }) != null) {
+            let blacklist = await CBS.findOne({ creator: "801603753631285308" }).exec().then((c) => c.ids);
+            if (blacklist.find(c => c.includes(message.guildId)) && message.author.id !== "801603753631285308") return;
+        };
         if (message.channel.type == 1 || message.author.bot) return;
         if (await models.schemas.Blacklist.findOne({ guildID: message.guildId }) == null);
         else if ((await models.schemas.Blacklist.findOne({ guildID: message.guildId }).exec()).words.length <= 0); else {
@@ -93,6 +96,13 @@ exports.event = {
             timeStamps.set(message.author.id, currentTime);
             setTimeout(() => timeStamps.delete(message.author.id), cooldownAmount)
 
+            if(cmd.help.id.split('.')[0] == "c") return await message.reply({
+                content: models.utils.statusError('rolplayMe', 'este comando solamente es permitido para el uso del owner')
+            }).then(msg => {
+                setTimeout(async () => {
+                    await msg.delete().catch(err => err)
+                }, 4000);
+            })
             await cmd.exec(client, message, args);
         } else {
             await message.reply({

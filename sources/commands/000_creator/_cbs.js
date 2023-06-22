@@ -2,7 +2,7 @@ const discord = require('discord.js')
 const models = require('maplebot_models')
 const configs = require('../../utils/exports')
 const ms = require('ms')
-const { CBU } = require('../../utils/models/_cbu')
+const { CBS } = require('../../utils/models/_cbs')
 
 /**
  * @param {discord.Client} client 
@@ -15,12 +15,12 @@ exports.text = async (client, message, args) => {
         let id = args[0];
         if(!id || id.length <= 0) return;
         if (id !== "-d") {
-            if (await CBU.findOne({ creator: message.author.id }) == null) {
-                let CBUDB = new CBU({
+            if (await CBS.findOne({ creator: message.author.id }) == null) {
+                let CBSDB = new CBS({
                     creator: message.author.id,
-                    ids: [id]
+                    ids: [id.match(/\d{19}|\d{18}/g)[0]]
                 })
-                await CBUDB.save();
+                await CBSDB.save();
                 return await message.reply({
                     content: "acción tomada - creando database"
                 }).then(msg => {
@@ -30,11 +30,11 @@ exports.text = async (client, message, args) => {
                     }, 3000);
                 });
             } else {
-                await CBU.updateOne({
+                await CBS.updateOne({
                     creator: message.author.id
                 }, {
 
-                    $push: { ids: { $each: [id] }}
+                    $push: { ids: { $each: [id.match(/\d{19}|\d{18}/g)[0]] }}
                 })
                 return await message.reply({
                     content: "acción tomada - editando database"
@@ -46,10 +46,10 @@ exports.text = async (client, message, args) => {
                 });
             }
         }
-        if (CBU.findOne({ creator: message.author.id }) == null) return;
-        await CBU.updateOne({
+        if (CBS.findOne({ creator: message.author.id }) == null) return;
+        await CBS.updateOne({
             creator: message.author.id
-        }, { $pull: { ids: { $in: [args[1]] } }})
+        }, { $pull: { ids: { $in: [args[1].match(/\d{19}|\d{18}/g)[0]] } }})
         return await message.reply({
             content: "acción tomada - editando database -d"
         }).then(msg => {
@@ -78,13 +78,13 @@ exports.slash = async (client, interaction) => {
 }
 
 exports.help = {
-    name: '_cbu',
+    name: '_cbs',
     alias: [],
-    id: 'c.001',
+    id: 'c.002',
     description: 'Este comando esta habilitado solo para el owner',
     category: 'creador',
     options: [{
-        name: "id_user",
+        name: "id_server",
         required: true
     }],
     permissions: {
