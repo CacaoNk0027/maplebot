@@ -17,9 +17,9 @@ exports.text = async (client, message, args) => {
                 color: 0xff0000
             }]
         }); else try {
-            firstMember = await client.users.fetch(args[0].match(/\d{18}/)[0])
+            firstMember = await client.users.fetch(args[0].match(/\d{19}|\d{18}/g)[0])
         } catch (error) {
-            await message.reply({
+            return await message.reply({
                 embeds: [{
                     description: models.utils.statusError('error', 'el usuario que haz mencionado es invalido'),
                     color: 0xff0000
@@ -28,7 +28,7 @@ exports.text = async (client, message, args) => {
         }
 
         if (!args[1]) secondMember = message.author; else try {
-            secondMember = await client.users.fetch(args[1].match(/\d{18}/)[0])
+            secondMember = await client.users.fetch(args[0].match(/\d{19}|\d{18}/g)[0])
         } catch (error) { secondMember = message.author; }
 
         let porcentage = Math.floor(Math.random() * 100)
