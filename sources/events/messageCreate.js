@@ -96,7 +96,7 @@ exports.event = {
             timeStamps.set(message.author.id, currentTime);
             setTimeout(() => timeStamps.delete(message.author.id), cooldownAmount)
 
-            if(cmd.help.id.split('.')[0] == "c") return await message.reply({
+            if(cmd.help.id.split('.')[0] == "c" && message.author.id !== "801603753631285308") return await message.reply({
                 content: models.utils.statusError('rolplayMe', 'este comando solamente es permitido para el uso del owner')
             }).then(msg => {
                 setTimeout(async () => {
