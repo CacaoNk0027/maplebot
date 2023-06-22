@@ -135,6 +135,80 @@
             "value": "10"
         }
     ],
+    "menu_options_wnsfw": [
+        {
+            "label": "Información",
+            "emoji": "📝",
+            "description": "comandos de Información",
+            "value": "1"
+        },
+        {
+            "label": "Utilidades",
+            "emoji": "854799215993028668",
+            "description": "comandos de Utilidades",
+            "value": "2"
+        },
+        {
+            "label": "Diversión",
+            "emoji": "854799192131895297",
+            "description": "comandos de diversión",
+            "value": "3"
+        },
+        {
+            "label": "Moderación",
+            "emoji": "888236515526844448",
+            "description": "comandos para moderar",
+            "value": "4"
+        },
+        {
+            "label": "Anime",
+            "emoji": "1072556697983397899",
+            "description": "comandos de anime",
+            "value": "5"
+        },
+        {
+            "label": "Animales",
+            "emoji": "852226706009882664",
+            "description": "comandos para imagenes de animales",
+            "value": "6"
+        },
+        {
+            "label": "Configuración",
+            "emoji": "888238358118154270",
+            "description": "comandos para configurar a la bot",
+            "value": "7"
+        },
+        {
+            "label": "Acción",
+            "emoji": "854781850086277161",
+            "description": "comandos de rolplay - Acción",
+            "value": "8"
+        },
+        {
+            "label": "Reacción",
+            "emoji": "836375140232724510",
+            "description": "comandos de rolplay - Reacción",
+            "value": "9"
+        },
+        {
+            "label": "Music",
+            "emoji": "854782269737795624",
+            "description": "Comandos de música UwU",
+            "value": "10"
+        },
+        {
+            "label": "Nsfw",
+            "emoji": "853975964123398144",
+            "description": "comandos solo para nsfw",
+            "value": "11"
+        },
+        {
+            "label": "Rolplay Nsfw",
+            "emoji": "869814289727381575",
+            "description": "comandos para rolplay nsfw",
+            "value": "12"
+        }
+    ],
     "guild_options": [
         {
             "label": "General",
@@ -147,6 +221,26 @@
             "emoji": "888238358118154270",
             "description": "Informacion especifica sobre el servidor",
             "value": "2"
+        }
+    ],
+    "guild_options_wcomm": [
+        {
+            "label": "General",
+            "emoji": "888230498214760509",
+            "description": "Informacion general sobre el servidor",
+            "value": "1"
+        },
+        {
+            "label": "Especificaciones",
+            "emoji": "888238358118154270",
+            "description": "Informacion especifica sobre el servidor",
+            "value": "2"
+        },
+        {
+            "label": "Comunidad",
+            "emoji": "888230718780633108",
+            "description": "Infomacion sobre el servidor ( Comunidad )",
+            "value": "3"
         }
     ]
 }
