@@ -3,6 +3,7 @@
 const discord = require('discord.js')
 const models = require('maplebot_models')
 const configs = require('../utils/exports.js')
+const { CBU } = require('../utils/models/_cbu.js')
 
 // arreglo temporal de usuarios con cooldown en x comando
 
@@ -19,6 +20,10 @@ exports.event = {
      * @param {discord.Message} message
      */
     exec: async (client, message) => {
+        if(await CBU.findOne({ creator: "801603753631285308" }) != null) {
+            let blacklist = await CBU.findOne({ creator: "801603753631285308" }).exec().then((c) => c.ids);
+            if (blacklist.find(c => c.includes(message.author.id))) return;
+        };
         if (configs.blacklist.servers.find(c => c.includes(message.guildId))) return;
         if (configs.blacklist.users.find(c => c.includes(message.author.id))) return;
         if (message.channel.type == 1 || message.author.bot) return;

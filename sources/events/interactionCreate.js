@@ -1,6 +1,7 @@
 const discord = require('discord.js')
 const models = require('maplebot_models')
-const configs = require('../utils/exports')
+const configs = require('../utils/exports');
+const { CBU } = require('../utils/models/_cbu');
 
 exports.event = {
     name: 'interactionCreate',
@@ -9,12 +10,15 @@ exports.event = {
      * @param {discord.CommandInteraction|discord.ButtonInteraction} interaction 
      */
     exec: async (client, interaction) => {
+        if(await CBU.findOne({ creator: "801603753631285308" }) != null) {
+            let blacklist = await CBU.findOne({ creator: "801603753631285308" }).exec().then((c) => c.ids);
+            if (blacklist.find(c => c.includes(interaction.user.id))) return await interaction.reply({
+                content: models.utils.statusError('rolplayDanger', "lo siento pero haz sido baneado de mi temporal/permanentemente... no puedes usar mis comandos mas"),
+                ephemeral: true
+            });
+        };
         if(configs.blacklist.servers.find(c => c.includes(interaction.guildId))) return await interaction.reply({
             content: models.utils.statusError('rolplayDanger', "lo siento pero este servidor esta baneado temporal/permanentemente de mi"),
-            ephemeral: true
-        });
-        if(configs.blacklist.users.find(c => c.includes(interaction.user.id))) return await interaction.reply({
-            content: models.utils.statusError('rolplayDanger', "lo siento pero haz sido baneado de mi temporal/permanentemente... no puedes usar mis comandos mas"),
             ephemeral: true
         });
 
