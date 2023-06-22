@@ -219,7 +219,7 @@ exports.fetchChannel = async (options) => {
                 }
             }
         }
-        if(message.mentions.channels.size >= 1) {
+        if (message.mentions.channels.size >= 1) {
             try {
                 channel = (await message.mentions.channels.first().fetch())
             } catch (error) {
@@ -241,7 +241,7 @@ exports.fetchChannel = async (options) => {
             }
         }
     }
-    if(id && message && !args) {
+    if (id && message && !args) {
         try {
             channel = await message.guild.channels.fetch(id)
         } catch (error) {
@@ -330,9 +330,6 @@ exports.replaces_msg_i = (interaction, text) => {
     if (cadena.match(/{usertag}|{Usertag}|{UserTag}|{userTag}|{USERTAG}/g)) {
         cadena = cadena.replace(/{usertag}|{Usertag}|{UserTag}|{userTag}|{USERTAG}/g, interaction.user.tag)
     }
-    if (cadena.match(/{tag}|{Tag}|{TAG}/g)) {
-        cadena = cadena.replace(/{tag}|{Tag}|{TAG}/g, interaction.user.discriminator)
-    }
     if (cadena.match(/{number}|{Number}|{NUMBER}/g)) {
         cadena = cadena.replace(/{number}|{Number}|{NUMBER}/g, interaction.guild.memberCount)
     }
@@ -356,9 +353,6 @@ exports.replaces_msg_m = (message, text) => {
     }
     if (cadena.match(/{usertag}|{Usertag}|{UserTag}|{userTag}|{USERTAG}/g)) {
         cadena = cadena.replace(/{usertag}|{Usertag}|{UserTag}|{userTag}|{USERTAG}/g, message.author.tag)
-    }
-    if (cadena.match(/{tag}|{Tag}|{TAG}/g)) {
-        cadena = cadena.replace(/{tag}|{Tag}|{TAG}/g, message.author.discriminator)
     }
     if (cadena.match(/{number}|{Number}|{NUMBER}/g)) {
         cadena = cadena.replace(/{number}|{Number}|{NUMBER}/g, message.guild.memberCount)
@@ -421,9 +415,6 @@ exports.replaces_msg_g = (member, text) => {
     if (cadena.match(/{usertag}|{Usertag}|{UserTag}|{userTag}|{USERTAG}/g)) {
         cadena = cadena.replace(/{usertag}|{Usertag}|{UserTag}|{userTag}|{USERTAG}/g, member.user.tag)
     }
-    if (cadena.match(/{tag}|{Tag}|{TAG}/g)) {
-        cadena = cadena.replace(/{tag}|{Tag}|{TAG}/g, member.user.discriminator)
-    }
     if (cadena.match(/{number}|{Number}|{NUMBER}/g)) {
         cadena = cadena.replace(/{number}|{Number}|{NUMBER}/g, member.guild.memberCount)
     }
@@ -434,3 +425,165 @@ exports.replaces_msg_g = (member, text) => {
 }
 
 exports.defaultAvatar = "https://discord.com/assets/1f0bfc0865d324c2587920a7d80c609b.png"
+
+const menuhelpformat = (array) => {
+    let cadena = "";
+    for (let i = 0; i < array.length; i++) {
+        let palabra = array[i]
+        let espacios = 19 - palabra.length
+        cadena += palabra + " ".repeat(espacios);
+        if ((i + 1) % 3 === 0) {
+            cadena += "\n";
+        }
+    }
+    return `\`\`\`\n${cadena}\n\`\`\``;
+}
+
+exports.helpcommands = (prefix, comandos, category) => {
+    return menuhelpformat(comandos.filter((c) => c.help.category == category).map((c) => { 
+        return { 
+            nombre: c.help.name, 
+            status: c.help.status 
+        }
+    }).map((c, i) => {
+        return `[${c.status.code == 1 ? "🟢": "🔴"}] ${prefix}${c.nombre}`
+    }))
+}
+
+exports.Alert = class {
+    /**
+     * @param {string} web
+     * @param {string} text 
+     * @returns {Canvas.Canvas}
+     */
+    constructor(web, text) {
+        const canvas = Canvas.createCanvas(900, 300);
+        const ctx = canvas.getContext('2d');
+
+        const rectanguloRedondeado = (x, y, w, h, r) => {
+            const x2 = x + w;
+            const y2 = y + h;
+
+            ctx.moveTo(x + r, y);
+            ctx.lineTo(x2 - r, y);
+            ctx.quadraticCurveTo(x2, y, x2, y + r);
+            ctx.lineTo(x2, y2 - r);
+            ctx.quadraticCurveTo(x2, y2, x2 - r, y2);
+            ctx.lineTo(x + r, y2);
+            ctx.quadraticCurveTo(x, y2, x, y2 - r);
+            ctx.lineTo(x, y + r);
+            ctx.quadraticCurveTo(x, y, x + r, y);
+        }
+
+        ctx.fillStyle = '#353535';
+        ctx.beginPath();
+        rectanguloRedondeado(0, 0, canvas.width, canvas.height, 15);
+        ctx.closePath();
+        ctx.fill();
+        ctx.stroke();
+
+        ctx.font = "bold 32px Arial"
+        ctx.fillStyle = 'white';
+        ctx.textAlign = "left";
+        ctx.textBaseline = "hanging"
+        ctx.fillText(`${web} dice`, canvas.width * .04, canvas.height * .16)
+
+        ctx.font = "29px Arial"
+        ctx.fillStyle = 'white';
+        ctx.textAlign = "left";
+        ctx.textBaseline = "hanging"
+        ctx.fillText(`${text}`, canvas.width * .04, canvas.height * .38)
+
+        ctx.fillStyle = '#5e9eff';
+        ctx.beginPath();
+        rectanguloRedondeado(canvas.width * .75, canvas.height * .65, canvas.width / 5, canvas.height / 4.5, 7.5);
+        ctx.closePath();
+        ctx.fill();
+        ctx.stroke();
+
+        ctx.font = "28px Arial"
+        ctx.fillStyle = '#353535';
+        ctx.textAlign = "center";
+        ctx.textBaseline = "hanging"
+        ctx.fillText('Aceptar', canvas.width * .85, canvas.height * .706)
+
+        return canvas.toBuffer();
+    }
+}
+
+exports.Ship = class {
+    /**
+     * @param {User} user_1 
+     * @param {User} user_2 
+     * @param {number} porcentage 
+     */
+    async buildImage(user_1, user_2, porcentage) {
+        const canvas = Canvas.createCanvas(700, 250);
+        const ctx = canvas.getContext('2d');
+        let background = await Canvas.loadImage("https://media.discordapp.net/attachments/809089744574611507/961338394699513906/unknown.png");
+        let drawAvatar1 = await Canvas.loadImage(user_1.avatar ? user_1.avatarURL({ forceStatic: true, size: 2048, extension: "png" }) : "https://discord.com/assets/1f0bfc0865d324c2587920a7d80c609b.png")
+        let drawAvatar2 = await Canvas.loadImage(user_2.avatar ? user_2.avatarURL({ forceStatic: true, size: 2048, extension: "png" }) : "https://discord.com/assets/1f0bfc0865d324c2587920a7d80c609b.png")
+
+        ctx.drawImage(background, 0, 0, canvas.width, canvas.height);
+        ctx.shadowOffsetY = 6;
+        ctx.shadowColor = "#91c4c2";
+        ctx.shadowBlur = 6;
+        ctx.font = "bold 40pt Arial";
+        ctx.fillStyle = "#000";
+        ctx.textAlign = "center";
+        ctx.fillText(`${porcentage.toString()}%`, canvas.width / 2, canvas.height / 1.7)
+
+        ctx.shadowOffsetY = 6;
+        ctx.shadowColor = "#000";
+        ctx.shadowBlur = 30;
+
+        ctx.beginPath();
+        ctx.fillStyle = "#fff";
+        ctx.arc(50 + 100, 25 + 100, 100 + 6, 0, 2 * Math.PI);
+        ctx.fill();
+        ctx.closePath();
+        ctx.save()
+        ctx.beginPath()
+        ctx.arc(50 + 100, 25 + 100, 100, 0, Math.PI * 2, true)
+        ctx.closePath();
+        ctx.clip()
+        ctx.drawImage(drawAvatar1, 50, 25, 200, 200)
+        ctx.restore()
+
+        ctx.beginPath();
+        ctx.fillStyle = "#fff";
+        ctx.arc(450 + 100, 25 + 100, 100 + 6, 0, 2 * Math.PI);
+        ctx.fill();
+        ctx.closePath();
+        ctx.save()
+        ctx.beginPath()
+        ctx.arc(450 + 100, 25 + 100, 100, 0, Math.PI * 2, true)
+        ctx.closePath();
+        ctx.clip()
+        ctx.drawImage(drawAvatar2, 450, 25, 200, 200)
+        ctx.restore()
+
+        return canvas.toBuffer();
+    }
+}
+
+exports.switchPorcentageInDiferentsUsers = (number, user1, user2) => {
+    if (number <= 10) return `:confounded: muchos dicen que los que se odian se aman..\npero no creo que entre **${user1.username}** y **${user2.username}** la frase este en lo cierto`;
+    else if (number <= 30) return `:handshake: **${user1.username}** y **${user2.username}** pueden conservarse como conocidos y si hay mas platica pueden ser amigos`;
+    else if (number <= 45) return `:wink: **${user1.username}** y **${user2.username}** podrian ser socios o amigos pero creo que hasta ahi se conservaria todo`;
+    else if (number <= 60) return `:kissing_smiling_eyes: **${user1.username}** y **${user2.username}** son los mejores amigos, puede que incluso puedan ser hermanos de otra sangre`;
+    else if (number <= 77) return `:cupid: **${user1.username}** y **${user2.username}** son muy buenos amigos y quizas si se juntan o se conocen mas esto termine en otra cosa`;
+    else if (number <= 89) return `:gift_heart: hay una fuerte relacion entre **${user1.username}** y **${user2.username}** es algo que los une.. pareciera ser que nada los puede separar`;
+    else if (number <= 97) return `:heartbeat: una buena, fuerte y duradera relacion entre **${user1.username}** y **${user2.username}** perfecto para desarrollar un posible matrimonio`;
+    else if (number <= 100) return `:sparkling_heart: quizas uno de los mejores shipeos de la historia.. **${user1.username}** y **${user2.username}** Dejenme tomar una foto de este momento!`;
+}
+exports.switchPorcentageInAuthorAndUser = (number, user1, author) => {
+    if (number <= 10) return `:confounded: lo siento.. pero shipearte con **${user1.username}** no es una buena opcion`;
+    else if (number <= 30) return `:handshake: sean amigos y solo eso`;
+    else if (number <= 45) return `:wink: podrian ser socios o amigos pero creo que hasta ahi se conservaria todo`;
+    else if (number <= 60) return `:kissing_smiling_eyes: pueden ser mejores amigos, puede que incluso puedan ser hermanos de otra sangre`;
+    else if (number <= 77) return `:cupid: son muy buenos amigos y quizas si se juntan o se conocen mas esto termine en otra cosa`;
+    else if (number <= 89) return `:gift_heart: hay una fuerte relacion entre tu y **${user1.username}** es algo que los une.. pareciera ser que nada los puede separar`;
+    else if (number <= 97) return `:heartbeat: una buena, fuerte y duradera relacion entre tu y **${user1.username}** perfecto para desarrollar un posible matrimonio\nbueno.. si tu quieres verdad¿`;
+    else if (number <= 100) return `:sparkling_heart: quizas uno de los mejores shipeos de la historia.. **${author.username}** y **${user1.username}** Dejenme tomar una foto de este momento!`;
+}

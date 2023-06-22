@@ -13,12 +13,12 @@ exports.text = async (client, message, args) => {
         return await message.reply({
             embeds: [{
                 author: {
-                    name: client.user.username, 
+                    name: client.user.username,
                     icon_url: client.user.avatarURL()
                 },
                 color: 0xfcf5d4,
-                description: `hola ${message.author.username}! gracias por votar por mi en top.gg, puedes dejar una opinion sobre mi si gustas ^^\nadicionalmente si quieres puedes tambien unirte al servidor de soporte`,
-                title: `Votar <:mkMaple_love:836387326552440902>`,
+                description: `hola ${message.author.username}! estare muy agradecida contigo si me invitas a uno de tus servidores ^^\nadicionalmente si quieres puedes tambien unirte al servidor de soporte`,
+                title: `Links de invitaciones <:mkMaple_love:836387326552440902>`,
                 footer: {
                     text: `Requerido por ${message.author.username}`,
                     icon_url: message.author.avatarURL({ forceStatic: false })
@@ -28,9 +28,9 @@ exports.text = async (client, message, args) => {
                 type: 1,
                 components: [{
                     type: 2,
-                    label: "Votar",
+                    label: "Bot",
                     emoji: '836387326552440902',
-                    url: `https://top.gg/bot/821452429409124451/vote`,
+                    url: `https://discord.com/oauth2/authorize?client_id=821452429409124451&scope=bot%20applications.commands&permissions=1238334041302`,
                     style: 5
                 }, {
                     type: 2,
@@ -56,10 +56,10 @@ exports.slash = async (client, interaction) => {
 }
 
 exports.help = {
-    name: 'vote',
-    alias: ['votar'],
-    id: '030',
-    description: 'vota por mi en top.gg :3',
+    name: 'invite',
+    alias: ['invitacion'],
+    id: '015',
+    description: 'Invitame a tus servidores :3',
     category: 'utilidad',
     options: [],
     permissions: {

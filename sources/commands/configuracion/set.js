@@ -43,7 +43,7 @@ exports.slash = async (client, interaction) => {
 exports.help = {
     name: "set",
     alias: ["set"],
-    id: "036",
+    id: "n/a",
     description: "comando complementario para los comandos de barra",
     category: "configuracion",
     options: [],

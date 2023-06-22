@@ -43,7 +43,7 @@ exports.slash = async (client, interaction) => {
 exports.help = {
     name: "welcome",
     alias: ["bienvenidas"],
-    id: "038",
+    id: "n/a",
     description: "comando para establecer un sistema de bienvenidas",
     category: "configuracion",
     options: [],

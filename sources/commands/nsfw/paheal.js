@@ -58,7 +58,7 @@ exports.slash = async (client, interaction) => {
 exports.help = {
     name: "paheal",
     alias: [],
-    id: "008",
+    id: "n/a",
     description: "busca imagenes en rule34.paheal.net",
     category: "nsfw",
     options: [{

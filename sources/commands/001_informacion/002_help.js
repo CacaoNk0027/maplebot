@@ -92,7 +92,7 @@ exports.text = async (client, message, args) => {
                                 description: `**Menu de ayuda de Información |** comandos con los que pudes ver cosas de emojis, usuarios y servidores a detalle`,
                                 fields: [{
                                     name: "Comandos",
-                                    value: models.menus.info(prefix)
+                                    value: configs.helpcommands(prefix, client.comandos, "informacion")
                                 }],
                                 footer: {
                                     text: `Menus de ayuda | ${client.user.username}`,
@@ -113,7 +113,7 @@ exports.text = async (client, message, args) => {
                                 description: `**Menu de ayuda Utilidades |** comandos con los que puedes ver algunas cosas como avatares y etc`,
                                 fields: [{
                                     name: "Comandos",
-                                    value: models.menus.misc(prefix)
+                                    value: configs.helpcommands(prefix, client.comandos, "utilidad")
                                 }],
                                 footer: {
                                     text: `Menus de ayuda | ${client.user.username}`,
@@ -134,7 +134,7 @@ exports.text = async (client, message, args) => {
                                 description: `**Menu de ayuda diversión |** comandos con los que puedes entretenerte o jugar uwu`,
                                 fields: [{
                                     name: "Comandos",
-                                    value: models.menus.divs(prefix)
+                                    value: configs.helpcommands(prefix, client.comandos, "diversion")
                                 }],
                                 footer: {
                                     text: `Menus de ayuda | ${client.user.username}`,
@@ -451,7 +451,7 @@ exports.slash = async (client, interaction) => {
                                 description: `**Menu de ayuda de Información |** comandos con los que pudes ver cosas de emojis, usuarios y servidores a detalle`,
                                 fields: [{
                                     name: "Comandos",
-                                    value: models.menus.info(prefix)
+                                    value: require('../../utils/menus/info.js')(prefix, client.comandos)
                                 }],
                                 footer: {
                                     text: `Menus de ayuda | ${client.user.username}`,
@@ -728,7 +728,7 @@ exports.help = {
     id: "002",
     // description y categoria del comando
     description: "ve el menu de ayuda que proporciona la bot ⛑",
-    category: "información",
+    category: "informacion",
     // opciones y permisos
     options: [{ name: "comando", required: false }],
     permissions: {

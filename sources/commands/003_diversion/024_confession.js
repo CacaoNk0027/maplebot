@@ -1,8 +1,6 @@
 const discord = require('discord.js')
 const models = require('maplebot_models')
-const configs = require('../../utils/exports')
-const ms = require('ms')
-const nekoapi = require('cacao_nekoapi')
+const ms = require('ms');
 
 /**
  * @param {discord.Client} client 
@@ -11,10 +9,9 @@ const nekoapi = require('cacao_nekoapi')
  */
 exports.text = async (client, message, args) => {
     try {
-        
+
     } catch (error) {
-        console.log(error)
-        await models.utils.error(message, error);
+        await models.utils.error(message, error)
     }
 }
 
@@ -23,31 +20,30 @@ exports.text = async (client, message, args) => {
  * @param {discord.CommandInteraction} interaction 
  */
 exports.slash = async (client, interaction) => {
-    try {
-        
-    } catch (error) {
-        await configs.interactionErrorMsg(interaction, error)
-    }
+
 }
 
 exports.help = {
-    name: 'anal',
-    alias: [],
-    id: 'n/a',
-    description: 'este comando se usa para lo que dice',
-    category: 'rolplay_nsfw',
+    name: "confession",
+    alias: ['confesion', 'confess'],
+    id: "024",
+    description: "envia una confesion a un canal previamente establecido",
+    category: "diversion",
     options: [{
-        name: 'usuario',
+        name: "texto",
         required: true
+    }, {
+        name: "-d",
+        required: false
     }],
     permissions: {
         user: [],
-        bot: ['SendMessages', 'EmbedLinks']
+        bot: ['SendMessages', 'EmbedLinks', 'AttachFiles']
     },
     status: {
         code: 0,
         reason: "comando en desarrollo"
     },
-    isNsfw: true,
-    cooldown: (ms('3s')/1000)
+    isNsfw: false,
+    cooldown: (ms('3ms') / 1000)
 }

@@ -48,7 +48,7 @@ exports.slash = async (client, interaction) => {
 exports.help = {
     name: 'uptime',
     alias: [],
-    id: '019',
+    id: '007',
     description: 'Ve cuando tiempo he estado encendida',
     category: 'informacion',
     options: [],

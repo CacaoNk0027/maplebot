@@ -11,8 +11,11 @@ const nekoapi = require('cacao_nekoapi')
  */
 exports.text = async (client, message, args) => {
     try {
-        let channelsCollection = (await message.guild.channels.fetch())
-        let totalPages = Math.ceil(channelsCollection.size / 12) || 1
+        let rolesCollection = (await message.guild.roles.fetch()).filter(rol => rol.name !== "@everyone");
+        if(rolesCollection.size <= 0) return await message.reply({
+            embeds: [{ description: models.utils.statusError('error', "no hay roles en este servidor"), color: 0xff0000 }],
+        });
+        let totalPages = Math.ceil(rolesCollection.size / 12) || 1
 
         let row = new discord.ActionRowBuilder({
             type: 1,
@@ -33,12 +36,12 @@ exports.text = async (client, message, args) => {
                         name: message.author.username,
                         icon_url: message.author.avatarURL({ forceStatic: false })
                     },
-                    title: `Lista de canales de ${message.guild.name}`,
+                    title: `Lista de roles de ${message.guild.name}`,
                     footer: {
                         text: `Pagina ${(i + 1).toString()}/${totalPages.toString()}`,
                         icon_url: message.guild.iconURL({ forceStatic: false })
                     },
-                    description: `${channelsCollection.map(c => c).slice(i * 12, i * 12 + 12).map((ch, int_) => `**#${i * 12 + int_ + 1}** | <#${ch.id}>`).join('\n')}`,
+                    description: `${rolesCollection.map(c => c).slice(i * 12, i * 12 + 12).map((ch, int_) => `**#${i * 12 + int_ + 1}** | <@&${ch.id}>`).join('\n')}`,
                     color: 0xfcf5d4
                 })
             )
@@ -86,7 +89,7 @@ exports.text = async (client, message, args) => {
                     }]
                 }]
             })
-            client.chroles_pages.has(msg.id) ? client.chroles_pages.delete(msg.id): false;
+            client.chroles_pages.has(msg.id) ? client.chroles_pages.delete(msg.id) : false;
         }, ms('5m'));
     } catch (error) {
         console.error(error)
@@ -108,10 +111,10 @@ exports.slash = async (client, interaction) => {
 }
 
 exports.help = {
-    name: 'channels',
-    alias: ['canales'],
-    id: '024',
-    description: 'muestra listas de los canales del servidor',
+    name: 'roles',
+    alias: ['rolelist'],
+    id: '016',
+    description: 'muestra listas de los roles del servidor',
     category: 'utilidad',
     options: [],
     permissions: {

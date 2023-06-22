@@ -164,7 +164,7 @@ exports.slash = async (client, interaction) => {
 exports.help = {
     name: 'serverinfo',
     alias: ['server', 'servidor'],
-    id: '018',
+    id: '006',
     description: 'Muestra informacion del servidor actual',
     category: 'informacion',
     options: [],

@@ -47,7 +47,7 @@ exports.slash = async (client, interaction) => {
 exports.help = {
     name: 'icon',
     alias: ['server_icon', 'icono'],
-    id: '026',
+    id: '014',
     description: 'Muestra un encriptado con el icono del servidor',
     category: 'utilidad',
     options: [],

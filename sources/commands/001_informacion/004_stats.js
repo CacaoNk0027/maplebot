@@ -74,14 +74,10 @@ exports.text = async (client, message, args) => {
                         name: "Sistema | <:Dis_bg_employee:888238358118154270>",
                         value: `\`\`\`\nProcesador:\n  ${node_os.cpu.model()}\nSistema Operativo:\n  ${os_system.type} ${os_system.release} ${os_system.arch}\nMemoria RAM:\n  ${Math.floor(Math.ceil(os_system.totalmem() / 1048576) / 1000)} GB\n\`\`\``,
                         inline: false
-                        // }, { 
-                        //     name: "Tiempo de actividad del bot", 
-                        //     value: `\`\`\`\n${moment.duration(client.uptime).format(`D [Días], H [Horas], m [Minutos], s [Segundos]`)}\n\`\`\``, 
-                        //     inline: true 
-                    }, {
-                        name: "Último Inicio",
-                        value: `<t:${moment(client.readyAt).unix()}:F>`,
-                        inline: true
+                        }, { 
+                            name: "Tiempo de actividad del bot", 
+                            value: `\`\`\`\n${moment.duration(client.uptime).format(`D [Días], H [Horas], m [Minutos], s [Segundos]`)}\n\`\`\``, 
+                            inline: true 
                     }]
                 }]
             })
@@ -177,7 +173,7 @@ exports.slash = async (client, interaction) => {
 exports.help = {
     name: 'stats',
     alias: ['estadisticas'],
-    id: '014',
+    id: '004',
     description: 'muestra mis stats en servidores y host, etc.',
     category: 'informacion',
     options: [],

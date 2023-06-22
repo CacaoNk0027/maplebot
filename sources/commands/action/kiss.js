@@ -66,7 +66,7 @@ exports.slash = async (client, interaction) => {
 exports.help = {
     name: 'kiss',
     alias: ['beso'],
-    id: '023',
+    id: 'n/a',
     description: 'dale un beso al amor de tu vida u3u r ~',
     category: 'rolplay',
     options: [{

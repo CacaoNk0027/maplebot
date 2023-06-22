@@ -73,7 +73,7 @@ exports.slash = async (client, interaction) => {
 exports.help = {
     name: 'infoemoji',
     alias: ['emojiinfo'],
-    id: '017',
+    id: '005',
     description: 'Muestra información sobre un emoji',
     category: 'informacion',
     options: [{

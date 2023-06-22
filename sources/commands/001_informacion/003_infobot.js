@@ -88,7 +88,7 @@ exports.help = {
     id: "003",
     // description y categoria del comando
     description: "aprende mas sobre mi",
-    category: "información",
+    category: "informacion",
     // opciones y permisos
     options: [],
     permissions: {

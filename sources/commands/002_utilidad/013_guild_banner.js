@@ -47,7 +47,7 @@ exports.slash = async (client, interaction) => {
 exports.help = {
     name: 'guildbanner',
     alias: ['gbanner', 'server_banner', 'serverbanner'],
-    id: '027',
+    id: '013',
     description: 'Muestra un encriptado con el banner del servidor',
     category: 'utilidad',
     options: [],

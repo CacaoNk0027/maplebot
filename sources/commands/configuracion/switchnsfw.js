@@ -62,7 +62,7 @@ exports.slash = async (client, interaction) => {
 exports.help = {
     name: 'switchnsfw',
     alias: ['setnsfw'],
-    id: '037',
+    id: 'n/a',
     description: 'Activa o desactiva el NSFW de un canal',
     category: 'configuracion',
     options: [{

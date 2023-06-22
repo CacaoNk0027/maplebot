@@ -69,7 +69,7 @@ exports.slash = async (client, interaction) => {
 exports.help = {
     name: 'banner',
     alias: ['fondo'],
-    id: '022',
+    id: '010',
     description: 'Muestra un encriptado con el banner de un usuario o el tuyo',
     category: 'utilidad',
     options: [{

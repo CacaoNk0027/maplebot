@@ -42,7 +42,7 @@ exports.slash = async (client, interaction) => {
 exports.help = {
     name: "boobs",
     alias: [],
-    id: "005",
+    id: "n/a",
     description: "simplemente boobs...",
     category: "nsfw",
     options: [],

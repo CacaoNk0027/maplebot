@@ -100,7 +100,7 @@ exports.slash = async (client, interaction) => {
 exports.help = {
     name: 'avatar',
     alias: ['pfp'],
-    id: '020',
+    id: '009',
     description: 'Muestra un encriptado con tu avatar o el de otro usuario',
     category: 'utilidad',
     options: [{

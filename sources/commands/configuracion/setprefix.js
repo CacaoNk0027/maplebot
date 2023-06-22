@@ -34,7 +34,7 @@ exports.slash = async (client, interaction) => {
 exports.help = {
     name: "setprefix",
     alias: ["stprfx", "newprefix"],
-    id: "040",
+    id: "n/a",
     description: "comando para establecer un nuevo prefix a la bot",
     category: "configuracion",
     options: [],

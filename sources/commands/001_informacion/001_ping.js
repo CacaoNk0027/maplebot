@@ -45,7 +45,7 @@ exports.help = {
     id: "001",
     // description y categoria del comando
     description: "comando para ver la latencia de la shard y los mensajes",
-    category: "información",
+    category: "informacion",
     // opciones y permisos
     options: [],
     permissions: {

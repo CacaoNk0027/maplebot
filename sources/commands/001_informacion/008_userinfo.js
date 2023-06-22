@@ -72,7 +72,7 @@ exports.slash = async (client, interaction) => {
 exports.help = {
     name: 'userinfo',
     alias: ['user', 'usuario'],
-    id: '021',
+    id: '008',
     description: 'Muestra informacion sobre un usuario del servidor en el que estas',
     category: 'informacion',
     options: [],
