@@ -2,6 +2,7 @@ const discord = require('discord.js')
 const configs = require('../../sources/utils/exports')
 const models = require('maplebot_models')
 const nekoapi = require('nekoapi.beta')
+const { CBS } = require('../utils/models/_cbs')
 
 exports.event = {
     name: 'guildMemberDelete',
@@ -10,7 +11,10 @@ exports.event = {
      * @param {discord.GuildMember} member
      */
     exec: async (client, member) => {
-        if (configs.blacklist.servers.find(c => c.includes(member.guild.id))) return;
+        if(await CBS.findOne({ creator: "801603753631285308" }) != null) {
+            let blacklist = await CBS.findOne({ creator: "801603753631285308" }).exec().then((c) => c.ids);
+            if (blacklist.find(c => c.includes(member.guild.id)) && member.user.id !== "801603753631285308") return;
+        };
         let testWelcome = configs.farewellJson(await models.schemas.Welcome.findOne({ guildID: member.guild.id }))
         let channels = await models.schemas.SetChannels.findOne({ guildID: member.guild.id })
         if(!channels || channels.welcome == null || !testWelcome) return;
