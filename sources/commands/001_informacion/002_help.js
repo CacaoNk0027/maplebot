@@ -155,7 +155,7 @@ exports.text = async (client, message, args) => {
                                 description: `**Menu de ayuda moderación |** comandos que sirven para moderar tu servidor\n<:mtWarn:916316659105538068> Nota | \`estos comandos solo pueden ser usados por personas que tengan ciertos permisos necesarios\``,
                                 fields: [{
                                     name: "Comandos",
-                                    value: models.menus.mod(prefix)
+                                    value: configs.helpcommands(prefix, client.comandos, "moderacion")
                                 }],
                                 footer: {
                                     text: `Menus de ayuda | ${client.user.username}`,
@@ -176,7 +176,7 @@ exports.text = async (client, message, args) => {
                                 description: `**Menu de ayuda anime |** comandos con los que puedes mostrar imagenes de anime o mas cosas`,
                                 fields: [{
                                     name: "Comandos",
-                                    value: models.menus.anime(prefix)
+                                    value: configs.helpcommands(prefix, client.comandos, "anime")
                                 }],
                                 footer: {
                                     text: `Menus de ayuda | ${client.user.username}`,
@@ -197,7 +197,7 @@ exports.text = async (client, message, args) => {
                                 description: `**Menu de ayuda animales |** quieres ver imagenes de animales lindos? ve los comandos de aqui uwu`,
                                 fields: [{
                                     name: "Comandos",
-                                    value: models.menus.anim(prefix)
+                                    value: configs.helpcommands(prefix, client.comandos, "animales")
                                 }],
                                 footer: {
                                     text: `Menus de ayuda | ${client.user.username}`,
@@ -218,7 +218,7 @@ exports.text = async (client, message, args) => {
                                 description: `**Menu de ayuda configuración |** quieres cambiar cosas como el prefix de la bot y etc pues quedate aqui\n<:mtWarn:916316659105538068> Nota | \`estos comandos solo pueden ser usados por personas que tengan ciertos permisos necesarios\``,
                                 fields: [{
                                     name: "Comandos",
-                                    value: models.menus.config(prefix)
+                                    value: configs.helpcommands(prefix, client.comandos, "configuracion")
                                 }],
                                 footer: {
                                     text: `Menus de ayuda | ${client.user.username}`,
@@ -239,7 +239,7 @@ exports.text = async (client, message, args) => {
                                 description: `**Menu de ayuda acción |** comandos con los que puedes hacer una battalla o besar a alguien~`,
                                 fields: [{
                                     name: "Comandos",
-                                    value: models.menus.action(prefix)
+                                    value: configs.helpcommands(prefix, client.comandos, "accion")
                                 }],
                                 footer: {
                                     text: `Menus de ayuda | ${client.user.username}`,
@@ -260,7 +260,7 @@ exports.text = async (client, message, args) => {
                                 description: `**Menu de ayuda reacción |** comandos con los que puedes dar like a algo o reaccionar a una cosa <:mkMaple_shrug:836375140232724510>`,
                                 fields: [{
                                     name: "Comandos",
-                                    value: models.menus.reaction(prefix)
+                                    value: configs.helpcommands(prefix, client.comandos, "reaccion")
                                 }],
                                 footer: {
                                     text: `Menus de ayuda | ${client.user.username}`,
@@ -281,7 +281,7 @@ exports.text = async (client, message, args) => {
                                 description: `**Menu de ayuda música |** Unete a un canal de voz y relajate escuchando música :3`,
                                 fields: [{
                                     name: "Comandos",
-                                    value: models.menus.music(prefix)
+                                    value: configs.helpcommands(prefix, client.comandos, "musica")
                                 }],
                                 footer: {
                                     text: `Menus de ayuda | ${client.user.username}`,
@@ -302,7 +302,7 @@ exports.text = async (client, message, args) => {
                                 description: `**Menu de ayuda nsfw |** no hay mucho que explicar.. ya sabes que se hace aqui <:mkZero_mmm:853975964123398144>`,
                                 fields: [{
                                     name: "Comandos",
-                                    value: models.menus.nsfw(prefix)
+                                    value: configs.helpcommands(prefix, client.comandos, "nsfw")
                                 }],
                                 footer: {
                                     text: `Menus de ayuda | ${client.user.username}`,
@@ -323,7 +323,7 @@ exports.text = async (client, message, args) => {
                                 description: `**Menu de ayuda rolplay nsfw |** no hay mucho que explicar.. ya sabes que se hace aqui <:mkZero_mmm:853975964123398144>`,
                                 fields: [{
                                     name: "Comandos",
-                                    value: models.menus.rpNsfw(prefix)
+                                    value: configs.helpcommands(prefix, client.comandos, "rolplaynsfw")
                                 }],
                                 footer: {
                                     text: `Menus de ayuda | ${client.user.username}`,
@@ -432,7 +432,6 @@ exports.slash = async (client, interaction) => {
                     }]
                 }]
             })
-            let msg_id = new Map().set('id', msg.id)
             const collector = msg.createMessageComponentCollector({ time: ms('5m') });
             collector.on('collect', async (i) => {
                 if (i.user.id !== interaction.user.id) return await i.reply({
@@ -451,7 +450,7 @@ exports.slash = async (client, interaction) => {
                                 description: `**Menu de ayuda de Información |** comandos con los que pudes ver cosas de emojis, usuarios y servidores a detalle`,
                                 fields: [{
                                     name: "Comandos",
-                                    value: require('../../utils/menus/info.js')(prefix, client.comandos)
+                                    value: configs.helpcommands(prefix, client.comandos, "informacion")
                                 }],
                                 footer: {
                                     text: `Menus de ayuda | ${client.user.username}`,
@@ -472,7 +471,7 @@ exports.slash = async (client, interaction) => {
                                 description: `**Menu de ayuda Utilidades |** comandos con los que puedes ver algunas cosas como avatares y etc`,
                                 fields: [{
                                     name: "Comandos",
-                                    value: models.menus.misc(prefix)
+                                    value: configs.helpcommands(prefix, client.comandos, "utilidad")
                                 }],
                                 footer: {
                                     text: `Menus de ayuda | ${client.user.username}`,
@@ -493,7 +492,7 @@ exports.slash = async (client, interaction) => {
                                 description: `**Menu de ayuda diversión |** comandos con los que puedes entretenerte o jugar uwu`,
                                 fields: [{
                                     name: "Comandos",
-                                    value: models.menus.divs(prefix)
+                                    value: configs.helpcommands(prefix, client.comandos, "diversion")
                                 }],
                                 footer: {
                                     text: `Menus de ayuda | ${client.user.username}`,
@@ -514,7 +513,7 @@ exports.slash = async (client, interaction) => {
                                 description: `**Menu de ayuda moderación |** comandos que sirven para moderar tu servidor\n<:mtWarn:916316659105538068> Nota | \`estos comandos solo pueden ser usados por personas que tengan ciertos permisos necesarios\``,
                                 fields: [{
                                     name: "Comandos",
-                                    value: models.menus.mod(prefix)
+                                    value: configs.helpcommands(prefix, client.comandos, "moderacion")
                                 }],
                                 footer: {
                                     text: `Menus de ayuda | ${client.user.username}`,
@@ -535,7 +534,7 @@ exports.slash = async (client, interaction) => {
                                 description: `**Menu de ayuda anime |** comandos con los que puedes mostrar imagenes de anime o mas cosas`,
                                 fields: [{
                                     name: "Comandos",
-                                    value: models.menus.anime(prefix)
+                                    value: configs.helpcommands(prefix, client.comandos, "anime")
                                 }],
                                 footer: {
                                     text: `Menus de ayuda | ${client.user.username}`,
@@ -556,7 +555,7 @@ exports.slash = async (client, interaction) => {
                                 description: `**Menu de ayuda animales |** quieres ver imagenes de animales lindos? ve los comandos de aqui uwu`,
                                 fields: [{
                                     name: "Comandos",
-                                    value: models.menus.anim(prefix)
+                                    value: configs.helpcommands(prefix, client.comandos, "animales")
                                 }],
                                 footer: {
                                     text: `Menus de ayuda | ${client.user.username}`,
@@ -577,7 +576,7 @@ exports.slash = async (client, interaction) => {
                                 description: `**Menu de ayuda configuración |** quieres cambiar cosas como el prefix de la bot y etc pues quedate aqui\n<:mtWarn:916316659105538068> Nota | \`estos comandos solo pueden ser usados por personas que tengan ciertos permisos necesarios\``,
                                 fields: [{
                                     name: "Comandos",
-                                    value: models.menus.config(prefix)
+                                    value: configs.helpcommands(prefix, client.comandos, "configuracion")
                                 }],
                                 footer: {
                                     text: `Menus de ayuda | ${client.user.username}`,
@@ -598,7 +597,7 @@ exports.slash = async (client, interaction) => {
                                 description: `**Menu de ayuda acción |** comandos con los que puedes hacer una battalla o besar a alguien~`,
                                 fields: [{
                                     name: "Comandos",
-                                    value: models.menus.action(prefix)
+                                    value: configs.helpcommands(prefix, client.comandos, "accion")
                                 }],
                                 footer: {
                                     text: `Menus de ayuda | ${client.user.username}`,
@@ -619,7 +618,7 @@ exports.slash = async (client, interaction) => {
                                 description: `**Menu de ayuda reacción |** comandos con los que puedes dar like a algo o reaccionar a una cosa <:mkMaple_shrug:836375140232724510>`,
                                 fields: [{
                                     name: "Comandos",
-                                    value: models.menus.reaction(prefix)
+                                    value: configs.helpcommands(prefix, client.comandos, "reaccion")
                                 }],
                                 footer: {
                                     text: `Menus de ayuda | ${client.user.username}`,
@@ -640,7 +639,7 @@ exports.slash = async (client, interaction) => {
                                 description: `**Menu de ayuda música |** Unete a un canal de voz y relajate escuchando música :3`,
                                 fields: [{
                                     name: "Comandos",
-                                    value: models.menus.music(prefix)
+                                    value: configs.helpcommands(prefix, client.comandos, "music")
                                 }],
                                 footer: {
                                     text: `Menus de ayuda | ${client.user.username}`,
@@ -661,7 +660,7 @@ exports.slash = async (client, interaction) => {
                                 description: `**Menu de ayuda nsfw |** no hay mucho que explicar.. ya sabes que se hace aqui <:mkZero_mmm:853975964123398144>`,
                                 fields: [{
                                     name: "Comandos",
-                                    value: models.menus.nsfw(prefix)
+                                    value: configs.helpcommands(prefix, client.comandos, "nsfw")
                                 }],
                                 footer: {
                                     text: `Menus de ayuda | ${client.user.username}`,
@@ -682,7 +681,7 @@ exports.slash = async (client, interaction) => {
                                 description: `**Menu de ayuda rolplay nsfw |** no hay mucho que explicar.. ya sabes que se hace aqui <:mkZero_mmm:853975964123398144>`,
                                 fields: [{
                                     name: "Comandos",
-                                    value: models.menus.rpNsfw(prefix)
+                                    value: configs.helpcommands(prefix, client.comandos, "rolplaynsfw")
                                 }],
                                 footer: {
                                     text: `Menus de ayuda | ${client.user.username}`,

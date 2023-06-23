@@ -1,4 +1,5 @@
 const configs = require('./assets/configs.json')
+const models = require('maplebot_models')
 const Canvas = require('canvas')
 const { colors } = require('./assets/colors');
 const { Guild, ButtonInteraction, Message, AttachmentBuilder, Collection, CommandInteraction, GuildMember } = require('discord.js');
@@ -415,12 +416,13 @@ const menuhelpformat = (array) => {
 }
 
 exports.helpcommands = (prefix, comandos, category) => {
-    return menuhelpformat(comandos.filter((c) => c.help.category == category).map((c) => { 
+    console.log(comandos)
+    return comandos.filter(c => c.help.category == category).size <= 0 ? `\`\`\`\nEsta categoria no tiene comandos registrados\npero no te preocupes, pronto habran nuevos comandos :3\n\`\`\``: menuhelpformat(comandos.filter((c) => c.help.category == category).map((c) => { 
         return { 
             nombre: c.help.name, 
             status: c.help.status 
         }
-    }).map((c, i) => {
+    }).map((c) => {
         return `[${c.status.code == 1 ? "🟢": "🔴"}] ${prefix}${c.nombre}`
     }))
 }
@@ -561,4 +563,43 @@ exports.switchPorcentageInAuthorAndUser = (number, user1, author) => {
     else if (number <= 89) return `:gift_heart: hay una fuerte relacion entre tu y **${user1.username}** es algo que los une.. pareciera ser que nada los puede separar`;
     else if (number <= 97) return `:heartbeat: una buena, fuerte y duradera relacion entre tu y **${user1.username}** perfecto para desarrollar un posible matrimonio\nbueno.. si tu quieres verdad¿`;
     else if (number <= 100) return `:sparkling_heart: quizas uno de los mejores shipeos de la historia.. **${author.username}** y **${user1.username}** Dejenme tomar una foto de este momento!`;
+}
+
+/**
+ * @param {Client} client
+ * @param {string} guildId
+ * @param {string[]} array 
+ */
+exports.AddNewArrayBlacklist = async (client, guildId, array) => {
+    let evitedWords = client.comandos.map(c => c.help.name)
+    let prefixes = await models.utils.prefix(client, guildId)
+    let wordset;
+    if (await models.schemas.Blacklist.findOne({ guildID: guildId }) !== null) {
+        wordset = (await models.schemas.Blacklist.findOne({ guildID: guildId }).exec()).words
+    } else wordset = [];
+    if (wordset.length >= 1) {
+        for (const setedword of wordset) {
+            evitedWords.push(setedword.toLowerCase());
+        }
+    }
+    for (const prefix of prefixes) {
+        evitedWords.push(prefix)
+    }
+    for (const word of evitedWords) {
+        removeItemFromArray(array, word);
+    }
+    let result = [... new Set(array)]
+    return result
+}
+
+exports.DeleteNewArrayBlacklist = async (client, guildId, array) => {
+    let wordsdb, _1 = [], _2 = [];
+    if(await models.schemas.Blacklist.findOne({ guildID: guildId }) !== null) {
+        wordsdb = (await models.schemas.Blacklist.findOne({ guildID: guildId }).exec()).words
+    } else wordsdb = [];
+    array.forEach(function (word) { _1.push(word) }); 
+    _1.forEach(w => { _2.push(w) }); 
+    wordsdb.forEach(function (word) { removeItemFromArray(_1, word) });
+    _1.forEach(function (word) { removeItemFromArray(_2, word) });
+    return _2
 }
