@@ -236,5 +236,9 @@
             "description": "Infomacion sobre el servidor ( Comunidad )",
             "value": "3"
         }
-    ]
+    ],
+    "suggest_codes": {
+        "pendiente": "cGVuZGllbnRl",
+        "respondido": "cmVzcG9uZGlkbw=="
+    }
 }
