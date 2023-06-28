@@ -23,6 +23,11 @@
         "description": "ve informacion sobre mi"
     },
     {
+        "name": "stats",
+        "type": 1,
+        "description": "ve las estadisticas de la bot como usuarios y servidores"
+    },
+    {
         "name": "set",
         "type": 1,
         "default_member_permissions": "16",
@@ -209,7 +214,8 @@
                         ]
                     }
                 ]
-            }, {
+            },
+            {
                 "name": "farewell",
                 "type": 2,
                 "description": "establece un sistema de despedidas en tu servidor",
@@ -392,5 +398,28 @@
                 ]
             }
         ]
+    },
+    {
+        "name": "infoemoji",
+        "type": 1,
+        "description": "ve informacion sobre un emoji",
+        "options": [
+            {
+                "name": "emoji",
+                "type": 3,
+                "description": "tiene que ser un emoji de servidor",
+                "required": true
+            }
+        ]
+    },
+    {
+        "name": "serverinfo",
+        "type": 1,
+        "description": "ve informacion sobre el servidor actual"
+    },
+    {
+        "name": "uptime",
+        "type": 1,
+        "description": "muestra el tiempo de actividad del bot"
     }
 ]

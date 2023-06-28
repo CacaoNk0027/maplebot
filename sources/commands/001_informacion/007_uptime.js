@@ -39,7 +39,21 @@ exports.text = async (client, message, args) => {
  */
 exports.slash = async (client, interaction) => {
     try {
-        
+        await interaction.reply({
+            embeds: [{
+                title: '<:001:1012749015969968138> | Uptime',
+                description: `Este es el timepo de actividad que he tenido desde que me inicie por ultima vez`,
+                color: 0xffffff,
+                fields: [{
+                    name: 'Tiempo de actividad',
+                    value: `\`\`\`\n${moment.duration(client.uptime).format('W [Semanas] D [Días], H [Horas], m [Minutos], s [Segundos]')}\n\`\`\``
+                }],
+                author: {
+                    name: client.user?.username,
+                    icon_url: client.user?.avatarURL()
+                }
+            }]
+        })
     } catch (error) {
         await config.interactionErrorMsg(interaction, error);
     }

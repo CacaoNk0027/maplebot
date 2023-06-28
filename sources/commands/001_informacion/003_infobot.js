@@ -72,7 +72,52 @@ exports.text = async (client, message, args) => {
  */
 exports.slash = async (client, interaction) => {
     try {
-
+        let msg = await interaction.reply({
+            embeds: [{
+                author: {
+                    name: client.user.username,
+                    icon_url: client.user.avatarURL({ extension: 'png', size: 512 })
+                },
+                color: 0x910f00,
+                description: `Hola **${interaction.user.username}**! <:007:1012749027508498512>\n\n<:001:1012749015969968138> Soy **${client.user.username}**, soy una bot y fui creada por mi maravilloso padre **${(await client.application?.fetch()).owner.tag}** un <t:${moment((await client.application?.fetch()).createdAt).unix()}:F> <:006:1012749025398759425>Actualmente cuento con **${client.comandos.filter(cmd => cmd.help.status.code == 1).size}** comandos activos y **${client.comandos.filter(cmd => cmd.help.status.code == 0).size}** inactivos, lo que en total serian **${client.comandos.size}** registrados en mi :3`,
+                fields: [
+                    { name: "Desarrolladores y Equipo", value: `<:Dis_bg_verifiedBotDeveloper:888237981830357042> **oficial:** ${(await client.application?.fetch()).owner.tag}\n<:Dis_bg_bugHunter_v1:888238587529793596> **Ayudantes:** 🔹Jim#0001, Friner#9599` },
+                    { name: "Info General", value: `🆔 **ID |** ${client.user.id}\n<a:mkDiscord:836435775935086592> **Version |** ${package.version}\n<:mkTengo_frio:832764121523027979> **Lenguaje |** JavaScript` },
+                ],
+                footer: {
+                    text: `requerido por ${interaction.user.username}`,
+                    icon_url: interaction.user.avatarURL({ forceStatic: false })
+                },
+                thumbnail: { url: client.user.avatarURL() },
+                title: `Sobre mi ^^`,
+                image: { url: "https://cdn.discordapp.com/attachments/809089744574611507/1009840815624949770/maple_bot.gif" }
+            }],
+            components: [{
+                type: 1,
+                components: [{
+                    customId: "botinfo",
+                    emoji: "❓",
+                    label: "mas información",
+                    style: 2,
+                    type: 2
+                }]
+            }]
+        })
+        setTimeout(async () => {
+            await msg.edit({
+                components: [{
+                    type: 1,
+                    components: [{
+                        customId: "botinfo",
+                        emoji: "❌",
+                        label: "interaccion terminada",
+                        style: 2,
+                        disabled: true,
+                        type: 2
+                    }]
+                }]
+            })
+        }, ms('60s'))
     } catch (error) {
         await interactionErrorMsg(interaction, error);
     }
