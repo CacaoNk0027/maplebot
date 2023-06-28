@@ -34,7 +34,7 @@ exports.text = async (client, message, args) => {
         }]
     })
     if(await models.schemas.SetPrefix.findOne({ guildID: message.guildId }) == null) {
-        if(args[0].toLowerCase() == "m!") return await message.reply({
+        if(['m!', 'maple', '<@!821452429409124451>', '<@821452429409124451>'].includes(args[0].toLowerCase())) return await message.reply({
             embeds: [{
                 description: models.utils.statusError('error', `no puedes cambiar el prefix al preterminado salvo que tengas un prefix personalizado`),
                 color: 0xff0000
@@ -52,7 +52,7 @@ exports.text = async (client, message, args) => {
             }]
         })
     } else {
-        if(args[0].toLowerCase() == "m!") {
+        if(['m!', 'maple', '<@!821452429409124451>', '<@821452429409124451>'].includes(args[0].toLowerCase())) {
             await models.schemas.SetPrefix.deleteOne({ guildID: message.guildId });
             await message.reply({
                 embeds: [{
