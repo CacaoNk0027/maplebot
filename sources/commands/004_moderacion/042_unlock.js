@@ -30,18 +30,18 @@ exports.text = async (client, message, args) => {
                 color: 0xff0000
             }]
         })
-        if(!channel.permissionsFor(message.guild.roles.everyone).has(discord.PermissionFlagsBits.SendMessages)) return await message.reply({
+        if(channel.permissionsFor(message.guild.roles.everyone).has(discord.PermissionFlagsBits.SendMessages)) return await message.reply({
             embeds: [{
-                description: models.utils.statusError('error', `parece que el canal <#${channel.id}> ya esta bloqueado`),
+                description: models.utils.statusError('error', `parece que el canal <#${channel.id}> ya esta desbloqueado`),
                 color: 0xff0000
             }]
         })
         await message.channel.permissionOverwrites.edit(message.guild.roles.everyone, {
-            SendMessages: false
+            SendMessages: true
         }).then(async ch => {
             await message.reply({
                 embeds: [{
-                    description: models.utils.statusError('success', `El canal <#${channel.id}> ha sido bloqueado correctamente`),
+                    description: models.utils.statusError('success', `El canal <#${channel.id}> ha sido desbloqueado correctamente`),
                     color: 0x00ff00
                 }]
             })
@@ -68,10 +68,10 @@ exports.slash = async (client, interaction) => {
 
 
 exports.help = {
-    name: 'lock',
-    alias: ['bloqchan', 'bloquear'],
-    id: '035',
-    description: 'bloquea un canal para que no se pueda escribir',
+    name: 'unlock',
+    alias: ['unbloqchan', 'desbloquear'],
+    id: '042',
+    description: 'desbloquea un canal para que se pueda escribir',
     category: 'moderacion',
     options: [{
         name: "canal",

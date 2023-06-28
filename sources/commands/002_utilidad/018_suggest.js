@@ -82,8 +82,8 @@ exports.help = {
         bot: ['SendMessages', 'EmbedLinks', 'AddReactions']
     },
     status: {
-        code: 0,
-        reason: "comandos en desarrollo"
+        code: 1,
+        reason: null
     },
     isNsfw: false,
     cooldown: (ms('3s') / 1000)

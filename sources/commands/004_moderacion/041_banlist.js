@@ -1,8 +1,8 @@
 const discord = require('discord.js')
 const models = require('maplebot_models')
+const config = require('../../utils/exports')
 const ms = require('ms')
-const configs = require('../../utils/exports')
-const nekoapi = require('cacao_nekoapi')
+
 
 /**
  * @param {discord.Client} client
@@ -11,8 +11,8 @@ const nekoapi = require('cacao_nekoapi')
  */
 exports.text = async (client, message, args) => {
     try {
-        let channelsCollection = (await message.guild.channels.fetch())
-        let totalPages = Math.ceil(channelsCollection.size / 12) || 1
+        let bansCollection = (await message.guild.bans.fetch())
+        let totalPages = Math.ceil(bansCollection.size / 6) || 1
 
         let row = new discord.ActionRowBuilder({
             type: 1,
@@ -33,12 +33,12 @@ exports.text = async (client, message, args) => {
                         name: message.author.username,
                         icon_url: message.author.avatarURL({ forceStatic: false })
                     },
-                    title: `Lista de canales de ${message.guild.name}`,
+                    title: `Lista de baneos de ${message.guild.name}`,
                     footer: {
                         text: `Pagina ${(i + 1).toString()}/${totalPages.toString()}`,
                         icon_url: message.guild.iconURL({ forceStatic: false })
                     },
-                    description: `${channelsCollection.map(c => c).slice(i * 12, i * 12 + 12).map((ch, int_) => `**#${i * 12 + int_ + 1}** | <#${ch.id}>`).join('\n')}`,
+                    description: `${bansCollection.map(c => c).slice(i * 6, i * 6 + 6).map((ch, int_) => `**#${i * 6 + int_ + 1}** | \`Username\`: ${ch.user.username}\n\`Id\`: ${ch.user.id}`).join('\n')}`,
                     color: 0xfcf5d4
                 })
             )
@@ -88,11 +88,12 @@ exports.text = async (client, message, args) => {
             })
             client.chbnroles_pages.has(msg.id) ? client.chbnroles_pages.delete(msg.id): false;
         }, ms('5m'));
-    } catch (error) {
-        console.error(error)
-        await models.utils.error(message, error)
+    } catch (err) {
+        console.error(err)
+        await models.utils.error(message, err)
     }
 }
+
 
 /**
  * @param {discord.Client} client
@@ -100,28 +101,29 @@ exports.text = async (client, message, args) => {
  */
 exports.slash = async (client, interaction) => {
     try {
-
-    } catch (error) {
-        console.error(error)
-        await configs.interactionErrorMsg(interaction, error)
+        
+    } catch (err) {
+        console.error(err)
+        await config.interactionErrorMsg(interaction, err)
     }
 }
 
+
 exports.help = {
-    name: 'channels',
-    alias: ['canales'],
-    id: '011',
-    description: 'muestra listas de los canales del servidor',
-    category: 'utilidad',
+    name: 'banlist',
+    alias: [],
+    id: '041',
+    description: 've una lista de usuarios baneados',
+    category: 'moderacion',
     options: [],
     permissions: {
-        user: [],
-        bot: ['SendMessages', 'EmbedLinks'],
+        user: ['BanMembers'],
+        bot: ['SendMessages', 'EmbedLinks', 'BanMembers'],
     },
     status: {
         code: 1,
-        reason: null,
+        reason: null
     },
     isNsfw: false,
-    cooldown: (ms('3s') / 1000)
+    cooldown: (ms('3s')/1000)
 }

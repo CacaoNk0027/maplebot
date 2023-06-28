@@ -248,6 +248,43 @@ exports.fetchChannel = async (options) => {
     }
 }
 
+/**
+ * 
+ * @param {{ id?: string, message?: Message, args?: import('../../typings').args}} options 
+ */
+exports.fetchRole = async (options) => {
+    let role;
+    const { args, id, message } = options
+    if (!id && message && args) {
+        if (args.length >= 1) {
+            try {
+                role = (await message.guild.roles.fetch(args[0].match(/\d{19}|\d{18}/g)[0]))
+            } catch (error) {
+                role = null
+            }
+            return role
+        }
+        if (message.mentions.roles.size >= 1) {
+            try {
+                role = message.mentions.roles.first()
+            } catch (error) {
+                role = null
+            }
+            return role
+        }
+        return null
+    }
+    if (id && message && !args) {
+        try {
+            role = await message.guild.roles.fetch(id)
+        } catch (error) {
+            role = null;
+        }
+        return role
+    }
+    return null
+}
+
 
 
 exports.newColorImage = async (hexColor) => {
@@ -275,7 +312,7 @@ exports.createCollections = (client) => {
     client.slashCommands = new Collection();
     client.buttons = new Collection();
     client.avatars = new Collection();
-    client.chroles_pages = new Collection();
+    client.chbnroles_pages = new Collection();
     client.roles_pages = new Collection();
 }
 

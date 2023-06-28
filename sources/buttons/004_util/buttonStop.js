@@ -30,7 +30,7 @@ exports.exec = async (client, interaction) => {
                 }]
             }]
         })
-        client.chroles_pages.delete(interaction.message.id)
+        client.chbnroles_pages.delete(interaction.message.id)
     } catch (error) {
         await configs.interactionErrorMsg(interaction, error)
     }

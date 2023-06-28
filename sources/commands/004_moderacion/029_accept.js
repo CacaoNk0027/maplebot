@@ -66,7 +66,7 @@ exports.text = async (client, message, args) => {
         }
         if (suggestion_.author.id !== client.user.id || suggestion_.embeds.length <= 0 || suggestion_.embeds[0].title == null || suggestion_.embeds[0].title.toLowerCase() !== "nueva sugerencia") return await message.reply({
             embeds: [{
-                description: models.utils.statusError('error', "el parametro <mensajeId> ha recibido un mensaje de otro usuario o no es una mensaje de sugerencia"),
+                description: models.utils.statusError('error', "el parametro <mensajeId> ha recibido un mensaje de otro usuario o no es un mensaje de sugerencia"),
                 color: 0xff0000
             }]
         }); else {

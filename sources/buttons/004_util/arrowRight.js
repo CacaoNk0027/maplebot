@@ -6,8 +6,8 @@ const configs = require('../../utils/exports')
  */
 exports.exec = async (client, interaction) => {
     try {
-        let { pages, index } = client.chroles_pages.get(interaction.message.id)
-        client.chroles_pages.set(interaction.message.id, { index: index+1, pages: pages })
+        let { pages, index } = client.chbnroles_pages.get(interaction.message.id)
+        client.chbnroles_pages.set(interaction.message.id, { index: index+1, pages: pages })
         await interaction.update({
             embeds: [pages[index]],
             components: [{

@@ -63,7 +63,7 @@ exports.text = async (client, message, args) => {
                 components: row.components
             }]
         })
-        client.chroles_pages.set(msg.id, { index: index + 1, pages })
+        client.chbnroles_pages.set(msg.id, { index: index + 1, pages })
         setTimeout(async () => {
             await msg.edit({
                 components: [{
@@ -89,7 +89,7 @@ exports.text = async (client, message, args) => {
                     }]
                 }]
             })
-            client.chroles_pages.has(msg.id) ? client.chroles_pages.delete(msg.id) : false;
+            client.chbnroles_pages.has(msg.id) ? client.chbnroles_pages.delete(msg.id) : false;
         }, ms('5m'));
     } catch (error) {
         console.error(error)
