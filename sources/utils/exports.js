@@ -602,6 +602,11 @@ exports.switchPorcentageInAuthorAndUser = (number, user1, author) => {
     else if (number <= 100) return `:sparkling_heart: quizas uno de los mejores shipeos de la historia.. **${author.username}** y **${user1.username}** Dejenme tomar una foto de este momento!`;
 }
 
+const removeItemFromArray = (array, item) => {
+    var i = array.indexOf(item);
+    if (i !== -1) return array.splice(i, 1);
+}
+
 /**
  * @param {Client} client
  * @param {string} guildId
