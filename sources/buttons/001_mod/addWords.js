@@ -9,20 +9,23 @@ const { AddNewArrayBlacklist, interactionErrorMsg } = require("../../utils/expor
  */
 exports.exec = async (client, interaction) => {
     try {
-        const message = await interaction.message.fetch()
+        const message = (await interaction.message.fetch())
+        /**
+         * @param {string[]} words 
+         */
         const sendEmbed = async (words) => {
             await message.reply({
                 embeds: [{
                     author: {
                         name: client.user.username,
                         icon_url: client.user.avatarURL()
-                    }
-                }],
-                color: 0x00ff00,
-                description: models.utils.statusError('success', 'han sido establecidas palabras en la blacklist del server de manera correcta'),
-                fields: [{
-                    name: 'Palabras | 📝',
-                    value: words.join(', ')
+                    },
+                    color: 0x00ff00,
+                    description: models.utils.statusError('success', 'han sido establecidas palabras en la blacklist del server de manera correcta'),
+                    fields: [{
+                        name: 'Palabras | 📝',
+                        value: words.join(', ')
+                    }]
                 }]
             })
         }
