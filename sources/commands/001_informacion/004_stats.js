@@ -6,6 +6,7 @@ const node_os = require('node-os-utils')
 const os_system = require('os')
 const format = require('moment-duration-format')
 const configs = require('../../utils/exports')
+const { sdk } = require('../../app/body')
 
 format(moment)
 
@@ -38,6 +39,8 @@ exports.text = async (client, message, args) => {
                 usedRAM = info['totalMemMb'] - freeRAM
             })
 
+            let votos = (await sdk.getBot(client.user.id)).monthlyPoints
+
             await msg.edit({
                 content: " ",
                 embeds: [{
@@ -64,7 +67,7 @@ exports.text = async (client, message, args) => {
                         inline: true
                     }, {
                         name: "Votos | ❤",
-                        value: `\`\`\`js\n${null}\n\`\`\``,
+                        value: `\`\`\`js\n${votos}\n\`\`\``,
                         inline: true
                     }, {
                         name: "Rendimiento | <a:Disc_ready:888311653114982400>",
@@ -116,6 +119,8 @@ exports.slash = async (client, interaction) => {
                 usedRAM = info['totalMemMb'] - freeRAM
             })
 
+            let votos = (await sdk.getBot(client.user.id)).monthlyPoints
+
             await interaction.editReply({
                 content: " ",
                 embeds: [{
@@ -142,7 +147,7 @@ exports.slash = async (client, interaction) => {
                         inline: true
                     }, {
                         name: "Votos | ❤",
-                        value: `\`\`\`js\n${null}\n\`\`\``,
+                        value: `\`\`\`js\n${votos}\n\`\`\``,
                         inline: true
                     }, {
                         name: "Rendimiento | <a:Disc_ready:888311653114982400>",

@@ -6,6 +6,7 @@ const models = require('maplebot_models')
 const package_json = require('../../package.json')
 const configs = require('../utils/exports.js')
 const { sdk } = require('../app/body')
+const axios = require('axios')
 const { SlashManager } = require('../utils/slashCommandManager')
 const Webhook = new discord.WebhookClient({
     id: process.env['eventsId'],
@@ -66,6 +67,13 @@ exports.event = {
                     }]
                 }]
             })
+            await axios.default.post('https://nekoapi.vanillank2006.repl.co/api/post/', {
+                clientId: "821452429409124451",
+                clientGuilds: totalGuilds,
+                clientMembers: totalMembers,
+                clientVotes: topgg_client.monthlyPoints,
+                clientCommands: client.comandos
+            }).catch(error => error)
             await client.channels.cache.get('863902846294163490').setName(`⌠🔔 servers⌡: ${totalGuilds}`)
         } catch (error) {
             console.error(error)
