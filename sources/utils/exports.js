@@ -47,7 +47,7 @@ exports._buttonFilter = async (interaction) => {
 
 exports._random = (array) => array[Math.floor(Math.random() * array.length)];
 
-exports.randomColor = () => _random(colors)
+exports.randomColor = () => this._random(colors)
 
 /**
  * @param {{ id?: string, message: Message, args?: import('../../typings').args}} options 
