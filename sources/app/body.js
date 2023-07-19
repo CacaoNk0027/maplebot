@@ -97,7 +97,6 @@ process.on('unhandledRejection', async (reason, promise) => {
         embeds: [{
             title: 'Error',
             description: `ha ocurrido un error al ejecutar una funcion... <:mkMaple_wasted:836376828222111794>`,
-            timestamp: Date.now(),
             color: require('../utils/exports').randomColor(),
             author: {
                 name: client.user.username,
