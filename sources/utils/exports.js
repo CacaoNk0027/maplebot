@@ -453,7 +453,6 @@ const menuhelpformat = (array) => {
 }
 
 exports.helpcommands = (prefix, comandos, category) => {
-    console.log(comandos)
     return comandos.filter(c => c.help.category == category).size <= 0 ? `\`\`\`\nEsta categoria no tiene comandos registrados\npero no te preocupes, pronto habran nuevos comandos :3\n\`\`\``: menuhelpformat(comandos.filter((c) => c.help.category == category).map((c) => { 
         return { 
             nombre: c.help.name, 

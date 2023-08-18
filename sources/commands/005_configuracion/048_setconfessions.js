@@ -111,8 +111,8 @@ exports.slash = async (client, interaction) => {
 
 
 exports.help = {
-    name: 'setconfessions',
-    alias: ['setconfess', 'confesiones'],
+    name: 'setconfess',
+    alias: ['setconfessions', 'confesiones'],
     id: '048',
     description: 'establece un sistema de confesiones',
     category: 'configuracion',

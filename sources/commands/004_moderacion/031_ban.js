@@ -25,43 +25,40 @@ exports.text = async (client, message, args) => {
                 description: models.utils.statusError('error', `el parametro <usuario> es requerido`),
                 color: 0xff0000
             }]
+        }); 
+        let { member, memberIsAuthor } = await config.fetchMember({ message: message, args: args });
+        if (!member) return await message.reply({
+            embeds: [{
+                description: models.utils.statusError('error', `no se ha podido encontrar al miembro mencionado`),
+                color: 0xff0000
+            }]
         });
-        let member_; try {
-            member_ = (await message.guild.members.fetch(args[0].match(/\d{18}/g)[0]))
-        } catch (error) {
-            return await message.reply({
-                embeds: [{
-                    description: models.utils.statusError('error', `El parametro <usuario> no corresponde a lo solicitado o no se puede encontrar al usuario mencionado`),
-                    color: 0xff0000
-                }]
-            })
-        }
-        if(member_.user.id == client.user.id) return await message.reply({
+        if(member.user.id == client.user.id) return await message.reply({
             embeds: [{
                 description: models.utils.statusError('rolplayDanger', `pero.. por que me quieres banear? he hecho algo malo? dicelo a mi creador!`),
                 color: 0xff0000
             }]
-        }); else if(member_.user.id == message.author.id) return await message.reply({
+        }); else if (memberIsAuthor()) return await message.reply({
             embeds: [{
-                description: models.utils.statusError('error', `No puedes banearte a ti mismo, si quieres irte del server solo hazlo y ya`),
+                description: models.utils.statusError('error', `no puedes banearte a ti mismo`),
                 color: 0xff0000
             }]
-        }); else if(member_.id == message.guild.ownerId) return await message.reply({
+        }); else if(member.id == message.guild.ownerId) return await message.reply({
             embeds: [{
                 description: models.utils.statusError('error', `No puedes banear al owner del servidor`),
                 color: 0xff0000
             }]
-        }); else if((await message.guild.members.fetchMe()).roles.highest.comparePositionTo(member_.roles.highest) <= 0) return await message.reply({
+        }); else if((await message.guild.members.fetchMe()).roles.highest.comparePositionTo(member.roles.highest) <= 0) return await message.reply({
             embeds: [{
                 description: models.utils.statusError('error', `El usuario que haz mencionado tiene roles de mayor o igual jerarquia al mio`),
                 color: 0xff0000
             }]
-        }); else if(message.member.roles.highest.comparePositionTo(member_.roles.highest) <= 0) return await message.reply({
+        }); else if(message.member.roles.highest.comparePositionTo(member.roles.highest) <= 0) return await message.reply({
             embeds: [{
                 description: models.utils.statusError('error', `El usuario que haz mencionado tiene roles de mayor o igual jerarquia a los tuyos`),
                 color: 0xff0000
             }]
-        }); else if((await message.guild.bans.fetch()).has(member_.user.id)) return await message.reply({
+        }); else if((await message.guild.bans.fetch()).has(member.user.id)) return await message.reply({
             embeds: [{
                 description: models.utils.statusError('error', `El usuario que haz mencionado ya esta baneado del servidor`),
                 color: 0xff0000
@@ -74,11 +71,11 @@ exports.text = async (client, message, args) => {
                     color: 0xff0000
                 }]
             }); else reason = `${message.author.username}: ${reason}`;
-            await message.guild.members.ban(member_.user.id, { reason: reason }).catch(async err => await models.utils.error(message, err))
+            await message.guild.members.ban(member.user.id, { reason: reason }).catch(async err => await models.utils.error(message, err))
             await message.delete().catch(err => err);
             return await message.reply({
                 embeds: [{
-                    description: models.utils.statusError('success', `el usuario **${member_.user.username}** fue baneado de **${message.guild.name}**`),
+                    description: models.utils.statusError('success', `el usuario **${member.user.username}** fue baneado de **${message.guild.name}**`),
                     fields: [{
                         name: "Razón",
                         value: reason

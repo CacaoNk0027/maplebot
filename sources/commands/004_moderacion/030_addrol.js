@@ -26,32 +26,29 @@ exports.text = async (client, message, args) => {
                 color: 0xff0000
             }]
         });
-        let member_; try {
-            member_ = (await message.guild.members.fetch(args[0].match(/\d{18}/g)[0]))
-        } catch (error) {
-            return await message.reply({
-                embeds: [{
-                    description: models.utils.statusError('error', `El parametro <usuario> no corresponde a lo solicitado o no se puede encontrar al usuario mencionado`),
-                    color: 0xff0000
-                }]
-            })
-        }
-        if (member_.user.id == client.user.id) return await message.reply({
+        let { member, memberIsAuthor } = await config.fetchMember({ message: message, args: args });
+        if (!member) return await message.reply({
+            embeds: [{
+                description: models.utils.statusError('error', `no se ha podido encontrar al miembro mencionado`),
+                color: 0xff0000
+            }]
+        });
+        if (member.user.id == client.user.id) return await message.reply({
             embeds: [{
                 description: models.utils.statusError('error', `No puedo añadirme roles asi yo sola`),
                 color: 0xff0000
             }]
-        }); else if (member_.user.id == message.author.id) return await message.reply({
+        }); else if (memberIsAuthor()) return await message.reply({
             embeds: [{
                 description: models.utils.statusError('error', `No puedes añadirte roles a ti mismo`),
                 color: 0xff0000
             }]
-        }); else if (member_.id == message.guild.ownerId) return await message.reply({
+        }); else if (member.id == message.guild.ownerId) return await message.reply({
             embeds: [{
                 description: models.utils.statusError('error', `No puedes añadir roles al owner del servidor`),
                 color: 0xff0000
             }]
-        }); else if (message.member.roles.highest.comparePositionTo(member_.roles.highest) <= 0) return await message.reply({
+        }); else if (message.member.roles.highest.comparePositionTo(member.roles.highest) <= 0) return await message.reply({
             embeds: [{
                 description: models.utils.statusError('error', `El usuario que haz mencionado tiene roles de mayor o igual jerarquia a los tuyos`),
                 color: 0xff0000
@@ -92,16 +89,16 @@ exports.text = async (client, message, args) => {
                 color: 0xff0000
             }]
         }); else {
-            if (member_.roles.cache.has(role_.id)) return await message.reply({
+            if (member.roles.cache.has(role_.id)) return await message.reply({
                 embeds: [{
                     description: models.utils.statusError('error', `el usuario ya cuenta con el rol mencionado`),
                     color: 0xff0000
                 }]
             }); else {
-                await member_.roles.add(role_.id).catch(async err => await models.utils.error(message, err))
+                await member.roles.add(role_.id).catch(async err => await models.utils.error(message, err))
                 return await message.reply({
                     embeds: [{
-                        description: models.utils.statusError('success', `Los roles de **${member_.user.username}** fueron actualizados correctamente`),
+                        description: models.utils.statusError('success', `Los roles de **${member.user.username}** fueron actualizados correctamente`),
                         color: 0x00ff00,
                         fields: [{
                             name: "Rol añadido",
