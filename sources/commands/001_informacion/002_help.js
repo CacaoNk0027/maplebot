@@ -4,6 +4,7 @@ const discord = require('discord.js')
 const configs = require('../../utils/exports')
 const models = require('maplebot_models')
 const ms = require('ms')
+const { permissions } = require('../../utils/exports')
 
 /**
  * exportacion del comando en text command
