@@ -13,7 +13,10 @@ const ms = require('ms')
 exports.text = async (client, message, args) => {
     try {
         await message.reply({
-            content: `> Pong! :ping_pong:\n> shard: \`${Math.floor(client.ws.ping).toString()} ms\`\n> mensajes: \`${(Date.now() - message.createdTimestamp).toString()} ms\``
+            embeds: [{
+                title: "Pong! :ping_pong:",
+                description: `<:007:1012749027508498512> shard: \`${Math.floor(client.ws.ping).toString()} ms\`\n🌐 mensajes \`${(Date.now() - message.createdTimestamp).toString()} ms\``
+            }]
         })
     } catch (error) {
         await models.utils.error(message, error); console.error(error);
@@ -28,8 +31,11 @@ exports.text = async (client, message, args) => {
 exports.slash = async (client, interaction) => {
     try {
         await interaction.reply({
-            content: `> Pong! :ping_pong:\n> shard: \`${Math.floor(client.ws.ping).toString()} ms\`\n> mensajes: \`${(Date.now() - interaction.createdTimestamp).toString()} ms\``
-        });
+            embeds: [{
+                title: "Pong! :ping_pong:",
+                description: `<:007:1012749027508498512> shard: \`${Math.floor(client.ws.ping).toString()} ms\`\n🌐 mensajes \`${(Date.now() - interaction.createdTimestamp).toString()} ms\``
+            }]
+        })
     } catch (error) {
         await interactionErrorMsg(interaction, error);
     }
