@@ -15,7 +15,8 @@ exports.text = async (client, message, args) => {
         await message.reply({
             embeds: [{
                 title: "Pong! :ping_pong:",
-                description: `<:007:1012749027508498512> shard: \`${Math.floor(client.ws.ping).toString()} ms\`\n🌐 mensajes \`${(Date.now() - message.createdTimestamp).toString()} ms\``
+                description: `<:007:1012749027508498512> shard: \`${Math.floor(client.ws.ping).toString()} ms\`\n🌐 mensajes \`${(Date.now() - message.createdTimestamp).toString()} ms\``,
+                color: 0xaefcf9
             }]
         })
     } catch (error) {
@@ -33,7 +34,8 @@ exports.slash = async (client, interaction) => {
         await interaction.reply({
             embeds: [{
                 title: "Pong! :ping_pong:",
-                description: `<:007:1012749027508498512> shard: \`${Math.floor(client.ws.ping).toString()} ms\`\n🌐 mensajes \`${(Date.now() - interaction.createdTimestamp).toString()} ms\``
+                description: `<:007:1012749027508498512> shard: \`${Math.floor(client.ws.ping).toString()} ms\`\n🌐 mensajes \`${(Date.now() - interaction.createdTimestamp).toString()} ms\``,
+                color: 0xaefcf9
             }]
         })
     } catch (error) {
