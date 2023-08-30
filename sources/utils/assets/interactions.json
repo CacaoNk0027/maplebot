@@ -435,6 +435,48 @@
             }
         ]
 
-    }
-
+    }, 
+    {
+        "name": "user",
+        "description": "Gestiona usuarios",
+        "type": 1,
+        "options": [
+          {
+            "name": "info",
+            "description": "Muestra información del usuario",
+            "type": 1,
+            "options": [
+              {
+                "name": "username",
+                "description": "Escribe el nombre de un usuario",
+                "type": 6
+              }
+            ]
+          },
+          {
+            "name": "avatar",
+            "description": "Muestra el avatar del usuario",
+            "type": 1,
+            "options": [
+              {
+                "name": "username",
+                "description": "Escribe el nombre de un usuario",
+                "type": 6
+              }
+            ]
+          },
+          {
+            "name": "banner",
+            "description": "Muestra el banner del usuario",
+            "type": 1,
+            "options": [
+              {
+                "name": "username",
+                "description": "Escribe el nombre de un usuario",
+                "type": 6
+              }
+            ]
+          }
+        ]
+      }
 ]
