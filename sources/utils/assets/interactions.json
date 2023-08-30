@@ -421,5 +421,20 @@
         "name": "uptime",
         "type": 1,
         "description": "muestra el tiempo de actividad del bot"
+    },
+    { 
+        "name": "say", 
+        "type": 1,
+        "description": "hazme hablar por ti OWO",
+        "options": [
+            {
+                "name": "mensaje",
+                "type": 3,
+                "description": "mensaje a repetir",
+                "required": true
+            }
+        ]
+
     }
+
 ]
