@@ -55,11 +55,19 @@ exports.slash = async (client, interaction) => {
         }
         if (UrlCheck(m) === true) {
             if (!interaction.member.permissions.has(discord.PermissionFlagsBits.Administrator)) {
-                return interaction.reply({ content: "¡No se permiten enlaces! | ¡Solo los administradores pueden usar enlaces!", ephemeral: true });
+                return interaction.reply({ embeds: [{
+                    description: models.utils.statusError('error', 'No se permiten enlaces... Solo los administradores pueden colocarlos'),
+                    color: 0xff0000 
+                }], 
+                ephemeral: true 
+            });
             }
         }
         await interaction.channel.send(m);
-        interaction.reply({ content: "Ya se envio la repusta del comando say!", ephemeral: true });
+        interaction.reply({ embeds: [{
+            description: models.utils.statusError('success', 'Ya se envio el mensaje'),
+            color: 0x00ff00
+        }], ephemeral: true });
     } catch (error) {
         console.error(error)
         await configs.interactionErrorMsg(interaction, error)

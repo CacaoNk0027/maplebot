@@ -425,7 +425,7 @@
     { 
         "name": "say", 
         "type": 1,
-        "description": "hazme hablar por ti OWO",
+        "description": "hazme hablar por ti OwO",
         "options": [
             {
                 "name": "mensaje",
