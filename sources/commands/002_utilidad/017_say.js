@@ -33,18 +33,39 @@ exports.text = async (client, message, args) => {
     }
 }
 
+var pattern = new RegExp(
+    "^(https?:\\/\\/)?" +
+    "((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|" +
+    "((\\d{1,3}\\.){3}\\d{1,3}))" +
+    "(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*" +
+    "(\\?[;&a-z\\d%_.~+=-]*)?" +
+    "(\\#[-a-z\\d_]*)?$",
+    "i"
+);
 /**
  * @param {discord.Client} client
- * @param {discord.CommandInteraction} interaction
+ * @param {discord.ChatInputCommandInteraction} interaction
  */
 exports.slash = async (client, interaction) => {
+    const { options } = interaction;
     try {
-        
+        let m = options.getString("mensaje")
+        function UrlCheck(str) {
+            return pattern.test(str);
+        }
+        if (UrlCheck(m) === true) {
+            if (!interaction.member.permissions.has(discord.PermissionFlagsBits.Administrator)) {
+                return interaction.reply({ content: "¡No se permiten enlaces! | ¡Solo los administradores pueden usar enlaces!", ephemeral: true });
+            }
+        }
+        await interaction.channel.send(m);
+        interaction.reply({ content: "Ya se envio la repusta del comando say!", ephemeral: true });
     } catch (error) {
         console.error(error)
         await configs.interactionErrorMsg(interaction, error)
     }
 }
+
 
 exports.help = {
     name: 'say',
