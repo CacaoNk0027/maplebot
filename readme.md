@@ -25,5 +25,5 @@ presente abajo de todo este texto asi como otros links que te redireccionaran a 
 </p>
 
 ## Ayudantes
-@CacaoNk0027
-@Pandirel
+* @CacaoNk0027
+* <a href="https://github.com/Pandirel">@Pandirel</a>
