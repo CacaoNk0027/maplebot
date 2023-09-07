@@ -58,22 +58,22 @@ exports.text = async (client, message, args) => {
 
 /**
  * @param {discord.Client} client 
- * @param {discord.ChatInputCommandInteraction} interaction 
+ * @param {discord.CommandInteraction} interaction 
  */
 exports.slash = async (client, interaction) => {
     try {
         const { options, user, guild, member } = interaction;
 
-        const target = options.getSubcommand("user");
+        const target = options.getSubcommand();
         switch (target) {
             case "info": {
-                const target = options.getMember("username")
+                const target = options.getMember("usuario")
                 if(target) {
                    await interaction.reply({
                         embeds: [{
                             author: {
                                 name: target.displayName,
-                                icon_url: target.displayAvatarURL()
+                                icon_url: target.user.avatarURL({ forceStatic: false })
                             },
                             color: user.accentColor,
                             description: models.menus.users.user(target),
@@ -91,7 +91,7 @@ exports.slash = async (client, interaction) => {
                                 inline: false
                             }],
                             thumbnail: {
-                                url: target.displayAvatarURL()
+                                url: target.user.avatarURL({ forceStatic: false })
                             }
                         }]
                     })
@@ -100,7 +100,7 @@ exports.slash = async (client, interaction) => {
                         embeds: [{
                             author: {
                                 name: member.user.username,
-                                icon_url: member.displayAvatarURL({ forceStatic: false })
+                                icon_url: member.user.avatarURL({ forceStatic: false })
                             },
                             color: user.accentColor,
                             description: models.menus.users.user(member),
@@ -114,11 +114,11 @@ exports.slash = async (client, interaction) => {
                                 inline: true
                             }, {
                                 name: "Roles",
-                                value: member.roles.cache.size >= 20 ? "Demasiados roles >~<\"": (member.roles.cache.filter(m => m.name !== "@everyone").size <= 0 ? "El usuario no cuenta con roles...": member.roles.cache.map(rol => `<@&${rol.id}>`).filter(m => m !== `<@&${message.guild.roles.everyone.id}>`).join(' ')),
+                                value: member.roles.cache.size >= 20 ? "Demasiados roles >~<\"": (member.roles.cache.filter(m => m.name !== "@everyone").size <= 0 ? "El usuario no cuenta con roles...": member.roles.cache.map(rol => `<@&${rol.id}>`).filter(m => m !== `<@&${interaction.guild.roles.everyone.id}>`).join(' ')),
                                 inline: false
                             }],
                             thumbnail: {
-                                url: member.displayAvatarURL({})
+                                url: member.user.avatarURL({ forceStatic: false })
                             }
                         }]
                  })
@@ -126,35 +126,35 @@ exports.slash = async (client, interaction) => {
             }
             break;
             case "avatar": {
-                const target = options.getMember("username")
+                const target = options.getMember("usuario")
                 if (target){
                     if (target){
                     interaction.reply({ embeds: [{
                         author: {
-                            name: ` Avatar de ${target.displayName}`,
-                            icon_url: target.displayAvatarURL()
+                            name: ` Avatar de ${target.user.username}`,
+                            icon_url: target.user.avatarURL({ forceStatic: false })
                         }, 
                         image: {
-                            url: target.displayAvatarURL({ dynamic: true, size: 512})
+                            url: target.user.avatarURL({ forceStatic: false })
                         },
                         footer: {
-                            text: `${target.displayName}`,
-                            icon_url: target.displayAvatarURL()
+                            text: `${target.user.username}`,
+                            icon_url: target.user.avatarURL({ forceStatic: false })
                         }
 
                     }] })
                     } else {
                         interaction.reply({ embeds: [{
                             author: {
-                                name: ` Avatar de ${member.displayName}`,
-                                icon_url: member.displayAvatarURL()
+                                name: ` Avatar de ${member.user.username}`,
+                                icon_url: member.user.avatarURL({ forceStatic: false })
                             }, 
                             image: {
                                 url: member.displayAvatarURL({ dynamic: true, size: 512})
                             },
                             footer: {
-                                text: `${target.displayName}`,
-                                icon_url: target.displayAvatarURL()
+                                text: `${target.user.username}`,
+                                icon_url: target.user.avatarURL({ forceStatic: false })
                             }
     
                         }] })
@@ -164,7 +164,7 @@ exports.slash = async (client, interaction) => {
             }
             break;
             case "banner": {
-                const target = options.getMember("username")
+                const target = options.getMember("usuario")
                 if (target){
                     await target.user.fetch()
                     const bannerURL = target.user.bannerURL({ format: "png", size: 4096 }) 
