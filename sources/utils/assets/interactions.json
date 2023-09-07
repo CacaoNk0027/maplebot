@@ -422,8 +422,8 @@
         "type": 1,
         "description": "muestra el tiempo de actividad del bot"
     },
-    { 
-        "name": "say", 
+    {
+        "name": "say",
         "type": 1,
         "description": "hazme hablar por ti OwO",
         "options": [
@@ -434,49 +434,48 @@
                 "required": true
             }
         ]
-
-    }, 
+    },
     {
         "name": "user",
-        "description": "Gestiona usuarios",
+        "description": "muestra cosas sobre usuarios",
         "type": 1,
         "options": [
-          {
-            "name": "info",
-            "description": "Muestra información del usuario",
-            "type": 1,
-            "options": [
-              {
-                "name": "username",
-                "description": "Escribe el nombre de un usuario",
-                "type": 6
-              }
-            ]
-          },
-          {
-            "name": "avatar",
-            "description": "Muestra el avatar del usuario",
-            "type": 1,
-            "options": [
-              {
-                "name": "username",
-                "description": "Escribe el nombre de un usuario",
-                "type": 6
-              }
-            ]
-          },
-          {
-            "name": "banner",
-            "description": "Muestra el banner del usuario",
-            "type": 1,
-            "options": [
-              {
-                "name": "username",
-                "description": "Escribe el nombre de un usuario",
-                "type": 6
-              }
-            ]
-          }
+            {
+                "name": "info",
+                "description": "Información del usuario",
+                "type": 1,
+                "options": [
+                    {
+                        "name": "username",
+                        "description": "Escribe el nombre de un usuario",
+                        "type": 6
+                    }
+                ]
+            },
+            {
+                "name": "avatar",
+                "description": "Avatar del usuario",
+                "type": 1,
+                "options": [
+                    {
+                        "name": "username",
+                        "description": "Escribe el nombre de un usuario",
+                        "type": 6
+                    }
+                ]
+            },
+            {
+                "name": "banner",
+                "description": "Banner del usuario",
+                "type": 1,
+                "options": [
+                    {
+                        "name": "username",
+                        "description": "Escribe el nombre de un usuario",
+                        "type": 6
+                    }
+                ]
+            }
         ]
-      }
+    }
 ]
