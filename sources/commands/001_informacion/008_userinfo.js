@@ -127,40 +127,79 @@ exports.slash = async (client, interaction) => {
             break;
             case "avatar": {
                 const target = options.getMember("usuario")
-                if (target){
-                    if (target){
-                    interaction.reply({ embeds: [{
-                        author: {
-                            name: ` Avatar de ${target.user.username}`,
-                            icon_url: target.user.avatarURL({ forceStatic: false })
-                        }, 
-                        image: {
-                            url: target.user.avatarURL({ forceStatic: false })
-                        },
-                        footer: {
-                            text: `${target.user.username}`,
-                            icon_url: target.user.avatarURL({ forceStatic: false })
-                        }
-
-                    }] })
-                    } else {
-                        interaction.reply({ embeds: [{
-                            author: {
-                                name: ` Avatar de ${member.user.username}`,
-                                icon_url: member.user.avatarURL({ forceStatic: false })
-                            }, 
-                            image: {
-                                url: member.displayAvatarURL({ dynamic: true, size: 512})
-                            },
-                            footer: {
-                                text: `${target.user.username}`,
-                                icon_url: target.user.avatarURL({ forceStatic: false })
-                            }
-    
-                        }] })
+                const userIsAuthor = () => target.user.id == interaction.user.id ? true : false;
+                const memberIsAuthor = () => target.id == interaction.member.id ? true : false;
+                let embeds = [{
+                    title: userIsAuthor() ? 'Tu avatar': `Avatar de ${target.user.username}`,
+                    description: `[Avatar URL](${target.user.avatarURL({ forceStatic: false, size: 2048 })})`,
+                    color: configs.randomColor(),
+                    author: {
+                        name: target.user.username,
+                        icon_url: target.user.avatarURL({ forceStatic: false })
+                    },
+                    image: {
+                        url: target.user.avatarURL({ forceStatic: false, size: 2048 })
                     }
-                }
-
+                }]
+                if (target !== null && target.avatar !== null) embeds.push({
+                    title: memberIsAuthor() ? 'Tu avatar de servidor' : `Avatar de ${target.user.username}`,
+                    description: `[GuildAvatar URL](${target.avatarURL({ forceStatic: false, size: 2048 })})`,
+                    color: configs.randomColor(),
+                    author: {
+                        name: target.user.username,
+                        icon_url: target.avatarURL({ forceStatic: false })
+                    },
+                    image: {
+                        url: target.avatarURL({ forceStatic: false, size: 2048 })
+                    }
+                });
+                await interaction.reply({
+                    embeds: [embeds[0]],
+                    components: [{
+                        type: discord.ComponentType.ActionRow,
+                        components: embeds.length > 1 ? [{
+                            type: 2,
+                            custom_id: "userAvatar",
+                            style: 1,
+                            label: "Principal",
+                            disabled: true
+                        }, {
+                            type: 2,
+                            custom_id: "memberAvatar",
+                            style: 2,
+                            label: "Servidor",
+                            disabled: false
+                        }] : [{
+                            type: 2,
+                            custom_id: "avatar_user",
+                            style: 1,
+                            label: "Principal",
+                            disabled: true
+                        }]
+                    }]
+                })
+                client.avatars.set(interaction.id, embeds)
+                setTimeout(async () => {
+                    embeds.length > 1 ? await interaction.editReply({
+                        components: [{
+                            type: 1,
+                            components: [{
+                                type: 2,
+                                custom_id: "userAvatar",
+                                style: 2,
+                                label: "Principal",
+                                disabled: true
+                            }, {
+                                type: 2,
+                                custom_id: "memberAvatar",
+                                style: 2,
+                                label: "Servidor",
+                                disabled: true
+                            }]
+                        }]
+                    }): () => {};
+                    client.avatars.delete(interaction.id)
+                }, ms('30s'));
             }
             break;
             case "banner": {
