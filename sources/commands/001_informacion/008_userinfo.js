@@ -64,7 +64,7 @@ exports.slash = async (client, interaction) => {
     try {
         const { options, user, guild, member } = interaction;
 
-        const target = options.getSubcommand("user");
+        const target = options.getSubcommand();
         switch (target) {
             case "info": {
                 const target = options.getMember("username")
@@ -219,8 +219,8 @@ exports.slash = async (client, interaction) => {
 }
 
 exports.help = {
-    name: 'userinfo',
-    alias: ['user', 'usuario'],
+    name: 'user',
+    alias: ['userinfo', 'usuario'],
     id: '008',
     description: 'Muestra informacion sobre un usuario del servidor en el que estas',
     category: 'informacion',
