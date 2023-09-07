@@ -72,18 +72,18 @@ exports.slash = async (client, interaction) => {
                    await interaction.reply({
                         embeds: [{
                             author: {
-                                name: target.user.username,
+                                name: target.displayName,
                                 icon_url: target.displayAvatarURL()
                             },
                             color: user.accentColor,
-                            description: models.menus.users.user(member),
+                            description: models.menus.users.user(target),
                             fields: [{
                                 name: "Fecha de ingreso..",
-                                value: models.menus.users.dates(member),
+                                value: models.menus.users.dates(target),
                                 inline: false
                             }, {
                                 name: "General", 
-                                value: (await models.menus.users.general(member)),
+                                value: (await models.menus.users.general(target)),
                                 inline: true
                             }, {
                                 name: "Roles",
@@ -100,7 +100,7 @@ exports.slash = async (client, interaction) => {
                         embeds: [{
                             author: {
                                 name: member.user.username,
-                                icon_url: member.user.avatarURL({ forceStatic: false })
+                                icon_url: member.displayAvatarURL({ forceStatic: false })
                             },
                             color: user.accentColor,
                             description: models.menus.users.user(member),
@@ -118,7 +118,7 @@ exports.slash = async (client, interaction) => {
                                 inline: false
                             }],
                             thumbnail: {
-                                url: member.user.avatarURL({ forceStatic: false })
+                                url: member.displayAvatarURL({})
                             }
                         }]
                  })
@@ -129,21 +129,35 @@ exports.slash = async (client, interaction) => {
                 const target = options.getMember("username")
                 if (target){
                     if (target){
-                        const Responde = new discord.EmbedBuilder()
-                        .setColor('Random')
-                        .setAuthor({ name: `Avatar de ${target.displayName}` })
-                        .setImage(target.displayAvatarURL({ dynamic: true, size: 512 }))
-                        .setFooter({ text: `${target.displayName}`, iconURL: `${target.displayAvatarURL({})}` })
+                    interaction.reply({ embeds: [{
+                        author: {
+                            name: ` Avatar de ${target.displayName}`,
+                            icon_url: target.displayAvatarURL()
+                        }, 
+                        image: {
+                            url: target.displayAvatarURL({ dynamic: true, size: 512})
+                        },
+                        footer: {
+                            text: `${target.displayName}`,
+                            icon_url: target.displayAvatarURL()
+                        }
 
-                    interaction.reply({ embeds: [Responde], ephemeral: true })
+                    }] })
                     } else {
-                        const Responde = new discord.EmbedBuilder()
-                        .setColor('Random')
-                        .setAuthor({ name: `Avatar de ${member.displayName}` })
-                        .setImage(user.displayAvatarURL({ dynamic: true, size: 512 }))
-                        .setFooter({ text: `${member.displayName}`, iconURL: `${user.displayAvatarURL({})}` })
-
-                    interaction.reply({ embeds: [Responde], ephemeral: true })
+                        interaction.reply({ embeds: [{
+                            author: {
+                                name: ` Avatar de ${member.displayName}`,
+                                icon_url: member.displayAvatarURL()
+                            }, 
+                            image: {
+                                url: member.displayAvatarURL({ dynamic: true, size: 512})
+                            },
+                            footer: {
+                                text: `${target.displayName}`,
+                                icon_url: target.displayAvatarURL()
+                            }
+    
+                        }] })
                     }
                 }
 
@@ -153,33 +167,45 @@ exports.slash = async (client, interaction) => {
                 const target = options.getMember("username")
                 if (target){
                     await target.user.fetch()
-                    const bannerURL = target.user.bannerURL({ format: "png", size: 4096 })
-                    const embed = new EmbedBuilder()
-                        .setTitle(`Banner de ${target.displayName}`)
-                        .setColor('Random')
-                        
-                        .setFooter({ text: `${target.displayName}`, iconURL: `${target.displayAvatarURL({})}` });
-                        
+                    const bannerURL = target.user.bannerURL({ format: "png", size: 4096 }) 
                         if(bannerURL){
-                            embed.setImage(bannerURL)
-                            interaction.reply({ embeds: [embed] });
+                            interaction.reply({ embeds: [
+                                {
+                                   title: `Banner de ${target.displayName}`,
+                                   url: bannerURL,
+                                   image: {
+                                    url: bannerURL
+                                   },
+                                   footer: {
+                                    text: `${target.displayName}`,
+                                    icon_url: `${target.displayAvatarURL({})}`
+                                   }  
+                                }
+                            ] });
                         } else {
-                            interaction.reply({ content: `${target.displayName} no tiene banner.`, ephemeral: true });
+                            interaction.reply({ content: `${target.displayName} no tiene banner.`});
                         }
                        
                 } else {
                     await member.user.fetch()
-                    const bannerURL = member.user.bannerURL({ format: "png", size: 4096 })
-                    const embed = new EmbedBuilder()
-                    .setTitle(`Banner de ${member.displayName}`)
-                        .setColor('Random')
-                        .setFooter({ text: `${member.displayName}`, iconURL: `${member.displayAvatarURL({})}` });
-                        if (bannerURL) {
-                            embed.setImage(bannerURL);
-                            interaction.reply({ embeds: [embed] });
-                        } else {
-                            interaction.reply({ content: `${member.displayName} no tienes banner.`, ephemeral: true });
-                        }
+                    const bannerURL = member.user.bannerURL({ format: "png", size: 4096 }) 
+                    if(bannerURL){
+                        interaction.reply({ embeds: [
+                            {
+                               title: `Banner de ${member.displayName}`,
+                               url: bannerURL,
+                               image: {
+                                url: bannerURL
+                               },
+                               footer: {
+                                text: `${member.displayName}`,
+                                icon_url: `${member.displayAvatarURL({})}`
+                               }  
+                            }
+                        ] });
+                    } else {
+                        interaction.reply({ content: `${member.displayName} no tiene banner.`});
+                    }
                 }
             }
             default:
