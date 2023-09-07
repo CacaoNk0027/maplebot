@@ -126,7 +126,7 @@ exports.slash = async (client, interaction) => {
             }
             break;
             case "avatar": {
-                const target = options.getMember("usuario")
+                const target = options.getMember("usuario") ? options.getMember('usuario'): interaction.member
                 const userIsAuthor = () => target.user.id == interaction.user.id ? true : false;
                 const memberIsAuthor = () => target.id == interaction.member.id ? true : false;
                 let embeds = [{
