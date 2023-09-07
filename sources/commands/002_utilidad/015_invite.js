@@ -46,9 +46,48 @@ exports.text = async (client, message, args) => {
         await models.utils.error(message, error)
     }
 }
+/**
+ * 
+ * @param {discord.Client} client 
+ * @param {discord.ChatInputCommandInteraction} interaction 
+ */
 
 exports.slash = async (client, interaction) => {
+        
+    const {user, member } = interaction;
+   
     try {
+        await interaction.reply({
+            embeds: [{
+                author: {
+                    name: client.user.username,
+                    icon_url: client.user.avatarURL()
+                },
+                color: 0xfcf5d4,
+                description: `hola ${user.username}! estare muy agradecida contigo si me invitas a uno de tus servidores ^^\nadicionalmente si quieres puedes tambien unirte al servidor de soporte`,
+                title: `Links de invitaciones <:mkMaple_love:836387326552440902>`,
+                footer: {
+                    text: `Requerido por ${user.username}`,
+                    icon_url: user.displayAvatarURL()
+                }
+            }],
+            components: [{
+                type: 1,
+                components: [{
+                    type: 2,
+                    label: "Bot",
+                    emoji: '836387326552440902',
+                    url: `https://discord.com/oauth2/authorize?client_id=821452429409124451&scope=bot%20applications.commands&permissions=1238334041302`,
+                    style: 5
+                }, {
+                    type: 2,
+                    label: "Servidor",
+                    emoji: '888237981830357042',
+                    url: `https://discord.gg/PKGhvUKaQN`,
+                    style: 5
+                }]
+            }]
+        })
 
     } catch (error) {
         await config.interactionErrorMsg(interaction, error)
