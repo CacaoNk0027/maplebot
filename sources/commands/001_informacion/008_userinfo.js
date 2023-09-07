@@ -64,7 +64,7 @@ exports.slash = async (client, interaction) => {
     try {
         const { options, user, guild, member } = interaction;
 
-        const target = options.getSubcommand();
+        const target = options.getSubcommand("user");
         switch (target) {
             case "info": {
                 const target = options.getMember("username")
