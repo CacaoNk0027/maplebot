@@ -482,5 +482,10 @@
         "name": "invite", 
         "description": "Invitame a tus servidores :3",
         "type": 1
+    },
+    {
+        "name": "vote", 
+        "description": "Vota por mi en top.gg :3",
+        "type": 1
     }
 ]

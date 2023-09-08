@@ -46,10 +46,45 @@ exports.text = async (client, message, args) => {
         await models.utils.error(message, error)
     }
 }
-
+/**
+ * 
+ * @param {discord.Client} client 
+ * @param {discord.ChatInputCommandInteraction} interaction 
+ * @returns 
+ */
 exports.slash = async (client, interaction) => {
     try {
-
+        await interaction.reply({
+            embeds: [{
+                author: {
+                    name: client.user.username, 
+                    icon_url: client.user.avatarURL()
+                },
+                color: config.randomColor(),
+                description: `Hola ${interaction.user.username}! gracias por votar por mi en top.gg, puedes dejar una opinion sobre mi si gustas ^^\nadicionalmente si quieres puedes tambien unirte al servidor de soporte`,
+                title: `Votar <:mkMaple_love:836387326552440902>`,
+                footer: {
+                    text: `Requerido por ${interaction.user.username}`,
+                    icon_url: interaction.user.avatarURL({ forceStatic: false })
+                }
+            }],
+            components: [{
+                type: 1,
+                components: [{
+                    type: 2,
+                    label: "Votar",
+                    emoji: '836387326552440902',
+                    url: `https://top.gg/bot/821452429409124451/vote`,
+                    style: 5
+                }, {
+                    type: 2,
+                    label: "Servidor",
+                    emoji: '888237981830357042',
+                    url: `https://discord.gg/PKGhvUKaQN`,
+                    style: 5
+                }]
+            }]
+        })
     } catch (error) {
         await config.interactionErrorMsg(interaction, error)
     }
