@@ -247,50 +247,9 @@ exports.slash = async (client, interaction) => {
                         title: userIsAuthor() ? 'Tu banner': `Banner de ${user.username}`
                     }]
                 })
-                // if (target){
-                //     await target.user.fetch()
-                //     const bannerURL = target.user.bannerURL({ format: "png", size: 4096 }) 
-                //         if(bannerURL){
-                //             interaction.reply({ embeds: [
-                //                 {
-                //                    title: `Banner de ${target.displayName}`,
-                //                    url: bannerURL,
-                //                    image: {
-                //                     url: bannerURL
-                //                    },
-                //                    footer: {
-                //                     text: `${target.displayName}`,
-                //                     icon_url: `${target.displayAvatarURL({})}`
-                //                    }  
-                //                 }
-                //             ] });
-                //         } else {
-                //             interaction.reply({ content: `${target.displayName} no tiene banner.`});
-                //         }
-                       
-                // } else {
-                //     await member.user.fetch()
-                //     const bannerURL = member.user.bannerURL({ format: "png", size: 4096 }) 
-                //     if(bannerURL){
-                //         interaction.reply({ embeds: [
-                //             {
-                //                title: `Banner de ${member.displayName}`,
-                //                url: bannerURL,
-                //                image: {
-                //                 url: bannerURL
-                //                },
-                //                footer: {
-                //                 text: `${member.displayName}`,
-                //                 icon_url: `${member.displayAvatarURL({})}`
-                //                }  
-                //             }
-                //         ] });
-                //     } else {
-                //         interaction.reply({ content: `${member.displayName} no tiene banner.`});
-                //     }
-                // }
             }
             default:
+                await interaction.reply("que")
             break;
         }
         
