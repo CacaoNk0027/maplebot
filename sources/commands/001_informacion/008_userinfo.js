@@ -204,10 +204,8 @@ exports.slash = async (client, interaction) => {
             break;
             case "banner": {
                 let target = options.getMember("usuario") ? options.getMember('usuario'): interaction.member
-                let user = target.user;
+                let user = (await target.user.fetch());
                 const userIsAuthor = () => target.user.id == interaction.user.id ? true : false;
-                console.log(target)
-                console.log(user)
                 if (user.banner == null && user.accentColor == null) return await interaction.reply({
                     embeds: [{
                         description: models.utils.statusError('rolplayDanger', userIsAuthor() ? `Whoops... parece que no tienes un banner o un color personalizado` : `Whoops... ${user.username} no cuenta con un banner o un color personalizado`),
