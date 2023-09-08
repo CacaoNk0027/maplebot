@@ -64,10 +64,10 @@ exports.slash = async (client, interaction) => {
     try {
         const { options, user, guild, member } = interaction;
 
-        const target = options.getSubcommand();
-        switch (target) {
+        let subcommand = options.getSubcommand();
+        switch (subcommand) {
             case "info": {
-                const target = options.getMember("usuario")
+                let target = options.getMember("usuario")
                 if(target) {
                    await interaction.reply({
                         embeds: [{
@@ -126,7 +126,7 @@ exports.slash = async (client, interaction) => {
             }
             break;
             case "avatar": {
-                const target = options.getMember("usuario") ? options.getMember('usuario'): interaction.member
+                let target = options.getMember("usuario") ? options.getMember('usuario'): interaction.member
                 const userIsAuthor = () => target.user.id == interaction.user.id ? true : false;
                 const memberIsAuthor = () => target.id == interaction.member.id ? true : false;
                 let embeds = [{
@@ -203,49 +203,92 @@ exports.slash = async (client, interaction) => {
             }
             break;
             case "banner": {
-                const target = options.getMember("usuario")
-                if (target){
-                    await target.user.fetch()
-                    const bannerURL = target.user.bannerURL({ format: "png", size: 4096 }) 
-                        if(bannerURL){
-                            interaction.reply({ embeds: [
-                                {
-                                   title: `Banner de ${target.displayName}`,
-                                   url: bannerURL,
-                                   image: {
-                                    url: bannerURL
-                                   },
-                                   footer: {
-                                    text: `${target.displayName}`,
-                                    icon_url: `${target.displayAvatarURL({})}`
-                                   }  
-                                }
-                            ] });
-                        } else {
-                            interaction.reply({ content: `${target.displayName} no tiene banner.`});
-                        }
-                       
-                } else {
-                    await member.user.fetch()
-                    const bannerURL = member.user.bannerURL({ format: "png", size: 4096 }) 
-                    if(bannerURL){
-                        interaction.reply({ embeds: [
-                            {
-                               title: `Banner de ${member.displayName}`,
-                               url: bannerURL,
-                               image: {
-                                url: bannerURL
-                               },
-                               footer: {
-                                text: `${member.displayName}`,
-                                icon_url: `${member.displayAvatarURL({})}`
-                               }  
-                            }
-                        ] });
-                    } else {
-                        interaction.reply({ content: `${member.displayName} no tiene banner.`});
-                    }
+                let target = options.getMember("usuario") ? options.getMember('usuario'): interaction.member
+                let user = target.user;
+                const userIsAuthor = () => target.user.id == interaction.user.id ? true : false;
+                if (user.banner == null && user.accentColor == null) return await interaction.reply({
+                    embeds: [{
+                        description: models.utils.statusError('rolplayDanger', userIsAuthor() ? `Whoops... parece que no tienes un banner o un color personalizado` : `Whoops... ${user.username} no cuenta con un banner o un color personalizado`),
+                        color: 0xff0000
+                    }]
+                })
+                if (user.banner == null && user.accentColor) {
+                    let image = await configs.newColorImage(user.hexAccentColor)
+                    return await interaction.reply({
+                        embeds: [{
+                            author: {
+                                name: interaction.user.username,
+                                icon_url: interaction.user.avatarURL({ forceStatic: false })
+                            },
+                            color: user.accentColor,
+                            description: userIsAuthor() ? `Parece que no cuentas con un banner, pero si con un color personalizado` : `Parece que **${user.username}** no cuenta con un banner, pero si con un color personalizado`,
+                            footer: {
+                                text: `color ${user.hexAccentColor}`
+                            },
+                            image: {
+                                url: image.embedUrl
+                            },
+                            title: userIsAuthor() ? 'Tu color de banner': `Color de banner de ${user.username}`
+                        }],
+                        files: [image.attachment]
+                    })
                 }
+                if(user.banner) return await interaction.reply({
+                    embeds: [{
+                        author: {
+                            name: interaction.user.username,
+                            icon_url: interaction.user.avatarURL({ forceStatic: false })
+                        },
+                        color: 0xfcf5d4,
+                        description: `[Banner URL](${user.bannerURL({ forceStatic: false, size: 2048 })})`,
+                        image: {
+                            url: user.bannerURL({ forceStatic: false, size: 2048 })
+                        },
+                        title: userIsAuthor() ? 'Tu banner': `Banner de ${user.username}`
+                    }]
+                })
+                // if (target){
+                //     await target.user.fetch()
+                //     const bannerURL = target.user.bannerURL({ format: "png", size: 4096 }) 
+                //         if(bannerURL){
+                //             interaction.reply({ embeds: [
+                //                 {
+                //                    title: `Banner de ${target.displayName}`,
+                //                    url: bannerURL,
+                //                    image: {
+                //                     url: bannerURL
+                //                    },
+                //                    footer: {
+                //                     text: `${target.displayName}`,
+                //                     icon_url: `${target.displayAvatarURL({})}`
+                //                    }  
+                //                 }
+                //             ] });
+                //         } else {
+                //             interaction.reply({ content: `${target.displayName} no tiene banner.`});
+                //         }
+                       
+                // } else {
+                //     await member.user.fetch()
+                //     const bannerURL = member.user.bannerURL({ format: "png", size: 4096 }) 
+                //     if(bannerURL){
+                //         interaction.reply({ embeds: [
+                //             {
+                //                title: `Banner de ${member.displayName}`,
+                //                url: bannerURL,
+                //                image: {
+                //                 url: bannerURL
+                //                },
+                //                footer: {
+                //                 text: `${member.displayName}`,
+                //                 icon_url: `${member.displayAvatarURL({})}`
+                //                }  
+                //             }
+                //         ] });
+                //     } else {
+                //         interaction.reply({ content: `${member.displayName} no tiene banner.`});
+                //     }
+                // }
             }
             default:
             break;
