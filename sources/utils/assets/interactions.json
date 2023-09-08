@@ -477,5 +477,10 @@
                 ]
             }
         ]
+    },
+    {
+        "name": "invite", 
+        "description": "Invitame a tus servidores :3",
+        "type": 1
     }
 ]
