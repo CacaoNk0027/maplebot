@@ -48,9 +48,43 @@ exports.text = async (client, message, args) => {
 
 /**
  * @param {discord.Client} client 
- * @param {discord.CommandInteraction} interaction 
+ * @param {discord.ChatInputCommandInteraction} interaction 
  */
 exports.slash = async (client, interaction) => {
+    const { options, user, guild } = interaction;
+    try {
+    const question = options.getString("pregunta")
+        let Respuestas = [
+            'para nada :/',
+            'claro que no u.u',
+            'no -_-',
+            'quizas... no ,\':^',
+            'quizas u-u',
+            'quizas... si  o-o',
+            'si :3',
+            'claro que si! ^^',
+            'pero porsupuesto que si! UwU',
+            'no lo se',
+            'eh... puedes preguntar de nuevo?',
+            '... no me vuelvas a hacer esa pregunta',
+            'nose espero haberte ayudado',
+            'if(tupregunta == \'algo sin sentido\') return;',
+            'que'
+        ]
+        let random = Respuestas[Math.floor(Math.random() * Respuestas.length)];
+        // Código del comando aquí
+        await interaction.reply({
+           embeds: [{
+            title: `8ball de Maple 🎱`,
+            fields: [{name: `Pregunta:`, value: `${question}` }],
+            fields: [{name: `Respuesta:`, value: `${random}`}],
+            footer: {text: `${client.user.username}`, icon_url:`${client.user.avatarURL()}` }
+           }]
+        })
+    } catch (error) {
+        console.error(error)
+        await configs.interactionErrorMsg(interaction, error)
+    }
 
 }
 

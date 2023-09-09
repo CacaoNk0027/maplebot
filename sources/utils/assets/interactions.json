@@ -487,5 +487,18 @@
         "name": "vote", 
         "description": "Vota por mi en top.gg :3",
         "type": 1
+    },
+    {
+        "name": "8ball",
+        "description":"Preguntame algo para que lo responda :3",
+        "type": 1,
+        "options": [
+            {
+                "name": "pregunta",
+                "type": 3,
+                "description": "Escribe tu pregunta",
+                "required": true
+            }
+        ]
     }
 ]

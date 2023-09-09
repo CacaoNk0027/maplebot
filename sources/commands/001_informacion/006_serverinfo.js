@@ -132,12 +132,7 @@ exports.text = async (client, message, args) => {
                         type: 3,
                         custom_id: "GuildMenu",
                         placeholder: "interaccion terminada",
-                        options: [{
-                            label: "menu cancelado",
-                            value: "4",
-                            emoji: "❌",
-                            description: "El menu ha sido cancelado por tiempo"
-                        }]
+                        disabled: true,
                     }]
                 }]
             })
@@ -276,12 +271,7 @@ exports.slash = async (client, interaction) => {
                         type: 3,
                         custom_id: "GuildMenu",
                         placeholder: "interaccion terminada",
-                        options: [{
-                            label: "menu cancelado",
-                            value: "4",
-                            emoji: "❌",
-                            description: "El menu ha sido cancelado por tiempo"
-                        }]
+                        disabled: true,
                     }]
                 }]
             })
