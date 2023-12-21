@@ -615,8 +615,8 @@ exports.AddNewArrayBlacklist = async (client, guildId, array) => {
     let evitedWords = client.comandos.map(c => c.help.name)
     let prefixes = await models.utils.prefix(client, guildId)
     let wordset;
-    if (await config.schemas.Blacklist.findOne({ guildID: guildId }) !== null) {
-        wordset = (await config.schemas.Blacklist.findOne({ guildID: guildId }).exec()).words
+    if (await this.schemas.Blacklist.findOne({ guildID: guildId }) !== null) {
+        wordset = (await this.schemas.Blacklist.findOne({ guildID: guildId }).exec()).words
     } else wordset = [];
     if (wordset.length >= 1) {
         for (const setedword of wordset) {
@@ -635,8 +635,8 @@ exports.AddNewArrayBlacklist = async (client, guildId, array) => {
 
 exports.DeleteNewArrayBlacklist = async (client, guildId, array) => {
     let wordsdb, _1 = [], _2 = [];
-    if(await config.schemas.Blacklist.findOne({ guildID: guildId }) !== null) {
-        wordsdb = (await config.schemas.Blacklist.findOne({ guildID: guildId }).exec()).words
+    if(await this.schemas.Blacklist.findOne({ guildID: guildId }) !== null) {
+        wordsdb = (await this.schemas.Blacklist.findOne({ guildID: guildId }).exec()).words
     } else wordsdb = [];
     array.forEach(function (word) { _1.push(word) }); 
     _1.forEach(w => { _2.push(w) }); 
