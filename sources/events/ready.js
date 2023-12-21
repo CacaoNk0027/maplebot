@@ -4,7 +4,7 @@ require('dotenv').config()
 const discord = require('discord.js')
 const models = require('maplebot_models')
 const package_json = require('../../package.json')
-const configs = require('../utils/exports.js')
+const config = require('../utils/exports.js')
 const { sdk } = require('../app/body')
 const axios = require('axios')
 const { SlashManager } = require('../utils/slashCommandManager')
@@ -26,7 +26,7 @@ exports.event = {
         client.user.setPresence({
             status: 'online',
             activities: [{
-                name: `@Maple bot 🍁 | ${package_json.version} | ${configs._random(await configs.presences(client))}`
+                name: `@Maple bot 🍁 | ${package_json.version} | ${config._random(await config.presences(client))}`
             }]
         })
         let interactions_length = await SlashManager(client);
@@ -52,7 +52,7 @@ exports.event = {
                     },
                     description: 'Me he vuelo a iniciar correctamente con... <:006:1012749025398759425>',
                     title: 'Reinicio de la bot',
-                    color: configs.randomColor(),
+                    color: config.randomColor(),
                     timestamp: new Date(),
                     fields: [{
                         name: 'Estadisticas',

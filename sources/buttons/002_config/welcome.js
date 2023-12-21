@@ -1,6 +1,6 @@
 const discord = require('discord.js')
 const models = require('maplebot_models')
-const configs = require('../../utils/exports')
+const config = require('../../utils/exports')
 /**
  * @param {discord.Client} client
  * @param {discord.ButtonInteraction} interaction
@@ -15,7 +15,7 @@ exports.exec = async (client, interaction) => {
                     icon_url: interaction.user.avatarURL({ forceStatic: false })
                 },
                 description: `para poner un parametro en el mensaje lo unico que debes hacer es poner el parametro rodeado de las llaves un ejemplo seria...\n\nHola **{user}**!\n\nnota: es recomendable usar los parametros en mayuscula completo o en minuscula completo para evitar fallos de deteccion`,
-                color: configs.randomColor(),
+                color: config.randomColor(),
                 fields: [{
                     name: "Guild",
                     value: "agrega el nombre del servidor en el texto",
@@ -45,7 +45,7 @@ exports.exec = async (client, interaction) => {
             ephemeral: true
         })
     } catch (error) {
-        await configs.interactionErrorMsg(interaction, error)
+        await config.interactionErrorMsg(interaction, error)
     }
 }
 

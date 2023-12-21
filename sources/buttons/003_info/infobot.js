@@ -1,6 +1,6 @@
 const discord = require('discord.js')
 const models = require('maplebot_models')
-const configs = require('../../utils/exports')
+const config = require('../../utils/exports')
 const nekoapi_1 = require('cacao_nekoapi')
 const nekoapi_2 = require('nekoapi.beta')
 const mongo = require('mongoose')
@@ -13,7 +13,7 @@ const Canvas = require('canvas')
 exports.exec = async (client, interaction) => {
     try {
         let prefix; try {
-            prefix = (await models.schemas.SetPrefix.findOne({ guildID: interaction.guildId }).exec()).prefix;
+            prefix = (await config.schemas.SetPrefix.findOne({ guildID: interaction.guildId }).exec()).prefix;
         } catch (error) { prefix = 'sin prefix personalizado' };
         await interaction.reply({
             embeds: [{
@@ -46,7 +46,7 @@ exports.exec = async (client, interaction) => {
             ephemeral: true
         })
     } catch (error) {
-        await configs.interactionErrorMsg(interaction, error)
+        await config.interactionErrorMsg(interaction, error)
     }
 }
 

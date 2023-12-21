@@ -9,13 +9,13 @@ const { DeleteNewArrayBlacklist, interactionErrorMsg } = require("../../utils/ex
  */
 exports.exec = async (client, interaction) => {
     try {
-        if (await models.schemas.Blacklist.findOne({ guildID: interaction.guildId }) == null) return await interaction.reply({
+        if (await config.schemas.Blacklist.findOne({ guildID: interaction.guildId }) == null) return await interaction.reply({
             embeds: [{
                 description: models.utils.statusError('error', 'este servidor no cuenta con un sistema de blacklist'),
                 color: 0xff0000
             }], ephemeral: true
         })
-        if (await models.schemas.Blacklist.findOne({ guildID: interaction.guildId }).exec().then(c => c.words.length <= 0)) return await interaction.reply({
+        if (await config.schemas.Blacklist.findOne({ guildID: interaction.guildId }).exec().then(c => c.words.length <= 0)) return await interaction.reply({
             embeds: [{
                 description: models.utils.statusError('error', 'no hay palabras establecidas en la blacklist'),
                 color: 0xff0000
@@ -119,7 +119,7 @@ exports.exec = async (client, interaction) => {
             });
         } else try {
             await enableButtons();
-            await models.schemas.Blacklist.updateOne({ guildID: interaction.guildId }, { $pull: { words: { $in: palabras } } })
+            await config.schemas.Blacklist.updateOne({ guildID: interaction.guildId }, { $pull: { words: { $in: palabras } } })
             await sendEmbed(palabras)
         } catch (error) {
             await models.utils.error(message, error)

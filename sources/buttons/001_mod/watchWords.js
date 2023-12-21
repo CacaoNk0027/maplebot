@@ -9,13 +9,13 @@ const { AddNewArrayBlacklist, interactionErrorMsg } = require("../../utils/expor
  */
 exports.exec = async (client, interaction) => {
     try {
-        if(await models.schemas.Blacklist.findOne({ guildID: interaction.guildId }) == null) return await interaction.reply({
+        if(await config.schemas.Blacklist.findOne({ guildID: interaction.guildId }) == null) return await interaction.reply({
             embeds: [{ 
                 description: models.utils.statusError('error', 'el servidor no cuenta con un sistema de blacklist creado'),
                 color: 0xff0000
             }], ephemeral: true
         });
-        let palabras = (await models.schemas.Blacklist.findOne({ guildID: interaction.guildId }).exec()).words
+        let palabras = (await config.schemas.Blacklist.findOne({ guildID: interaction.guildId }).exec()).words
         if(palabras.length <= 0) return await interaction.reply({
             embeds: [{
                 description: models.utils.statusError('warn', 'que curioso... no hay nada por aqui, solo una blacklist sin palabras establecidas'),

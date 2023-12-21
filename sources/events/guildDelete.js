@@ -1,6 +1,6 @@
 require('dotenv').config()
 const discord = require('discord.js')
-const configs = require('../utils/exports')
+const config = require('../utils/exports')
 const webhook = new discord.WebhookClient({
     id: process.env['eventsId'],
     token: process.env['eventsToken']
@@ -18,7 +18,7 @@ exports.event = {
             embeds: [{
                 title: 'Servidor eliminado',
                 description: 'Me han sacado de un servidor... <:002:1012749017798688878>',
-                color: configs.randomColor(),
+                color: config.randomColor(),
                 author: {
                     name: client.user.username,
                     icon_url: client.user.avatarURL({ size: 512, extension: 'png' })

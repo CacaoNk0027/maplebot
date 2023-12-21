@@ -1,5 +1,5 @@
 const discord = require('discord.js')
-const configs = require('../../utils/exports')
+const config = require('../../utils/exports')
 /**
  * @param {discord.Client} client
  * @param {discord.ButtonInteraction} interaction
@@ -33,7 +33,7 @@ exports.exec = async (client, interaction) => {
             }]
         })
     } catch (error) {
-        await configs.interactionErrorMsg(interaction, error)
+        await config.interactionErrorMsg(interaction, error)
     }
 }
 

@@ -97,9 +97,9 @@ exports.exec = async (client, interaction) => {
             ephemeral: true
         });
         let palabras = await AddNewArrayBlacklist(client, interaction.guildId, (await message.channel.awaitMessages({ filter: i => i.author.id == interaction.user.id, max: 1 })).map(c => c)[0].content.trim().split(/ +/g));
-        if (await models.schemas.Blacklist.findOne({ guildID: interaction.guildId }) == null) {
+        if (await config.schemas.Blacklist.findOne({ guildID: interaction.guildId }) == null) {
             try {
-                let blackDB = new models.schemas.Blacklist({ guildID: interaction.guildId, words: palabras })
+                let blackDB = new config.schemas.Blacklist({ guildID: interaction.guildId, words: palabras })
                 await blackDB.save();
                 await sendEmbed(palabras);
                 await enableButtons();
@@ -113,7 +113,7 @@ exports.exec = async (client, interaction) => {
                     color: 0xff0000
                 }]
             }); else try {
-                await models.schemas.Blacklist.updateOne({ guildID: interaction.guildId }, { $push: { words: { $each: palabras } } })
+                await config.schemas.Blacklist.updateOne({ guildID: interaction.guildId }, { $push: { words: { $each: palabras } } })
                 await sendEmbed(palabras)
                 await enableButtons();
             } catch (error) {

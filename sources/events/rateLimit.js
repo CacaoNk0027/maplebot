@@ -1,7 +1,7 @@
 require('dotenv').config()
 const discord = require('discord.js')
 const moment = require('moment')
-const configs = require('../utils/exports')
+const config = require('../utils/exports')
 const webhook = new discord.WebhookClient({
     id: process.env['eventsId'],
     token: process.env['eventsToken']
@@ -18,7 +18,7 @@ exports.event = {
             embeds: [{
                 title: 'RateLimit',
                 description: `Se me ha dado un limite de velocidad en hacer peticiones <:011:1012749035037261844>`,
-                color: configs.randomColor(),
+                color: config.randomColor(),
                 timestamp: new Date(),
                 provider: {
                     name: '@Maple bot'

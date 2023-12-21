@@ -2,7 +2,7 @@
 
 const discord = require('discord.js')
 const models = require('maplebot_models')
-const configs = require('../utils/exports.js')
+const config = require('../utils/exports.js')
 const { CBU } = require('../utils/models/_cbu.js')
 const { CBS } = require('../utils/models/_cbs.js')
 
@@ -30,11 +30,11 @@ exports.event = {
             if (blacklist.find(c => c.includes(message.guildId)) && message.author.id !== "801603753631285308") return;
         };
         if (message.channel.type == 1 || message.author.bot) return;
-        if (await models.schemas.Blacklist.findOne({ guildID: message.guildId }) == null);
-        else if ((await models.schemas.Blacklist.findOne({ guildID: message.guildId }).exec()).words.length <= 0); else {
+        if (await config.schemas.Blacklist.findOne({ guildID: message.guildId }) == null);
+        else if ((await config.schemas.Blacklist.findOne({ guildID: message.guildId }).exec()).words.length <= 0); else {
             let msgFilter_obj_ = {
-                words: (await models.schemas.Blacklist.findOne({ guildID: message.guildId }).exec()).words,
-                guildId: (await models.schemas.Blacklist.findOne({ guildID: message.guildId }).exec()).guildID
+                words: (await config.schemas.Blacklist.findOne({ guildID: message.guildId }).exec()).words,
+                guildId: (await config.schemas.Blacklist.findOne({ guildID: message.guildId }).exec()).guildID
             }
             if (message.member.permissionsIn(message.channelId).has('ManageMessages'));
             else if (msgFilter_obj_.words.find(c => message.content.toLowerCase().includes(c.toLowerCase()) == true) && message.guildId == msgFilter_obj_.guildId) {
@@ -58,7 +58,7 @@ exports.event = {
         var cmd = client.comandos.get(command) || client.comandos.find(c => c.help.alias.includes(command)) || client.comandos.find(c => c.help.id == command)
         if (cmd) {
             if (!message.channel.permissionsFor(client.user.id).has('ReadMessageHistory')) return await message.channel.send({
-                content: models.utils.statusError('warn', `Recomiendo que tenga permisos de \`${configs.permissions['ReadMessageHistory']}\` ya que generalmente me baso en respuestas`)
+                content: models.utils.statusError('warn', `Recomiendo que tenga permisos de \`${config.permissions['ReadMessageHistory']}\` ya que generalmente me baso en respuestas`)
             }); if (cmd.help.status.code == 0 && message.author.id !== "801603753631285308") return await message.reply({
                 content: models.utils.statusError('rolplayDanger', `lo siento.. pero actualmente el comando **${cmd.help.name}** esta inactivo debido a lo siguente`) + `\n\`\`\`\nRazon: ${cmd.help.status.reason == null ? "no hay razon :c" : cmd.help.status.reason}\n\`\`\``
             }); if (cmd.help.isNsfw == true && !message.channel.nsfw) return await message.reply({

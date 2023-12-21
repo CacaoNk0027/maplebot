@@ -1,6 +1,6 @@
 const discord = require('discord.js')
 const models = require('maplebot_models')
-const configs = require('../utils/exports');
+const config = require('../utils/exports');
 const { CBU } = require('../utils/models/_cbu');
 const { CBS } = require('../utils/models/_cbs');
 
@@ -41,7 +41,7 @@ exports.event = {
                 })
             }
         } else if(interaction.isButton() == true) {
-            if (await configs._buttonFilter(interaction) == false) return await interaction.reply({
+            if (await config._buttonFilter(interaction) == false) return await interaction.reply({
                 content: models.utils.statusError('rolplayMe', "esta interaccion no va dirigida a ti"),
                 ephemeral: true
             });
