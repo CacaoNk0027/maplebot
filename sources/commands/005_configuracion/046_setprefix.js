@@ -74,12 +74,59 @@ exports.text = async (client, message, args) => {
 
 /**
  * @param {discord.Client} client 
- * @param {discord.CommandInteraction} interaction 
+ * @param {discord.ChatInputCommandInteraction} interaction 
  */
 exports.slash = async (client, interaction) => {
-
-}
-
+    const guildId = interaction.guild.id;
+    const newPrefix = interaction.options.getString('prefijo');
+  
+    // Verificar permisos del usuario
+    if (!interaction.member.permissions.has(discord.PermissionFlagsBits.ManageGuild)) {
+      return interaction.reply({
+        content: "No tienes permisos para cambiar el prefijo.",
+        ephemeral: true // Hace que el mensaje sea visible solo para el usuario que ejecutó el comando
+      });
+    }
+  
+    // Validar el nuevo prefijo
+    if (newPrefix.match(require('emoji-regex')()) || newPrefix.match(/<a:.+?:\d+>|<:.+?:\d+>/g)) {
+      return interaction.reply({
+        content: "No puedes usar emojis como prefijo.",
+        ephemeral: true
+      });
+    }
+    if (newPrefix.length > 8) {
+      return interaction.reply({
+        content: "El límite de caracteres para el prefijo es de 8.",
+        ephemeral: true
+      });
+    }
+  
+    // Actualizar el prefijo en la base de datos
+    try {
+      let PrefixDB = await models.schemas.SetPrefix.findOne({ guildID: guildId });
+      if (!PrefixDB) {
+        PrefixDB = new models.schemas.SetPrefix({
+          guildID: guildId,
+          prefix: newPrefix.toLowerCase()
+        });
+      } else {
+        PrefixDB.prefix = newPrefix.toLowerCase();
+      }
+      await PrefixDB.save();
+      
+      return interaction.reply({
+        content: `El prefijo se ha cambiado correctamente a **${newPrefix.toLowerCase()}**.`,
+        ephemeral: true
+      });
+    } catch (error) {
+      console.error(error);
+      return interaction.reply({
+        content: "Hubo un error al cambiar el prefijo.",
+        ephemeral: true
+      });
+    }
+  }  
 exports.help = {
     name: "setprefix",
     alias: ["stprfx", "newprefix"],
