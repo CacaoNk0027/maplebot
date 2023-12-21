@@ -36,8 +36,8 @@ exports.event = {
             const promises = [
                 client.shard.fetchClientValues('guilds.cache.size'),
                 client.shard.broadcastEval(c => c.guilds.cache.reduce((acc, guild) => acc + guild.memberCount, 0)),
-                (await sdk.getBot(client.user?.id)),
-                (await sdk.getStats(client.user?.id))
+                (await sdk.getBot("821452429409124451")),
+                (await sdk.getStats("821452429409124451"))
             ]
             let results = await Promise.all(promises);
             let totalGuilds = results[0].reduce((acc, guildCount) => acc + guildCount, 0);

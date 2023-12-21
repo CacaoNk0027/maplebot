@@ -296,7 +296,7 @@ exports.newColorImage = async (hexColor) => {
     let ctx = canvas.getContext('2d');
     ctx.fillStyle = hexColor
     ctx.fillRect(0, 0, canvas.width, canvas.height)
-    ctx.font = `20px "Honey"`
+    ctx.font = "20px Honey"
     ctx.fillStyle = "#000000"
     ctx.textAlign = "center"
     ctx.fillText(hexColor, canvas.width / 2.0, canvas.height / 1.5)
@@ -324,7 +324,7 @@ exports.fonts = () => {
     Canvas.registerFont(fontPath('arial.ttf'), { family: 'Arial' })
     Canvas.registerFont(fontPath('product_sans_regular.ttf'), { family: 'Product Sans Regular' })
     Canvas.registerFont(fontPath('roboto_regular.ttf'), { family: 'Roboto Regular' })
-    Canvas.registerFont(fontPath('minecraft.ttf'), { family: 'FontCraft' })
+    Canvas.registerFont(fontPath('Minecraft.ttf'), { family: 'FontCraft' })
 }
 
 /**

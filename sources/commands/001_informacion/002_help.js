@@ -75,7 +75,7 @@ exports.text = async (client, message, args) => {
                     }]
                 }]
             })
-            const collector = msg.createMessageComponentCollector({ time: ms('5m') })
+            const collector = msg.createMessageComponentCollector({ time: ms('3m') })
             collector.on('collect', async (i) => {
                 if (i.user.id !== message.author.id) return await i.reply({
                     content: models.utils.statusError('rolplayMe', "esta interaccion no va dirigida a ti"),

@@ -5,7 +5,7 @@ const nekoapi = require('nekoapi.beta')
 const { CBS } = require('../utils/models/_cbs')
 
 exports.event = {
-    name: 'guildMemberDelete',
+    name: 'guildMemberRemove',
     /**
      * @param {discord.Client} client
      * @param {discord.GuildMember} member

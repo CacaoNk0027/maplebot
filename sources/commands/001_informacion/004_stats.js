@@ -39,7 +39,7 @@ exports.text = async (client, message, args) => {
                 usedRAM = info['totalMemMb'] - freeRAM
             })
 
-            let votos = (await sdk.getBot(client.user.id)).monthlyPoints
+            let votos = (await sdk.getBot("821452429409124451")).monthlyPoints
 
             await msg.edit({
                 content: " ",
