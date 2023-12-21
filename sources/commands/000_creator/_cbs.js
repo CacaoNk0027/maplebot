@@ -1,6 +1,6 @@
 const discord = require('discord.js')
 const models = require('maplebot_models')
-const configs = require('../../utils/exports')
+const config = require('../../utils/exports')
 const ms = require('ms')
 const { CBS } = require('../../utils/models/_cbs')
 
@@ -73,7 +73,7 @@ exports.slash = async (client, interaction) => {
 
     } catch (error) {
         console.error(error)
-        await configs.interactionErrorMsg(interaction, error)
+        await config.interactionErrorMsg(interaction, error)
     }
 }
 

@@ -1,6 +1,7 @@
 const discord = require('discord.js');
 const models = require('maplebot_models');
 const regex_c = require('hex-color-regex')({ strict: true });
+const config = require('../../../utils/exports')
 const nekoapi = require('nekoapi.beta')
 const {
     replaces_msg_i,
@@ -34,8 +35,8 @@ exports.Welcome = async (client, interaction) => {
                         color: 0xff0000
                     }]
                 });
-                if (await models.schemas.Welcome.findOne({ guildID: interaction.guildId }) == null) {
-                    let WlcDb = new models.schemas.Welcome({
+                if (await config.schemas.Welcome.findOne({ guildID: interaction.guildId }) == null) {
+                    let WlcDb = new config.schemas.Welcome({
                         guildID: interaction.guildId,
                         message: null,
                         type: null,
@@ -53,9 +54,9 @@ exports.Welcome = async (client, interaction) => {
                     })
                     await WlcDb.save();
                 }
-                let channelWlc = await models.schemas.SetChannels.findOne({ guildID: interaction.guildId });
+                let channelWlc = await config.schemas.SetChannels.findOne({ guildID: interaction.guildId });
                 if (channelWlc == null) {
-                    let ChannelDb = new models.schemas.SetChannels({
+                    let ChannelDb = new config.schemas.SetChannels({
                         guildID: interaction.guildId,
                         suggest: null,
                         confession: null,
@@ -70,7 +71,7 @@ exports.Welcome = async (client, interaction) => {
                         }]
                     })
                 } else if (channelWlc.welcome == null) {
-                    await models.schemas.SetChannels.updateOne({ guildID: interaction.guildId }, { welcome: channel.id })
+                    await config.schemas.SetChannels.updateOne({ guildID: interaction.guildId }, { welcome: channel.id })
                     await interaction.reply({
                         embeds: [{
                             description: models.utils.statusError('success', `Se ha establecido <#${channel.id}> como preterminado para bienvenidas`),
@@ -85,7 +86,7 @@ exports.Welcome = async (client, interaction) => {
                         }]
                     })
                 } else {
-                    await models.schemas.SetChannels.updateOne({ guildID: interaction.guildId }, { welcome: channel.id })
+                    await config.schemas.SetChannels.updateOne({ guildID: interaction.guildId }, { welcome: channel.id })
                     await interaction.reply({
                         embeds: [{
                             description: models.utils.statusError('success', `Se ha establecido <#${channel.id}> como preterminado para bienvenidas`),
@@ -151,9 +152,9 @@ exports.Welcome = async (client, interaction) => {
                                 color: 0xff0000
                             }]
                         })
-                        let msgWlc_1 = await models.schemas.Welcome.findOne({ guildID: interaction.guildId })
+                        let msgWlc_1 = await config.schemas.Welcome.findOne({ guildID: interaction.guildId })
                         if (msgWlc_1 == null) {
-                            let WlcDb = new models.schemas.Welcome({
+                            let WlcDb = new config.schemas.Welcome({
                                 guildID: interaction.guildId,
                                 message: text,
                                 type: null,
@@ -177,7 +178,7 @@ exports.Welcome = async (client, interaction) => {
                                 }]
                             })
                         } else if (msgWlc_1.message == null) {
-                            await models.schemas.Welcome.updateOne({ guildID: interaction.guildId }, { message: text })
+                            await config.schemas.Welcome.updateOne({ guildID: interaction.guildId }, { message: text })
                             await interaction.reply({
                                 embeds: [{
                                     description: models.utils.statusError('success', `El mensaje de bienvenida sera mostrado como acontinuacion...`) + `\n${replaces_msg_i(interaction, text)}`,
@@ -192,7 +193,7 @@ exports.Welcome = async (client, interaction) => {
                                 }]
                             })
                         } else {
-                            await models.schemas.Welcome.updateOne({ guildID: interaction.guildId }, { message: text })
+                            await config.schemas.Welcome.updateOne({ guildID: interaction.guildId }, { message: text })
                             await interaction.reply({
                                 embeds: [{
                                     description: models.utils.statusError('success', `El mensaje de bienvenida sera mostrado como acontinuacion...`) + `\n${replaces_msg_i(interaction, text)}`,
@@ -204,7 +205,7 @@ exports.Welcome = async (client, interaction) => {
                     case "delete":
                         switch (option.value) {
                             case true:
-                                let msgWlc_2 = await models.schemas.Welcome.findOne({ guildID: interaction.guildId });
+                                let msgWlc_2 = await config.schemas.Welcome.findOne({ guildID: interaction.guildId });
                                 if (msgWlc_2 == null) return await interaction.reply({
                                     embeds: [{
                                         description: models.utils.statusError("error", "no cuentas con un sistema de bienvenidas"),
@@ -217,7 +218,7 @@ exports.Welcome = async (client, interaction) => {
                                         color: 0xff0000
                                     }]
                                 });
-                                await models.schemas.Welcome.updateOne({ guildID: interaction.guildId }, { message: null })
+                                await config.schemas.Welcome.updateOne({ guildID: interaction.guildId }, { message: null })
                                 await interaction.reply({
                                     embeds: [{
                                         description: models.utils.statusError('success', "el mensaje de bienvenida ha sido eliminado"),
@@ -242,9 +243,9 @@ exports.Welcome = async (client, interaction) => {
             case "type":
                 option = interaction.options._hoistedOptions[0];
                 let type = option.value
-                let typeWlc = await models.schemas.Welcome.findOne({ guildID: interaction.guildId })
+                let typeWlc = await config.schemas.Welcome.findOne({ guildID: interaction.guildId })
                 if (typeWlc == null) {
-                    let WlcDb = new models.schemas.Welcome({
+                    let WlcDb = new config.schemas.Welcome({
                         guildID: interaction.guildId,
                         message: null,
                         type: type,
@@ -268,7 +269,7 @@ exports.Welcome = async (client, interaction) => {
                         }]
                     })
                 } else if (typeWlc.type == null) {
-                    await models.schemas.Welcome.updateOne({ guildID: interaction.guildId }, { type: type })
+                    await config.schemas.Welcome.updateOne({ guildID: interaction.guildId }, { type: type })
                     await interaction.reply({
                         embeds: [{
                             description: models.utils.statusError('success', `Haz seleccionado el tipo de bienvenidas como **${type == "image" ? "Imagen" : "Embed"}**`),
@@ -283,7 +284,7 @@ exports.Welcome = async (client, interaction) => {
                         }]
                     })
                 } else {
-                    await models.schemas.Welcome.updateOne({ guildID: interaction.guildId }, { type: type })
+                    await config.schemas.Welcome.updateOne({ guildID: interaction.guildId }, { type: type })
                     await interaction.reply({
                         embeds: [{
                             description: models.utils.statusError('success', `Haz seleccionado el tipo de bienvenidas como **${type == "image" ? "Imagen" : "Embed"}**`),
@@ -352,9 +353,9 @@ exports.Welcome = async (client, interaction) => {
                                 color: 0xff0000
                             }]
                         })
-                        let descWlc_1 = await models.schemas.Welcome.findOne({ guildID: interaction.guildId })
+                        let descWlc_1 = await config.schemas.Welcome.findOne({ guildID: interaction.guildId })
                         if (descWlc_1 == null) {
-                            let WlcDb = new models.schemas.Welcome({
+                            let WlcDb = new config.schemas.Welcome({
                                 guildID: interaction.guildId,
                                 message: null,
                                 type: null,
@@ -378,7 +379,7 @@ exports.Welcome = async (client, interaction) => {
                                 }]
                             })
                         } else if (descWlc_1.description == null) {
-                            await models.schemas.Welcome.updateOne({ guildID: interaction.guildId }, { description: text })
+                            await config.schemas.Welcome.updateOne({ guildID: interaction.guildId }, { description: text })
                             await interaction.reply({
                                 embeds: [{
                                     description: models.utils.statusError('success', `La descripcion de la bienvenida sera mostrada como acontinuacion...`) + `\n${replaces_msg_i(interaction, text)}`,
@@ -393,7 +394,7 @@ exports.Welcome = async (client, interaction) => {
                                 }]
                             })
                         } else {
-                            await models.schemas.Welcome.updateOne({ guildID: interaction.guildId }, { description: text })
+                            await config.schemas.Welcome.updateOne({ guildID: interaction.guildId }, { description: text })
                             await interaction.reply({
                                 embeds: [{
                                     description: models.utils.statusError('success', `La descripcion de la bienvenida sera mostrada como acontinuacion...`) + `\n${replaces_msg_i(interaction, text)}`,
@@ -411,9 +412,9 @@ exports.Welcome = async (client, interaction) => {
                             }]
                         });
                         let image = await newColorImage(hex_color);
-                        let descWlc_2 = await models.schemas.Welcome.findOne({ guildID: interaction.guildId })
+                        let descWlc_2 = await config.schemas.Welcome.findOne({ guildID: interaction.guildId })
                         if (descWlc_2 == null) {
-                            let WlcDb = new models.schemas.Welcome({
+                            let WlcDb = new config.schemas.Welcome({
                                 guildID: interaction.guildId,
                                 message: null,
                                 type: null,
@@ -443,7 +444,7 @@ exports.Welcome = async (client, interaction) => {
                                 ]
                             })
                         } else if (descWlc_2.color.description == null) {
-                            await models.schemas.Welcome.updateOne({ guildID: interaction.guildId }, { color: { title: descWlc_2.color.title, description: hex_color, avatar: descWlc_2.color.avatar } })
+                            await config.schemas.Welcome.updateOne({ guildID: interaction.guildId }, { color: { title: descWlc_2.color.title, description: hex_color, avatar: descWlc_2.color.avatar } })
                             await interaction.reply({
                                 embeds: [{
                                     description: models.utils.statusError('success', `el color de la descripcion se ha establecido correctamente a ${hex_color}`),
@@ -464,7 +465,7 @@ exports.Welcome = async (client, interaction) => {
                                 }]
                             })
                         } else {
-                            await models.schemas.Welcome.updateOne({ guildID: interaction.guildId }, { color: { title: descWlc_2.color.title, description: hex_color, avatar: descWlc_2.color.avatar } })
+                            await config.schemas.Welcome.updateOne({ guildID: interaction.guildId }, { color: { title: descWlc_2.color.title, description: hex_color, avatar: descWlc_2.color.avatar } })
                             await interaction.reply({
                                 embeds: [{
                                     description: models.utils.statusError('success', `el color de la descripcion se ha establecido correctamente a ${hex_color}`),
@@ -482,7 +483,7 @@ exports.Welcome = async (client, interaction) => {
                     case "delete":
                         switch (option.value) {
                             case true:
-                                let descWlc_3 = await models.schemas.Welcome.findOne({ guildID: interaction.guildId });
+                                let descWlc_3 = await config.schemas.Welcome.findOne({ guildID: interaction.guildId });
                                 if (descWlc_3 == null) return await interaction.reply({
                                     embeds: [{
                                         description: models.utils.statusError("error", "no cuentas con un sistema de bienvenidas"),
@@ -495,7 +496,7 @@ exports.Welcome = async (client, interaction) => {
                                         color: 0xff0000
                                     }]
                                 });
-                                await models.schemas.Welcome.updateOne({ guildID: interaction.guildId }, { description: null })
+                                await config.schemas.Welcome.updateOne({ guildID: interaction.guildId }, { description: null })
                                 await interaction.reply({
                                     embeds: [{
                                         description: models.utils.statusError('success', "La descripcion de la bienvenida ha sido eliminada"),
@@ -577,9 +578,9 @@ exports.Welcome = async (client, interaction) => {
                                 color: 0xff0000
                             }]
                         })
-                        let titWlc_1 = await models.schemas.Welcome.findOne({ guildID: interaction.guildId })
+                        let titWlc_1 = await config.schemas.Welcome.findOne({ guildID: interaction.guildId })
                         if (titWlc_1 == null) {
-                            let WlcDb = new models.schemas.Welcome({
+                            let WlcDb = new config.schemas.Welcome({
                                 guildID: interaction.guildId,
                                 message: null,
                                 type: null,
@@ -603,7 +604,7 @@ exports.Welcome = async (client, interaction) => {
                                 }]
                             })
                         } else if (titWlc_1.title == null) {
-                            await models.schemas.Welcome.updateOne({ guildID: interaction.guildId }, { title: text })
+                            await config.schemas.Welcome.updateOne({ guildID: interaction.guildId }, { title: text })
                             await interaction.reply({
                                 embeds: [{
                                     description: models.utils.statusError('success', `El titulo de la bienvenida sera mostrado como acontinuacion...`) + `\n${replaces_msg_i(interaction, text)}`,
@@ -618,7 +619,7 @@ exports.Welcome = async (client, interaction) => {
                                 }]
                             })
                         } else {
-                            await models.schemas.Welcome.updateOne({ guildID: interaction.guildId }, { title: text })
+                            await config.schemas.Welcome.updateOne({ guildID: interaction.guildId }, { title: text })
                             await interaction.reply({
                                 embeds: [{
                                     description: models.utils.statusError('success', `El titulo de la bienvenida sera mostrado como acontinuacion...`) + `\n${replaces_msg_i(interaction, text)}`,
@@ -636,9 +637,9 @@ exports.Welcome = async (client, interaction) => {
                             }]
                         });
                         let image = await newColorImage(hex_color);
-                        let titWlc_2 = await models.schemas.Welcome.findOne({ guildID: interaction.guildId })
+                        let titWlc_2 = await config.schemas.Welcome.findOne({ guildID: interaction.guildId })
                         if (titWlc_2 == null) {
-                            let WlcDb = new models.schemas.Welcome({
+                            let WlcDb = new config.schemas.Welcome({
                                 guildID: interaction.guildId,
                                 message: null,
                                 type: null,
@@ -668,7 +669,7 @@ exports.Welcome = async (client, interaction) => {
                                 ]
                             })
                         } else if (titWlc_2.color.title == null) {
-                            await models.schemas.Welcome.updateOne({ guildID: interaction.guildId }, { color: { title: hex_color, description: titWlc_2.color.description, avatar: titWlc_2.color.avatar } })
+                            await config.schemas.Welcome.updateOne({ guildID: interaction.guildId }, { color: { title: hex_color, description: titWlc_2.color.description, avatar: titWlc_2.color.avatar } })
                             await interaction.reply({
                                 embeds: [{
                                     description: models.utils.statusError('success', `el color del titulo se ha establecido correctamente a ${hex_color}`),
@@ -689,7 +690,7 @@ exports.Welcome = async (client, interaction) => {
                                 }]
                             })
                         } else {
-                            await models.schemas.Welcome.updateOne({ guildID: interaction.guildId }, { color: { title: hex_color, description: titWlc_2.color.description, avatar: titWlc_2.color.avatar } })
+                            await config.schemas.Welcome.updateOne({ guildID: interaction.guildId }, { color: { title: hex_color, description: titWlc_2.color.description, avatar: titWlc_2.color.avatar } })
                             await interaction.reply({
                                 embeds: [{
                                     description: models.utils.statusError('success', `el color del titulo se ha establecido correctamente a ${hex_color}`),
@@ -707,7 +708,7 @@ exports.Welcome = async (client, interaction) => {
                     case "delete":
                         switch (option.value) {
                             case true:
-                                let titWlc_3 = await models.schemas.Welcome.findOne({ guildID: interaction.guildId });
+                                let titWlc_3 = await config.schemas.Welcome.findOne({ guildID: interaction.guildId });
                                 if (titWlc_3 == null) return await interaction.reply({
                                     embeds: [{
                                         description: models.utils.statusError("error", "no cuentas con un sistema de bienvenidas"),
@@ -720,7 +721,7 @@ exports.Welcome = async (client, interaction) => {
                                         color: 0xff0000
                                     }]
                                 });
-                                await models.schemas.Welcome.updateOne({ guildID: interaction.guildId }, { title: null })
+                                await config.schemas.Welcome.updateOne({ guildID: interaction.guildId }, { title: null })
                                 await interaction.reply({
                                     embeds: [{
                                         description: models.utils.statusError('success', "el titulo de la bienvenida ha sido eliminada"),
@@ -780,9 +781,9 @@ exports.Welcome = async (client, interaction) => {
                                 color: 0xff0000
                             }]
                         });
-                        imgWlc = await models.schemas.Welcome.findOne({ guildID: interaction.guildId })
+                        imgWlc = await config.schemas.Welcome.findOne({ guildID: interaction.guildId })
                         if (imgWlc == null) {
-                            let WlcDb = new models.schemas.Welcome({
+                            let WlcDb = new config.schemas.Welcome({
                                 guildID: interaction.guildId,
                                 message: null,
                                 type: null,
@@ -809,7 +810,7 @@ exports.Welcome = async (client, interaction) => {
                                 }]
                             })
                         } else if (imgWlc.background.data == null) {
-                            await models.schemas.Welcome.updateOne({ guildID: interaction.guildId }, { background: { tipo: "image", data: option.attachment.url } })
+                            await config.schemas.Welcome.updateOne({ guildID: interaction.guildId }, { background: { tipo: "image", data: option.attachment.url } })
                             await interaction.reply({
                                 embeds: [{
                                     description: models.utils.statusError("success", `El fondo de la imagen de bienvenida se ha establecido correctamente`),
@@ -828,7 +829,7 @@ exports.Welcome = async (client, interaction) => {
                                 }]
                             })
                         } else {
-                            await models.schemas.Welcome.updateOne({ guildID: interaction.guildId }, { background: { tipo: "image", data: option.attachment.url } })
+                            await config.schemas.Welcome.updateOne({ guildID: interaction.guildId }, { background: { tipo: "image", data: option.attachment.url } })
                             await interaction.reply({
                                 embeds: [{
                                     description: models.utils.statusError("success", "El fondo de la imagen de bienvenida se ha establecido correctamente"),
@@ -847,9 +848,9 @@ exports.Welcome = async (client, interaction) => {
                                 color: 0xff0000
                             }]
                         });
-                        imgWlc = await models.schemas.Welcome.findOne({ guildID: interaction.guildId })
+                        imgWlc = await config.schemas.Welcome.findOne({ guildID: interaction.guildId })
                         if (imgWlc == null) {
-                            let WlcDb = new models.schemas.Welcome({
+                            let WlcDb = new config.schemas.Welcome({
                                 guildID: interaction.guildId,
                                 message: null,
                                 type: null,
@@ -876,7 +877,7 @@ exports.Welcome = async (client, interaction) => {
                                 }]
                             })
                         } else if (imgWlc.background.data == null) {
-                            await models.schemas.Welcome.updateOne({ guildID: interaction.guildId }, { background: { tipo: "image", data: option.value } })
+                            await config.schemas.Welcome.updateOne({ guildID: interaction.guildId }, { background: { tipo: "image", data: option.value } })
                             await interaction.reply({
                                 embeds: [{
                                     description: models.utils.statusError("success", `El fondo de la imagen de bienvenida se ha establecido correctamente`),
@@ -894,7 +895,7 @@ exports.Welcome = async (client, interaction) => {
                                 }]
                             })
                         } else {
-                            await models.schemas.Welcome.updateOne({ guildID: interaction.guildId }, { background: { tipo: "image", data: option.value } })
+                            await config.schemas.Welcome.updateOne({ guildID: interaction.guildId }, { background: { tipo: "image", data: option.value } })
                             await interaction.reply({
                                 embeds: [{
                                     description: models.utils.statusError("success", "El fondo de la imagen de bienvenida se ha establecido correctamente"),
@@ -915,9 +916,9 @@ exports.Welcome = async (client, interaction) => {
                             }]
                         });
                         let image = await newColorImage(hex_color);
-                        imgWlc = await models.schemas.Welcome.findOne({ guildID: interaction.guildId })
+                        imgWlc = await config.schemas.Welcome.findOne({ guildID: interaction.guildId })
                         if (imgWlc == null) {
-                            let WlcDb = new models.schemas.Welcome({
+                            let WlcDb = new config.schemas.Welcome({
                                 guildID: interaction.guildId,
                                 message: null,
                                 type: null,
@@ -945,7 +946,7 @@ exports.Welcome = async (client, interaction) => {
                                 files: [image.attachment]
                             })
                         } else if (imgWlc.background.data == null) {
-                            await models.schemas.Welcome.updateOne({ guildID: interaction.guildId }, { background: { tipo: "color", data: hex_color } })
+                            await config.schemas.Welcome.updateOne({ guildID: interaction.guildId }, { background: { tipo: "color", data: hex_color } })
                             await interaction.reply({
                                 embeds: [{
                                     description: models.utils.statusError("success", `El fondo de la imagen de bienvenida se ha establecido ${hex_color}`),
@@ -964,7 +965,7 @@ exports.Welcome = async (client, interaction) => {
                                 }]
                             })
                         } else {
-                            await models.schemas.Welcome.updateOne({ guildID: interaction.guildId }, { background: { tipo: "color", data: hex_color } })
+                            await config.schemas.Welcome.updateOne({ guildID: interaction.guildId }, { background: { tipo: "color", data: hex_color } })
                             await interaction.reply({
                                 embeds: [{
                                     description: models.utils.statusError("success", `El fondo de la imagen de bienvenida se ha establecido ${hex_color}`),
@@ -978,7 +979,7 @@ exports.Welcome = async (client, interaction) => {
                         }
                         break;
                     case "delete":
-                        imgWlc = await models.schemas.Welcome.findOne({ guildID: interaction.guildId })
+                        imgWlc = await config.schemas.Welcome.findOne({ guildID: interaction.guildId })
                         switch (option.value) {
                             case true:
                                 if (imgWlc == null) return await interaction.reply({
@@ -993,7 +994,7 @@ exports.Welcome = async (client, interaction) => {
                                         color: 0xff0000
                                     }]
                                 })
-                                await models.schemas.Welcome.updateOne({ guildID: interaction.guildId }, { background: { tipo: null, data: null } });
+                                await config.schemas.Welcome.updateOne({ guildID: interaction.guildId }, { background: { tipo: null, data: null } });
                                 await interaction.reply({
                                     embeds: [{
                                         description: models.utils.statusError("success", "se ha eliminado el fondo personalizado para la bienvenida"),
@@ -1048,9 +1049,9 @@ exports.Welcome = async (client, interaction) => {
                             }]
                         });
                         let image = await newColorImage(hex_color);
-                        avatarWlc = await models.schemas.Welcome.findOne({ guildID: interaction.guildId })
+                        avatarWlc = await config.schemas.Welcome.findOne({ guildID: interaction.guildId })
                         if (!avatarWlc) {
-                            let WlcDb = new models.schemas.Welcome({
+                            let WlcDb = new config.schemas.Welcome({
                                 guildID: interaction.guildId,
                                 message: null,
                                 type: null,
@@ -1080,7 +1081,7 @@ exports.Welcome = async (client, interaction) => {
                                 ]
                             })
                         } else if (avatarWlc.color.avatar == null) {
-                            await models.schemas.Welcome.updateOne({ guildID: interaction.guildId }, { color: { title: avatarWlc.color.title, description: avatarWlc.color.description, avatar: hex_color } })
+                            await config.schemas.Welcome.updateOne({ guildID: interaction.guildId }, { color: { title: avatarWlc.color.title, description: avatarWlc.color.description, avatar: hex_color } })
                             await interaction.reply({
                                 embeds: [{
                                     description: models.utils.statusError('success', `el color del anillo del avatar se ha establecido correctamente a ${hex_color}`),
@@ -1101,7 +1102,7 @@ exports.Welcome = async (client, interaction) => {
                                 }]
                             })
                         } else {
-                            await models.schemas.Welcome.updateOne({ guildID: interaction.guildId }, { color: { title: avatarWlc.color.title, description: avatarWlc.color.description, avatar: hex_color } })
+                            await config.schemas.Welcome.updateOne({ guildID: interaction.guildId }, { color: { title: avatarWlc.color.title, description: avatarWlc.color.description, avatar: hex_color } })
                             await interaction.reply({
                                 embeds: [{
                                     description: models.utils.statusError('success', `el color del anillo del avatar se ha establecido correctamente a ${hex_color}`),
@@ -1117,7 +1118,7 @@ exports.Welcome = async (client, interaction) => {
                         }
                         break;
                     case "delete":
-                        avatarWlc = await models.schemas.Welcome.findOne({ guildID: interaction.guildId })
+                        avatarWlc = await config.schemas.Welcome.findOne({ guildID: interaction.guildId })
                         switch (option.value) {
                             case true:
                                 if (avatarWlc == null) return await interaction.reply({
@@ -1132,7 +1133,7 @@ exports.Welcome = async (client, interaction) => {
                                         color: 0xff0000
                                     }]
                                 })
-                                await models.schemas.Welcome.updateOne({ guildID: interaction.guildId }, { color: { title: avatarWlc.color.title, description: avatarWlc.color.description, avatar: null } });
+                                await config.schemas.Welcome.updateOne({ guildID: interaction.guildId }, { color: { title: avatarWlc.color.title, description: avatarWlc.color.description, avatar: null } });
                                 await interaction.reply({
                                     embeds: [{
                                         description: models.utils.statusError("success", "se ha eliminado el color personalizado para el aniño del avatar"),
@@ -1154,7 +1155,7 @@ exports.Welcome = async (client, interaction) => {
                 }
                 break;
             case "test":
-                let testWelcome = parseJson(await models.schemas.Welcome.findOne({ guildID: interaction.guildId }))
+                let testWelcome = parseJson(await config.schemas.Welcome.findOne({ guildID: interaction.guildId }))
                 if (!testWelcome) return await interaction.reply({
                     embeds: [{
                         description: models.utils.statusError("warn", "para ejecutar este comando deberias de tener un sistema de bienvenidas establecido"),
@@ -1215,8 +1216,8 @@ exports.Welcome = async (client, interaction) => {
                 let welcome, channels;
                 switch (option.value) {
                     case true:
-                        channels = await models.schemas.SetChannels.findOne({ guildID: interaction.guildId })
-                        welcome = await models.schemas.Welcome.findOne({ guildID: interaction.guildId })
+                        channels = await config.schemas.SetChannels.findOne({ guildID: interaction.guildId })
+                        welcome = await config.schemas.Welcome.findOne({ guildID: interaction.guildId })
                         if (!welcome) return await interaction.reply({
                             embeds: [{
                                 description: models.utils.statusError('error', "no tienes un sistema de bienvenidas establecidos"),
@@ -1229,7 +1230,7 @@ exports.Welcome = async (client, interaction) => {
                                 color: 0xff0000
                             }]
                         })
-                        await models.schemas.SetChannels.updateOne({ guildID: interaction.guildId }, { welcome: null })
+                        await config.schemas.SetChannels.updateOne({ guildID: interaction.guildId }, { welcome: null })
                         await interaction.reply({
                             embeds: [{
                                 description: models.utils.statusError('success', "se ha eliminado solo el canal preterminado de bienvenidas de mi base de datos"),
@@ -1238,8 +1239,8 @@ exports.Welcome = async (client, interaction) => {
                         })
                         break;
                     case false:
-                        channels = await models.schemas.SetChannels.findOne({ guildID: interaction.guildId })
-                        welcome = await models.schemas.Welcome.findOne({ guildID: interaction.guildId })
+                        channels = await config.schemas.SetChannels.findOne({ guildID: interaction.guildId })
+                        welcome = await config.schemas.Welcome.findOne({ guildID: interaction.guildId })
                         if (!welcome) return await interaction.reply({
                             embeds: [{
                                 description: models.utils.statusError('error', "no tienes un sistema de bienvenidas establecido"),
@@ -1252,8 +1253,8 @@ exports.Welcome = async (client, interaction) => {
                                 color: 0xff0000
                             }]
                         })
-                        await models.schemas.Welcome.deleteOne({ guildID: interaction.guildId })
-                        await models.schemas.SetChannels.updateOne({ guildID: interaction.guildId }, { welcome: null })
+                        await config.schemas.Welcome.deleteOne({ guildID: interaction.guildId })
+                        await config.schemas.SetChannels.updateOne({ guildID: interaction.guildId }, { welcome: null })
                         await interaction.reply({
                             embeds: [{
                                 description: models.utils.statusError('success', "se ha eliminado el sistema completo de bienvenidas"),

@@ -5,7 +5,7 @@ const moment = require('moment')
 const node_os = require('node-os-utils')
 const os_system = require('os')
 const format = require('moment-duration-format')
-const configs = require('../../utils/exports')
+const config = require('../../utils/exports')
 const { sdk } = require('../../app/body')
 
 format(moment)
@@ -171,7 +171,7 @@ exports.slash = async (client, interaction) => {
         }).catch(console.error)
     } catch (error) {
         console.error(error)
-        await configs.interactionErrorMsg(interaction, error)
+        await config.interactionErrorMsg(interaction, error)
     }
 }
 

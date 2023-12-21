@@ -16,12 +16,12 @@ exports.text = async (client, message, args) => {
             }]
         });
         await message.delete().catch(err => err)
-        if (await models.schemas.SetChannels.findOne({ guildID: message.guildId }) == null) return await message.channel.send({
+        if (await config.schemas.SetChannels.findOne({ guildID: message.guildId }) == null) return await message.channel.send({
             embeds: [{
                 description: models.utils.statusError('error', 'No hay confesiones en el servidor'), color: 0xff0000
             }]
         });
-        let confessionChannel = await models.schemas.SetChannels.findOne({ guildID: message.guildId }).exec().then(c => c.confession);
+        let confessionChannel = await config.schemas.SetChannels.findOne({ guildID: message.guildId }).exec().then(c => c.confession);
         if (confessionChannel == null) return await message.channel.send({
             embeds: [{
                 description: models.utils.statusError('error', 'No hay confesiones en el servidor'), color: 0xff0000

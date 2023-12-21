@@ -18,13 +18,13 @@ exports.text = async (client, message, args) => {
             }]
         });
         if(args[0] == "delete") {
-            if (await models.schemas.SetChannels.findOne({ guildID: message.guildId }) == null || await models.schemas.SetChannels.findOne({ guildID: message.guildId }).exec().then(m => m.confession) == null) return await message.reply({ 
+            if (await config.schemas.SetChannels.findOne({ guildID: message.guildId }) == null || await config.schemas.SetChannels.findOne({ guildID: message.guildId }).exec().then(m => m.confession) == null) return await message.reply({ 
                 embeds: [{
                     description: models.utils.statusError('error', "no puedes eliminar un sistema de confesiones que nunca haz establecido"),
                     color: 0xff0000
                 }] 
             })
-            await models.schemas.SetChannels.updateOne({ guildID: message.guildId }, { confession: null })
+            await config.schemas.SetChannels.updateOne({ guildID: message.guildId }, { confession: null })
 			return await message.reply({ 
                 embeds: [{ 
                     description: models.utils.statusError('success', "se ha eliminado el canal preterminado para confesiones"), 
@@ -51,8 +51,8 @@ exports.text = async (client, message, args) => {
                 color: 0xff0000
             }]
         });
-        if(!await models.schemas.SetChannels.findOne({ guildID: message.guildId })) {
-            await new models.schemas.SetChannels({
+        if(!await config.schemas.SetChannels.findOne({ guildID: message.guildId })) {
+            await new config.schemas.SetChannels({
                 guildID: message.guildId,
                 suggest: null,
                 confession: channel.id,
@@ -66,9 +66,9 @@ exports.text = async (client, message, args) => {
                 }]
             })
         }
-        let confessChannel = (await models.schemas.SetChannels.findOne({ guildID: message.guildId}).exec()).confession
+        let confessChannel = (await config.schemas.SetChannels.findOne({ guildID: message.guildId}).exec()).confession
         if(confessChannel == null) {
-            await models.schemas.SetChannels.updateOne({guildID: message.guildId}, { confession: channel.id })
+            await config.schemas.SetChannels.updateOne({guildID: message.guildId}, { confession: channel.id })
             return await message.reply({
                 embeds: [{
                     description: models.utils.statusError('success', `se ha establecido <#${channel.id}> como preterminado para confesiones`),
@@ -81,7 +81,7 @@ exports.text = async (client, message, args) => {
                 color: 0xff0000
             }]
         }); else {
-            await models.schemas.SetChannels.updateOne({guildID: message.guildId}, { confession: channel.id })
+            await config.schemas.SetChannels.updateOne({guildID: message.guildId}, { confession: channel.id })
             return await message.reply({
                 embeds: [{
                     description: models.utils.statusError('success', `se ha establecido <#${channel.id}> como preterminado para confesiones`),

@@ -2,6 +2,7 @@ const discord = require('discord.js');
 const models = require('maplebot_models');
 const regex_c = require('hex-color-regex')({ strict: true });
 const nekoapi = require('nekoapi.beta')
+const config = require('../../../utils/exports')
 const {
     replaces_msg_i,
     randomColor,
@@ -34,8 +35,8 @@ exports.Farewell = async (client, interaction) => {
                         color: 0xff0000
                     }]
                 });
-                if (await models.schemas.Farewell.findOne({ guildID: interaction.guildId }) == null) {
-                    let FrwDb = new models.schemas.Farewell({
+                if (await config.schemas.Farewell.findOne({ guildID: interaction.guildId }) == null) {
+                    let FrwDb = new config.schemas.Farewell({
                         guildID: interaction.guildId,
                         message: null,
                         type: null,
@@ -53,9 +54,9 @@ exports.Farewell = async (client, interaction) => {
                     })
                     await FrwDb.save();
                 }
-                let channelFrw = await models.schemas.SetChannels.findOne({ guildID: interaction.guildId });
+                let channelFrw = await config.schemas.SetChannels.findOne({ guildID: interaction.guildId });
                 if (channelFrw == null) {
-                    let ChannelDb = new models.schemas.SetChannels({
+                    let ChannelDb = new config.schemas.SetChannels({
                         guildID: interaction.guildId,
                         suggest: null,
                         confession: null,
@@ -70,7 +71,7 @@ exports.Farewell = async (client, interaction) => {
                         }]
                     })
                 } else if (channelFrw.farewell == null) {
-                    await models.schemas.SetChannels.updateOne({ guildID: interaction.guildId }, { farewell: channel.id })
+                    await config.schemas.SetChannels.updateOne({ guildID: interaction.guildId }, { farewell: channel.id })
                     await interaction.reply({
                         embeds: [{
                             description: models.utils.statusError('success', `Se ha establecido <#${channel.id}> como preterminado para despedidas`),
@@ -85,7 +86,7 @@ exports.Farewell = async (client, interaction) => {
                         }]
                     })
                 } else {
-                    await models.schemas.SetChannels.updateOne({ guildID: interaction.guildId }, { farewell: channel.id })
+                    await config.schemas.SetChannels.updateOne({ guildID: interaction.guildId }, { farewell: channel.id })
                     await interaction.reply({
                         embeds: [{
                             description: models.utils.statusError('success', `Se ha establecido <#${channel.id}> como preterminado para despedidas`),
@@ -151,9 +152,9 @@ exports.Farewell = async (client, interaction) => {
                                 color: 0xff0000
                             }]
                         })
-                        let msgFrw_1 = await models.schemas.Farewell.findOne({ guildID: interaction.guildId })
+                        let msgFrw_1 = await config.schemas.Farewell.findOne({ guildID: interaction.guildId })
                         if (msgFrw_1 == null) {
-                            let FrwDb = new models.schemas.Farewell({
+                            let FrwDb = new config.schemas.Farewell({
                                 guildID: interaction.guildId,
                                 message: text,
                                 type: null,
@@ -177,7 +178,7 @@ exports.Farewell = async (client, interaction) => {
                                 }]
                             })
                         } else if (msgFrw_1.message == null) {
-                            await models.schemas.Farewell.updateOne({ guildID: interaction.guildId }, { message: text })
+                            await config.schemas.Farewell.updateOne({ guildID: interaction.guildId }, { message: text })
                             await interaction.reply({
                                 embeds: [{
                                     description: models.utils.statusError('success', `El mensaje de despedida sera mostrado como acontinuacion...`) + `\n${replaces_msg_i(interaction, text)}`,
@@ -192,7 +193,7 @@ exports.Farewell = async (client, interaction) => {
                                 }]
                             })
                         } else {
-                            await models.schemas.Farewell.updateOne({ guildID: interaction.guildId }, { message: text })
+                            await config.schemas.Farewell.updateOne({ guildID: interaction.guildId }, { message: text })
                             await interaction.reply({
                                 embeds: [{
                                     description: models.utils.statusError('success', `El mensaje de despedida sera mostrado como acontinuacion...`) + `\n${replaces_msg_i(interaction, text)}`,
@@ -204,7 +205,7 @@ exports.Farewell = async (client, interaction) => {
                     case "delete":
                         switch (option.value) {
                             case true:
-                                let msgFrw_2 = await models.schemas.Farewell.findOne({ guildID: interaction.guildId });
+                                let msgFrw_2 = await config.schemas.Farewell.findOne({ guildID: interaction.guildId });
                                 if (msgFrw_2 == null) return await interaction.reply({
                                     embeds: [{
                                         description: models.utils.statusError("error", "no cuentas con un sistema de despedidas"),
@@ -217,7 +218,7 @@ exports.Farewell = async (client, interaction) => {
                                         color: 0xff0000
                                     }]
                                 });
-                                await models.schemas.Farewell.updateOne({ guildID: interaction.guildId }, { message: null })
+                                await config.schemas.Farewell.updateOne({ guildID: interaction.guildId }, { message: null })
                                 await interaction.reply({
                                     embeds: [{
                                         description: models.utils.statusError('success', "el mensaje de despedida ha sido eliminado"),
@@ -242,9 +243,9 @@ exports.Farewell = async (client, interaction) => {
             case "type":
                 option = interaction.options._hoistedOptions[0];
                 let type = option.value
-                let typeFrw = await models.schemas.Farewell.findOne({ guildID: interaction.guildId })
+                let typeFrw = await config.schemas.Farewell.findOne({ guildID: interaction.guildId })
                 if (typeFrw == null) {
-                    let FrwDb = new models.schemas.Farewell({
+                    let FrwDb = new config.schemas.Farewell({
                         guildID: interaction.guildId,
                         message: null,
                         type: type,
@@ -268,7 +269,7 @@ exports.Farewell = async (client, interaction) => {
                         }]
                     })
                 } else if (typeFrw.type == null) {
-                    await models.schemas.Farewell.updateOne({ guildID: interaction.guildId }, { type: type })
+                    await config.schemas.Farewell.updateOne({ guildID: interaction.guildId }, { type: type })
                     await interaction.reply({
                         embeds: [{
                             description: models.utils.statusError('success', `Haz seleccionado el tipo de despedidas como **${type == "image" ? "Imagen" : "Embed"}**`),
@@ -283,7 +284,7 @@ exports.Farewell = async (client, interaction) => {
                         }]
                     })
                 } else {
-                    await models.schemas.Farewell.updateOne({ guildID: interaction.guildId }, { type: type })
+                    await config.schemas.Farewell.updateOne({ guildID: interaction.guildId }, { type: type })
                     await interaction.reply({
                         embeds: [{
                             description: models.utils.statusError('success', `Haz seleccionado el tipo de despedidas como **${type == "image" ? "Imagen" : "Embed"}**`),
@@ -352,9 +353,9 @@ exports.Farewell = async (client, interaction) => {
                                 color: 0xff0000
                             }]
                         })
-                        let descFrw_1 = await models.schemas.Farewell.findOne({ guildID: interaction.guildId })
+                        let descFrw_1 = await config.schemas.Farewell.findOne({ guildID: interaction.guildId })
                         if (descFrw_1 == null) {
-                            let FrwDb = new models.schemas.Farewell({
+                            let FrwDb = new config.schemas.Farewell({
                                 guildID: interaction.guildId,
                                 message: null,
                                 type: null,
@@ -378,7 +379,7 @@ exports.Farewell = async (client, interaction) => {
                                 }]
                             })
                         } else if (descFrw_1.description == null) {
-                            await models.schemas.Farewell.updateOne({ guildID: interaction.guildId }, { description: text })
+                            await config.schemas.Farewell.updateOne({ guildID: interaction.guildId }, { description: text })
                             await interaction.reply({
                                 embeds: [{
                                     description: models.utils.statusError('success', `La descripcion de la despedida sera mostrada como acontinuacion...`) + `\n${replaces_msg_i(interaction, text)}`,
@@ -393,7 +394,7 @@ exports.Farewell = async (client, interaction) => {
                                 }]
                             })
                         } else {
-                            await models.schemas.Farewell.updateOne({ guildID: interaction.guildId }, { description: text })
+                            await config.schemas.Farewell.updateOne({ guildID: interaction.guildId }, { description: text })
                             await interaction.reply({
                                 embeds: [{
                                     description: models.utils.statusError('success', `La descripcion de la despedida sera mostrada como acontinuacion...`) + `\n${replaces_msg_i(interaction, text)}`,
@@ -411,9 +412,9 @@ exports.Farewell = async (client, interaction) => {
                             }]
                         });
                         let image = await newColorImage(hex_color);
-                        let descFrw_2 = await models.schemas.Farewell.findOne({ guildID: interaction.guildId })
+                        let descFrw_2 = await config.schemas.Farewell.findOne({ guildID: interaction.guildId })
                         if (descFrw_2 == null) {
-                            let FrwDb = new models.schemas.Farewell({
+                            let FrwDb = new config.schemas.Farewell({
                                 guildID: interaction.guildId,
                                 message: null,
                                 type: null,
@@ -443,7 +444,7 @@ exports.Farewell = async (client, interaction) => {
                                 ]
                             })
                         } else if (descFrw_2.color.description == null) {
-                            await models.schemas.Farewell.updateOne({ guildID: interaction.guildId }, { color: { title: descFrw_2.color.title, description: hex_color, avatar: descFrw_2.color.avatar } })
+                            await config.schemas.Farewell.updateOne({ guildID: interaction.guildId }, { color: { title: descFrw_2.color.title, description: hex_color, avatar: descFrw_2.color.avatar } })
                             await interaction.reply({
                                 embeds: [{
                                     description: models.utils.statusError('success', `el color de la descripcion se ha establecido correctamente a ${hex_color}`),
@@ -464,7 +465,7 @@ exports.Farewell = async (client, interaction) => {
                                 }]
                             })
                         } else {
-                            await models.schemas.Farewell.updateOne({ guildID: interaction.guildId }, { color: { title: descFrw_2.color.title, description: hex_color, avatar: descFrw_2.color.avatar } })
+                            await config.schemas.Farewell.updateOne({ guildID: interaction.guildId }, { color: { title: descFrw_2.color.title, description: hex_color, avatar: descFrw_2.color.avatar } })
                             await interaction.reply({
                                 embeds: [{
                                     description: models.utils.statusError('success', `el color de la descripcion se ha establecido correctamente a ${hex_color}`),
@@ -482,7 +483,7 @@ exports.Farewell = async (client, interaction) => {
                     case "delete":
                         switch (option.value) {
                             case true:
-                                let descFrw_3 = await models.schemas.Farewell.findOne({ guildID: interaction.guildId });
+                                let descFrw_3 = await config.schemas.Farewell.findOne({ guildID: interaction.guildId });
                                 if (descFrw_3 == null) return await interaction.reply({
                                     embeds: [{
                                         description: models.utils.statusError("error", "no cuentas con un sistema de despedidas"),
@@ -495,7 +496,7 @@ exports.Farewell = async (client, interaction) => {
                                         color: 0xff0000
                                     }]
                                 });
-                                await models.schemas.Farewell.updateOne({ guildID: interaction.guildId }, { description: null })
+                                await config.schemas.Farewell.updateOne({ guildID: interaction.guildId }, { description: null })
                                 await interaction.reply({
                                     embeds: [{
                                         description: models.utils.statusError('success', "La descripcion de la despedida ha sido eliminada"),
@@ -577,9 +578,9 @@ exports.Farewell = async (client, interaction) => {
                                 color: 0xff0000
                             }]
                         })
-                        let titFrw_1 = await models.schemas.Farewell.findOne({ guildID: interaction.guildId })
+                        let titFrw_1 = await config.schemas.Farewell.findOne({ guildID: interaction.guildId })
                         if (titFrw_1 == null) {
-                            let FrwDb = new models.schemas.Farewell({
+                            let FrwDb = new config.schemas.Farewell({
                                 guildID: interaction.guildId,
                                 message: null,
                                 type: null,
@@ -603,7 +604,7 @@ exports.Farewell = async (client, interaction) => {
                                 }]
                             })
                         } else if (titFrw_1.title == null) {
-                            await models.schemas.Farewell.updateOne({ guildID: interaction.guildId }, { title: text })
+                            await config.schemas.Farewell.updateOne({ guildID: interaction.guildId }, { title: text })
                             await interaction.reply({
                                 embeds: [{
                                     description: models.utils.statusError('success', `El titulo de la despedida sera mostrado como acontinuacion...`) + `\n${replaces_msg_i(interaction, text)}`,
@@ -618,7 +619,7 @@ exports.Farewell = async (client, interaction) => {
                                 }]
                             })
                         } else {
-                            await models.schemas.Farewell.updateOne({ guildID: interaction.guildId }, { title: text })
+                            await config.schemas.Farewell.updateOne({ guildID: interaction.guildId }, { title: text })
                             await interaction.reply({
                                 embeds: [{
                                     description: models.utils.statusError('success', `El titulo de la despedida sera mostrado como acontinuacion...`) + `\n${replaces_msg_i(interaction, text)}`,
@@ -636,9 +637,9 @@ exports.Farewell = async (client, interaction) => {
                             }]
                         });
                         let image = await newColorImage(hex_color);
-                        let titFrw_2 = await models.schemas.Farewell.findOne({ guildID: interaction.guildId })
+                        let titFrw_2 = await config.schemas.Farewell.findOne({ guildID: interaction.guildId })
                         if (titFrw_2 == null) {
-                            let FrwDb = new models.schemas.Farewell({
+                            let FrwDb = new config.schemas.Farewell({
                                 guildID: interaction.guildId,
                                 message: null,
                                 type: null,
@@ -668,7 +669,7 @@ exports.Farewell = async (client, interaction) => {
                                 ]
                             })
                         } else if (titFrw_2.color.title == null) {
-                            await models.schemas.Farewell.updateOne({ guildID: interaction.guildId }, { color: { title: hex_color, description: titFrw_2.color.description, avatar: titFrw_2.color.avatar } })
+                            await config.schemas.Farewell.updateOne({ guildID: interaction.guildId }, { color: { title: hex_color, description: titFrw_2.color.description, avatar: titFrw_2.color.avatar } })
                             await interaction.reply({
                                 embeds: [{
                                     description: models.utils.statusError('success', `el color del titulo se ha establecido correctamente a ${hex_color}`),
@@ -689,7 +690,7 @@ exports.Farewell = async (client, interaction) => {
                                 }]
                             })
                         } else {
-                            await models.schemas.Farewell.updateOne({ guildID: interaction.guildId }, { color: { title: hex_color, description: titFrw_2.color.description, avatar: titFrw_2.color.avatar } })
+                            await config.schemas.Farewell.updateOne({ guildID: interaction.guildId }, { color: { title: hex_color, description: titFrw_2.color.description, avatar: titFrw_2.color.avatar } })
                             await interaction.reply({
                                 embeds: [{
                                     description: models.utils.statusError('success', `el color del titulo se ha establecido correctamente a ${hex_color}`),
@@ -707,7 +708,7 @@ exports.Farewell = async (client, interaction) => {
                     case "delete":
                         switch (option.value) {
                             case true:
-                                let titFrw_3 = await models.schemas.Farewell.findOne({ guildID: interaction.guildId });
+                                let titFrw_3 = await config.schemas.Farewell.findOne({ guildID: interaction.guildId });
                                 if (titFrw_3 == null) return await interaction.reply({
                                     embeds: [{
                                         description: models.utils.statusError("error", "no cuentas con un sistema de despedidas"),
@@ -720,7 +721,7 @@ exports.Farewell = async (client, interaction) => {
                                         color: 0xff0000
                                     }]
                                 });
-                                await models.schemas.Farewell.updateOne({ guildID: interaction.guildId }, { title: null })
+                                await config.schemas.Farewell.updateOne({ guildID: interaction.guildId }, { title: null })
                                 await interaction.reply({
                                     embeds: [{
                                         description: models.utils.statusError('success', "el titulo de la despedida ha sido eliminada"),
@@ -780,9 +781,9 @@ exports.Farewell = async (client, interaction) => {
                                 color: 0xff0000
                             }]
                         });
-                        imgFrw = await models.schemas.Farewell.findOne({ guildID: interaction.guildId })
+                        imgFrw = await config.schemas.Farewell.findOne({ guildID: interaction.guildId })
                         if (imgFrw == null) {
-                            let FrwDb = new models.schemas.Farewell({
+                            let FrwDb = new config.schemas.Farewell({
                                 guildID: interaction.guildId,
                                 message: null,
                                 type: null,
@@ -809,7 +810,7 @@ exports.Farewell = async (client, interaction) => {
                                 }]
                             })
                         } else if (imgFrw.background.data == null) {
-                            await models.schemas.Farewell.updateOne({ guildID: interaction.guildId }, { background: { tipo: "image", data: option.attachment.url } })
+                            await config.schemas.Farewell.updateOne({ guildID: interaction.guildId }, { background: { tipo: "image", data: option.attachment.url } })
                             await interaction.reply({
                                 embeds: [{
                                     description: models.utils.statusError("success", `El fondo de la imagen de despedida se ha establecido correctamente`),
@@ -828,7 +829,7 @@ exports.Farewell = async (client, interaction) => {
                                 }]
                             })
                         } else {
-                            await models.schemas.Farewell.updateOne({ guildID: interaction.guildId }, { background: { tipo: "image", data: option.attachment.url } })
+                            await config.schemas.Farewell.updateOne({ guildID: interaction.guildId }, { background: { tipo: "image", data: option.attachment.url } })
                             await interaction.reply({
                                 embeds: [{
                                     description: models.utils.statusError("success", "El fondo de la imagen de despedida se ha establecido correctamente"),
@@ -847,9 +848,9 @@ exports.Farewell = async (client, interaction) => {
                                 color: 0xff0000
                             }]
                         });
-                        imgFrw = await models.schemas.Farewell.findOne({ guildID: interaction.guildId })
+                        imgFrw = await config.schemas.Farewell.findOne({ guildID: interaction.guildId })
                         if (imgFrw == null) {
-                            let FrwDb = new models.schemas.Farewell({
+                            let FrwDb = new config.schemas.Farewell({
                                 guildID: interaction.guildId,
                                 message: null,
                                 type: null,
@@ -876,7 +877,7 @@ exports.Farewell = async (client, interaction) => {
                                 }]
                             })
                         } else if (imgFrw.background.data == null) {
-                            await models.schemas.Farewell.updateOne({ guildID: interaction.guildId }, { background: { tipo: "image", data: option.value } })
+                            await config.schemas.Farewell.updateOne({ guildID: interaction.guildId }, { background: { tipo: "image", data: option.value } })
                             await interaction.reply({
                                 embeds: [{
                                     description: models.utils.statusError("success", `El fondo de la imagen de despedida se ha establecido correctamente`),
@@ -894,7 +895,7 @@ exports.Farewell = async (client, interaction) => {
                                 }]
                             })
                         } else {
-                            await models.schemas.Farewell.updateOne({ guildID: interaction.guildId }, { background: { tipo: "image", data: option.value } })
+                            await config.schemas.Farewell.updateOne({ guildID: interaction.guildId }, { background: { tipo: "image", data: option.value } })
                             await interaction.reply({
                                 embeds: [{
                                     description: models.utils.statusError("success", "El fondo de la imagen de despedida se ha establecido correctamente"),
@@ -915,9 +916,9 @@ exports.Farewell = async (client, interaction) => {
                             }]
                         });
                         let image = await newColorImage(hex_color);
-                        imgFrw = await models.schemas.Farewell.findOne({ guildID: interaction.guildId })
+                        imgFrw = await config.schemas.Farewell.findOne({ guildID: interaction.guildId })
                         if (imgFrw == null) {
-                            let FrwDb = new models.schemas.Farewell({
+                            let FrwDb = new config.schemas.Farewell({
                                 guildID: interaction.guildId,
                                 message: null,
                                 type: null,
@@ -945,7 +946,7 @@ exports.Farewell = async (client, interaction) => {
                                 files: [image.attachment]
                             })
                         } else if (imgFrw.background.data == null) {
-                            await models.schemas.Farewell.updateOne({ guildID: interaction.guildId }, { background: { tipo: "color", data: hex_color } })
+                            await config.schemas.Farewell.updateOne({ guildID: interaction.guildId }, { background: { tipo: "color", data: hex_color } })
                             await interaction.reply({
                                 embeds: [{
                                     description: models.utils.statusError("success", `El fondo de la imagen de despedida se ha establecido ${hex_color}`),
@@ -964,7 +965,7 @@ exports.Farewell = async (client, interaction) => {
                                 }]
                             })
                         } else {
-                            await models.schemas.Farewell.updateOne({ guildID: interaction.guildId }, { background: { tipo: "color", data: hex_color } })
+                            await config.schemas.Farewell.updateOne({ guildID: interaction.guildId }, { background: { tipo: "color", data: hex_color } })
                             await interaction.reply({
                                 embeds: [{
                                     description: models.utils.statusError("success", `El fondo de la imagen de despedida se ha establecido ${hex_color}`),
@@ -978,7 +979,7 @@ exports.Farewell = async (client, interaction) => {
                         }
                         break;
                     case "delete":
-                        imgFrw = await models.schemas.Farewell.findOne({ guildID: interaction.guildId })
+                        imgFrw = await config.schemas.Farewell.findOne({ guildID: interaction.guildId })
                         switch (option.value) {
                             case true:
                                 if (imgFrw == null) return await interaction.reply({
@@ -993,7 +994,7 @@ exports.Farewell = async (client, interaction) => {
                                         color: 0xff0000
                                     }]
                                 })
-                                await models.schemas.Farewell.updateOne({ guildID: interaction.guildId }, { background: { tipo: null, data: null } });
+                                await config.schemas.Farewell.updateOne({ guildID: interaction.guildId }, { background: { tipo: null, data: null } });
                                 await interaction.reply({
                                     embeds: [{
                                         description: models.utils.statusError("success", "se ha eliminado el fondo personalizado para la despedida"),
@@ -1048,9 +1049,9 @@ exports.Farewell = async (client, interaction) => {
                             }]
                         });
                         let image = await newColorImage(hex_color);
-                        avatarFrw = await models.schemas.Farewell.findOne({ guildID: interaction.guildId })
+                        avatarFrw = await config.schemas.Farewell.findOne({ guildID: interaction.guildId })
                         if (!avatarFrw) {
-                            let FrwDb = new models.schemas.Farewell({
+                            let FrwDb = new config.schemas.Farewell({
                                 guildID: interaction.guildId,
                                 message: null,
                                 type: null,
@@ -1080,7 +1081,7 @@ exports.Farewell = async (client, interaction) => {
                                 ]
                             })
                         } else if (avatarFrw.color.avatar == null) {
-                            await models.schemas.Farewell.updateOne({ guildID: interaction.guildId }, { color: { title: avatarFrw.color.title, description: avatarFrw.color.description, avatar: hex_color } })
+                            await config.schemas.Farewell.updateOne({ guildID: interaction.guildId }, { color: { title: avatarFrw.color.title, description: avatarFrw.color.description, avatar: hex_color } })
                             await interaction.reply({
                                 embeds: [{
                                     description: models.utils.statusError('success', `el color del anillo del avatar se ha establecido correctamente a ${hex_color}`),
@@ -1101,7 +1102,7 @@ exports.Farewell = async (client, interaction) => {
                                 }]
                             })
                         } else {
-                            await models.schemas.Farewell.updateOne({ guildID: interaction.guildId }, { color: { title: avatarFrw.color.title, description: avatarFrw.color.description, avatar: hex_color } })
+                            await config.schemas.Farewell.updateOne({ guildID: interaction.guildId }, { color: { title: avatarFrw.color.title, description: avatarFrw.color.description, avatar: hex_color } })
                             await interaction.reply({
                                 embeds: [{
                                     description: models.utils.statusError('success', `el color del anillo del avatar se ha establecido correctamente a ${hex_color}`),
@@ -1117,7 +1118,7 @@ exports.Farewell = async (client, interaction) => {
                         }
                         break;
                     case "delete":
-                        avatarFrw = await models.schemas.Farewell.findOne({ guildID: interaction.guildId })
+                        avatarFrw = await config.schemas.Farewell.findOne({ guildID: interaction.guildId })
                         switch (option.value) {
                             case true:
                                 if (avatarFrw == null) return await interaction.reply({
@@ -1132,7 +1133,7 @@ exports.Farewell = async (client, interaction) => {
                                         color: 0xff0000
                                     }]
                                 })
-                                await models.schemas.Farewell.updateOne({ guildID: interaction.guildId }, { color: { title: avatarFrw.color.title, description: avatarFrw.color.description, avatar: null } });
+                                await config.schemas.Farewell.updateOne({ guildID: interaction.guildId }, { color: { title: avatarFrw.color.title, description: avatarFrw.color.description, avatar: null } });
                                 await interaction.reply({
                                     embeds: [{
                                         description: models.utils.statusError("success", "se ha eliminado el color personalizado para el aniño del avatar"),
@@ -1154,7 +1155,7 @@ exports.Farewell = async (client, interaction) => {
                 }
                 break;
             case "test":
-                let testFarewell = farewellJson(await models.schemas.Farewell.findOne({ guildID: interaction.guildId }))
+                let testFarewell = farewellJson(await config.schemas.Farewell.findOne({ guildID: interaction.guildId }))
                 if (!testFarewell) return await interaction.reply({
                     embeds: [{
                         description: models.utils.statusError("warn", "para ejecutar este comando deberias de tener un sistema de despedidas establecido"),
@@ -1215,8 +1216,8 @@ exports.Farewell = async (client, interaction) => {
                 let farewell, channels;
                 switch (option.value) {
                     case true:
-                        channels = await models.schemas.SetChannels.findOne({ guildID: interaction.guildId })
-                        farewell = await models.schemas.Farewell.findOne({ guildID: interaction.guildId })
+                        channels = await config.schemas.SetChannels.findOne({ guildID: interaction.guildId })
+                        farewell = await config.schemas.Farewell.findOne({ guildID: interaction.guildId })
                         if (!farewell) return await interaction.reply({
                             embeds: [{
                                 description: models.utils.statusError('error', "no tienes un sistema de despedidas establecidos"),
@@ -1229,7 +1230,7 @@ exports.Farewell = async (client, interaction) => {
                                 color: 0xff0000
                             }]
                         })
-                        await models.schemas.SetChannels.updateOne({ guildID: interaction.guildId }, { farewell: null })
+                        await config.schemas.SetChannels.updateOne({ guildID: interaction.guildId }, { farewell: null })
                         await interaction.reply({
                             embeds: [{
                                 description: models.utils.statusError('success', "se ha eliminado solo el canal preterminado de despedidas de mi base de datos"),
@@ -1238,8 +1239,8 @@ exports.Farewell = async (client, interaction) => {
                         })
                         break;
                     case false:
-                        channels = await models.schemas.SetChannels.findOne({ guildID: interaction.guildId })
-                        farewell = await models.schemas.Farewell.findOne({ guildID: interaction.guildId })
+                        channels = await config.schemas.SetChannels.findOne({ guildID: interaction.guildId })
+                        farewell = await config.schemas.Farewell.findOne({ guildID: interaction.guildId })
                         if (!farewell) return await interaction.reply({
                             embeds: [{
                                 description: models.utils.statusError('error', "no tienes un sistema de despedidas establecido"),
@@ -1252,8 +1253,8 @@ exports.Farewell = async (client, interaction) => {
                                 color: 0xff0000
                             }]
                         })
-                        await models.schemas.Farewell.deleteOne({ guildID: interaction.guildId })
-                        await models.schemas.SetChannels.updateOne({ guildID: interaction.guildId }, { farewell: null })
+                        await config.schemas.Farewell.deleteOne({ guildID: interaction.guildId })
+                        await config.schemas.SetChannels.updateOne({ guildID: interaction.guildId }, { farewell: null })
                         await interaction.reply({
                             embeds: [{
                                 description: models.utils.statusError('success', "se ha eliminado el sistema completo de despedidas"),

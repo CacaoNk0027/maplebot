@@ -1,7 +1,7 @@
 const discord = require('discord.js')
 const models = require('maplebot_models')
 const ms = require('ms')
-const configs = require('../../utils/exports')
+const config = require('../../utils/exports')
 const nekoapi = require('cacao_nekoapi')
 
 /**
@@ -103,7 +103,7 @@ exports.slash = async (client, interaction) => {
 
     } catch (error) {
         console.error(error)
-        await configs.interactionErrorMsg(interaction, error)
+        await config.interactionErrorMsg(interaction, error)
     }
 }
 

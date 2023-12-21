@@ -500,19 +500,5 @@
                 "required": true
             }
         ]
-    },
-    {
-        "name": "setprefix",
-        "description": "Personaliza el prefijo :3",
-        "type": 1,
-        "options": [
-          {
-            "name": "prefijo",
-            "type": 3,
-            "description": "Nuevo prefijo",
-            "required": true
-          }
-        ]
-      }
-      
+    }
 ]

@@ -83,7 +83,7 @@ exports.slash = async (client, interaction) => {
         })
     } catch (error) {
         console.error(error)
-        await configs.interactionErrorMsg(interaction, error)
+        await config.interactionErrorMsg(interaction, error)
     }
 
 }

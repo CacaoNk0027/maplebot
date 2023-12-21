@@ -1,6 +1,6 @@
 const discord = require('discord.js')
 const models = require('maplebot_models')
-const configs = require('../../utils/exports')
+const config = require('../../utils/exports')
 const ms = require('ms')
 
 /**
@@ -10,14 +10,14 @@ const ms = require('ms')
  */
 exports.text = async (client, message, args) => {
     try {
-        const { user } = await configs.fetchUser({ message: message, args: args })
+        const { user } = await config.fetchUser({ message: message, args: args })
         if(!user) return await message.reply({
             embeds: [{
                 description: models.utils.statusError('error', `no se pudo encontrar el usuario especificado`),
                 color: 0xff0000
             }]
         });
-        const { member } = await configs.fetchMember({ message: message, id: user.id })
+        const { member } = await config.fetchMember({ message: message, id: user.id })
         if(!member) return await message.reply({
             embeds: [{
                 description: models.utils.statusError('error', `el usuario debe de ser miembro de este servidor`),
@@ -132,7 +132,7 @@ exports.slash = async (client, interaction) => {
                 let embeds = [{
                     title: userIsAuthor() ? 'Tu avatar': `Avatar de ${target.user.username}`,
                     description: `[Avatar URL](${target.user.avatarURL({ forceStatic: false, size: 2048 })})`,
-                    color: configs.randomColor(),
+                    color: config.randomColor(),
                     author: {
                         name: target.user.username,
                         icon_url: target.user.avatarURL({ forceStatic: false })
@@ -144,7 +144,7 @@ exports.slash = async (client, interaction) => {
                 if (target !== null && target.avatar !== null) embeds.push({
                     title: memberIsAuthor() ? 'Tu avatar de servidor' : `Avatar de ${target.user.username}`,
                     description: `[GuildAvatar URL](${target.avatarURL({ forceStatic: false, size: 2048 })})`,
-                    color: configs.randomColor(),
+                    color: config.randomColor(),
                     author: {
                         name: target.user.username,
                         icon_url: target.avatarURL({ forceStatic: false })
@@ -213,7 +213,7 @@ exports.slash = async (client, interaction) => {
                     }]
                 })
                 if (user.banner == null && user.accentColor) {
-                    let image = await configs.newColorImage(user.hexAccentColor)
+                    let image = await config.newColorImage(user.hexAccentColor)
                     return await interaction.reply({
                         embeds: [{
                             author: {
@@ -255,7 +255,7 @@ exports.slash = async (client, interaction) => {
         
     } catch (error) {
         console.error(error)
-        await configs.interactionErrorMsg(interaction, error)
+        await config.interactionErrorMsg(interaction, error)
     }
 }
 

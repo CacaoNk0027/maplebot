@@ -10,10 +10,10 @@ const ms = require('ms')
  */
 exports.text = async (client, message, args) => {
     try {
-        if(await models.schemas.SetChannels.findOne({ guildID: message.guildId }) == null) return await message.reply({
+        if(await config.schemas.SetChannels.findOne({ guildID: message.guildId }) == null) return await message.reply({
             embeds: [{ description: models.utils.statusError('error', 'al parecer no hay sugerencias en este servidor'), color: 0xff0000 }]
         });
-        let suggestChannel = await models.schemas.SetChannels.findOne({ guildID: message.guildId }).exec().then(obj => obj.suggest)
+        let suggestChannel = await config.schemas.SetChannels.findOne({ guildID: message.guildId }).exec().then(obj => obj.suggest)
         if(suggestChannel == null) return await message.reply({
             embeds: [{ description: models.utils.statusError('error', 'al parecer no hay sugerencias en este servidor'), color: 0xff0000 }]
         }); else if(!client.channels.cache.has(suggestChannel)) return await message.reply({

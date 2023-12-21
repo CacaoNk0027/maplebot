@@ -1,6 +1,6 @@
 const discord = require('discord.js')
 const models = require('maplebot_models')
-const configs = require('../../utils/exports')
+const config = require('../../utils/exports')
 const ms = require('ms')
 
 /**
@@ -107,7 +107,7 @@ exports.text = async (client, message, args) => {
                     type: 3,
                     custom_id: "GuildMenu",
                     placeholder: "Selecciona una opcion del menu",
-                    options: configs.guildMenuOptions(server)
+                    options: config.guildMenuOptions(server)
                 }]
             }]
         })
@@ -246,7 +246,7 @@ exports.slash = async (client, interaction) => {
                     type: 3,
                     custom_id: "GuildMenu",
                     placeholder: "Selecciona una opcion del menu",
-                    options: configs.guildMenuOptions(server)
+                    options: config.guildMenuOptions(server)
                 }]
             }]
         })
@@ -278,7 +278,7 @@ exports.slash = async (client, interaction) => {
         })
     } catch (error) {
         console.error(error)
-        await configs.interactionErrorMsg(interaction, error)
+        await config.interactionErrorMsg(interaction, error)
     }
 }
 

@@ -1,7 +1,7 @@
 const discord = require('discord.js')
 const models = require('maplebot_models')
 const ms = require('ms')
-const configs = require('../../utils/exports')
+const config = require('../../utils/exports')
 
 /**
  * @param {discord.Client} client
@@ -70,7 +70,7 @@ exports.slash = async (client, interaction) => {
         }], ephemeral: true });
     } catch (error) {
         console.error(error)
-        await configs.interactionErrorMsg(interaction, error)
+        await config.interactionErrorMsg(interaction, error)
     }
 }
 

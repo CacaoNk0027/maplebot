@@ -1,20 +1,20 @@
-const configs = require('./assets/configs.json')
+const config = require('./assets/configs.json')
 const models = require('maplebot_models')
 const Canvas = require('canvas')
 const { colors } = require('./assets/colors');
 const { Guild, ButtonInteraction, Message, AttachmentBuilder, Collection, CommandInteraction, GuildMember } = require('discord.js');
 
-let defaultOptions = configs.menu_options
-let guildDefaultOptions = configs.guild_options
-let optionsWnsfw = configs.menu_options_wnsfw
-let commGuildOptions = configs.guild_options_wcomm
+let defaultOptions = config.menu_options
+let guildDefaultOptions = config.guild_options
+let optionsWnsfw = config.menu_options_wnsfw
+let commGuildOptions = config.guild_options_wcomm
 
 exports.presences = async (client) => {
-    var json_string = JSON.stringify(configs.presences).replace('$developer', (await client.application?.fetch()).owner.username).replace('$guilds', (client.guilds.cache.size)).replace('$commands', client.comandos.size)
+    var json_string = JSON.stringify(config.presences).replace('$developer', (await client.application?.fetch()).owner.username).replace('$guilds', (client.guilds.cache.size)).replace('$commands', client.comandos.size)
     return JSON.parse(json_string)
 };
 
-exports.permissions = configs.permissions;
+exports.permissions = config.permissions;
 
 exports.menuOptions = (channel) => {
     return channel.nsfw ? optionsWnsfw: defaultOptions;
@@ -615,8 +615,8 @@ exports.AddNewArrayBlacklist = async (client, guildId, array) => {
     let evitedWords = client.comandos.map(c => c.help.name)
     let prefixes = await models.utils.prefix(client, guildId)
     let wordset;
-    if (await models.schemas.Blacklist.findOne({ guildID: guildId }) !== null) {
-        wordset = (await models.schemas.Blacklist.findOne({ guildID: guildId }).exec()).words
+    if (await config.schemas.Blacklist.findOne({ guildID: guildId }) !== null) {
+        wordset = (await config.schemas.Blacklist.findOne({ guildID: guildId }).exec()).words
     } else wordset = [];
     if (wordset.length >= 1) {
         for (const setedword of wordset) {
@@ -635,12 +635,23 @@ exports.AddNewArrayBlacklist = async (client, guildId, array) => {
 
 exports.DeleteNewArrayBlacklist = async (client, guildId, array) => {
     let wordsdb, _1 = [], _2 = [];
-    if(await models.schemas.Blacklist.findOne({ guildID: guildId }) !== null) {
-        wordsdb = (await models.schemas.Blacklist.findOne({ guildID: guildId }).exec()).words
+    if(await config.schemas.Blacklist.findOne({ guildID: guildId }) !== null) {
+        wordsdb = (await config.schemas.Blacklist.findOne({ guildID: guildId }).exec()).words
     } else wordsdb = [];
     array.forEach(function (word) { _1.push(word) }); 
     _1.forEach(w => { _2.push(w) }); 
     wordsdb.forEach(function (word) { removeItemFromArray(_1, word) });
     _1.forEach(function (word) { removeItemFromArray(_2, word) });
     return _2
+}
+
+exports.schemas = {
+    Blacklist: require('./schemas/Blacklist'),
+    Farewell: require('./schemas/Farewell'),
+    Mute: require('./schemas/Mute'),
+    SetChannels: require('./schemas/SetChannels'),
+    SetPrefix: require('./schemas/SetPrefix'),
+    Snipe: require('./schemas/Snipe'),
+    Warns: require('./schemas/Warns'),
+    Welcome: require('./schemas/Welcome')
 }
