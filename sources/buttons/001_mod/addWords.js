@@ -21,7 +21,7 @@ exports.exec = async (client, interaction) => {
                         icon_url: client.user.avatarURL()
                     },
                     color: 0x00ff00,
-                    description: models.utils.statusError('success', 'han sido establecidas palabras en la blacklist del server de manera correcta'),
+                    description: config.statusError('success', 'han sido establecidas palabras en la blacklist del server de manera correcta'),
                     fields: [{
                         name: 'Palabras | 📝',
                         value: words.join(', ')
@@ -104,12 +104,12 @@ exports.exec = async (client, interaction) => {
                 await sendEmbed(palabras);
                 await enableButtons();
             } catch (error) {
-                await models.utils.error(message, error);
+                await config.error(message, error);
             }
         } else {
             if (palabras.length <= 0) return await message.reply({
                 embeds: [{
-                    description: models.utils.statusError('error', 'las palabras que tratabas de establecer son palabras que no pueden agregarse o que ya estan establecidas'),
+                    description: config.statusError('error', 'las palabras que tratabas de establecer son palabras que no pueden agregarse o que ya estan establecidas'),
                     color: 0xff0000
                 }]
             }); else try {
@@ -117,7 +117,7 @@ exports.exec = async (client, interaction) => {
                 await sendEmbed(palabras)
                 await enableButtons();
             } catch (error) {
-                await models.utils.error(message, error)
+                await config.error(message, error)
             }
         }
     } catch (error) {

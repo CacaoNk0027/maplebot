@@ -13,14 +13,14 @@ exports.text = async (client, message, args) => {
         const { user } = await config.fetchUser({ message: message, args: args })
         if(!user) return await message.reply({
             embeds: [{
-                description: models.utils.statusError('error', `no se pudo encontrar el usuario especificado`),
+                description: config.statusError('error', `no se pudo encontrar el usuario especificado`),
                 color: 0xff0000
             }]
         });
         const { member } = await config.fetchMember({ message: message, id: user.id })
         if(!member) return await message.reply({
             embeds: [{
-                description: models.utils.statusError('error', `el usuario debe de ser miembro de este servidor`),
+                description: config.statusError('error', `el usuario debe de ser miembro de este servidor`),
                 color: 0xff0000
             }]
         });
@@ -31,14 +31,14 @@ exports.text = async (client, message, args) => {
                     icon_url: member.user.avatarURL({ forceStatic: false })
                 },
                 color: user.accentColor,
-                description: models.menus.users.user(member),
+                description: config.menus.users.user(member),
                 fields: [{
                     name: "Fecha de ingreso..",
-                    value: models.menus.users.dates(member),
+                    value: config.menus.users.dates(member),
                     inline: false
                 }, {
                     name: "General", 
-                    value: (await models.menus.users.general(member)),
+                    value: (await config.menus.users.general(member)),
                     inline: true
                 }, {
                     name: "Roles",
@@ -52,7 +52,7 @@ exports.text = async (client, message, args) => {
         })
     } catch (error) {
         console.log(error)
-        await models.utils.error(message, error)
+        await config.error(message, error)
     }
 }
 
@@ -76,14 +76,14 @@ exports.slash = async (client, interaction) => {
                                 icon_url: target.user.avatarURL({ forceStatic: false })
                             },
                             color: user.accentColor,
-                            description: models.menus.users.user(target),
+                            description: config.menus.users.user(target),
                             fields: [{
                                 name: "Fecha de ingreso..",
-                                value: models.menus.users.dates(target),
+                                value: config.menus.users.dates(target),
                                 inline: false
                             }, {
                                 name: "General", 
-                                value: (await models.menus.users.general(target)),
+                                value: (await config.menus.users.general(target)),
                                 inline: true
                             }, {
                                 name: "Roles",
@@ -103,14 +103,14 @@ exports.slash = async (client, interaction) => {
                                 icon_url: member.user.avatarURL({ forceStatic: false })
                             },
                             color: user.accentColor,
-                            description: models.menus.users.user(member),
+                            description: config.menus.users.user(member),
                             fields: [{
                                 name: "Fecha de ingreso..",
-                                value: models.menus.users.dates(member),
+                                value: config.menus.users.dates(member),
                                 inline: false
                             }, {
                                 name: "General", 
-                                value: (await models.menus.users.general(member)),
+                                value: (await config.menus.users.general(member)),
                                 inline: true
                             }, {
                                 name: "Roles",
@@ -208,7 +208,7 @@ exports.slash = async (client, interaction) => {
                 const userIsAuthor = () => target.user.id == interaction.user.id ? true : false;
                 if (user.banner == null && user.accentColor == null) return await interaction.reply({
                     embeds: [{
-                        description: models.utils.statusError('rolplayDanger', userIsAuthor() ? `Whoops... parece que no tienes un banner o un color personalizado` : `Whoops... ${user.username} no cuenta con un banner o un color personalizado`),
+                        description: config.statusError('rolplayDanger', userIsAuthor() ? `Whoops... parece que no tienes un banner o un color personalizado` : `Whoops... ${user.username} no cuenta con un banner o un color personalizado`),
                         color: 0xff0000
                     }]
                 })

@@ -12,7 +12,7 @@ exports.text = async (client, message, args) => {
     try {
         if(!message.guild.banner) return await message.reply({
             embeds: [{
-                description: models.utils.statusError('rolplayDanger', 'el servidor no cuenta con un banner'),
+                description: config.statusError('rolplayDanger', 'el servidor no cuenta con un banner'),
                 color: 0xff0000
             }]
         })
@@ -32,7 +32,7 @@ exports.text = async (client, message, args) => {
         })
     } catch (error) {
         console.error(error)
-        await models.utils.error(message, error)
+        await config.error(message, error)
     }
 }
 

@@ -13,7 +13,7 @@ exports.text = async (client, message, args) => {
         let firstMember, secondMember;
         if (!args[0]) return await message.reply({
             embeds: [{
-                description: models.utils.statusError('error', "debes poner la id de un usuario o mencionar un usuario"),
+                description: config.statusError('error', "debes poner la id de un usuario o mencionar un usuario"),
                 color: 0xff0000
             }]
         }); else try {
@@ -21,7 +21,7 @@ exports.text = async (client, message, args) => {
         } catch (error) {
             return await message.reply({
                 embeds: [{
-                    description: models.utils.statusError('error', 'el usuario que haz mencionado es invalido'),
+                    description: config.statusError('error', 'el usuario que haz mencionado es invalido'),
                     color: 0xff0000
                 }]
             })
@@ -35,7 +35,7 @@ exports.text = async (client, message, args) => {
 
         if (firstMember == message.author && secondMember == message.author) return await message.reply({
             embeds: [{
-                description: `**100%**〘${models.utils.percentageBar(100, 0, 20)}〙\n:sparkling_heart: el amor hacia una persona debe comenzar por ti mismo, tu debes amarte y valorarte primero si no nadie lo hara`,
+                description: `**100%**〘${config.porcentageBar(100, 0, 20)}〙\n:sparkling_heart: el amor hacia una persona debe comenzar por ti mismo, tu debes amarte y valorarte primero si no nadie lo hara`,
                 color: 0x00ffff,
                 image: {
                     url: `attachment://love.png`
@@ -44,7 +44,7 @@ exports.text = async (client, message, args) => {
             files: [new discord.AttachmentBuilder().setName("love.png").setDescription(`Imagen de shipeo entre usuarios @Maple bot`).setFile(await new Ship().buildImage(firstMember, secondMember, 100))]
         }); else if (firstMember !== message.author && secondMember == message.author) return await message.reply({
             embeds: [{
-                description: `**${porcentage.toString()}%**〘${models.utils.percentageBar(porcentage, 100 - porcentage, 20)}〙\n${switchPorcentageInAuthorAndUser(porcentage, firstMember, secondMember)}`,
+                description: `**${porcentage.toString()}%**〘${config.porcentageBar(porcentage, 100 - porcentage, 20)}〙\n${switchPorcentageInAuthorAndUser(porcentage, firstMember, secondMember)}`,
                 color: 0x00ffff,
                 image: {
                     url: `attachment://love.png`
@@ -53,7 +53,7 @@ exports.text = async (client, message, args) => {
             files: [new discord.AttachmentBuilder().setName('love.png').setDescription(`Imagen de shipeo entre usuaios @Maple bot`).setFile(await new Ship().buildImage(firstMember, secondMember, porcentage))]
         }); else if (firstMember == message.author && secondMember !== message.author) return await message.reply({
             embeds: [{
-                description: `**${porcentage.toString()}%**〘${models.utils.percentageBar(porcentage, 100 - porcentage, 20)}〙\n${switchPorcentageInAuthorAndUser(porcentage, secondMember, firstMember)}`,
+                description: `**${porcentage.toString()}%**〘${config.porcentageBar(porcentage, 100 - porcentage, 20)}〙\n${switchPorcentageInAuthorAndUser(porcentage, secondMember, firstMember)}`,
                 color: 0x00ffff,
                 image: {
                     url: `attachment://love.png`
@@ -62,7 +62,7 @@ exports.text = async (client, message, args) => {
             files: [new discord.AttachmentBuilder().setName('love.png').setDescription(`Imagen de shipeo entre usuaios @Maple bot`).setFile(await new Ship().buildImage(firstMember, secondMember, porcentage))]
         }); else return await message.reply({
             embeds: [{
-                description: `**${porcentage.toString()}%**〘${models.utils.percentageBar(porcentage, 100 - porcentage, 20)}〙\n${switchPorcentageInDiferentsUsers(porcentage, firstMember, secondMember)}`,
+                description: `**${porcentage.toString()}%**〘${config.porcentageBar(porcentage, 100 - porcentage, 20)}〙\n${switchPorcentageInDiferentsUsers(porcentage, firstMember, secondMember)}`,
                 color: 0x00ffff,
                 image: {
                     url: `attachment://love.png`
@@ -71,7 +71,7 @@ exports.text = async (client, message, args) => {
             files: [new discord.AttachmentBuilder().setName('love.png').setDescription(`Imagen de shipeo entre usuaios @Maple bot`).setFile(await new Ship().buildImage(firstMember, secondMember, porcentage))]
         });
     } catch (error) {
-        await models.utils.error(message, error)
+        await config.error(message, error)
     }
 }
 

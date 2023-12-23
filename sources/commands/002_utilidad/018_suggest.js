@@ -11,17 +11,17 @@ const ms = require('ms')
 exports.text = async (client, message, args) => {
     try {
         if(await config.schemas.SetChannels.findOne({ guildID: message.guildId }) == null) return await message.reply({
-            embeds: [{ description: models.utils.statusError('error', 'al parecer no hay sugerencias en este servidor'), color: 0xff0000 }]
+            embeds: [{ description: config.statusError('error', 'al parecer no hay sugerencias en este servidor'), color: 0xff0000 }]
         });
         let suggestChannel = await config.schemas.SetChannels.findOne({ guildID: message.guildId }).exec().then(obj => obj.suggest)
         if(suggestChannel == null) return await message.reply({
-            embeds: [{ description: models.utils.statusError('error', 'al parecer no hay sugerencias en este servidor'), color: 0xff0000 }]
+            embeds: [{ description: config.statusError('error', 'al parecer no hay sugerencias en este servidor'), color: 0xff0000 }]
         }); else if(!client.channels.cache.has(suggestChannel)) return await message.reply({
-            embeds: [{ description: models.utils.statusError('error', 'hay un sistema de sugerencias establecido, pero no puedo encontrar el canal establecido'), color: 0xff0000 }]
+            embeds: [{ description: config.statusError('error', 'hay un sistema de sugerencias establecido, pero no puedo encontrar el canal establecido'), color: 0xff0000 }]
         }); else if(!args.join(' ')) return await message.reply({
-            embeds: [{ description: models.utils.statusError('error', 'debes escribir una sugerencia'), color: 0xff0000 }]
+            embeds: [{ description: config.statusError('error', 'debes escribir una sugerencia'), color: 0xff0000 }]
         }); else if(!args.join(' ').length > 1000) return await message.reply({
-            embeds: [{ description: models.utils.statusError('error', 'las sugerencias solo aceptan 1000 caracteres como maximo'), color: 0xff0000 }]
+            embeds: [{ description: config.statusError('error', 'las sugerencias solo aceptan 1000 caracteres como maximo'), color: 0xff0000 }]
         }); else {
             await message.delete().catch(err => err)
             await message.channel.send({
@@ -31,7 +31,7 @@ exports.text = async (client, message, args) => {
                         icon_url: message.author.avatarURL({ forceStatic: false })
                     },
                     color: 0x00ff00,
-                    description: models.utils.statusError('success', 'tu sugerencia ha sido enviada correctamente')
+                    description: config.statusError('success', 'tu sugerencia ha sido enviada correctamente')
                 }]
             });
             await client.channels.cache.find(channel => channel.id == suggestChannel).send({
@@ -58,7 +58,7 @@ exports.text = async (client, message, args) => {
         }
     } catch (error) {
         console.error(error)
-        await models.utils.error(message, error)
+        await config.error(message, error)
     }
 }
 

@@ -25,13 +25,13 @@ exports.Farewell = async (client, interaction) => {
                 let channel = await client.channels.fetch(option.value);
                 if (channel.type != discord.ChannelType.GuildText) return await interaction.reply({
                     embeds: [{
-                        description: models.utils.statusError('error', "no puedes poner un canal que no sea de texto"),
+                        description: config.statusError('error', "no puedes poner un canal que no sea de texto"),
                         color: 0xff0000
                     }]
                 });
                 if (!channel.permissionsFor(client.user.id).has(discord.PermissionFlagsBits.SendMessages)) return await interaction.reply({
                     embeds: [{
-                        description: models.utils.statusError('error', "no puedes establecer un canal que no puedo ver o en el que no puedo hablar"),
+                        description: config.statusError('error', "no puedes establecer un canal que no puedo ver o en el que no puedo hablar"),
                         color: 0xff0000
                     }]
                 });
@@ -66,7 +66,7 @@ exports.Farewell = async (client, interaction) => {
                     await ChannelDb.save();
                     await interaction.reply({
                         embeds: [{
-                            description: models.utils.statusError('success', `Se ha establecido <#${channel.id}> como preterminado para despedidas`),
+                            description: config.statusError('success', `Se ha establecido <#${channel.id}> como preterminado para despedidas`),
                             color: 0x00ff00
                         }]
                     })
@@ -74,14 +74,14 @@ exports.Farewell = async (client, interaction) => {
                     await config.schemas.SetChannels.updateOne({ guildID: interaction.guildId }, { farewell: channel.id })
                     await interaction.reply({
                         embeds: [{
-                            description: models.utils.statusError('success', `Se ha establecido <#${channel.id}> como preterminado para despedidas`),
+                            description: config.statusError('success', `Se ha establecido <#${channel.id}> como preterminado para despedidas`),
                             color: 0x00ff00
                         }]
                     })
                 } else if (channelFrw == channel.id) {
                     await interaction.reply({
                         embeds: [{
-                            description: models.utils.statusError('error', `El canal que haz seleccionado es exactamente igual al canal que haz establecido anteriormente`),
+                            description: config.statusError('error', `El canal que haz seleccionado es exactamente igual al canal que haz establecido anteriormente`),
                             color: 0xff0000
                         }]
                     })
@@ -89,7 +89,7 @@ exports.Farewell = async (client, interaction) => {
                     await config.schemas.SetChannels.updateOne({ guildID: interaction.guildId }, { farewell: channel.id })
                     await interaction.reply({
                         embeds: [{
-                            description: models.utils.statusError('success', `Se ha establecido <#${channel.id}> como preterminado para despedidas`),
+                            description: config.statusError('success', `Se ha establecido <#${channel.id}> como preterminado para despedidas`),
                             color: 0x00ff00
                         }]
                     })
@@ -148,7 +148,7 @@ exports.Farewell = async (client, interaction) => {
                         let text = await option.value
                         if (!text.trim().split(/ +/g).length > 300) return await interaction.reply({
                             embeds: [{
-                                description: models.utils.statusError('error', "no puedes poner mas de 300 palabras en el mensaje de despedida"),
+                                description: config.statusError('error', "no puedes poner mas de 300 palabras en el mensaje de despedida"),
                                 color: 0xff0000
                             }]
                         })
@@ -173,7 +173,7 @@ exports.Farewell = async (client, interaction) => {
                             await FrwDb.save();
                             await interaction.reply({
                                 embeds: [{
-                                    description: models.utils.statusError('success', `El mensaje de despedida sera mostrado como acontinuacion...`) + `\n${replaces_msg_i(interaction, text)}`,
+                                    description: config.statusError('success', `El mensaje de despedida sera mostrado como acontinuacion...`) + `\n${replaces_msg_i(interaction, text)}`,
                                     color: 0x00ff00
                                 }]
                             })
@@ -181,14 +181,14 @@ exports.Farewell = async (client, interaction) => {
                             await config.schemas.Farewell.updateOne({ guildID: interaction.guildId }, { message: text })
                             await interaction.reply({
                                 embeds: [{
-                                    description: models.utils.statusError('success', `El mensaje de despedida sera mostrado como acontinuacion...`) + `\n${replaces_msg_i(interaction, text)}`,
+                                    description: config.statusError('success', `El mensaje de despedida sera mostrado como acontinuacion...`) + `\n${replaces_msg_i(interaction, text)}`,
                                     color: 0x00ff00
                                 }]
                             })
                         } else if (text == msgFrw_1.message) {
                             await interaction.reply({
                                 embeds: [{
-                                    description: models.utils.statusError('error', "no puedes escribir un mensaje similar o igual al anterior"),
+                                    description: config.statusError('error', "no puedes escribir un mensaje similar o igual al anterior"),
                                     color: 0xff0000
                                 }]
                             })
@@ -196,7 +196,7 @@ exports.Farewell = async (client, interaction) => {
                             await config.schemas.Farewell.updateOne({ guildID: interaction.guildId }, { message: text })
                             await interaction.reply({
                                 embeds: [{
-                                    description: models.utils.statusError('success', `El mensaje de despedida sera mostrado como acontinuacion...`) + `\n${replaces_msg_i(interaction, text)}`,
+                                    description: config.statusError('success', `El mensaje de despedida sera mostrado como acontinuacion...`) + `\n${replaces_msg_i(interaction, text)}`,
                                     color: 0x00ff00
                                 }]
                             })
@@ -208,20 +208,20 @@ exports.Farewell = async (client, interaction) => {
                                 let msgFrw_2 = await config.schemas.Farewell.findOne({ guildID: interaction.guildId });
                                 if (msgFrw_2 == null) return await interaction.reply({
                                     embeds: [{
-                                        description: models.utils.statusError("error", "no cuentas con un sistema de despedidas"),
+                                        description: config.statusError("error", "no cuentas con un sistema de despedidas"),
                                         color: 0xff0000
                                     }]
                                 });
                                 if (msgFrw_2.message == null) return await interaction.reply({
                                     embeds: [{
-                                        description: models.utils.statusError('error', "no tienes un mensaje establecido"),
+                                        description: config.statusError('error', "no tienes un mensaje establecido"),
                                         color: 0xff0000
                                     }]
                                 });
                                 await config.schemas.Farewell.updateOne({ guildID: interaction.guildId }, { message: null })
                                 await interaction.reply({
                                     embeds: [{
-                                        description: models.utils.statusError('success', "el mensaje de despedida ha sido eliminado"),
+                                        description: config.statusError('success', "el mensaje de despedida ha sido eliminado"),
                                         color: 0x00ff00
                                     }]
                                 })
@@ -229,7 +229,7 @@ exports.Farewell = async (client, interaction) => {
                             case false:
                                 await interaction.reply({
                                     embeds: [{
-                                        description: models.utils.statusError('error', "no se eliminara el mensaje de despedida"),
+                                        description: config.statusError('error', "no se eliminara el mensaje de despedida"),
                                         color: 0x00ff00
                                     }]
                                 });
@@ -264,7 +264,7 @@ exports.Farewell = async (client, interaction) => {
                     await FrwDb.save();
                     await interaction.reply({
                         embeds: [{
-                            description: models.utils.statusError('success', `Haz seleccionado el tipo de despedidas como **${type == "image" ? "Imagen" : "Embed"}**`),
+                            description: config.statusError('success', `Haz seleccionado el tipo de despedidas como **${type == "image" ? "Imagen" : "Embed"}**`),
                             color: 0x00ff00
                         }]
                     })
@@ -272,14 +272,14 @@ exports.Farewell = async (client, interaction) => {
                     await config.schemas.Farewell.updateOne({ guildID: interaction.guildId }, { type: type })
                     await interaction.reply({
                         embeds: [{
-                            description: models.utils.statusError('success', `Haz seleccionado el tipo de despedidas como **${type == "image" ? "Imagen" : "Embed"}**`),
+                            description: config.statusError('success', `Haz seleccionado el tipo de despedidas como **${type == "image" ? "Imagen" : "Embed"}**`),
                             color: 0x00ff00
                         }]
                     })
                 } else if (type == typeFrw.type) {
                     await interaction.reply({
                         embeds: [{
-                            description: models.utils.statusError('error', `Ya haz seleccionado ese tipo de despedida antes`),
+                            description: config.statusError('error', `Ya haz seleccionado ese tipo de despedida antes`),
                             color: 0xff0000
                         }]
                     })
@@ -287,7 +287,7 @@ exports.Farewell = async (client, interaction) => {
                     await config.schemas.Farewell.updateOne({ guildID: interaction.guildId }, { type: type })
                     await interaction.reply({
                         embeds: [{
-                            description: models.utils.statusError('success', `Haz seleccionado el tipo de despedidas como **${type == "image" ? "Imagen" : "Embed"}**`),
+                            description: config.statusError('success', `Haz seleccionado el tipo de despedidas como **${type == "image" ? "Imagen" : "Embed"}**`),
                             color: 0x00ff00
                         }]
                     })
@@ -349,7 +349,7 @@ exports.Farewell = async (client, interaction) => {
                         let text = option.value
                         if (!text.trim().split(/ +/g).length > 10) return await interaction.reply({
                             embeds: [{
-                                description: models.utils.statusError('error', "no puedes poner mas de 10 palabras en la descripcion de despedida"),
+                                description: config.statusError('error', "no puedes poner mas de 10 palabras en la descripcion de despedida"),
                                 color: 0xff0000
                             }]
                         })
@@ -374,7 +374,7 @@ exports.Farewell = async (client, interaction) => {
                             await FrwDb.save();
                             await interaction.reply({
                                 embeds: [{
-                                    description: models.utils.statusError('success', `La descripcion de la despedida sera mostrada como acontinuacion...`) + `\n${replaces_msg_i(interaction, text)}`,
+                                    description: config.statusError('success', `La descripcion de la despedida sera mostrada como acontinuacion...`) + `\n${replaces_msg_i(interaction, text)}`,
                                     color: 0x00ff00
                                 }]
                             })
@@ -382,14 +382,14 @@ exports.Farewell = async (client, interaction) => {
                             await config.schemas.Farewell.updateOne({ guildID: interaction.guildId }, { description: text })
                             await interaction.reply({
                                 embeds: [{
-                                    description: models.utils.statusError('success', `La descripcion de la despedida sera mostrada como acontinuacion...`) + `\n${replaces_msg_i(interaction, text)}`,
+                                    description: config.statusError('success', `La descripcion de la despedida sera mostrada como acontinuacion...`) + `\n${replaces_msg_i(interaction, text)}`,
                                     color: 0x00ff00
                                 }]
                             })
                         } else if (text == descFrw_1.description) {
                             await interaction.reply({
                                 embeds: [{
-                                    description: models.utils.statusError('error', "no puedes escribir una descripcion similar o igual al anterior"),
+                                    description: config.statusError('error', "no puedes escribir una descripcion similar o igual al anterior"),
                                     color: 0xff0000
                                 }]
                             })
@@ -397,7 +397,7 @@ exports.Farewell = async (client, interaction) => {
                             await config.schemas.Farewell.updateOne({ guildID: interaction.guildId }, { description: text })
                             await interaction.reply({
                                 embeds: [{
-                                    description: models.utils.statusError('success', `La descripcion de la despedida sera mostrada como acontinuacion...`) + `\n${replaces_msg_i(interaction, text)}`,
+                                    description: config.statusError('success', `La descripcion de la despedida sera mostrada como acontinuacion...`) + `\n${replaces_msg_i(interaction, text)}`,
                                     color: 0x00ff00
                                 }]
                             })
@@ -407,7 +407,7 @@ exports.Farewell = async (client, interaction) => {
                         let hex_color = option.value.toLowerCase();
                         if (!regex_c.test(hex_color)) return await interaction.reply({
                             embeds: [{
-                                description: models.utils.statusError('error', `El ${hex_color} es invalido o no es un color`),
+                                description: config.statusError('error', `El ${hex_color} es invalido o no es un color`),
                                 color: 0xff0000
                             }]
                         });
@@ -433,7 +433,7 @@ exports.Farewell = async (client, interaction) => {
                             await FrwDb.save();
                             await interaction.reply({
                                 embeds: [{
-                                    description: models.utils.statusError('success', `el color de la descripcion se ha establecido correctamente a ${hex_color}`),
+                                    description: config.statusError('success', `el color de la descripcion se ha establecido correctamente a ${hex_color}`),
                                     color: parseInt(require('hex2dec').hexToDec(hex_color.replace("#", "0x"))),
                                     image: {
                                         url: image.embedUrl
@@ -447,7 +447,7 @@ exports.Farewell = async (client, interaction) => {
                             await config.schemas.Farewell.updateOne({ guildID: interaction.guildId }, { color: { title: descFrw_2.color.title, description: hex_color, avatar: descFrw_2.color.avatar } })
                             await interaction.reply({
                                 embeds: [{
-                                    description: models.utils.statusError('success', `el color de la descripcion se ha establecido correctamente a ${hex_color}`),
+                                    description: config.statusError('success', `el color de la descripcion se ha establecido correctamente a ${hex_color}`),
                                     color: parseInt(require('hex2dec').hexToDec(hex_color.replace("#", "0x"))),
                                     image: {
                                         url: image.embedUrl
@@ -460,7 +460,7 @@ exports.Farewell = async (client, interaction) => {
                         } else if (hex_color == descFrw_2.color.description) {
                             await interaction.reply({
                                 embeds: [{
-                                    description: models.utils.statusError('error', "el color que haz seleccionado es igual al anterior"),
+                                    description: config.statusError('error', "el color que haz seleccionado es igual al anterior"),
                                     color: 0xff0000
                                 }]
                             })
@@ -468,7 +468,7 @@ exports.Farewell = async (client, interaction) => {
                             await config.schemas.Farewell.updateOne({ guildID: interaction.guildId }, { color: { title: descFrw_2.color.title, description: hex_color, avatar: descFrw_2.color.avatar } })
                             await interaction.reply({
                                 embeds: [{
-                                    description: models.utils.statusError('success', `el color de la descripcion se ha establecido correctamente a ${hex_color}`),
+                                    description: config.statusError('success', `el color de la descripcion se ha establecido correctamente a ${hex_color}`),
                                     color: parseInt(require('hex2dec').hexToDec(hex_color.replace("#", "0x"))),
                                     image: {
                                         url: image.embedUrl
@@ -486,20 +486,20 @@ exports.Farewell = async (client, interaction) => {
                                 let descFrw_3 = await config.schemas.Farewell.findOne({ guildID: interaction.guildId });
                                 if (descFrw_3 == null) return await interaction.reply({
                                     embeds: [{
-                                        description: models.utils.statusError("error", "no cuentas con un sistema de despedidas"),
+                                        description: config.statusError("error", "no cuentas con un sistema de despedidas"),
                                         color: 0xff0000
                                     }]
                                 });
                                 if (descFrw_3.description == null) return await interaction.reply({
                                     embeds: [{
-                                        description: models.utils.statusError('error', "no tienes una descripcion establecida"),
+                                        description: config.statusError('error', "no tienes una descripcion establecida"),
                                         color: 0xff0000
                                     }]
                                 });
                                 await config.schemas.Farewell.updateOne({ guildID: interaction.guildId }, { description: null })
                                 await interaction.reply({
                                     embeds: [{
-                                        description: models.utils.statusError('success', "La descripcion de la despedida ha sido eliminada"),
+                                        description: config.statusError('success', "La descripcion de la despedida ha sido eliminada"),
                                         color: 0x00ff00
                                     }]
                                 })
@@ -507,7 +507,7 @@ exports.Farewell = async (client, interaction) => {
                             case false:
                                 await interaction.reply({
                                     embeds: [{
-                                        description: models.utils.statusError('error', "no se eliminara la descripcion de la despedida"),
+                                        description: config.statusError('error', "no se eliminara la descripcion de la despedida"),
                                         color: 0x00ff00
                                     }]
                                 });
@@ -574,7 +574,7 @@ exports.Farewell = async (client, interaction) => {
                         let text = option.value
                         if (!text.trim().split(/ +/g).length > 3) return await interaction.reply({
                             embeds: [{
-                                description: models.utils.statusError('error', "no puedes poner mas de 3 palabras en la descripcion de despedida"),
+                                description: config.statusError('error', "no puedes poner mas de 3 palabras en la descripcion de despedida"),
                                 color: 0xff0000
                             }]
                         })
@@ -599,7 +599,7 @@ exports.Farewell = async (client, interaction) => {
                             await FrwDb.save();
                             await interaction.reply({
                                 embeds: [{
-                                    description: models.utils.statusError('success', `El titulo de la despedida sera mostrado como acontinuacion...`) + `\n${replaces_msg_i(interaction, text)}`,
+                                    description: config.statusError('success', `El titulo de la despedida sera mostrado como acontinuacion...`) + `\n${replaces_msg_i(interaction, text)}`,
                                     color: 0x00ff00
                                 }]
                             })
@@ -607,14 +607,14 @@ exports.Farewell = async (client, interaction) => {
                             await config.schemas.Farewell.updateOne({ guildID: interaction.guildId }, { title: text })
                             await interaction.reply({
                                 embeds: [{
-                                    description: models.utils.statusError('success', `El titulo de la despedida sera mostrado como acontinuacion...`) + `\n${replaces_msg_i(interaction, text)}`,
+                                    description: config.statusError('success', `El titulo de la despedida sera mostrado como acontinuacion...`) + `\n${replaces_msg_i(interaction, text)}`,
                                     color: 0x00ff00
                                 }]
                             })
                         } else if (text == titFrw_1.title) {
                             await interaction.reply({
                                 embeds: [{
-                                    description: models.utils.statusError('error', "no puedes escribir un titulo similar o igual al anterior"),
+                                    description: config.statusError('error', "no puedes escribir un titulo similar o igual al anterior"),
                                     color: 0xff0000
                                 }]
                             })
@@ -622,7 +622,7 @@ exports.Farewell = async (client, interaction) => {
                             await config.schemas.Farewell.updateOne({ guildID: interaction.guildId }, { title: text })
                             await interaction.reply({
                                 embeds: [{
-                                    description: models.utils.statusError('success', `El titulo de la despedida sera mostrado como acontinuacion...`) + `\n${replaces_msg_i(interaction, text)}`,
+                                    description: config.statusError('success', `El titulo de la despedida sera mostrado como acontinuacion...`) + `\n${replaces_msg_i(interaction, text)}`,
                                     color: 0x00ff00
                                 }]
                             })
@@ -632,7 +632,7 @@ exports.Farewell = async (client, interaction) => {
                         let hex_color = option.value.toLowerCase();
                         if (!regex_c.test(hex_color)) return await interaction.reply({
                             embeds: [{
-                                description: models.utils.statusError('error', `El ${hex_color} es invalido o no es un color`),
+                                description: config.statusError('error', `El ${hex_color} es invalido o no es un color`),
                                 color: 0xff0000
                             }]
                         });
@@ -658,7 +658,7 @@ exports.Farewell = async (client, interaction) => {
                             await FrwDb.save();
                             await interaction.reply({
                                 embeds: [{
-                                    description: models.utils.statusError('success', `el color del titulo se ha establecido correctamente a ${hex_color}`),
+                                    description: config.statusError('success', `el color del titulo se ha establecido correctamente a ${hex_color}`),
                                     color: parseInt(require('hex2dec').hexToDec(hex_color.replace("#", "0x"))),
                                     image: {
                                         url: image.embedUrl
@@ -672,7 +672,7 @@ exports.Farewell = async (client, interaction) => {
                             await config.schemas.Farewell.updateOne({ guildID: interaction.guildId }, { color: { title: hex_color, description: titFrw_2.color.description, avatar: titFrw_2.color.avatar } })
                             await interaction.reply({
                                 embeds: [{
-                                    description: models.utils.statusError('success', `el color del titulo se ha establecido correctamente a ${hex_color}`),
+                                    description: config.statusError('success', `el color del titulo se ha establecido correctamente a ${hex_color}`),
                                     color: parseInt(require('hex2dec').hexToDec(hex_color.replace("#", "0x"))),
                                     image: {
                                         url: image.embedUrl
@@ -685,7 +685,7 @@ exports.Farewell = async (client, interaction) => {
                         } else if (hex_color == titFrw_2.color.title) {
                             await interaction.reply({
                                 embeds: [{
-                                    description: models.utils.statusError('error', "el color que haz seleccionado es igual al anterior"),
+                                    description: config.statusError('error', "el color que haz seleccionado es igual al anterior"),
                                     color: 0xff0000
                                 }]
                             })
@@ -693,7 +693,7 @@ exports.Farewell = async (client, interaction) => {
                             await config.schemas.Farewell.updateOne({ guildID: interaction.guildId }, { color: { title: hex_color, description: titFrw_2.color.description, avatar: titFrw_2.color.avatar } })
                             await interaction.reply({
                                 embeds: [{
-                                    description: models.utils.statusError('success', `el color del titulo se ha establecido correctamente a ${hex_color}`),
+                                    description: config.statusError('success', `el color del titulo se ha establecido correctamente a ${hex_color}`),
                                     color: parseInt(require('hex2dec').hexToDec(hex_color.replace("#", "0x"))),
                                     image: {
                                         url: image.embedUrl
@@ -711,20 +711,20 @@ exports.Farewell = async (client, interaction) => {
                                 let titFrw_3 = await config.schemas.Farewell.findOne({ guildID: interaction.guildId });
                                 if (titFrw_3 == null) return await interaction.reply({
                                     embeds: [{
-                                        description: models.utils.statusError("error", "no cuentas con un sistema de despedidas"),
+                                        description: config.statusError("error", "no cuentas con un sistema de despedidas"),
                                         color: 0xff0000
                                     }]
                                 });
                                 if (titFrw_3.title == null) return await interaction.reply({
                                     embeds: [{
-                                        description: models.utils.statusError('error', "no tienes un titulo establecido"),
+                                        description: config.statusError('error', "no tienes un titulo establecido"),
                                         color: 0xff0000
                                     }]
                                 });
                                 await config.schemas.Farewell.updateOne({ guildID: interaction.guildId }, { title: null })
                                 await interaction.reply({
                                     embeds: [{
-                                        description: models.utils.statusError('success', "el titulo de la despedida ha sido eliminada"),
+                                        description: config.statusError('success', "el titulo de la despedida ha sido eliminada"),
                                         color: 0x00ff00
                                     }]
                                 })
@@ -732,7 +732,7 @@ exports.Farewell = async (client, interaction) => {
                             case false:
                                 await interaction.reply({
                                     embeds: [{
-                                        description: models.utils.statusError('error', "no se eliminara el titulo de la despedida"),
+                                        description: config.statusError('error', "no se eliminara el titulo de la despedida"),
                                         color: 0x00ff00
                                     }]
                                 });
@@ -777,7 +777,7 @@ exports.Farewell = async (client, interaction) => {
                     case "image":
                         if (!['jpg', 'jpeg', 'png', 'webp'].includes(option.attachment.name.split('.').pop())) return await interaction.reply({
                             embeds: [{
-                                description: models.utils.statusError("error", "no puedo poner ese archivo ya que no tiene un formado compartible `jpg, jpeg, png, webp`, si la imagen tiene un archivo compartible trata de que sea reconocible"),
+                                description: config.statusError("error", "no puedo poner ese archivo ya que no tiene un formado compartible `jpg, jpeg, png, webp`, si la imagen tiene un archivo compartible trata de que sea reconocible"),
                                 color: 0xff0000
                             }]
                         });
@@ -802,7 +802,7 @@ exports.Farewell = async (client, interaction) => {
                             await FrwDb.save();
                             await interaction.reply({
                                 embeds: [{
-                                    description: models.utils.statusError("success", "El fondo de la imagen de despedida se ha establecido correctamente"),
+                                    description: config.statusError("success", "El fondo de la imagen de despedida se ha establecido correctamente"),
                                     color: 0x00ff00,
                                     image: {
                                         url: option.attachment.url
@@ -813,7 +813,7 @@ exports.Farewell = async (client, interaction) => {
                             await config.schemas.Farewell.updateOne({ guildID: interaction.guildId }, { background: { tipo: "image", data: option.attachment.url } })
                             await interaction.reply({
                                 embeds: [{
-                                    description: models.utils.statusError("success", `El fondo de la imagen de despedida se ha establecido correctamente`),
+                                    description: config.statusError("success", `El fondo de la imagen de despedida se ha establecido correctamente`),
                                     color: 0x00ff00,
                                     image: {
                                         url: option.attachment.url
@@ -824,7 +824,7 @@ exports.Farewell = async (client, interaction) => {
                         } else if (imgFrw.background.data == option.attachment.url) {
                             await interaction.reply({
                                 embeds: [{
-                                    description: models.utils.statusError("error", "no puedes poner una imagen igual a la anterior"),
+                                    description: config.statusError("error", "no puedes poner una imagen igual a la anterior"),
                                     color: 0xff0000
                                 }]
                             })
@@ -832,7 +832,7 @@ exports.Farewell = async (client, interaction) => {
                             await config.schemas.Farewell.updateOne({ guildID: interaction.guildId }, { background: { tipo: "image", data: option.attachment.url } })
                             await interaction.reply({
                                 embeds: [{
-                                    description: models.utils.statusError("success", "El fondo de la imagen de despedida se ha establecido correctamente"),
+                                    description: config.statusError("success", "El fondo de la imagen de despedida se ha establecido correctamente"),
                                     color: 0x00ff00,
                                     image: {
                                         url: option.attachment.url
@@ -844,7 +844,7 @@ exports.Farewell = async (client, interaction) => {
                     case "link":
                         if (!['jpg', 'jpeg', 'png', 'webp'].includes(option.value.split('.').pop())) return await interaction.reply({
                             embeds: [{
-                                description: models.utils.statusError("error", "no puedo poner ese archivo ya que no tiene un formado compartible `jpg, jpeg, png, webp`, si la imagen tiene un archivo compartible trata de que sea reconocible"),
+                                description: config.statusError("error", "no puedo poner ese archivo ya que no tiene un formado compartible `jpg, jpeg, png, webp`, si la imagen tiene un archivo compartible trata de que sea reconocible"),
                                 color: 0xff0000
                             }]
                         });
@@ -869,7 +869,7 @@ exports.Farewell = async (client, interaction) => {
                             await FrwDb.save();
                             await interaction.reply({
                                 embeds: [{
-                                    description: models.utils.statusError("success", "El fondo de la imagen de despedida se ha establecido correctamente"),
+                                    description: config.statusError("success", "El fondo de la imagen de despedida se ha establecido correctamente"),
                                     color: 0x00ff00,
                                     image: {
                                         url: option.value
@@ -880,7 +880,7 @@ exports.Farewell = async (client, interaction) => {
                             await config.schemas.Farewell.updateOne({ guildID: interaction.guildId }, { background: { tipo: "image", data: option.value } })
                             await interaction.reply({
                                 embeds: [{
-                                    description: models.utils.statusError("success", `El fondo de la imagen de despedida se ha establecido correctamente`),
+                                    description: config.statusError("success", `El fondo de la imagen de despedida se ha establecido correctamente`),
                                     color: 0x00ff00,
                                     image: {
                                         url: option.attachment.url
@@ -890,7 +890,7 @@ exports.Farewell = async (client, interaction) => {
                         } else if (imgFrw.background.data == option.value) {
                             await interaction.reply({
                                 embeds: [{
-                                    description: models.utils.statusError("error", "no puedes poner una imagen igual a la anterior"),
+                                    description: config.statusError("error", "no puedes poner una imagen igual a la anterior"),
                                     color: 0xff0000
                                 }]
                             })
@@ -898,7 +898,7 @@ exports.Farewell = async (client, interaction) => {
                             await config.schemas.Farewell.updateOne({ guildID: interaction.guildId }, { background: { tipo: "image", data: option.value } })
                             await interaction.reply({
                                 embeds: [{
-                                    description: models.utils.statusError("success", "El fondo de la imagen de despedida se ha establecido correctamente"),
+                                    description: config.statusError("success", "El fondo de la imagen de despedida se ha establecido correctamente"),
                                     color: 0x00ff00,
                                     image: {
                                         url: option.value
@@ -911,7 +911,7 @@ exports.Farewell = async (client, interaction) => {
                         let hex_color = option.value.toLowerCase();
                         if (!regex_c.test(hex_color)) return await interaction.reply({
                             embeds: [{
-                                description: models.utils.statusError('error', `El ${hex_color} es invalido o no es un color`),
+                                description: config.statusError('error', `El ${hex_color} es invalido o no es un color`),
                                 color: 0xff0000
                             }]
                         });
@@ -937,7 +937,7 @@ exports.Farewell = async (client, interaction) => {
                             await FrwDb.save();
                             await interaction.reply({
                                 embeds: [{
-                                    description: models.utils.statusError("success", `El fondo de la imagen de despedida se ha establecido ${hex_color}`),
+                                    description: config.statusError("success", `El fondo de la imagen de despedida se ha establecido ${hex_color}`),
                                     color: parseInt(require('hex2dec').hexToDec(hex_color.replace("#", "0x"))),
                                     image: {
                                         url: image.embedUrl
@@ -949,7 +949,7 @@ exports.Farewell = async (client, interaction) => {
                             await config.schemas.Farewell.updateOne({ guildID: interaction.guildId }, { background: { tipo: "color", data: hex_color } })
                             await interaction.reply({
                                 embeds: [{
-                                    description: models.utils.statusError("success", `El fondo de la imagen de despedida se ha establecido ${hex_color}`),
+                                    description: config.statusError("success", `El fondo de la imagen de despedida se ha establecido ${hex_color}`),
                                     color: parseInt(require('hex2dec').hexToDec(hex_color.replace("#", "0x"))),
                                     image: {
                                         url: image.embedUrl
@@ -960,7 +960,7 @@ exports.Farewell = async (client, interaction) => {
                         } else if (imgFrw.background.data == hex_color) {
                             await interaction.reply({
                                 embeds: [{
-                                    description: models.utils.statusError("error", "no puedes poner un color de fondo igual al anterior"),
+                                    description: config.statusError("error", "no puedes poner un color de fondo igual al anterior"),
                                     color: 0xff0000
                                 }]
                             })
@@ -968,7 +968,7 @@ exports.Farewell = async (client, interaction) => {
                             await config.schemas.Farewell.updateOne({ guildID: interaction.guildId }, { background: { tipo: "color", data: hex_color } })
                             await interaction.reply({
                                 embeds: [{
-                                    description: models.utils.statusError("success", `El fondo de la imagen de despedida se ha establecido ${hex_color}`),
+                                    description: config.statusError("success", `El fondo de la imagen de despedida se ha establecido ${hex_color}`),
                                     color: parseInt(require('hex2dec').hexToDec(hex_color.replace("#", "0x"))),
                                     image: {
                                         url: image.embedUrl
@@ -984,20 +984,20 @@ exports.Farewell = async (client, interaction) => {
                             case true:
                                 if (imgFrw == null) return await interaction.reply({
                                     embeds: [{
-                                        description: models.utils.statusError("error", "tu no cuentas con un sistema de despedidas"),
+                                        description: config.statusError("error", "tu no cuentas con un sistema de despedidas"),
                                         color: 0xff0000
                                     }]
                                 })
                                 if (imgFrw.background.data == null) return await interaction.reply({
                                     embeds: [{
-                                        description: models.utils.statusError("error", "parece que no tienes ningun fondo de despedida establecido"),
+                                        description: config.statusError("error", "parece que no tienes ningun fondo de despedida establecido"),
                                         color: 0xff0000
                                     }]
                                 })
                                 await config.schemas.Farewell.updateOne({ guildID: interaction.guildId }, { background: { tipo: null, data: null } });
                                 await interaction.reply({
                                     embeds: [{
-                                        description: models.utils.statusError("success", "se ha eliminado el fondo personalizado para la despedida"),
+                                        description: config.statusError("success", "se ha eliminado el fondo personalizado para la despedida"),
                                         color: 0x00ff00
                                     }]
                                 });
@@ -1005,7 +1005,7 @@ exports.Farewell = async (client, interaction) => {
                             case false:
                                 await interaction.reply({
                                     embeds: [{
-                                        description: models.utils.statusError("success", "no se eliminara el fondo personalizado para la despedida"),
+                                        description: config.statusError("success", "no se eliminara el fondo personalizado para la despedida"),
                                         color: 0x00ff00
                                     }]
                                 })
@@ -1044,7 +1044,7 @@ exports.Farewell = async (client, interaction) => {
                         let hex_color = option.value.toLowerCase();
                         if (!regex_c.test(hex_color)) return await interaction.reply({
                             embeds: [{
-                                description: models.utils.statusError('error', `El ${hex_color} es invalido o no es un color`),
+                                description: config.statusError('error', `El ${hex_color} es invalido o no es un color`),
                                 color: 0xff0000
                             }]
                         });
@@ -1070,7 +1070,7 @@ exports.Farewell = async (client, interaction) => {
                             await FrwDb.save();
                             await interaction.reply({
                                 embeds: [{
-                                    description: models.utils.statusError('success', `el color del anillo del avatar se ha establecido correctamente a ${hex_color}`),
+                                    description: config.statusError('success', `el color del anillo del avatar se ha establecido correctamente a ${hex_color}`),
                                     color: parseInt(require('hex2dec').hexToDec(hex_color.replace("#", "0x"))),
                                     image: {
                                         url: image.embedUrl
@@ -1084,7 +1084,7 @@ exports.Farewell = async (client, interaction) => {
                             await config.schemas.Farewell.updateOne({ guildID: interaction.guildId }, { color: { title: avatarFrw.color.title, description: avatarFrw.color.description, avatar: hex_color } })
                             await interaction.reply({
                                 embeds: [{
-                                    description: models.utils.statusError('success', `el color del anillo del avatar se ha establecido correctamente a ${hex_color}`),
+                                    description: config.statusError('success', `el color del anillo del avatar se ha establecido correctamente a ${hex_color}`),
                                     color: parseInt(require('hex2dec').hexToDec(hex_color.replace("#", "0x"))),
                                     image: {
                                         url: image.embedUrl
@@ -1097,7 +1097,7 @@ exports.Farewell = async (client, interaction) => {
                         } else if (hex_color == avatarFrw.color.avatar) {
                             await interaction.reply({
                                 embeds: [{
-                                    description: models.utils.statusError('error', "el color que haz seleccionado es igual al anterior"),
+                                    description: config.statusError('error', "el color que haz seleccionado es igual al anterior"),
                                     color: 0xff0000
                                 }]
                             })
@@ -1105,7 +1105,7 @@ exports.Farewell = async (client, interaction) => {
                             await config.schemas.Farewell.updateOne({ guildID: interaction.guildId }, { color: { title: avatarFrw.color.title, description: avatarFrw.color.description, avatar: hex_color } })
                             await interaction.reply({
                                 embeds: [{
-                                    description: models.utils.statusError('success', `el color del anillo del avatar se ha establecido correctamente a ${hex_color}`),
+                                    description: config.statusError('success', `el color del anillo del avatar se ha establecido correctamente a ${hex_color}`),
                                     color: parseInt(require('hex2dec').hexToDec(hex_color.replace("#", "0x"))),
                                     image: {
                                         url: image.embedUrl
@@ -1123,20 +1123,20 @@ exports.Farewell = async (client, interaction) => {
                             case true:
                                 if (avatarFrw == null) return await interaction.reply({
                                     embeds: [{
-                                        description: models.utils.statusError("error", "tu no cuentas con un sistema de despedidas"),
+                                        description: config.statusError("error", "tu no cuentas con un sistema de despedidas"),
                                         color: 0xff0000
                                     }]
                                 })
                                 if (avatarFrw.color.avatar == null) return await interaction.reply({
                                     embeds: [{
-                                        description: models.utils.statusError("error", "parece que no tienes ningun color para el aniño del avatar establecido"),
+                                        description: config.statusError("error", "parece que no tienes ningun color para el aniño del avatar establecido"),
                                         color: 0xff0000
                                     }]
                                 })
                                 await config.schemas.Farewell.updateOne({ guildID: interaction.guildId }, { color: { title: avatarFrw.color.title, description: avatarFrw.color.description, avatar: null } });
                                 await interaction.reply({
                                     embeds: [{
-                                        description: models.utils.statusError("success", "se ha eliminado el color personalizado para el aniño del avatar"),
+                                        description: config.statusError("success", "se ha eliminado el color personalizado para el aniño del avatar"),
                                         color: 0x00ff00
                                     }]
                                 });
@@ -1144,7 +1144,7 @@ exports.Farewell = async (client, interaction) => {
                             case false:
                                 await interaction.reply({
                                     embeds: [{
-                                        description: models.utils.statusError("success", "no se eliminara el color personalizado para el aniño del avatar"),
+                                        description: config.statusError("success", "no se eliminara el color personalizado para el aniño del avatar"),
                                         color: 0x00ff00
                                     }]
                                 })
@@ -1158,7 +1158,7 @@ exports.Farewell = async (client, interaction) => {
                 let testFarewell = farewellJson(await config.schemas.Farewell.findOne({ guildID: interaction.guildId }))
                 if (!testFarewell) return await interaction.reply({
                     embeds: [{
-                        description: models.utils.statusError("warn", "para ejecutar este comando deberias de tener un sistema de despedidas establecido"),
+                        description: config.statusError("warn", "para ejecutar este comando deberias de tener un sistema de despedidas establecido"),
                         color: 0xffff00
                     }]
                 });
@@ -1220,20 +1220,20 @@ exports.Farewell = async (client, interaction) => {
                         farewell = await config.schemas.Farewell.findOne({ guildID: interaction.guildId })
                         if (!farewell) return await interaction.reply({
                             embeds: [{
-                                description: models.utils.statusError('error', "no tienes un sistema de despedidas establecidos"),
+                                description: config.statusError('error', "no tienes un sistema de despedidas establecidos"),
                                 color: 0xff0000
                             }]
                         })
                         if (!channels || channels.farewell == null) return await interaction.reply({
                             embeds: [{
-                                description: models.utils.statusError('error', "no tienes un canal de despedida establecido"),
+                                description: config.statusError('error', "no tienes un canal de despedida establecido"),
                                 color: 0xff0000
                             }]
                         })
                         await config.schemas.SetChannels.updateOne({ guildID: interaction.guildId }, { farewell: null })
                         await interaction.reply({
                             embeds: [{
-                                description: models.utils.statusError('success', "se ha eliminado solo el canal preterminado de despedidas de mi base de datos"),
+                                description: config.statusError('success', "se ha eliminado solo el canal preterminado de despedidas de mi base de datos"),
                                 color: 0x00ff00
                             }]
                         })
@@ -1243,13 +1243,13 @@ exports.Farewell = async (client, interaction) => {
                         farewell = await config.schemas.Farewell.findOne({ guildID: interaction.guildId })
                         if (!farewell) return await interaction.reply({
                             embeds: [{
-                                description: models.utils.statusError('error', "no tienes un sistema de despedidas establecido"),
+                                description: config.statusError('error', "no tienes un sistema de despedidas establecido"),
                                 color: 0xff0000
                             }]
                         })
                         if (!channels || channels == null) return await interaction.reply({
                             embeds: [{
-                                description: models.utils.statusError('error', "no tienes un canal de despedida establecido"),
+                                description: config.statusError('error', "no tienes un canal de despedida establecido"),
                                 color: 0xff0000
                             }]
                         })
@@ -1257,7 +1257,7 @@ exports.Farewell = async (client, interaction) => {
                         await config.schemas.SetChannels.updateOne({ guildID: interaction.guildId }, { farewell: null })
                         await interaction.reply({
                             embeds: [{
-                                description: models.utils.statusError('success', "se ha eliminado el sistema completo de despedidas"),
+                                description: config.statusError('success', "se ha eliminado el sistema completo de despedidas"),
                                 color: 0x00ff00
                             }]
                         })

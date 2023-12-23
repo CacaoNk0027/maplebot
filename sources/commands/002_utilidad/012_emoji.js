@@ -12,15 +12,15 @@ const emoji_regex = require('emoji-regex')()
 exports.text = async (client, message, args) => {
     try {
         if(!args[0]) return await message.reply({
-            embeds: [{ description: models.utils.statusError('error', "no haz colocado ningun emoji"), color: 0xff0000 }]
+            embeds: [{ description: config.statusError('error', "no haz colocado ningun emoji"), color: 0xff0000 }]
         }); else if(emoji_regex.test(args[0])) return await message.reply({
-            embeds: [{ description: models.utils.statusError('error', "el emoji debe de ser personalizado no preterminado" ), color: 0xff0000 }]
+            embeds: [{ description: config.statusError('error', "el emoji debe de ser personalizado no preterminado" ), color: 0xff0000 }]
         }); else if(!args[0].match(/<a:.+?:\d{19}>|<:.+?:\d{19}>|<a:.+?:\d{18}>|<:.+?:\d{18}>/g)) return await message.reply({
-            embeds: [{ description: models.utils.statusError('error', "no se ha detectado ningun emoji"), color: 0xff0000 }]
+            embeds: [{ description: config.statusError('error', "no se ha detectado ningun emoji"), color: 0xff0000 }]
         }); else {
             let dataEmj = discord.parseEmoji(args[0]);
             if(!dataEmj.id) return await message.reply({
-                embeds: [{description: models.utils.statusError('error', "no se ha detectado ningun emoji"), color: 0xff0000}]
+                embeds: [{description: config.statusError('error', "no se ha detectado ningun emoji"), color: 0xff0000}]
             }); else {
                 await message.reply({
                     content: `https://cdn.discordapp.com/emojis/${dataEmj.id}.${dataEmj.animated ? "gif": "png"}` 
@@ -29,7 +29,7 @@ exports.text = async (client, message, args) => {
         }
     } catch (error) {
         console.error(error)
-        await models.utils.error(message, error)
+        await config.error(message, error)
     }
 }
 

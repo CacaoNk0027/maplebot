@@ -11,7 +11,7 @@ const canvacord = require('canvacord')
 exports.text = async (client, message, args) => {
     try {
         if(!args.join(' ') || args.join(' ').length <= 0) return await message.reply({ embeds: [{
-            description: models.utils.statusError('error', 'debes de escribir un texto'), color: 0xff0000
+            description: config.statusError('error', 'debes de escribir un texto'), color: 0xff0000
         }] }); else return await message.reply({
             embeds: [{
                 color: 0xfcf5d4,
@@ -22,7 +22,7 @@ exports.text = async (client, message, args) => {
             files: [new discord.AttachmentBuilder().setName('clyde.png').setDescription('imagen de clyde "hablando" @Maple Bot').setFile((await canvacord.Canvacord.clyde(args.join(' '))))]
         })
     } catch (error) {
-        await models.utils.error(message, error)
+        await config.error(message, error)
     }
 }
 

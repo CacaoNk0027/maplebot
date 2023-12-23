@@ -60,7 +60,7 @@ exports.text = async (client, message, args) => {
         });
     } catch (error) {
         console.log(error)
-        await models.utils.error(message, error)
+        await config.error(message, error)
     }
 }
 

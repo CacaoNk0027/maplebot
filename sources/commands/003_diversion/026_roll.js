@@ -22,7 +22,7 @@ exports.text = async (client, message, args) => {
             content: `🎲 | **${message.author.username}** ha tirado un dado de **${numero} caras** y su numero obtenido despues de tirar el dado ha sido **${random == 0? random+1: random}**`
         });
     } catch (error) {
-        await models.utils.error(message, error)
+        await config.error(message, error)
     }
 }
 

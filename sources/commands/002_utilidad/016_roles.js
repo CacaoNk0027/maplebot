@@ -13,7 +13,7 @@ exports.text = async (client, message, args) => {
     try {
         let rolesCollection = (await message.guild.roles.fetch()).filter(rol => rol.name !== "@everyone");
         if(rolesCollection.size <= 0) return await message.reply({
-            embeds: [{ description: models.utils.statusError('error', "no hay roles en este servidor"), color: 0xff0000 }],
+            embeds: [{ description: config.statusError('error', "no hay roles en este servidor"), color: 0xff0000 }],
         });
         let totalPages = Math.ceil(rolesCollection.size / 12) || 1
 
@@ -93,7 +93,7 @@ exports.text = async (client, message, args) => {
         }, ms('5m'));
     } catch (error) {
         console.error(error)
-        await models.utils.error(message, error)
+        await config.error(message, error)
     }
 }
 

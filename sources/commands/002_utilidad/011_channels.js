@@ -90,7 +90,7 @@ exports.text = async (client, message, args) => {
         }, ms('5m'));
     } catch (error) {
         console.error(error)
-        await models.utils.error(message, error)
+        await config.error(message, error)
     }
 }
 

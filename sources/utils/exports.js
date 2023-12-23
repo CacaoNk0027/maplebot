@@ -17,13 +17,13 @@ exports.presences = async (client) => {
 exports.permissions = config.permissions;
 
 exports.menuOptions = (channel) => {
-    return channel.nsfw ? optionsWnsfw: defaultOptions;
+    return channel.nsfw ? optionsWnsfw : defaultOptions;
 }
 /**
  * @param {Guild} guild 
  */
 exports.guildMenuOptions = (guild) => {
-    return guild.features.includes('COMMUNITY') ? commGuildOptions: guildDefaultOptions;
+    return guild.features.includes('COMMUNITY') ? commGuildOptions : guildDefaultOptions;
 }
 exports.interactionErrorMsg = async (interaction, error) => {
     console.error(error)
@@ -453,13 +453,13 @@ const menuhelpformat = (array) => {
 }
 
 exports.helpcommands = (prefix, comandos, category) => {
-    return comandos.filter(c => c.help.category == category).size <= 0 ? `\`\`\`\nEsta categoria no tiene comandos registrados\npero no te preocupes, pronto habran nuevos comandos :3\n\`\`\``: menuhelpformat(comandos.filter((c) => c.help.category == category).map((c) => { 
-        return { 
-            nombre: c.help.name, 
-            status: c.help.status 
+    return comandos.filter(c => c.help.category == category).size <= 0 ? `\`\`\`\nEsta categoria no tiene comandos registrados\npero no te preocupes, pronto habran nuevos comandos :3\n\`\`\`` : menuhelpformat(comandos.filter((c) => c.help.category == category).map((c) => {
+        return {
+            nombre: c.help.name,
+            status: c.help.status
         }
     }).map((c) => {
-        return `[${c.status.code == 1 ? "🟢": "🔴"}] ${prefix}${c.nombre}`
+        return `[${c.status.code == 1 ? "🟢" : "🔴"}] ${prefix}${c.nombre}`
     }))
 }
 
@@ -613,7 +613,13 @@ const removeItemFromArray = (array, item) => {
  */
 exports.AddNewArrayBlacklist = async (client, guildId, array) => {
     let evitedWords = client.comandos.map(c => c.help.name)
-    let prefixes = await models.utils.prefix(client, guildId)
+    let prefixes;
+    try {
+        let prefixDB = await config.schemas.SetPrefix.findOne({ guildID: guild.id }).exec().then(c => c.prefix)
+        prefixes = [`<@${client.user.id}>`, `<@!${client.user.id}>`, prefixDB]
+    } catch (error) {
+        prefixes = [`<@${client.user.id}>`, `<@!${client.user.id}>`, "m!", "maple"]
+    }
     let wordset;
     if (await this.schemas.Blacklist.findOne({ guildID: guildId }) !== null) {
         wordset = (await this.schemas.Blacklist.findOne({ guildID: guildId }).exec()).words
@@ -635,11 +641,11 @@ exports.AddNewArrayBlacklist = async (client, guildId, array) => {
 
 exports.DeleteNewArrayBlacklist = async (client, guildId, array) => {
     let wordsdb, _1 = [], _2 = [];
-    if(await this.schemas.Blacklist.findOne({ guildID: guildId }) !== null) {
+    if (await this.schemas.Blacklist.findOne({ guildID: guildId }) !== null) {
         wordsdb = (await this.schemas.Blacklist.findOne({ guildID: guildId }).exec()).words
     } else wordsdb = [];
-    array.forEach(function (word) { _1.push(word) }); 
-    _1.forEach(w => { _2.push(w) }); 
+    array.forEach(function (word) { _1.push(word) });
+    _1.forEach(w => { _2.push(w) });
     wordsdb.forEach(function (word) { removeItemFromArray(_1, word) });
     _1.forEach(function (word) { removeItemFromArray(_2, word) });
     return _2
@@ -654,4 +660,99 @@ exports.schemas = {
     Snipe: require('./schemas/Snipe'),
     Warns: require('./schemas/Warns'),
     Welcome: require('./schemas/Welcome')
+}
+
+// nuevas cosas
+
+/**
+ * @param {import('discord.js').Message} message es el mensaje del evento message
+ * @param {string} error string con el error soltado
+ * @returns {Promise<import('discord.js').Message>} retorna el mensaje enviado en forma de promesa
+ */
+exports.error = async (message, error) => {
+    if (!message || message == null) throw new Error("debes de poner un objeto message");
+    if (!error) throw new Error("el parametro error es requerido")
+    return await message.channel.send({
+        content: `> oh no!.. ha ocurrido un error.. <:002:1012749017798688878>\n\`${error}\`\npuedes reportar el error usando mi comando /report o puedes unirte al servidor de soporte y reportarlo ahi\nhttps://discord.gg/PKGhvUKaQN`
+    })
+}
+
+/**
+ * 
+ * @param {number} used el numero de porcentaje usado
+ * @param {number} free el numero de porcentaje vacio
+ * @param {number} length el tamaño de la barra
+ * @returns barra de porcentaje con tamaño de 15
+ */
+exports.porcentageBar = (used, free, length) => {
+    const full = "█"
+    const empty = "●"
+    const total = used + free;
+    let repeat
+    if (!length) length = 15;
+    else if (typeof (length) !== "number") throw new Error("el parametro length debe de ser un numero");
+    else repeat = length
+    used = Math.round((used / total) * repeat);
+    free = Math.round((free / total) * repeat);
+    return full.repeat(used) + empty.repeat(free)
+}
+
+/**
+ * @param {'error'|'warn'|'success'|'rolplay'|'rolplayMe'|'rolplayDanger'} type el tipo de estado 
+ * @param {string} message  un mensaje que se incluira
+ */
+exports.statusError = (type, message) => {
+    if (!type) throw new Error('Debes colocar el parametro type')
+    if (!message) throw new Error('Debes colocar el parametro message')
+    let msg; function random(arr) { return arr[Math.floor(Math.random() * arr.length)] }
+    switch (type) {
+        case "error":
+            let adds = ['... ', ' >~<"', ' >~<', " (╯°□°)╯︵┻━┻"]
+            msg = `<a:Disc_x:888250573483286558> | ${message}${random(adds)}`;
+            break;
+        case "success":
+            let add = [' ^^', ' uwu', ' c;', " :3"]
+            msg = `<a:Disc_check_mark:888250521893363752> | ${message}${random(add)}`;
+            break;
+        case "warn":
+            let ads = ['... ', ' >~<"', ' >~<']
+            msg = `<:mtWarn:916316659105538068> | ${message}${random(ads)}`;
+            break;
+        case "rolplay":
+            let ars = [' >~<', " u.u"]
+            let emg_rp = ['<:006:1012749025398759425>', "<:004:1012749020852133918>"]
+            msg = `${random(emg_rp)} | ${message}${random(ars)}`
+            break;
+        case "rolplayMe":
+            let arst = [' ,\':^', " u.u"]
+            let emg_rpm = ['<:006:1012749025398759425>', "<:004:1012749020852133918>"]
+            msg = `${random(emg_rpm)} | ${message}${random(arst)}`
+            break;
+        case "rolplayDanger":
+            let arsd = [' ...', " :c", " T-T"]
+            let emg_rps = ['<:002:1012749017798688878>']
+            msg = `${random(emg_rps)} | ${message}${random(arsd)}`
+            break;
+        default: throw new Error('debes de poner entre error | success | warning | rolplay | rpMe | rpDanger, no otro');
+    }
+    return msg;
+}
+
+exports.menus = {
+    guilds: require('./menus/guilds'),
+    users: require('./menus/users'),
+    /** menus de ayuda (Maple Bot) */
+    info: require('./menus/info'),
+    misc: require('./menus/misc'),
+    divs: require('./menus/divs'),
+    mod: require('./menus/mod'),
+    anime: require('./menus/anime'),
+    anim: require('./menus/anima'),
+    config: require('./menus/config'),
+    action: require('./menus/action'),
+    reaction: require('./menus/reaction'),
+    nsfw: require('./menus/nsfw'),
+    rpNsfw: require('./menus/rpNsfw'),
+    stats: require('./menus/stats'),
+    music: require('./menus/music')
 }

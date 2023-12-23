@@ -12,13 +12,13 @@ exports.text = async (client, message, args) => {
     try {
         if(!args[0]) return await message.reply({
             embeds: [{
-                description: models.utils.statusError('error', 'es necesario poner algun texto en el parametro <texto>'),
+                description: config.statusError('error', 'es necesario poner algun texto en el parametro <texto>'),
                 color: 0xff0000
             }]
         })
         if(args.length > 100) return await message.reply({
             embeds: [{
-                description: models.utils.statusError('error', 'el texto colocado no puerde revasar las 100 palabras'),
+                description: config.statusError('error', 'el texto colocado no puerde revasar las 100 palabras'),
                 color: 0xff0000
             }]
         })
@@ -29,7 +29,7 @@ exports.text = async (client, message, args) => {
         }).then(async () => await message.delete().catch(error => error));
     } catch (error) {
         console.error(error)
-        await models.utils.error(message, error);
+        await config.error(message, error);
     }
 }
 
@@ -56,7 +56,7 @@ exports.slash = async (client, interaction) => {
         if (UrlCheck(m) === true) {
             if (!interaction.member.permissions.has(discord.PermissionFlagsBits.Administrator)) {
                 return interaction.reply({ embeds: [{
-                    description: models.utils.statusError('error', 'No se permiten enlaces... Solo los administradores pueden colocarlos'),
+                    description: config.statusError('error', 'No se permiten enlaces... Solo los administradores pueden colocarlos'),
                     color: 0xff0000 
                 }], 
                 ephemeral: true 
@@ -65,7 +65,7 @@ exports.slash = async (client, interaction) => {
         }
         await interaction.channel.send(m);
         interaction.reply({ embeds: [{
-            description: models.utils.statusError('success', 'Ya se envio el mensaje'),
+            description: config.statusError('success', 'Ya se envio el mensaje'),
             color: 0x00ff00
         }], ephemeral: true });
     } catch (error) {

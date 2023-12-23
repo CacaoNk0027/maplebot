@@ -12,27 +12,27 @@ exports.text = async (client, message, args) => {
     try {
         if (!message.channel.permissionsFor(client.user.id).has('ManageMessages')) return await message.reply({
             embeds: [{
-                description: models.utils.statusError('warn', `Recomiendo tener permisos de \`${config.permissions['ManageMessages']}\` ya que estamos tratando confesiones`), color: 0xffff00
+                description: config.statusError('warn', `Recomiendo tener permisos de \`${config.permissions['ManageMessages']}\` ya que estamos tratando confesiones`), color: 0xffff00
             }]
         });
         await message.delete().catch(err => err)
         if (await config.schemas.SetChannels.findOne({ guildID: message.guildId }) == null) return await message.channel.send({
             embeds: [{
-                description: models.utils.statusError('error', 'No hay confesiones en el servidor'), color: 0xff0000
+                description: config.statusError('error', 'No hay confesiones en el servidor'), color: 0xff0000
             }]
         });
         let confessionChannel = await config.schemas.SetChannels.findOne({ guildID: message.guildId }).exec().then(c => c.confession);
         if (confessionChannel == null) return await message.channel.send({
             embeds: [{
-                description: models.utils.statusError('error', 'No hay confesiones en el servidor'), color: 0xff0000
+                description: config.statusError('error', 'No hay confesiones en el servidor'), color: 0xff0000
             }]
         }); else if (!client.channels.cache.has(confessionChannel)) return await message.channel.send({
             embeds: [{
-                description: models.utils.statusError('rolplayMe', 'hay confesiones en el servidor pero no logro obtener el canal establecido'), color: 0xff0000
+                description: config.statusError('rolplayMe', 'hay confesiones en el servidor pero no logro obtener el canal establecido'), color: 0xff0000
             }]
         }); else if (!args.join(' ') || args.join(' ').length <= 0) return await message.channel.send({
             embeds: [{
-                description: models.utils.statusError('error', 'debes escribir una confesión'), color: 0xff0000
+                description: config.statusError('error', 'debes escribir una confesión'), color: 0xff0000
             }]
         }); else {
             let embeds = [{
@@ -54,19 +54,19 @@ exports.text = async (client, message, args) => {
             args.join(' ').toLowerCase().endsWith('-m') ? await channel.send({ embeds: [embeds[1]] }).then(async () => {
                 let msg = await message.channel.send({
                     embeds: [{
-                        description: models.utils.statusError('success', 'confesión enviada'), color: 0x00ff00
+                        description: config.statusError('success', 'confesión enviada'), color: 0x00ff00
                     }]
                 }); setTimeout(async () => await msg.delete().catch(err => err), ms('5s'))
             }) : await channel.send({ embeds: [embeds[0]] }).then(async () => {
                 let msg = await message.channel.send({
                     embeds: [{
-                        description: models.utils.statusError('success', 'confesión enviada'), color: 0x00ff00
+                        description: config.statusError('success', 'confesión enviada'), color: 0x00ff00
                     }]
                 }); setTimeout(async () => await msg.delete().catch(err => err), ms('5s'))
             })
         }
     } catch (error) {
-        await models.utils.error(message, error)
+        await config.error(message, error)
     }
 }
 

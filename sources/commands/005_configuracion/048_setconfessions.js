@@ -13,21 +13,21 @@ exports.text = async (client, message, args) => {
     try {
         if(!message.channel.permissionsFor(message.author.id).has(discord.PermissionFlagsBits.ManageChannels)) return await message.reply({
             embeds: [{
-                description: models.utils.statusError('error', `no cuentas con los permisos necesarios para completar esta acción...\nrequieres \`${config.permissions['ManageChannels']}\``),
+                description: config.statusError('error', `no cuentas con los permisos necesarios para completar esta acción...\nrequieres \`${config.permissions['ManageChannels']}\``),
                 color: 0xff0000
             }]
         });
         if(args[0] == "delete") {
             if (await config.schemas.SetChannels.findOne({ guildID: message.guildId }) == null || await config.schemas.SetChannels.findOne({ guildID: message.guildId }).exec().then(m => m.confession) == null) return await message.reply({ 
                 embeds: [{
-                    description: models.utils.statusError('error', "no puedes eliminar un sistema de confesiones que nunca haz establecido"),
+                    description: config.statusError('error', "no puedes eliminar un sistema de confesiones que nunca haz establecido"),
                     color: 0xff0000
                 }] 
             })
             await config.schemas.SetChannels.updateOne({ guildID: message.guildId }, { confession: null })
 			return await message.reply({ 
                 embeds: [{ 
-                    description: models.utils.statusError('success', "se ha eliminado el canal preterminado para confesiones"), 
+                    description: config.statusError('success', "se ha eliminado el canal preterminado para confesiones"), 
                     color: 0x00ff00
                 }] 
             })
@@ -35,19 +35,19 @@ exports.text = async (client, message, args) => {
         let { channel } = await config.fetchChannel({ message: message, args: args })
         if(!channel) return await message.reply({
             embeds: [{
-                description: models.utils.statusError('error', `debes de mencionar un canal valido`),
+                description: config.statusError('error', `debes de mencionar un canal valido`),
                 color: 0xff0000
             }]
         });
         if(channel.type !== discord.ChannelType.GuildText) return await message.reply({
             embeds: [{
-                description: models.utils.statusError('error', `debes de mencionar un canal de tipo texto`),
+                description: config.statusError('error', `debes de mencionar un canal de tipo texto`),
                 color: 0xff0000
             }]
         });
         if(!channel.permissionsFor(client.user.id).has(discord.PermissionFlagsBits.SendMessages)) return await message.reply({
             embeds: [{
-                description: models.utils.statusError('error', `no puedes mencionar un canal en el que no puedo hablar`),
+                description: config.statusError('error', `no puedes mencionar un canal en el que no puedo hablar`),
                 color: 0xff0000
             }]
         });
@@ -61,7 +61,7 @@ exports.text = async (client, message, args) => {
             }).save();
             return await message.reply({
                 embeds: [{
-                    description: models.utils.statusError('success', `se ha establecido <#${channel.id}> como preterminado para confesiones`),
+                    description: config.statusError('success', `se ha establecido <#${channel.id}> como preterminado para confesiones`),
                     color: 0x00ff00
                 }]
             })
@@ -71,27 +71,27 @@ exports.text = async (client, message, args) => {
             await config.schemas.SetChannels.updateOne({guildID: message.guildId}, { confession: channel.id })
             return await message.reply({
                 embeds: [{
-                    description: models.utils.statusError('success', `se ha establecido <#${channel.id}> como preterminado para confesiones`),
+                    description: config.statusError('success', `se ha establecido <#${channel.id}> como preterminado para confesiones`),
                     color: 0x00ff00
                 }]
             })
         } else if(channel.id == confessChannel) return await message.reply({
             embeds: [{
-                description: models.utils.statusError('error', `no puedes establecer un canal previamente establecido`),
+                description: config.statusError('error', `no puedes establecer un canal previamente establecido`),
                 color: 0xff0000
             }]
         }); else {
             await config.schemas.SetChannels.updateOne({guildID: message.guildId}, { confession: channel.id })
             return await message.reply({
                 embeds: [{
-                    description: models.utils.statusError('success', `se ha establecido <#${channel.id}> como preterminado para confesiones`),
+                    description: config.statusError('success', `se ha establecido <#${channel.id}> como preterminado para confesiones`),
                     color: 0x00ff00
                 }]
             })
         }
     } catch (err) {
         console.error(err)
-        await models.utils.error(message, err)
+        await config.error(message, err)
     }
 }
 

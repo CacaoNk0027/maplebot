@@ -40,7 +40,7 @@ exports.event = {
             else if (msgFilter_obj_.words.find(c => message.content.toLowerCase().includes(c.toLowerCase()) == true) && message.guildId == msgFilter_obj_.guildId) {
                 await message.delete().catch(() => { });
                 let msg = await message.channel.send({
-                    content: models.utils.statusError('warn', `cuida tu lenguaje <@${message.author.id}>`),
+                    content: config.statusError('warn', `cuida tu lenguaje <@${message.author.id}>`),
                     allowedMentions: { parse: ['users'] }
                 }); setTimeout(async () => {
                     await msg.delete().catch(() => { });
@@ -48,9 +48,15 @@ exports.event = {
                 // new DiscordWarn(message);
             }
         }
-        let prefixes = await models.utils.prefix(client, message.guild);
+        let prefixes;
+        try {
+            let prefixDB = await config.schemas.SetPrefix.findOne({ guildID: guild.id }).exec().then(c => c.prefix)
+            prefixes = [`<@${client.user.id}>`, `<@!${client.user.id}>`, prefixDB]
+        } catch (error) {
+            prefixes = [`<@${client.user.id}>`, `<@!${client.user.id}>`, "m!", "maple"]
+        }
         let usedPrefix = prefixes.find(p => message.content.toLowerCase().startsWith(p));
-        if (!usedPrefix) return; if (!message.channel.permissionsFor(client.user.id).has("SendMessages")) return;
+        if (!usedPrefix) return;
         var args = message.content.slice(usedPrefix.length).trim().split(/ +/g), command = args.shift().toLowerCase();
         if (prefixes.splice(0, 2).find(v => message.content.toLowerCase().startsWith(v)) && !command) return await message.reply({
             content: 'Hola! <:mkMaple_love:836387326552440902> soy **' + client.user.username + '**, si deseas ver mis comandos escribe \`m!help\` o usa el comando de slash /help'
@@ -58,13 +64,13 @@ exports.event = {
         var cmd = client.comandos.get(command) || client.comandos.find(c => c.help.alias.includes(command)) || client.comandos.find(c => c.help.id == command)
         if (cmd) {
             if (!message.channel.permissionsFor(client.user.id).has('ReadMessageHistory')) return await message.channel.send({
-                content: models.utils.statusError('warn', `Recomiendo que tenga permisos de \`${config.permissions['ReadMessageHistory']}\` ya que generalmente me baso en respuestas`)
+                content: config.statusError('warn', `Recomiendo que tenga permisos de \`${config.permissions['ReadMessageHistory']}\` ya que generalmente me baso en respuestas`)
             }); if (cmd.help.status.code == 0 && message.author.id !== "801603753631285308") return await message.reply({
-                content: models.utils.statusError('rolplayDanger', `lo siento.. pero actualmente el comando **${cmd.help.name}** esta inactivo debido a lo siguente`) + `\n\`\`\`\nRazon: ${cmd.help.status.reason == null ? "no hay razon :c" : cmd.help.status.reason}\n\`\`\``
+                content: config.statusError('rolplayDanger', `lo siento.. pero actualmente el comando **${cmd.help.name}** esta inactivo debido a lo siguente`) + `\n\`\`\`\nRazon: ${cmd.help.status.reason == null ? "no hay razon :c" : cmd.help.status.reason}\n\`\`\``
             }); if (cmd.help.isNsfw == true && !message.channel.nsfw) return await message.reply({
-                content: models.utils.statusError('error', "este comando requiere que sea ejecutado en un canal nsfw")
+                content: config.statusError('error', "este comando requiere que sea ejecutado en un canal nsfw")
             }); if (cmd.help.permissions.bot.find(c => c.includes('EmbedLinks') == true) && !message.channel.permissionsFor(client.user.id).has('EmbedLinks')) return await message.reply({
-                content: models.utils.statusError('error', `necesito el permiso \`${permissions['EmbedLinks']}\` para completar esta acción`)
+                content: config.statusError('error', `necesito el permiso \`${permissions['EmbedLinks']}\` para completar esta acción`)
             });
 
             if (!cooldown.has(cmd.help.name)) {
@@ -84,12 +90,12 @@ exports.event = {
                     const seconds = Math.floor(timeLeft / 1) % 60;
 
                     if (timeLeft > 3600) return await message.reply({
-                        content: models.utils.statusError('warn', `Por favor espera \`${hours} Horas ${minutes} Minutos ${seconds} Segundos\` antes de volver a usar el comando \`${cmd.help.name}\``)
+                        content: config.statusError('warn', `Por favor espera \`${hours} Horas ${minutes} Minutos ${seconds} Segundos\` antes de volver a usar el comando \`${cmd.help.name}\``)
                     }).then(async msg => await msg.delete().catch(console.error));
                     if (timeLeft > 60) return await message.reply({
-                        content: models.utils.statusError('warn', `Por favor espera \`${minutes} Minutos ${seconds} Segundos\` antes de volver a usar el comando \`${cmd.help.name}\``)
+                        content: config.statusError('warn', `Por favor espera \`${minutes} Minutos ${seconds} Segundos\` antes de volver a usar el comando \`${cmd.help.name}\``)
                     }).then(async msg => await msg.delete().catch(console.error)); else return await message.reply({
-                        content: models.utils.statusError('warn', `Por favor espera \`${seconds} Segundos\` antes de volver a usar el comando \`${cmd.help.name}\``)
+                        content: config.statusError('warn', `Por favor espera \`${seconds} Segundos\` antes de volver a usar el comando \`${cmd.help.name}\``)
                     });
                 }
             }
@@ -97,7 +103,7 @@ exports.event = {
             setTimeout(() => timeStamps.delete(message.author.id), cooldownAmount)
 
             if(cmd.help.id.split('.')[0] == "c" && message.author.id !== "801603753631285308") return await message.reply({
-                content: models.utils.statusError('rolplayMe', 'este comando solamente es permitido para el uso del owner')
+                content: config.statusError('rolplayMe', 'este comando solamente es permitido para el uso del owner')
             }).then(msg => {
                 setTimeout(async () => {
                     await msg.delete().catch(err => err)
@@ -106,7 +112,7 @@ exports.event = {
             await cmd.exec(client, message, args);
         } else {
             await message.reply({
-                content: models.utils.statusError('rolplayDanger', `no he podido reconocer el comando **${command}**`)
+                content: config.statusError('rolplayDanger', `no he podido reconocer el comando **${command}**`)
             });
         }
     }

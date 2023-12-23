@@ -61,7 +61,7 @@ exports.text = async (client, message, args) => {
             })
         }, ms('60s'))
     } catch (error) {
-        await models.utils.error(message, error); console.error(error);
+        await config.error(message, error); console.error(error);
     }
 }
 

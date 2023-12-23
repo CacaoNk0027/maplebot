@@ -12,10 +12,10 @@ const { Farewell } = require('./005.001_setclases/002_farewell')
 exports.text = async (client, message, args) => {
     try {
         return await message.reply({
-            content: models.utils.statusError("warn", "este comando solo complementa a los comandos de barra")
+            content: config.statusError("warn", "este comando solo complementa a los comandos de barra")
         })
     } catch (error) {
-        await models.utils.error(message, error); console.error(error);
+        await config.error(message, error); console.error(error);
     }
 }
 

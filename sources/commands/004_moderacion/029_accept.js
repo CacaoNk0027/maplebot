@@ -12,17 +12,17 @@ exports.text = async (client, message, args) => {
     try {
         if(!message.channel.permissionsFor(message.author.id).has('ManageMessages')) return await message.reply({
             embeds: [{
-                description: models.utils.statusError('error', `no cuentas con los permisos necesarios para hacer esta acción..\nnecesitas \`${permissions['ManageMessages']}\` para usar este comando`),
+                description: config.statusError('error', `no cuentas con los permisos necesarios para hacer esta acción..\nnecesitas \`${permissions['ManageMessages']}\` para usar este comando`),
                 color: 0xff0000
             }]
         }); else if (!await config.schemas.SetChannels.findOne({ guildID: message.guildId })) return await message.reply({
             embeds: [{
-                description: models.utils.statusError('error', "el servidor no cuenta con un sistema de sugerencias previamente establecido"),
+                description: config.statusError('error', "el servidor no cuenta con un sistema de sugerencias previamente establecido"),
                 color: 0xff0000
             }]
         }); else if (!await config.schemas.SetChannels.findOne({ guildID: message.guildId }).exec().then(obj => obj.suggest)) return await message.reply({
             embeds: [{
-                description: models.utils.statusError('error', "el servidor no cuenta con un sistema de sugerencias previamente establecido"),
+                description: config.statusError('error', "el servidor no cuenta con un sistema de sugerencias previamente establecido"),
                 color: 0xff0000
             }]
         });
@@ -33,23 +33,23 @@ exports.text = async (client, message, args) => {
         } catch (error) {
             return await message.reply({
                 embeds: [{
-                    description: models.utils.statusError('error', "hay un sistema de sugerencias establecido pero no puedo obtener el canal que se establecio"),
+                    description: config.statusError('error', "hay un sistema de sugerencias establecido pero no puedo obtener el canal que se establecio"),
                     color: 0xff0000
                 }]
             })
         }; if(!channel.permissionsFor(client.user.id).has('ReadMessageHistory')) return await message.reply({
             embeds: [{
-                description: models.utils.statusError('error', `necesito el permiso de \`${permissions['ReadMessageHistory']}\` para poder ver las sugerencias`),
+                description: config.statusError('error', `necesito el permiso de \`${permissions['ReadMessageHistory']}\` para poder ver las sugerencias`),
                 color: 0xff0000
             }]
         }); else if (!args[0]) return await message.reply({
             embeds: [{
-                description: models.utils.statusError('error', "el parametro <mensajeId> debe de ser completado"),
+                description: config.statusError('error', "el parametro <mensajeId> debe de ser completado"),
                 color: 0xff0000
             }]
         }); else if (!args[0].match(/\d{19}/)) return await message.reply({
             embeds: [{
-                description: models.utils.statusError('error', "el parametro <mensajeId> no corresponde a lo solicitado"),
+                description: config.statusError('error', "el parametro <mensajeId> no corresponde a lo solicitado"),
                 color: 0xff0000
             }]
         });
@@ -59,14 +59,14 @@ exports.text = async (client, message, args) => {
             console.error(error)
             return await message.reply({
                 embeds: [{
-                    description: models.utils.statusError('error', 'el parametro <mensajeId> no corresponde a la id de un mensaje o el mensaje no se pudo obtener'),
+                    description: config.statusError('error', 'el parametro <mensajeId> no corresponde a la id de un mensaje o el mensaje no se pudo obtener'),
                     color: 0xff0000
                 }]
             })
         }
         if (suggestion_.author.id !== client.user.id || suggestion_.embeds.length <= 0 || suggestion_.embeds[0].title == null || suggestion_.embeds[0].title.toLowerCase() !== "nueva sugerencia") return await message.reply({
             embeds: [{
-                description: models.utils.statusError('error', "el parametro <mensajeId> ha recibido un mensaje de otro usuario o no es un mensaje de sugerencia"),
+                description: config.statusError('error', "el parametro <mensajeId> ha recibido un mensaje de otro usuario o no es un mensaje de sugerencia"),
                 color: 0xff0000
             }]
         }); else {
@@ -75,7 +75,7 @@ exports.text = async (client, message, args) => {
                 let reason = args.slice(1).join(' ');
                 if (!reason) reason = "Sin razón"; else if (reason.length > 300) return await message.reply({
                     embeds: [{
-                        description: models.utils.statusError('error', "las razones no pueden superar los 300 caracteres"),
+                        description: config.statusError('error', "las razones no pueden superar los 300 caracteres"),
                         color: 0xff0000
                     }]
                 });
@@ -88,7 +88,7 @@ exports.text = async (client, message, args) => {
                             icon_url: message.author.avatarURL({ forceStatic: false })
                         },
                         color: 0x00ff00,
-                        description: models.utils.statusError('success', `La sugerencia se ha aceptado con la siguente razon\n> ${reason}\n`)
+                        description: config.statusError('success', `La sugerencia se ha aceptado con la siguente razon\n> ${reason}\n`)
                     }]
                 })
                 return await suggestion_.edit({
@@ -108,12 +108,12 @@ exports.text = async (client, message, args) => {
             } else {
                 if (status == "Aceptada") return await message.reply({
                     embeds: [{
-                        description: models.utils.statusError('error', "esa sugerencia ya ha sido respondida y fue aceptada"),
+                        description: config.statusError('error', "esa sugerencia ya ha sido respondida y fue aceptada"),
                         color: 0xff0000
                     }]
                 }); else if (status == "Declinada") return await message.reply({
                     embeds: [{
-                        description: models.utils.statusError('error', "esa sugerencia ya ha sido respondida y fue declinada"),
+                        description: config.statusError('error', "esa sugerencia ya ha sido respondida y fue declinada"),
                         color: 0xff0000
                     }]
                 })
@@ -121,7 +121,7 @@ exports.text = async (client, message, args) => {
         }
     } catch (error) {
         console.error(error)
-        await models.utils.error(message, error)
+        await config.error(message, error)
     }
 }
 

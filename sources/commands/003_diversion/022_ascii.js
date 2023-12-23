@@ -14,11 +14,11 @@ let emoji_regex = regexp();
 exports.text = async (client, message, args) => {
     try {
         if(!args.join(' ') || args.join(' ').length <= 0) return await message.reply({ embeds: [{
-            description: models.utils.statusError('error', 'Debes de escribir un texto'), color: 0xff0000
+            description: config.statusError('error', 'Debes de escribir un texto'), color: 0xff0000
         }] }); else if(args.join(' ').length > 15) return await message.reply({ embeds: [{
-            description: models.utils.statusError('error', 'el texto que haz escrito no puede superar los 15 caracteres'), color: 0xff0000
+            description: config.statusError('error', 'el texto que haz escrito no puede superar los 15 caracteres'), color: 0xff0000
         }] }); else if(emoji_regex.test(args.join(' '))) return await message.reply({ embeds: [{
-            description: models.utils.statusError('error', 'el texto no puede contener emojis'), color: 0xff0000
+            description: config.statusError('error', 'el texto no puede contener emojis'), color: 0xff0000
         }] }); else {
             figlet(args.join(' '), async (error, result) => {
                 if(error) throw error;
@@ -28,7 +28,7 @@ exports.text = async (client, message, args) => {
             })
         }
     } catch (error) {
-        await models.utils.error(message, error)
+        await config.error(message, error)
     }
 }
 

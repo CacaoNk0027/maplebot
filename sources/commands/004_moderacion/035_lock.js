@@ -13,26 +13,26 @@ exports.text = async (client, message, args) => {
     try {
         if(!message.channel.permissionsFor(client.user.id).has(discord.PermissionFlagsBits.ManageChannels)) return await message.reply({
             embeds: [{
-                description: models.utils.statusError('error', `no cuento con los permisos necesarios para completar esta acción...\nrequiero \`${config.permissions['ManageChannels']}\``),
+                description: config.statusError('error', `no cuento con los permisos necesarios para completar esta acción...\nrequiero \`${config.permissions['ManageChannels']}\``),
                 color: 0xff0000
             }]
         });
         if(!message.channel.permissionsFor(message.author.id).has(discord.PermissionFlagsBits.ManageChannels)) return await message.reply({
             embeds: [{
-                description: models.utils.statusError('error', `no cuentas con los permisos necesarios para completar esta acción...\nrequieres \`${config.permissions['ManageChannels']}\``),
+                description: config.statusError('error', `no cuentas con los permisos necesarios para completar esta acción...\nrequieres \`${config.permissions['ManageChannels']}\``),
                 color: 0xff0000
             }]
         });
         let { channel } = await config.fetchChannel({ message: message, args: args })
         if(channel.type !== discord.ChannelType.GuildText) return await message.reply({
             embeds: [{
-                description: models.utils.statusError('error', `este comando solo aplica para canales de texto`),
+                description: config.statusError('error', `este comando solo aplica para canales de texto`),
                 color: 0xff0000
             }]
         })
         if(!channel.permissionsFor(message.guild.roles.everyone).has(discord.PermissionFlagsBits.SendMessages)) return await message.reply({
             embeds: [{
-                description: models.utils.statusError('error', `parece que el canal <#${channel.id}> ya esta bloqueado`),
+                description: config.statusError('error', `parece que el canal <#${channel.id}> ya esta bloqueado`),
                 color: 0xff0000
             }]
         })
@@ -41,14 +41,14 @@ exports.text = async (client, message, args) => {
         }).then(async ch => {
             await message.reply({
                 embeds: [{
-                    description: models.utils.statusError('success', `El canal <#${channel.id}> ha sido bloqueado correctamente`),
+                    description: config.statusError('success', `El canal <#${channel.id}> ha sido bloqueado correctamente`),
                     color: 0x00ff00
                 }]
             })
         }).catch(err => err)
     } catch (err) {
         console.error(err)
-        await models.utils.error(message, err)
+        await config.error(message, err)
     }
 }
 

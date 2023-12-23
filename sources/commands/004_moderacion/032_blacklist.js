@@ -12,7 +12,7 @@ exports.text = async (client, message, args) => {
     try {
         if (!message.channel.permissionsFor(message.author.id)) return await message.reply({
             embeds: [{
-                description: models.utils.statusError('error', `no cuentas con los permisos necesarios para completar esta acción..\nrequieres \`${permissions['ManageMessages']}\``),
+                description: config.statusError('error', `no cuentas con los permisos necesarios para completar esta acción..\nrequieres \`${permissions['ManageMessages']}\``),
                 color: 0xff0000
             }]
         }); 
@@ -81,7 +81,7 @@ exports.text = async (client, message, args) => {
         })
     } catch (error) {
         console.error(error)
-        await models.utils.error(message, error)
+        await config.error(message, error)
     }
 }
 

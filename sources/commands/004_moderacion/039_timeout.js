@@ -15,69 +15,69 @@ exports.text = async (client, message, args) => {
     try {
         if (!message.channel.permissionsFor(client.user.id).has(discord.PermissionFlagsBits.ModerateMembers)) return await message.reply({
             embeds: [{
-                description: models.utils.statusError('error', `no cuento con los permisos necesarios para completar esta acción...\nrequiero \`${config.permissions['ModerateMembers']}\``),
+                description: config.statusError('error', `no cuento con los permisos necesarios para completar esta acción...\nrequiero \`${config.permissions['ModerateMembers']}\``),
                 color: 0xff0000
             }]
         });
         if (!message.channel.permissionsFor(message.author.id).has(discord.PermissionFlagsBits.ModerateMembers)) return await message.reply({
             embeds: [{
-                description: models.utils.statusError('error', `no cuentas con los permisos necesarios para completar esta acción...\nrequieres \`${config.permissions['ModerateMembers']}\``),
+                description: config.statusError('error', `no cuentas con los permisos necesarios para completar esta acción...\nrequieres \`${config.permissions['ModerateMembers']}\``),
                 color: 0xff0000
             }]
         });
         if (!args[0]) return await message.reply({
             embeds: [{
-                description: models.utils.statusError('error', `el parametro <usuario> es requerido`),
+                description: config.statusError('error', `el parametro <usuario> es requerido`),
                 color: 0xff0000
             }]
         });
         let { member, memberIsAuthor } = await config.fetchMember({ message: message, args: args });
         if (!member) return await message.reply({
             embeds: [{
-                description: models.utils.statusError('error', `no he podido encontrar al usuario mencionado`),
+                description: config.statusError('error', `no he podido encontrar al usuario mencionado`),
                 color: 0xff0000
             }]
         });
         if (member.user.id == client.user.id) return await message.reply({
             embeds: [{
-                description: models.utils.statusError('rolplayDanger', `hay algun motivo por el cual quieras aislarme? dicelo a mi creador!`),
+                description: config.statusError('rolplayDanger', `hay algun motivo por el cual quieras aislarme? dicelo a mi creador!`),
                 color: 0xff0000
             }]
         });
         if (memberIsAuthor()) return await message.reply({
             embeds: [{
-                description: models.utils.statusError('error', `no puedes aislarte a ti mismo`),
+                description: config.statusError('error', `no puedes aislarte a ti mismo`),
                 color: 0xff0000
             }]
         });
         if (member.user.id == message.guild.ownerId) return await message.reply({
             embeds: [{
-                description: models.utils.statusError('error', `no puedes aislar al owner del servidor`),
+                description: config.statusError('error', `no puedes aislar al owner del servidor`),
                 color: 0xff0000
             }]
         });
         let { member: clientMemb } = (await config.fetchMember({ id: client.user.id, message: message }))
         if (clientMemb.roles.highest.comparePositionTo(member.roles.highest) <= 0) return await message.reply({
             embeds: [{
-                description: models.utils.statusError('error', `el usuario mencionado tiene mayor o igual jerarquia a mi rol`),
+                description: config.statusError('error', `el usuario mencionado tiene mayor o igual jerarquia a mi rol`),
                 color: 0xff0000
             }]
         });
         if (message.member.roles.highest.comparePositionTo(member.roles.highest) <= 0) return await message.reply({
             embeds: [{
-                description: models.utils.statusError('error', `el usuario mencionado tiene mayor o igual jerarquia a tu rol`),
+                description: config.statusError('error', `el usuario mencionado tiene mayor o igual jerarquia a tu rol`),
                 color: 0xff0000
             }]
         });
         if (!args[1]) return await message.reply({
             embeds: [{
-                description: models.utils.statusError('error', `el parametro <tiempo> es requerido`),
+                description: config.statusError('error', `el parametro <tiempo> es requerido`),
                 color: 0xff0000
             }]
         })
         if (!args[1].match(/s|m|h|d|w/g)) return await message.reply({
             embeds: [{
-                description: models.utils.statusError('error', `Usa uno de los siguientes formatos de tiempo...`),
+                description: config.statusError('error', `Usa uno de los siguientes formatos de tiempo...`),
                 color: 0xff0000,
                 fields: [{
                     name: "Formatos",
@@ -88,19 +88,19 @@ exports.text = async (client, message, args) => {
         let time = ms(args[1])
         if (!time) return await message.reply({
             embeds: [{
-                description: models.utils.statusError('error', `el tiempo marcado es invalido`),
+                description: config.statusError('error', `el tiempo marcado es invalido`),
                 color: 0xff0000
             }]
         })
         if (time > 2419200000) return await message.reply({
             embeds: [{
-                description: models.utils.statusError('error', `el tiempo no puede revasar las 4 semanas`),
+                description: config.statusError('error', `el tiempo no puede revasar las 4 semanas`),
                 color: 0xff0000
             }]
         });
         if (time < 60000) return await message.reply({
             embeds: [{
-                description: models.utils.statusError('error', `el tiempo no puede ser menor a 1 minuto`)
+                description: config.statusError('error', `el tiempo no puede ser menor a 1 minuto`)
             }]
         });
         let reason = args.slice(2).join(' ');
@@ -108,7 +108,7 @@ exports.text = async (client, message, args) => {
         await member.timeout(time, reason).then(async () => {
             await message.reply({
                 embeds: [{
-                    description: models.utils.statusError('success', `el usuario **${member.user.username}** ha sido aislado`),
+                    description: config.statusError('success', `el usuario **${member.user.username}** ha sido aislado`),
                     fields: [{
                         name: "Razón",
                         value: reason
@@ -125,7 +125,7 @@ exports.text = async (client, message, args) => {
         })
     } catch (err) {
         console.error(err)
-        await models.utils.error(message, err)
+        await config.error(message, err)
     }
 }
 

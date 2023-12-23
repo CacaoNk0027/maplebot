@@ -11,12 +11,12 @@ exports.text = async (client, message, args) => {
     try {
         if (!args[0] || args.join(' ').length <= 1) return await message.reply({
             embeds: [{
-                description: models.utils.statusError('error', "debes escribir una pregunta de respuesta cerrada"),
+                description: config.statusError('error', "debes escribir una pregunta de respuesta cerrada"),
                 color: 0xff0000
             }]
         }); else if (!args.join(' ').endsWith('?')) return await message.reply({
             embeds: [{
-                description: models.utils.statusError('error', "debes terminar las preguntas con **?**"),
+                description: config.statusError('error', "debes terminar las preguntas con **?**"),
                 color: 0xff0000
             }]
         }); else {
@@ -42,7 +42,7 @@ exports.text = async (client, message, args) => {
             })
         }
     } catch (error) {
-        await models.utils.error(message, error)
+        await config.error(message, error)
     }
 }
 

@@ -29,7 +29,7 @@ exports.text = async (client, message, args) => {
             }]
         })
     } catch (error) {
-        await models.utils.error(message, error)
+        await config.error(message, error)
     }
 }
 

@@ -13,38 +13,38 @@ exports.text = async (client, message, args) => {
     try {
         if(!message.channel.permissionsFor(client.user.id).has('BanMembers')) return await message.reply({
             embeds: [{
-                description: models.utils.statusError('error', `no cuento con los permisos necesarios para completar esta acción..\nrequiero \`${config.permissions['BanMembers']}\``),
+                description: config.statusError('error', `no cuento con los permisos necesarios para completar esta acción..\nrequiero \`${config.permissions['BanMembers']}\``),
                 color: 0xff0000
             }]
         }); 
         if(!message.channel.permissionsFor(message.author.id).has('BanMembers')) return await message.reply({
             embeds: [{
-                description: models.utils.statusError('error', `no cuentas con los permisos necesarios para completar esta accion..\nrequieres \`${config.permissions['BanMembers']}\``),
+                description: config.statusError('error', `no cuentas con los permisos necesarios para completar esta accion..\nrequieres \`${config.permissions['BanMembers']}\``),
                 color: 0xff0000
             }]
         });
         if(!args[0]) return await message.reply({
             embeds: [{
-                description: models.utils.statusError('error', `debes poner ia id de un usuario`) + `\nescribe el comando banlist para ver una lista de usuarios baneados`,
+                description: config.statusError('error', `debes poner ia id de un usuario`) + `\nescribe el comando banlist para ver una lista de usuarios baneados`,
                 color: 0xf5ad87
             }]
         })
         let member = (await message.guild.bans.fetch()).find(memb => memb.user.id == args[0].match(/\d{18}|\d{19}/g)[0]);
         if(!member) return await message.reply({
             embeds: [{
-                description: models.utils.statusError('error', "el usuario no se encuentra en la lista de baneos o la id no corresponde a un usuario"),
+                description: config.statusError('error', "el usuario no se encuentra en la lista de baneos o la id no corresponde a un usuario"),
                 color: 0xff0000
             }]
         });
         if(member.user.id == client.user.id) return await message.reply({
             embeds: [{
-                description: models.utils.statusError('rolplayMe', "no hay necesidad de ponerme a mi, yo no estoy baneada"),
+                description: config.statusError('rolplayMe', "no hay necesidad de ponerme a mi, yo no estoy baneada"),
                 color: 0xff0000
             }]
         });
         if(member.user.id == message.author.id || member.user.id == message.guild.ownerId) return await message.reply({
             embeds: [{
-                description: models.utils.statusError('error', "enserio?"),
+                description: config.statusError('error', "enserio?"),
                 color: 0xff0000
             }]
         });
@@ -53,7 +53,7 @@ exports.text = async (client, message, args) => {
         await message.guild.bans.remove(member.client.user.id, reason).then(async () => {
             await message.reply({
                 embeds: [{
-                    description: models.utils.statusError('success', `se removio el baneo a **${member_.user.username}**`),
+                    description: config.statusError('success', `se removio el baneo a **${member_.user.username}**`),
                     fields: [{
                         name: "Razón",
                         value: reason
@@ -67,7 +67,7 @@ exports.text = async (client, message, args) => {
         }).catch(error => error)
     } catch (err) {
         console.error(err)
-        await models.utils.error(message, err)
+        await config.error(message, err)
     }
 }
 

@@ -12,20 +12,20 @@ exports.text = async (client, message, args) => {
     try {
         if (!message.channel.permissionsFor(client.user.id).has(discord.PermissionFlagsBits.ManageChannels)) return await message.reply({
             embeds: [{
-                description: models.utils.statusError('error', `Para ejecutar este comando requiero del permiso \`${permissions['ManageChannels']}\` el cual no me fue otorgado`),
+                description: config.statusError('error', `Para ejecutar este comando requiero del permiso \`${permissions['ManageChannels']}\` el cual no me fue otorgado`),
                 color: 0xff0000
             }]
         })
         if (!message.channel.permissionsFor(message.author.id).has(discord.PermissionFlagsBits.ManageChannels)) return await message.reply({
             embeds: [{
-                description: models.utils.statusError('error', `Para ejecutar este comando requieres del permiso \`${permissions['ManageChannels']}\``),
+                description: config.statusError('error', `Para ejecutar este comando requieres del permiso \`${permissions['ManageChannels']}\``),
                 color: 0xff0000
             }]
         })
         let { channel } = await fetchChannel({ args: args, message: message });
         if (channel.type != discord.ChannelType.GuildText) return await message.reply({
             embeds: [{
-                description: models.utils.statusError('error', `Para ejecutar este comando se requiere que el canal sea de texto`),
+                description: config.statusError('error', `Para ejecutar este comando se requiere que el canal sea de texto`),
                 color: 0xff0000
             }]
         })
@@ -47,7 +47,7 @@ exports.text = async (client, message, args) => {
             })
         }
     } catch (error) {
-        await models.utils.error(message, error)
+        await config.error(message, error)
     }
 }
 

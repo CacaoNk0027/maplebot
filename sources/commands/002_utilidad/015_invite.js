@@ -43,7 +43,7 @@ exports.text = async (client, message, args) => {
         })
     } catch (error) {
         console.error(error)
-        await models.utils.error(message, error)
+        await config.error(message, error)
     }
 }
 /**

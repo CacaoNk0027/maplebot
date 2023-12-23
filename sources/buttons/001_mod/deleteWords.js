@@ -11,13 +11,13 @@ exports.exec = async (client, interaction) => {
     try {
         if (await config.schemas.Blacklist.findOne({ guildID: interaction.guildId }) == null) return await interaction.reply({
             embeds: [{
-                description: models.utils.statusError('error', 'este servidor no cuenta con un sistema de blacklist'),
+                description: config.statusError('error', 'este servidor no cuenta con un sistema de blacklist'),
                 color: 0xff0000
             }], ephemeral: true
         })
         if (await config.schemas.Blacklist.findOne({ guildID: interaction.guildId }).exec().then(c => c.words.length <= 0)) return await interaction.reply({
             embeds: [{
-                description: models.utils.statusError('error', 'no hay palabras establecidas en la blacklist'),
+                description: config.statusError('error', 'no hay palabras establecidas en la blacklist'),
                 color: 0xff0000
             }], ephemeral: true
         })
@@ -33,7 +33,7 @@ exports.exec = async (client, interaction) => {
                         icon_url: client.user.avatarURL()
                     },
                     color: 0x00ff00,
-                    description: models.utils.statusError('success', 'han sido borradas palabras en la blacklist del server de manera correcta'),
+                    description: config.statusError('success', 'han sido borradas palabras en la blacklist del server de manera correcta'),
                     fields: [{
                         name: 'Palabras | 📝',
                         value: words.join(', ')
@@ -113,7 +113,7 @@ exports.exec = async (client, interaction) => {
             await enableButtons();
             await message.reply({
                 embeds: [{
-                    description: models.utils.statusError('error', 'las palabras que tratabas de borrar no se encuentran en la lista negra'),
+                    description: config.statusError('error', 'las palabras que tratabas de borrar no se encuentran en la lista negra'),
                     color: 0xff0000
                 }]
             });
@@ -122,7 +122,7 @@ exports.exec = async (client, interaction) => {
             await config.schemas.Blacklist.updateOne({ guildID: interaction.guildId }, { $pull: { words: { $in: palabras } } })
             await sendEmbed(palabras)
         } catch (error) {
-            await models.utils.error(message, error)
+            await config.error(message, error)
         }
     } catch (error) {
         await interactionErrorMsg(interaction, error)

@@ -22,7 +22,7 @@ exports.text = async (client, message, args) => {
             files: [new discord.AttachmentBuilder().setDescription('Avatar de usuario en arcoiris @Maple bot').setName('rainbow.png').setFile(await canvacord.Canvacord.rainbow(user.avatarURL({ forceStatic: true, size: 2048, extension: 'png' })))]
         });
     } catch (error) {
-        await models.utils.error(message, error)
+        await config.error(message, error)
     }
 }
 

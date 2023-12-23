@@ -31,25 +31,25 @@ exports.text = async (client, message, args) => {
     try {
         if(!message.channel.permissionsFor(client.user.id).has(discord.PermissionFlagsBits.ManageChannels)) return await message.reply({
             embeds: [{
-                description: models.utils.statusError('error', `no cuento con los permisos necesarios para completar esta acción...\nrequiero \`${config.permissions['ManageChannels']}\``),
+                description: config.statusError('error', `no cuento con los permisos necesarios para completar esta acción...\nrequiero \`${config.permissions['ManageChannels']}\``),
                 color: 0xff0000
             }]
         });
         if(!message.channel.permissionsFor(message.author.id).has(discord.PermissionFlagsBits.ManageChannels)) return await message.reply({
             embeds: [{
-                description: models.utils.statusError('error', `no cuentas con los permisos necesarios para completar esta acción...\nrequieres \`${config.permissions['ManageChannels']}\``),
+                description: config.statusError('error', `no cuentas con los permisos necesarios para completar esta acción...\nrequieres \`${config.permissions['ManageChannels']}\``),
                 color: 0xff0000
             }]
         });
         if(!args[0]) return await message.reply({
             embeds: [{
-                description: models.utils.statusError('error', `el parametro <tiempo> es requerido`),
+                description: config.statusError('error', `el parametro <tiempo> es requerido`),
                 color: 0xff0000
             }]
         });
         if(!args[0].match(/s|m|h/g)) return await message.reply({
             embeds: [{
-                description: models.utils.statusError('error', `Usa uno de los siguientes formatos de tiempo...`),
+                description: config.statusError('error', `Usa uno de los siguientes formatos de tiempo...`),
                 color: 0xff0000,
                 fields: [{
                     name: "Formatos",
@@ -60,54 +60,54 @@ exports.text = async (client, message, args) => {
         let time = ms(args[0]);
         if(!time) return await message.reply({
             embeds: [{
-                description: models.utils.statusError('error', 'el tiempo que haz marcado es invalido'),
+                description: config.statusError('error', 'el tiempo que haz marcado es invalido'),
                 color: 0xff0000
             }]
         })
         if(time > 21600000) return await message.reply({
             embeds: [{
-                description: models.utils.statusError('error', 'el tiempo no puede superar las 6 horas'),
+                description: config.statusError('error', 'el tiempo no puede superar las 6 horas'),
                 color: 0xff0000
             }]
         })
         if(time < 0) return await message.reply({
             embeds: [{
-                description: models.utils.statusError('error', 'el tiempo no puede ser menor a 0 segundos'),
+                description: config.statusError('error', 'el tiempo no puede ser menor a 0 segundos'),
                 color: 0xff0000
             }]
         })
         let { channel } = await config.fetchChannel({ message: message, args: args.slice(1) })
         if(channel.type !== discord.ChannelType.GuildText) return await message.reply({
             embeds: [{
-                description: models.utils.statusError('error', `este comando solo aplica para canales de texto`),
+                description: config.statusError('error', `este comando solo aplica para canales de texto`),
                 color: 0xff0000
             }]
         })
         if(time == 0) {
             if(!channel.rateLimitPerUser) return await message.reply({
                 embeds: [{
-                    description: models.utils.statusError('error', `el no cuenta con un cooldown`),
+                    description: config.statusError('error', `el no cuenta con un cooldown`),
                     color: 0xff0000
                 }]
             })
             await channel.setRateLimitPerUser(0).catch(error => error);
             await message.reply({
                 embeds: [{
-                    description: models.utils.statusError('success', `se ha desactivado el cooldown en el canal <#${channel.id}>`),
+                    description: config.statusError('success', `se ha desactivado el cooldown en el canal <#${channel.id}>`),
                     color: 0x00ff00
                 }]
             })
         } else {
             if(channel.rateLimitPerUser == (time/1000)) return await message.reply({
                 embeds: [{
-                    description: models.utils.statusError('error', `el tiempo escrito es exactamente igual al tiempo actual`),
+                    description: config.statusError('error', `el tiempo escrito es exactamente igual al tiempo actual`),
                     color: 0xff0000
                 }]
             })
             await channel.setRateLimitPerUser((time/1000)).then(async () => {
                 await message.reply({
                     embeds: [{
-                        description: `${models.utils.statusError(`success`, `Se ha establecido un cooldown de **${returnString(time)}** en el canal **${channel.name}**`)}`,
+                        description: `${config.statusError(`success`, `Se ha establecido un cooldown de **${returnString(time)}** en el canal **${channel.name}**`)}`,
                         color: 0x00ff00
                     }]
                 })
@@ -115,7 +115,7 @@ exports.text = async (client, message, args) => {
         }
     } catch (err) {
         console.error(err)
-        await models.utils.error(message, err)
+        await config.error(message, err)
     }
 }
 

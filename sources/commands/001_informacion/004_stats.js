@@ -71,7 +71,7 @@ exports.text = async (client, message, args) => {
                         inline: true
                     }, {
                         name: "Rendimiento | <a:Disc_ready:888311653114982400>",
-                        value: `\`\`\`\nRAM: ${models.utils.percentageBar(usedRAM, freeRAM, 18)} [${Math.round((100 * usedRAM / (usedRAM + freeRAM)))}%]\nCPU: ${models.utils.percentageBar(cpuUsage, 100 - cpuUsage, 18)} [${Math.round(cpuUsage)}%]\n\`\`\``,
+                        value: `\`\`\`\nRAM: ${config.porcentageBar(usedRAM, freeRAM, 18)} [${Math.round((100 * usedRAM / (usedRAM + freeRAM)))}%]\nCPU: ${config.porcentageBar(cpuUsage, 100 - cpuUsage, 18)} [${Math.round(cpuUsage)}%]\n\`\`\``,
                         inline: false
                     }, {
                         name: "Sistema | <:Dis_bg_employee:888238358118154270>",
@@ -87,7 +87,7 @@ exports.text = async (client, message, args) => {
         }).catch(console.error)
     } catch (error) {
         console.error(error)
-        await models.utils.error(message, error)
+        await config.error(message, error)
     }
 }
 
@@ -151,7 +151,7 @@ exports.slash = async (client, interaction) => {
                         inline: true
                     }, {
                         name: "Rendimiento | <a:Disc_ready:888311653114982400>",
-                        value: `\`\`\`\nRAM: ${models.utils.percentageBar(usedRAM, freeRAM, 18)} [${Math.round((100 * usedRAM / (usedRAM + freeRAM)))}%]\nCPU: ${models.utils.percentageBar(cpuUsage, 100 - cpuUsage, 18)} [${Math.round(cpuUsage)}%]\n\`\`\``,
+                        value: `\`\`\`\nRAM: ${config.porcentageBar(usedRAM, freeRAM, 18)} [${Math.round((100 * usedRAM / (usedRAM + freeRAM)))}%]\nCPU: ${config.porcentageBar(cpuUsage, 100 - cpuUsage, 18)} [${Math.round(cpuUsage)}%]\n\`\`\``,
                         inline: false
                     }, {
                         name: "Sistema | <:Dis_bg_employee:888238358118154270>",

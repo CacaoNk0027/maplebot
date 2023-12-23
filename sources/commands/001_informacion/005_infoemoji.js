@@ -14,19 +14,19 @@ exports.text = async (client, message, args) => {
     try {
         if (!args[0]) return await message.reply({
             embeds: [{
-                description: models.utils.statusError('error', 'no haz colocado ningun emoji'),
+                description: config.statusError('error', 'no haz colocado ningun emoji'),
                 color: 0xff0000
             }]
         }); else if (emoji_regex.test(args[0]) == true || !args[0].match(/<a:.+?:\d{19}>|<:.+?:\d{19}>|<a:.+?:\d{18}>|<:.+?:\d{18}>/g)) return await message.reply({
             embeds: [{
-                description: models.utils.statusError('error', 'el emoji debe de ser personalizado no preterminado'),
+                description: config.statusError('error', 'el emoji debe de ser personalizado no preterminado'),
                 color: 0xff0000
             }]
         }); else {
             let emoji_collection = (await message.guild.emojis.fetch())
             if (!emoji_collection.has(args[0].match(/\d{19}|\d{18}/g)[0])) return await message.reply({
                 embeds: [{
-                    description: models.utils.statusError('error', 'el emoji debe de ser de este servidor'),
+                    description: config.statusError('error', 'el emoji debe de ser de este servidor'),
                     color: 0xff0000
                 }]
             }); else {
@@ -59,7 +59,7 @@ exports.text = async (client, message, args) => {
             }
         }
     } catch (error) {
-        await models.utils.error(message, error); console.error(error); return 0;
+        await config.error(message, error); console.error(error); return 0;
     }
 }
 
@@ -72,14 +72,14 @@ exports.slash = async (client, interaction) => {
         let emojival = interaction.options.data[0].value
         if (emoji_regex.test(emojival) == true || !emojival.match(/<a:.+?:\d{19}>|<:.+?:\d{19}>|<a:.+?:\d{18}>|<:.+?:\d{18}>/g)) return await interaction.reply({
             embeds: [{
-                description: models.utils.statusError('error', 'el emoji debe de ser personalizado no preterminado'),
+                description: config.statusError('error', 'el emoji debe de ser personalizado no preterminado'),
                 color: 0xff0000
             }]
         });
         let emoji_collection = (await interaction.guild.emojis.fetch())
         if (!emoji_collection.has(emojival.match(/\d{19}|\d{18}/g)[0])) return await interaction.reply({
             embeds: [{
-                description: models.utils.statusError('error', 'el emoji debe de ser de este servidor'),
+                description: config.statusError('error', 'el emoji debe de ser de este servidor'),
                 color: 0xff0000
             }]
         });

@@ -78,7 +78,7 @@ exports.text = async (client, message, args) => {
             const collector = msg.createMessageComponentCollector({ time: ms('3m') })
             collector.on('collect', async (i) => {
                 if (i.user.id !== message.author.id) return await i.reply({
-                    content: models.utils.statusError('rolplayMe', "esta interaccion no va dirigida a ti"),
+                    content: config.statusError('rolplayMe', "esta interaccion no va dirigida a ti"),
                     ephemeral: true
                 }); else {
                     if (i.values[0] == "1") {
@@ -356,7 +356,7 @@ exports.text = async (client, message, args) => {
             })
         }
     } catch (error) {
-        await models.utils.error(message, error); console.error(error); return 0;
+        await config.error(message, error); console.error(error); return 0;
     }
 }
 
@@ -374,7 +374,7 @@ exports.slash = async (client, interaction) => {
         if(option !== null ) {
             let comando = client.comandos.get(option.value.toLowerCase()) || client.comandos.find(c => c.help.alias.includes(option.value.toLowerCase())) || client.comandos.find(c => c.help.id == option.value.toLowerCase())
             if(!comando) await interaction.reply({
-                content: models.utils.statusError('rolplayDanger', `no he podido reconocer el comando **${option.value.toLowerCase()}**`),
+                content: config.statusError('rolplayDanger', `no he podido reconocer el comando **${option.value.toLowerCase()}**`),
                 ephemeral: true
             }); else await interaction.reply({
                 embeds: [{
@@ -436,7 +436,7 @@ exports.slash = async (client, interaction) => {
             const collector = msg.createMessageComponentCollector({ time: ms('5m') });
             collector.on('collect', async (i) => {
                 if (i.user.id !== interaction.user.id) return await i.reply({
-                    content: models.utils.statusError('rolplayMe', "esta interaccion no va dirigida a ti"),
+                    content: config.statusError('rolplayMe', "esta interaccion no va dirigida a ti"),
                     ephemeral: true
                 }); else {
                     if (i.values[0] == "1") {

@@ -11,32 +11,32 @@ const ms = require('ms')
 exports.text = async (client, message, args) => {
     if (!message.member.permissions.has(discord.PermissionFlagsBits.ManageGuild)) return await message.reply({
         embeds: [{
-            description: models.utils.statusError('error', `Te falta el permiso de Gestionar Servidor para ejecutar este comando`),
+            description: config.statusError('error', `Te falta el permiso de Gestionar Servidor para ejecutar este comando`),
             color: 0xff0000
         }]
     })
     if (!args[0]) return await message.reply({
         embeds: [{
-            description: models.utils.statusError('error', `Debes de escribir un nuevo prefix para la bot`),
+            description: config.statusError('error', `Debes de escribir un nuevo prefix para la bot`),
             color: 0xff0000
         }]
     })
     if (args[0].match(require('emoji-regex')()) || args[0].match(/<a:.+?:\d+>|<:.+?:\d+>/g)) return await message.reply({
         embeds: [{
-            description: models.utils.statusError('error', `no puedes poner emojis como prefix`),
+            description: config.statusError('error', `no puedes poner emojis como prefix`),
             color: 0xff0000
         }]
     })
     if (args[0].length > 8) return await message.reply({
         embeds: [{
-            description: models.utils.statusError('error', `el limite de caracteres para el prefix es de 8`),
+            description: config.statusError('error', `el limite de caracteres para el prefix es de 8`),
             color: 0xff0000
         }]
     })
     if(await config.schemas.SetPrefix.findOne({ guildID: message.guildId }) == null) {
         if(['m!', 'maple', '<@!821452429409124451>', '<@821452429409124451>'].includes(args[0].toLowerCase())) return await message.reply({
             embeds: [{
-                description: models.utils.statusError('error', `no puedes cambiar el prefix al preterminado salvo que tengas un prefix personalizado`),
+                description: config.statusError('error', `no puedes cambiar el prefix al preterminado salvo que tengas un prefix personalizado`),
                 color: 0xff0000
             }]
         });
@@ -47,7 +47,7 @@ exports.text = async (client, message, args) => {
         await PrefixDB.save();
         await message.reply({
             embeds: [{
-                description: models.utils.statusError('success', `el prefix se ha cambiado correctamente a **${args[0].toLowerCase()}**`),
+                description: config.statusError('success', `el prefix se ha cambiado correctamente a **${args[0].toLowerCase()}**`),
                 color: 0x00ff00
             }]
         })
@@ -56,7 +56,7 @@ exports.text = async (client, message, args) => {
             await config.schemas.SetPrefix.deleteOne({ guildID: message.guildId });
             await message.reply({
                 embeds: [{
-                    description: models.utils.statusError('success', `el prefix se ha cambiado al preterminado`),
+                    description: config.statusError('success', `el prefix se ha cambiado al preterminado`),
                     color: 0x00ff00
                 }]
             })
@@ -64,7 +64,7 @@ exports.text = async (client, message, args) => {
             await config.schemas.SetPrefix.updateOne({ guildID: message.guildId }, { prefix: args[0].toLowerCase() });
             await message.reply({
                 embeds: [{
-                    description: models.utils.statusError('success', `el prefix se ha cambiado correctamente a **${args[0].toLowerCase()}**`),
+                    description: config.statusError('success', `el prefix se ha cambiado correctamente a **${args[0].toLowerCase()}**`),
                     color: 0x00ff00
                 }]
             })

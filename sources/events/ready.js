@@ -56,7 +56,7 @@ exports.event = {
                     timestamp: new Date(),
                     fields: [{
                         name: 'Estadisticas',
-                        value: `${models.menus.stats({
+                        value: `${config.menus.stats({
                             servers: totalGuilds,
                             interactions: interactions_length,
                             commands: client.comandos.size,

@@ -32,7 +32,7 @@ exports.text = async (client, message, args) => {
                 icon_url: server.iconURL({ forceStatic: false })
             },
             color: 0xfcf5d4,
-            description: await models.menus.guilds.guilds(client, server),
+            description: await config.menus.guilds.guilds(client, server),
             fields: [{
                 name: "Canales",
                 value: `<:Dis_channelText:888230498214760509> **Texto |** ${server.channels.cache.filter(ch => ch.type == 0).size}\n<:Dis_channelVoice:888230649977266209> **Voz |** ${server.channels.cache.filter(ch => ch.type == 2).size}\n<:Dis_addChannel:888234000093691944> **Categorias |** ${server.channels.cache.filter(ch => ch.type == 4).size}`,
@@ -47,7 +47,7 @@ exports.text = async (client, message, args) => {
                 inline: true
             }, {
                 name: "Detalles",
-                value: models.menus.guilds.general(server, nivel),
+                value: config.menus.guilds.general(server, nivel),
                 inline: true
             }, {
                 name: "Imagenes",
@@ -67,10 +67,10 @@ exports.text = async (client, message, args) => {
                 icon_url: server.iconURL({ forceStatic: false })
             },
             color: 0xfcf5d4,
-            description: await models.menus.guilds.guilds(client, server),
+            description: await config.menus.guilds.guilds(client, server),
             fields: [{
                 name: "Datos Especificos",
-                value: models.menus.guilds.datos(server)
+                value: config.menus.guilds.datos(server)
             }],
             footer: {
                 text: `Especificaciones | ${message.author.username}`,
@@ -85,10 +85,10 @@ exports.text = async (client, message, args) => {
                 icon_url: server.iconURL({ forceStatic: false })
             },
             color: 0xfcf5d4,
-            description: await models.menus.guilds.guilds(client, server),
+            description: await config.menus.guilds.guilds(client, server),
             fields: [{
                 name: "Comunidad",
-                value: models.menus.guilds.comunidad(server, message.member),
+                value: config.menus.guilds.comunidad(server, message.member),
                 inline: true
             }],
             footer: {
@@ -115,7 +115,7 @@ exports.text = async (client, message, args) => {
         collector.on('collect', async (i) => {
             if (i.user.id !== message.author.id) return await i.reply({
                 ephemeral: true,
-                content: models.utils.statusError('error', "Esta interacción no es para ti")
+                content: config.statusError('error', "Esta interacción no es para ti")
             }); else {
                 i.deferUpdate();
                 let number = parseInt(i.values[0]) - 1;
@@ -139,7 +139,7 @@ exports.text = async (client, message, args) => {
         })
     } catch (error) {
         console.log(error)
-        await models.utils.error(message, error)
+        await config.error(message, error)
     }
 }
 
@@ -171,7 +171,7 @@ exports.slash = async (client, interaction) => {
                 icon_url: server.iconURL({ forceStatic: false })
             },
             color: 0xfcf5d4,
-            description: await models.menus.guilds.guilds(client, server),
+            description: await config.menus.guilds.guilds(client, server),
             fields: [{
                 name: "Canales",
                 value: `<:Dis_channelText:888230498214760509> **Texto |** ${server.channels.cache.filter(ch => ch.type == 0).size}\n<:Dis_channelVoice:888230649977266209> **Voz |** ${server.channels.cache.filter(ch => ch.type == 2).size}\n<:Dis_addChannel:888234000093691944> **Categorias |** ${server.channels.cache.filter(ch => ch.type == 4).size}`,
@@ -186,7 +186,7 @@ exports.slash = async (client, interaction) => {
                 inline: true
             }, {
                 name: "Detalles",
-                value: models.menus.guilds.general(server, nivel),
+                value: config.menus.guilds.general(server, nivel),
                 inline: true
             }, {
                 name: "Imagenes",
@@ -206,10 +206,10 @@ exports.slash = async (client, interaction) => {
                 icon_url: server.iconURL({ forceStatic: false })
             },
             color: 0xfcf5d4,
-            description: await models.menus.guilds.guilds(client, server),
+            description: await config.menus.guilds.guilds(client, server),
             fields: [{
                 name: "Datos Especificos",
-                value: models.menus.guilds.datos(server)
+                value: config.menus.guilds.datos(server)
             }],
             footer: {
                 text: `Especificaciones | ${interaction.user.username}`,
@@ -224,10 +224,10 @@ exports.slash = async (client, interaction) => {
                 icon_url: server.iconURL({ forceStatic: false })
             },
             color: 0xfcf5d4,
-            description: await models.menus.guilds.guilds(client, server),
+            description: await config.menus.guilds.guilds(client, server),
             fields: [{
                 name: "Comunidad",
-                value: models.menus.guilds.comunidad(server, interaction.member),
+                value: config.menus.guilds.comunidad(server, interaction.member),
                 inline: true
             }],
             footer: {
@@ -254,7 +254,7 @@ exports.slash = async (client, interaction) => {
         collector.on('collect', async (i) => {
             if (i.user.id !== interaction.user.id) return await i.reply({
                 ephemeral: true,
-                content: models.utils.statusError('error', "Esta interacción no es para ti")
+                content: config.statusError('error', "Esta interacción no es para ti")
             }); else {
                 i.deferUpdate();
                 let number = parseInt(i.values[0]) - 1;

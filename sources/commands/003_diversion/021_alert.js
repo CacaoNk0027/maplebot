@@ -13,13 +13,13 @@ exports.text = async (client, message, args) => {
         let texto = args.join(' ');
         if(!texto || texto.length <= 0) return await message.reply({
             embeds: [{
-                description: models.utils.statusError('error', "el parametro <texto> es requerido"),
+                description: config.statusError('error', "el parametro <texto> es requerido"),
                 color: 0xff0000
             }]
         });
         if(texto.length > 40) return await message.reply({
             embeds: [{
-                description: models.utils.statusError('error', "el texto escrito no puede tener mas de 40 caracteres"),
+                description: config.statusError('error', "el texto escrito no puede tener mas de 40 caracteres"),
                 color: 0xff0000
             }]
         });
@@ -38,7 +38,7 @@ exports.text = async (client, message, args) => {
             ]
         })
     } catch (error) {
-        await models.utils.error(message, error)
+        await config.error(message, error)
     }
 }
 

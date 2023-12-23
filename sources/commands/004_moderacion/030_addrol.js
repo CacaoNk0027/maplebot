@@ -12,57 +12,57 @@ exports.text = async (client, message, args) => {
     try {
         if (!message.channel.permissionsFor(client.user.id).has('ManageRoles')) return await message.reply({
             embeds: [{
-                description: models.utils.statusError('error', `no cuento con los permisos necesarios para completar esta acción..\nrequiero \`${permissions['ManageRoles']}\``),
+                description: config.statusError('error', `no cuento con los permisos necesarios para completar esta acción..\nrequiero \`${permissions['ManageRoles']}\``),
                 color: 0xff0000
             }]
         }); else if (!message.member.permissionsIn(message.channelId).has('ManageRoles')) return await message.reply({
             embeds: [{
-                description: models.utils.statusError('error', `no cuentas con los permisos necesarios para completar esta acción..\nrequieres de \`${permissions['ManageRoles']}\``),
+                description: config.statusError('error', `no cuentas con los permisos necesarios para completar esta acción..\nrequieres de \`${permissions['ManageRoles']}\``),
                 color: 0xff0000
             }]
         }); else if (!args[0]) return await message.reply({
             embeds: [{
-                description: models.utils.statusError('error', `el parametro <usuario> es requerido`),
+                description: config.statusError('error', `el parametro <usuario> es requerido`),
                 color: 0xff0000
             }]
         });
         let { member, memberIsAuthor } = await config.fetchMember({ message: message, args: args });
         if (!member) return await message.reply({
             embeds: [{
-                description: models.utils.statusError('error', `no se ha podido encontrar al miembro mencionado`),
+                description: config.statusError('error', `no se ha podido encontrar al miembro mencionado`),
                 color: 0xff0000
             }]
         });
         if (member.user.id == client.user.id) return await message.reply({
             embeds: [{
-                description: models.utils.statusError('error', `No puedo añadirme roles asi yo sola`),
+                description: config.statusError('error', `No puedo añadirme roles asi yo sola`),
                 color: 0xff0000
             }]
         }); else if (memberIsAuthor()) return await message.reply({
             embeds: [{
-                description: models.utils.statusError('error', `No puedes añadirte roles a ti mismo`),
+                description: config.statusError('error', `No puedes añadirte roles a ti mismo`),
                 color: 0xff0000
             }]
         }); else if (member.id == message.guild.ownerId) return await message.reply({
             embeds: [{
-                description: models.utils.statusError('error', `No puedes añadir roles al owner del servidor`),
+                description: config.statusError('error', `No puedes añadir roles al owner del servidor`),
                 color: 0xff0000
             }]
         }); else if (message.member.roles.highest.comparePositionTo(member.roles.highest) <= 0) return await message.reply({
             embeds: [{
-                description: models.utils.statusError('error', `El usuario que haz mencionado tiene roles de mayor o igual jerarquia a los tuyos`),
+                description: config.statusError('error', `El usuario que haz mencionado tiene roles de mayor o igual jerarquia a los tuyos`),
                 color: 0xff0000
             }]
         }); else if (!args[1]) return await message.reply({
             embeds: [{
-                description: models.utils.statusError('error', `el parametro <rol> es requerido`),
+                description: config.statusError('error', `el parametro <rol> es requerido`),
                 color: 0xff0000
             }]
         });
         const _no_role = async () => {
             return await message.reply({
                 embeds: [{
-                    description: models.utils.statusError('error', `el parametro <rol> no corresponde a lo solicitado o no se puede encontrar el rol mencionado`),
+                    description: config.statusError('error', `el parametro <rol> no corresponde a lo solicitado o no se puede encontrar el rol mencionado`),
                     color: 0xff0000
                 }]
             })
@@ -75,30 +75,30 @@ exports.text = async (client, message, args) => {
         }
         if (!role_ || role_ == null || role_ == undefined) return await _no_role(); else if (role_.name == "@everyone" || role_.name == "@here") return await message.reply({
             embeds: [{
-                description: models.utils.statusError('error', `los roles de everyone no son validos, son roles con los que ya cuenta el usuario por default`),
+                description: config.statusError('error', `los roles de everyone no son validos, son roles con los que ya cuenta el usuario por default`),
                 color: 0xff0000
             }]
         }); else if (!role_.editable || role_.editable == false || (await message.guild.members.fetchMe()).roles.highest.comparePositionTo(role_.id) <= 0) return await message.reply({
             embeds: [{
-                description: models.utils.statusError('error', `no puedo acceder a el rol mencionado, es de mayor jerarquia al mio`),
+                description: config.statusError('error', `no puedo acceder a el rol mencionado, es de mayor jerarquia al mio`),
                 color: 0xff0000
             }]
         }); else if (message.member.roles.highest.comparePositionTo(role_.id) <= 0) return await message.reply({
             embeds: [{
-                description: models.utils.statusError('error', `por seguridad no puedo poner roles mas altos o iguales a tu jerarquia`),
+                description: config.statusError('error', `por seguridad no puedo poner roles mas altos o iguales a tu jerarquia`),
                 color: 0xff0000
             }]
         }); else {
             if (member.roles.cache.has(role_.id)) return await message.reply({
                 embeds: [{
-                    description: models.utils.statusError('error', `el usuario ya cuenta con el rol mencionado`),
+                    description: config.statusError('error', `el usuario ya cuenta con el rol mencionado`),
                     color: 0xff0000
                 }]
             }); else {
-                await member.roles.add(role_.id).catch(async err => await models.utils.error(message, err))
+                await member.roles.add(role_.id).catch(async err => await config.error(message, err))
                 return await message.reply({
                     embeds: [{
-                        description: models.utils.statusError('success', `Los roles de **${member.user.username}** fueron actualizados correctamente`),
+                        description: config.statusError('success', `Los roles de **${member.user.username}** fueron actualizados correctamente`),
                         color: 0x00ff00,
                         fields: [{
                             name: "Rol añadido",
@@ -114,7 +114,7 @@ exports.text = async (client, message, args) => {
         }
     } catch (error) {
         console.error(error)
-        await models.utils.error(message, error)
+        await config.error(message, error)
     }
 }
 
