@@ -50,7 +50,7 @@ exports.event = {
         }
         let prefixes;
         try {
-            let prefixDB = await config.schemas.SetPrefix.findOne({ guildID: guild.id }).exec().then(c => c.prefix)
+            let prefixDB = await config.schemas.SetPrefix.findOne({ guildID: message.guild.id }).exec().then(c => c.prefix)
             prefixes = [`<@${client.user.id}>`, `<@!${client.user.id}>`, prefixDB]
         } catch (error) {
             prefixes = [`<@${client.user.id}>`, `<@!${client.user.id}>`, "m!", "maple"]
