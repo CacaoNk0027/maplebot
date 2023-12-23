@@ -2,7 +2,7 @@
 
 const discord = require('discord.js')
 const config = require('../../utils/exports')
-const models = require('maplebot_models')
+
 const ms = require('ms')
 const { permissions } = require('../../utils/exports')
 

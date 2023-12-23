@@ -1,5 +1,5 @@
 const discord = require('discord.js')
-const models = require('maplebot_models')
+
 const ms = require('ms')
 const { Welcome } = require('./005.001_setclases/001_welcome')
 const { Farewell } = require('./005.001_setclases/002_farewell')

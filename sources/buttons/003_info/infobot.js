@@ -1,5 +1,5 @@
 const discord = require('discord.js')
-const models = require('maplebot_models')
+
 const config = require('../../utils/exports')
 const nekoapi_1 = require('cacao_nekoapi')
 const nekoapi_2 = require('nekoapi.beta')

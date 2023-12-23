@@ -1,7 +1,7 @@
 // importaciones
 
 const discord = require('discord.js')
-const models = require('maplebot_models')
+
 const config = require('../utils/exports.js')
 const { CBU } = require('../utils/models/_cbu.js')
 const { CBS } = require('../utils/models/_cbs.js')

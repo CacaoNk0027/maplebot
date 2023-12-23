@@ -1,5 +1,5 @@
 const discord = require('discord.js')
-const models = require('maplebot_models')
+
 const moment = require('moment')
 const config = require('../../utils/exports')
 const ms = require('ms')

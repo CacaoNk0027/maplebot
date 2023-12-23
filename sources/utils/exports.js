@@ -1,5 +1,5 @@
 const config = require('./assets/configs.json')
-const models = require('maplebot_models')
+
 const Canvas = require('canvas')
 const { colors } = require('./assets/colors');
 const { Guild, ButtonInteraction, Message, AttachmentBuilder, Collection, CommandInteraction, GuildMember } = require('discord.js');

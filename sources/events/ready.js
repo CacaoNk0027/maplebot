@@ -2,7 +2,7 @@
 
 require('dotenv').config()
 const discord = require('discord.js')
-const models = require('maplebot_models')
+
 const package_json = require('../../package.json')
 const config = require('../utils/exports.js')
 const { sdk } = require('../app/body')

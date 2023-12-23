@@ -1,5 +1,5 @@
 const discord = require("discord.js")
-const models = require("maplebot_models")
+
 const { DeleteNewArrayBlacklist, interactionErrorMsg } = require("../../utils/exports")
 
 /**

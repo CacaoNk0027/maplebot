@@ -3,7 +3,7 @@
 const discord = require('discord.js')
 const moment = require('moment')
 const package = require('../../../package.json')
-const models = require('maplebot_models')
+
 const ms = require('ms')
 
 /**

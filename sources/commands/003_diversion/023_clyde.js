@@ -1,5 +1,5 @@
 const discord = require('discord.js')
-const models = require('maplebot_models')
+
 const ms = require('ms');
 const canvacord = require('canvacord')
 

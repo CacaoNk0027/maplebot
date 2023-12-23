@@ -1,5 +1,5 @@
 const discord = require('discord.js');
-const models = require('maplebot_models');
+;
 const regex_c = require('hex-color-regex')({ strict: true });
 const config = require('../../../utils/exports')
 const nekoapi = require('nekoapi.beta')

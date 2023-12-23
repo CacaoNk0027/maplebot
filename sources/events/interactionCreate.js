@@ -1,5 +1,5 @@
 const discord = require('discord.js')
-const models = require('maplebot_models')
+
 const config = require('../utils/exports');
 const { CBU } = require('../utils/models/_cbu');
 const { CBS } = require('../utils/models/_cbs');
