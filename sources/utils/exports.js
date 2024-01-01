@@ -324,7 +324,6 @@ exports.fonts = () => {
     Canvas.registerFont(fontPath('arial.ttf'), { family: 'Arial' })
     Canvas.registerFont(fontPath('product_sans_regular.ttf'), { family: 'Product Sans Regular' })
     Canvas.registerFont(fontPath('roboto_regular.ttf'), { family: 'Roboto Regular' })
-    Canvas.registerFont(fontPath('Minecraft.ttf'), { family: 'FontCraft' })
 }
 
 /**
