@@ -4,6 +4,7 @@ require('dotenv').config()
 const discord = require('discord.js')
 const { AutoPoster } = require('topgg-autoposter')
 require("express")()
+.use(require('morgan' )('dev'))
 .get("/", (req, res) => res.send("👍"))
 .listen(3000);
 
