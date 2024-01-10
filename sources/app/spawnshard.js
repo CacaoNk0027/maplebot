@@ -3,10 +3,11 @@
 require('dotenv').config()
 const discord = require('discord.js')
 const { AutoPoster } = require('topgg-autoposter')
-require("express")()
-.use(require('morgan' )('dev'))
-.get("/", (req, res) => res.send("👍"))
-.listen(3000);
+let app = require("express")()
+
+app.use(require('morgan' )('dev'))
+app.get("/", (req, res) => res.send("👍"))
+app.listen(3000);
 
 // creacion del gestor de shards
 
