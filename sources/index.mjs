@@ -8,15 +8,15 @@ config({ path: 'sources/config/.env' })
 web()
 
 const manager = new discord.ShardingManager('./sources/bot/client.mjs', {
-    token: process.env.token,
+    token: process.env.TOKEN,
     totalShards: 'auto'
 })
 
-const topGG = AutoPoster(process.env.topgg_token, manager)
+const topGG = AutoPoster(process.env.TOPGG_TOKEN, manager)
 
 
 mongoose.set('strictQuery', false)
-mongoose.connect(process.env.uri)
+mongoose.connect(process.env.URI)
 mongoose.connection.on('open', () => {
     console.info('Conexion exitosa a base de datos')
 })

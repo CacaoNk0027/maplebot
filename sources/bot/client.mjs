@@ -8,7 +8,7 @@ const client = new discord.Client({
     }
 })
 
-client.login(process.env.token)
+client.login(process.env.TOKEN)
 
 client.cmds = new discord.Collection()
 
