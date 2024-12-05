@@ -52,19 +52,21 @@ async function main(client, message, args) {
  * @param {discord.CommandInteraction} interaction 
  */
 async function slash(client, interaction) {
-    let wsping, msgping
-
-    wsping = Math.floor(client.ws.ping)
-    msgping = Date.now() - interaction.createdTimestamp
-
     await interaction.reply({
         embeds: [{
             color: config.random_color(),
-            author: {
-                name: `Pong! 🏓`
-            },
-            description: `\`\`\`\nCliente: ${wsping}\nInteraccion: ${msgping}\n\`\`\``
+            description: "Calculando..."
         }]
+    }).then(async (response) => {
+        response.edit({
+            embeds: [{
+                color: config.random_color(),
+                author: {
+                    name: `Pong! 🏓`
+                },
+                description: `\`\`\`\nCliente: ${Math.floor(client.ws.ping)}\nMensajes: ${(response.createdTimestamp - message.createdTimestamp)}\n\`\`\``
+            }]
+        })
     })
     return 0
 }
