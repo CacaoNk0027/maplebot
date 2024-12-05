@@ -14,7 +14,7 @@ let help = {
         bot: []
     },
     inactive: false,
-    reason: "none",
+    reason: null,
     nsfw: false,
     cooldown: 3
 }
