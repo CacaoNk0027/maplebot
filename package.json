@@ -30,7 +30,7 @@
     "dotenv": "^16.4.5",
     "express": "^4.21.1",
     "maple_bot": "file:",
-    "mongoose": "^8.8.1",
+    "mongoose": "^8.8.3",
     "topgg-autoposter": "^2.0.2"
   }
 }

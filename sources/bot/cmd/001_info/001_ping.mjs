@@ -11,11 +11,11 @@ let help = {
     options: [],
     permissions: {
         user: [],
-        bot:  []
+        bot: []
     },
     inactive: false,
     reason: "none",
-    nsfw: true,
+    nsfw: false,
     cooldown: 3
 }
 
@@ -26,20 +26,22 @@ let help = {
  * @param {string[]} args 
  */
 async function main(client, message, args) {
-    let wsping, msgping
-
-    wsping = Math.floor(client.ws.ping)
-    msgping = Date.now() - message.createdTimestamp
-
     await message.reply({
         embeds: [{
             color: config.random_color(),
-            author: {
-                name: `Pong! 🏓`
-            },
-            description: `\`\`\`\nCliente: ${wsping}\nMensajes: ${msgping}\n\`\`\``
+            description: "Calculando..."
         }]
-    }) 
+    }).then(async (response) => {
+        response.edit({
+            embeds: [{
+                color: config.random_color(),
+                author: {
+                    name: `Pong! 🏓`
+                },
+                description: `\`\`\`\nCliente: ${Math.floor(client.ws.ping)}\nMensajes: ${(response.createdTimestamp - message.createdTimestamp)}\n\`\`\``
+            }]
+        })
+    })
 
     return 0
 }
@@ -63,12 +65,12 @@ async function slash(client, interaction) {
             },
             description: `\`\`\`\nCliente: ${wsping}\nInteraccion: ${msgping}\n\`\`\``
         }]
-    }) 
+    })
     return 0
 }
 
 export {
-    name, 
+    name,
     id,
     help,
     main,
