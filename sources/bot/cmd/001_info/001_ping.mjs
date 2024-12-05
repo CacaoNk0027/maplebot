@@ -64,7 +64,7 @@ async function slash(client, interaction) {
                 author: {
                     name: `Pong! 🏓`
                 },
-                description: `\`\`\`\nCliente: ${Math.floor(client.ws.ping)}\nMensajes: ${(response.createdTimestamp - message.createdTimestamp)}\n\`\`\``
+                description: `\`\`\`\nCliente: ${Math.floor(client.ws.ping)}\nMensajes: ${(response.createdTimestamp - interaction.createdTimestamp)}\n\`\`\``
             }]
         })
     })
