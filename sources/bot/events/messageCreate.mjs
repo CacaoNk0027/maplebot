@@ -1,5 +1,6 @@
 import * as discord from 'discord.js'
 import * as configs from '../config/config.mjs'
+import * as server from '../_support/message.mjs'
 
 const name = 'messageCreate'
 
@@ -29,6 +30,8 @@ async function main(client, message) {
     if (permissions.length > 0) return 1
 
     args = message.content.slice(configs.prefix.length).trim().split(/ +/g)
+
+    server.main(client, message);
 
     identifier = args.shift().toLowerCase()
 
