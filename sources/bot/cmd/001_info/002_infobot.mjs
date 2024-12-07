@@ -10,7 +10,7 @@ let help = {
     category: "001",
     options: [],
     inactive: true,
-    reason: "en desarrollo",
+    reason: "comando en desarrollo",
     nsfw: false,
     cooldown: 3
 }
