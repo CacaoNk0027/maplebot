@@ -1,18 +1,14 @@
 import * as discord from 'discord.js'
 import * as config from '../../config/config.mjs'
 
-const name = "help"
+const name = "infobot"
 const id = "002"
 
 let help = {
-    alias: ["h"],
-    description: "comando para saber sobre comandos o para ver los menus con los que cuenta la bot",
+    alias: ["botinfo", "maplebot", "maple", "bot"],
+    description: "aprende mas cosas sobre la bot",
     category: "001",
-    options: [{
-        name: "comando",
-        required: false,
-        type: "string"
-    }],
+    options: [],
     inactive: false,
     reason: null,
     nsfw: false,
