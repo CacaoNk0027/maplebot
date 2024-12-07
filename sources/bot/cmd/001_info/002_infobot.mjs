@@ -9,8 +9,8 @@ let help = {
     description: "aprende mas cosas sobre la bot",
     category: "001",
     options: [],
-    inactive: false,
-    reason: null,
+    inactive: true,
+    reason: "en desarrollo",
     nsfw: false,
     cooldown: 3
 }
