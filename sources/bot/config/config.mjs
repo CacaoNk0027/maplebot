@@ -4,6 +4,9 @@ import __jinterc from '../assets/interactions.json' assert { type: 'json' }
 
 const prefix = "m!"
 
+const theme_color = 0xfcbc6d;
+const alt_theme_color = 0x28594b;
+
 let default_client_permissions = [
     discord.PermissionFlagsBits.SendMessages,
     discord.PermissionFlagsBits.EmbedLinks,
@@ -40,6 +43,8 @@ function allowed_id(id) {
 
 export {
     prefix,
+    theme_color,
+    alt_theme_color,
     __package,
     default_client_permissions,
     random_color,

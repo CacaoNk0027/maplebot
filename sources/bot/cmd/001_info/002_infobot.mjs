@@ -1,5 +1,9 @@
 import * as discord from 'discord.js'
 import * as config from '../../config/config.mjs'
+import moment from 'moment'
+import format from 'moment-duration-format'
+
+format(moment);
 
 const name = "infobot"
 const id = "002"
@@ -9,42 +13,14 @@ let help = {
     description: "aprende mas cosas sobre la bot",
     category: "001",
     options: [],
-    inactive: true,
-    reason: "comando en desarrollo",
+    permissions: {
+        user: [],
+        bot: []
+    },
+    inactive: false,
+    reason: null,
     nsfw: false,
     cooldown: 3
-}
-
-/**
- * @param {discord.Client} client 
- * @param {discord.Message} message 
- */
-async function no_command(client, message) {
-    await message.reply({
-        embeds: [{
-            title: `Menu de ayuda | ❗📝`,
-            author: {
-                name: message.author.username,
-                icon_url: message.author.avatarURL({ forceStatic: false })
-            },
-            color: 0xfcf5d4,
-            description: `Menu de ayuda | selecciona una categoria del menu para ver los comandos disponibles en la misma\nsi quieres ver categorias nsfw debes de estar en un canal nsfw`,
-            footer: {
-                text: `Menus de ayuda | ${client.user.username}`,
-                icon_url: client.user.avatarURL()
-            }
-        }],
-        components: [{
-            type: 1,
-            components: [{
-                type: 3,
-                custom_id: "helpMenu",
-                placeholder: "Categorias",
-                options: config.menuOptions(message.channel)
-            }]
-        }]
-    })
-    return 0
 }
 
 /**
@@ -54,20 +30,88 @@ async function no_command(client, message) {
  * @param {string[]} args
  */
 async function main(client, message, args) {
-    let identifier, command
+    let totalGuilds, totalMembers
+    try {
+        let [ guildCount, memberCount ] = await Promise.all([
+            client.shard.fetchClientValues('guilds.cache.size'),
+            client.shard.broadcastEval(c => c.guilds.cache.reduce((acum, guild) => acum + guild.memberCount, 0))
+        ])
 
-    identifier = args[0].toLowerCase()
-    command = client.cmds.get(identifier) ||
-        client.cmds.find(cmd => cmd.id == identifier || cmd.help.alias.includes(identifier))
-    if(!command) {
-        await no_command(client, message);
-    } else {
-
+        totalGuilds = guildCount.reduce((acc, guildCount) => acc + guildCount, 0)
+        totalMembers = memberCount.reduce((acc, memberCount) => acc + memberCount, 0)
+    } catch (error) {
+        console.error(error)
+        return 0;
     }
+    await message.reply({
+        embeds: [{
+            title: 'Información :heart:', 
+            author: {
+                name: client.user.username,
+                icon_url: client.user.avatarURL({ forceStatic: false })
+            },
+            color: config.theme_color,
+            description: `Hola! Soy **${client.user.username}**, trabajo siendo una bot multiusos. Soy buena en lo que me gusta, **moderacion y roleplay** aun asi, trato de mejorar, aunque aveces me cuestione ciertas cosas...`,
+            fields: [{
+                name: 'Sobre mi 🔎',
+                value: `Creador | kmz_kuro\nCreacion: <t:${Math.floor(client.application.createdTimestamp/1000)}:F>\nID | ${client.user.id}\nVersión: ${config.__package.version}`,
+            }, {
+                name: 'Estadisticas 📊',
+                value: `Servidores | ${totalGuilds}\nUsuarios | ${totalMembers}\nComandos | **${client.cmds.filter(cmd => cmd.help.inactive == false).size}** activos, **${client.cmds.filter(cmd => cmd.help.inactive == true).size}** inactivos\nTiempo al aire | \`${moment.duration(client.uptime).format('D [días] H [horas] m [minutos] s [segundos]')}\``,
+                inline: true
+            }, {
+                name: 'Datos especificos 📍',
+                value: `Libreria | Discord.js ^${discord.version}\nLenguaje | Javascript\nRepositorio | [Github.com](https://github.com/CacaoNk0027/maplebot)\nPagina web | (no aplica)`,
+                inline: true
+            }],
+            thumbnail: {
+                url: 'https://media1.tenor.com/m/2b0p_yrMJeoAAAAd/nekopara-maple.gif'
+            }
+        }]
+    })
     return 0
 }
 
 async function slash(client, interaction) {
+    let totalGuilds, totalMembers
+    try {
+        let [ guildCount, memberCount ] = await Promise.all([
+            client.shard.fetchClientValues('guilds.cache.size'),
+            client.shard.broadcastEval(c => c.guilds.cache.reduce((acum, guild) => acum + guild.memberCount, 0))
+        ])
+
+        totalGuilds = guildCount.reduce((acc, guildCount) => acc + guildCount, 0)
+        totalMembers = memberCount.reduce((acc, memberCount) => acc + memberCount, 0)
+    } catch (error) {
+        console.error(error)
+        return 0;
+    }
+    await interaction.reply({
+        embeds: [{
+            title: 'Información :heart:', 
+            author: {
+                name: client.user.username,
+                icon_url: client.user.avatarURL({ forceStatic: false })
+            },
+            color: config.theme_color,
+            description: `Hola! Soy **${client.user.username}**, trabajo siendo una bot multiusos. Soy buena en lo que me gusta, **moderacion y roleplay** aun asi, trato de mejorar, aunque aveces me cuestione ciertas cosas...`,
+            fields: [{
+                name: 'Sobre mi 🔎',
+                value: `Creador | kmz_kurom\nCreacion: <t:${Math.floor(client.application.createdTimestamp/1000)}:F>\nID | ${client.user.id}\nVersión: ${config.__package.version}`,
+            }, {
+                name: 'Estadisticas 📊',
+                value: `Servidores | ${totalGuilds}\nUsuarios | ${totalMembers}\nComandos | **${client.cmds.filter(cmd => cmd.help.inactive == false).size}** activos, **${client.cmds.filter(cmd => cmd.help.inactive == true).size}** inactivos\nTiempo al aire | \`${moment.duration(client.uptime).format('D [días] H [horas] m [minutos] s [segundos]')}\``,
+                inline: true
+            }, {
+                name: 'Datos especificos 📍',
+                value: `Libreria | Discord.js ^${discord.version}\nLenguaje | Javascript\nRepositorio | [Github.com](https://github.com/CacaoNk0027/maplebot)\nPagina web | (no aplica)`,
+                inline: true
+            }],
+            thumbnail: {
+                url: 'https://media1.tenor.com/m/2b0p_yrMJeoAAAAd/nekopara-maple.gif'
+            }
+        }]
+    })
     return 0
 }
 
