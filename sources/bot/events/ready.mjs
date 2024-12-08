@@ -22,6 +22,7 @@ async function main(client) {
     })
     console.info('Cliente iniciado correctamente como', client.user.username)
     await configs.slash_manager(client)
+    await stats(client);
     return 0
 }
 
