@@ -109,7 +109,7 @@ async function slash(client, interaction) {
     let reply, embed
     let totalGuilds, totalMembers
     let network, cpu, ram
-    let mem
+    let mem, used
 
     reply = await interaction.reply({
         embeds: [{
@@ -129,7 +129,8 @@ async function slash(client, interaction) {
         network = (await os.networkStats())[0]
         cpu = (await os.currentLoad()).currentLoad.toFixed(2)
         mem = (await os.mem())
-        ram = ((mem.used / mem.total) * 100).toFixed(2)
+        used = mem.total - mem.available
+        ram = ((used / mem.total) * 100).toFixed(2)
     } catch(error) {
         console.error(error)
         reply.edit({
