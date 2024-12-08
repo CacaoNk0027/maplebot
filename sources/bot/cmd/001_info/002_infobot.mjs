@@ -3,15 +3,15 @@ import * as config from '../../config/config.mjs'
 import moment from 'moment'
 import format from 'moment-duration-format'
 
-format(moment);
+format(moment)
 
-const name = "infobot"
-const id = "002"
+const name = 'infobot'
+const id = '002'
 
 let help = {
-    alias: ["botinfo", "maplebot", "maple", "bot"],
-    description: "aprende mas cosas sobre la bot",
-    category: "001",
+    alias: ['botinfo', 'maplebot', 'info', 'maple', 'bot', 'informacion'],
+    description: 'aprende mas cosas sobre la bot',
+    category: '001',
     options: [],
     permissions: {
         user: [],
@@ -41,7 +41,7 @@ async function main(client, message, args) {
         totalMembers = memberCount.reduce((acc, memberCount) => acc + memberCount, 0)
     } catch (error) {
         console.error(error)
-        return 0;
+        return 0
     }
     await message.reply({
         embeds: [{
@@ -84,7 +84,7 @@ async function slash(client, interaction) {
         totalMembers = memberCount.reduce((acc, memberCount) => acc + memberCount, 0)
     } catch (error) {
         console.error(error)
-        return 0;
+        return 0
     }
     await interaction.reply({
         embeds: [{

@@ -1,7 +1,7 @@
-import * as discord from "discord.js"
-import * as config from "../config/config.mjs"
+import * as discord from 'discord.js'
+import * as config from '../config/config.mjs'
 
-const name = "interactionCreate"
+const name = 'interactionCreate'
 
 /**
  * para el evento principal
@@ -26,7 +26,7 @@ async function slash(client, interaction) {
     if(command.inactive && !config.allowed_id(interaction.user.id)) {
         await interaction.reply({
             ephemeral: true,
-            content: "Comando inactivo temporalmente"
+            content: 'Comando inactivo temporalmente'
         })
         return 1
     }
@@ -34,7 +34,7 @@ async function slash(client, interaction) {
         await command.exec.slash(client, interaction)
     } else {
         await interaction.reply({
-            content: "Ha ocurrido un error al intentar ejecutar el comando, comunicate con el desarrollador",
+            content: 'Ha ocurrido un error al intentar ejecutar el comando, comunicate con el desarrollador',
             ephemeral: true
         })
         return 1

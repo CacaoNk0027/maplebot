@@ -31,7 +31,7 @@ async function main(client, message) {
 
     args = message.content.slice(configs.prefix.length).trim().split(/ +/g)
 
-    server.main(client, message);
+    server.main(client, message)
 
     identifier = args.shift().toLowerCase()
 
@@ -42,7 +42,7 @@ async function main(client, message) {
     if (!command) return 1
 
     // valida permiso de desarrollador
-    if(command.id.split('_')[0].toLowerCase() == "dev" && !configs.allowed_id(message.author.id)) return 1
+    if(command.id.split('_')[0].toLowerCase() == 'dev' && !configs.allowed_id(message.author.id)) return 1
 
     // condicionales asociadas al help
 
@@ -102,7 +102,7 @@ async function main(client, message) {
 
     // cooldowns
     if (!cooldown.has(identifier)) {
-        cooldown.set(identifier, new discord.Collection());
+        cooldown.set(identifier, new discord.Collection())
     }
 
     timeNow = Date.now()
@@ -126,15 +126,15 @@ async function main(client, message) {
                 }, timeLeft >= 5000 ? 5000 : timeLeft - 1000)
             })
 
-            warnings.set(message.author.id, timeLeft >= 5000 ? 5000 : timeLeft);
-            setTimeout(() => warnings.delete(message.author.id), timeLeft >= 5000 ? 5000 : timeLeft);
+            warnings.set(message.author.id, timeLeft >= 5000 ? 5000 : timeLeft)
+            setTimeout(() => warnings.delete(message.author.id), timeLeft >= 5000 ? 5000 : timeLeft)
 
             return 1
         }
     }
 
     timeStamps.set(message.author.id, timeNow)
-    setTimeout(() => timeStamps.delete(message.author.id), cooldownAmount);
+    setTimeout(() => timeStamps.delete(message.author.id), cooldownAmount)
 
     await command.exec.text(client, message, args)
 
