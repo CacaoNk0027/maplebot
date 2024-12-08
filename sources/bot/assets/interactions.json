@@ -2,7 +2,7 @@
     {
         "name": "ping",
         "type": 1,
-        "description": "ve mi latencia en discord y em mensajes"
+        "description": "ve mi latencia en discord y en mensajes"
     },
     {
         "name": "infobot",
@@ -12,6 +12,28 @@
     {
         "name": "stats",
         "type": 1,
-        "description": "ve las estadisticas de la bot como usuarios y servidores"
+        "description": "ve las estadisticas del bot como usuarios y servidores"
+    },
+    {
+        "name": "server",
+        "type": 1,
+        "description": "Muestra informacion de tu server, icono, banner, roles, etc...",
+        "options": [
+            {
+                "name": "info",
+                "type": 1,
+                "description": "Muestra informacion de tu server"
+            },
+            {
+                "name": "icono",
+                "type": 1,
+                "description": "Muestra el icono de tu serverf"
+            },
+            {
+                "name": "banner",
+                "type": 1,
+                "description": "Muestra el banner de tu server"
+            }
+        ]
     }
 ]
