@@ -38,7 +38,7 @@ async function main(client, message, args) {
                 author: {
                     name: `Pong! 🏓`
                 },
-                description: `\`\`\`\nCliente: ${Math.floor(client.ws.ping)}\nMensajes: ${(response.createdTimestamp - message.createdTimestamp)}\n\`\`\``
+                description: config.code_text(`Cliente: ${Math.floor(client.ws.ping)}\nMensajes: ${(response.createdTimestamp - message.createdTimestamp)}`) 
             }]
         })
     })
@@ -64,7 +64,7 @@ async function slash(client, interaction) {
                 author: {
                     name: `Pong! 🏓`
                 },
-                description: `\`\`\`\nCliente: ${Math.floor(client.ws.ping)}\nMensajes: ${(response.createdTimestamp - interaction.createdTimestamp)}\n\`\`\``
+                description: config.code_text(`Cliente: ${Math.floor(client.ws.ping)}\nMensajes: ${(response.createdTimestamp - interaction.createdTimestamp)}`)
             }]
         })
     })
