@@ -1,18 +1,32 @@
-import * as discord from 'discord.js';
-import * as config from '../../config/config.mjs';
+import * as discord from 'discord.js'
+import * as config from '../../config/config.mjs'
 
-const name = "server";
-const id = "004";
+const name = 'server'
+const id = '001'
 
 let help = {
-    alias: ["servidor"],
-    description: "Comando para obtener información del servidor, su icono, banner y más.",
-    category: "001",
-    options: [
-        { name: "info", description: "Muestra información del servidor" },
-        { name: "icono", description: "Muestra el icono del servidor" },
-        { name: "banner", description: "Muestra el banner del servidor" }
-    ],
+    alias: ['serverinfo', 'servidor', 'sv'],
+    description: 'obten informacion del servidor, asi como su icono, su banner, entre otros.',
+    category: '001',
+    options: [{
+        name: 'info',
+        alias: ['informacion', 'in'],
+        description: 'muestra informacion del servidor',
+        required: false,
+        options: []
+    }, {
+        name: 'icon',
+        alias: ['icono', 'imagen', 'im'],
+        description: 'muestra el icono del servidor',
+        required: false,
+        options: []
+    }, {
+        name: 'banner',
+        alias: ['fondo', 'background', 'b'],
+        description: 'muestra el banner del servidor',
+        required: false,
+        options: []
+    }],
     permissions: {
         user: [],
         bot: []
@@ -21,164 +35,213 @@ let help = {
     reason: null,
     nsfw: false,
     cooldown: 3
-};
+}
+
+let verificacion = [
+    '- sin restricciones',
+    'baja',
+    'media',
+    'alta',
+    '+ muy alta'
+]
 
 /**
- * Comando server para texto (prefijo)
  * @param {discord.Client} client 
  * @param {discord.Message} message 
  * @param {string[]} args 
  */
 async function main(client, message, args) {
-    const subcommand = args[0]; // Obtiene el subcomando (info, icono, banner)
-    const guild = message.guild;
-
-    if (!guild) {
-        return message.reply("Este comando solo puede usarse en servidores.");
-    }
-
+    let identifier = args[0]
     try {
-        switch (subcommand) {
-            case "info":
-                await handleInfo(guild, message);
-                break;
-            case "icono":
-                await handleIcon(guild, message);
-                break;
-            case "banner":
-                await handleBanner(guild, message);
-                break;
-            default:
-                await message.reply("Por favor, usa un subcomando válido: `info`, `icono` o `banner`.");
-                break;
+        if (help.options[0].alias.includes(identifier) || !identifier || help.options[0].name == identifier) {
+            await info(message)
+        } else if (help.options[1].alias.includes(identifier) || help.options[1].name == identifier) {
+            await icon(message)
+        } else if (help.options[2].alias.includes(identifier) || help.options[2].name == identifier) {
+            await banner(message)
         }
     } catch (error) {
-        console.error(error);
-        await message.reply("Hubo un error al ejecutar el comando.");
+        console.error(error)
+        await message.reply({
+            embeds: [{
+                author: {
+                    name: 'Error',
+                    icon_url: client.user.avatarURL({ forceStatic: false })
+                },
+                color: discord.Colors.Red,
+                description: '> No se ha podido cargar el comando debido a un error interno.'
+            }]
+        })
     }
+    return 0;
 }
 
 /**
- * Comando server para slash commands
  * @param {discord.Client} client 
  * @param {discord.CommandInteraction} interaction 
  */
 async function slash(client, interaction) {
-    const { options, guild } = interaction;
-
-    if (!guild) {
-        return interaction.reply({ content: "Este comando solo puede usarse en servidores.", ephemeral: true });
+    let identifier;
+    if (!interaction.guild) {
+        await interaction.reply({
+            embeds: [{
+                author: {
+                    name: 'Advertencia',
+                    icon_url: client.user.avatarURL({ forceStatic: false })
+                },
+                color: discord.Colors.Orange,
+                description: '> Este comando solo puede ser usado en servidores'
+            }],
+            ephemeral: true
+        })
+        return 0
     }
 
     try {
-        const subcommand = options.getSubcommand();
+        identifier = interaction.options.getSubcommand()
 
-        switch (subcommand) {
-            case "info":
-                await handleInfo(guild, interaction);
-                break;
-            case "icono":
-                await handleIcon(guild, interaction);
-                break;
-            case "banner":
-                await handleBanner(guild, interaction);
-                break;
+        switch (identifier) {
+            case 'info':
+                await info(interaction)
+                break
+            case 'icono':
+                await icon(interaction)
+                break
+            case 'banner':
+                await banner(interaction)
+                break
             default:
-                await interaction.reply({ content: "Subcomando no válido.", ephemeral: true });
-                break;
+                await info(interaction)
         }
     } catch (error) {
-        console.error(error);
-        await interaction.reply({ content: "Hubo un error al ejecutar el comando.", ephemeral: true });
+        console.error(error)
+        await interaction.reply({
+            embeds: [{
+                author: {
+                    name: 'Error',
+                    icon_url: client.user.avatarURL({ forceStatic: false })
+                },
+                color: discord.Colors.Red,
+                description: '> No se ha podido cargar el comando debido a un error interno.'
+            }],
+            ephemeral: true
+        })
     }
 }
 
 /**
- * Maneja el subcomando info
+ * @param {discord.Message} target  
  */
-async function handleInfo(guild, target) {
-    await guild.members.fetch();
-    const owner = await guild.fetchOwner();
-    const bots = guild.members.cache.filter(m => m.user.bot).size;
-    const miembros = guild.members.cache.filter(m => !m.user.bot).size;
-    const total = guild.memberCount.toString();
-    const iconURL = guild.iconURL({ dynamic: true, size: 512 });
+async function info(target) {
+    let guild, owner, members, bots
+    guild = await target.guild.fetch()
+    owner = await guild.fetchOwner()
+    members = guild.members.cache.filter(member => !member.user.bot).size;
+    bots = guild.members.cache.filter(member => member.user.bot).size;
 
-    const embed = new discord.EmbedBuilder()
-        .setColor('Blurple')
-        .setThumbnail(iconURL || null)
-        .setTitle('Información del servidor')
-        .addFields([
-            { name: "Nombre", value: `\`\`\`${guild.name}\`\`\``, inline: true },
-            { name: "Owner 👑", value: `\`\`\`${owner.user.tag}\`\`\``, inline: true },
-            { name: "Descripción", value: `\`\`\`${guild.description || "Sin descripción."}\`\`\``, inline: false },
-            { name: "Número de miembros", value: `\`\`\`Miembros: ${miembros} | Bots: ${bots} | Total: ${total}\`\`\``, inline: false },
-            { name: "Canales 🏓", value: `\`\`\`Categorías: ${guild.channels.cache.filter(c => c.type === discord.ChannelType.GuildCategory).size} | Texto: ${guild.channels.cache.filter(c => c.type === discord.ChannelType.GuildText).size} | Voz: ${guild.channels.cache.filter(c => c.type === discord.ChannelType.GuildVoice).size}\`\`\``, inline: false },
-            { name: "Cantidad de Impulsos (Boosts)", value: `\`\`\`Mejoras: ${guild.premiumSubscriptionCount}\`\`\``, inline: false },
-            { name: "Nivel de Impulsos (Boosts)", value: `\`\`\`Nivel: ${guild.premiumTier || "Sin nivel"}\`\`\``, inline: false },
-            { name: "Roles & Emojis ☕", value: `\`\`\`Roles: ${guild.roles.cache.size} | Emojis: ${guild.emojis.cache.size}\`\`\``, inline: false },
-            { name: "Fecha de creación 📅", value: `<t:${Math.floor(guild.createdAt.getTime() / 1000)}:F>`, inline: false }
-        ])
-        .setTimestamp()
-        .setFooter({ text: guild.name, iconURL });
-
-    if (target instanceof discord.Message) {
-        await target.reply({ embeds: [embed] });
-    } else {
-        await target.reply({ embeds: [embed] });
-    }
+    await target.reply({
+        embeds: [{
+            author: {
+                name: `Owner 👑 | ${owner.user.username}`,
+                icon_url: owner.user.avatarURL({ forceStatic: false })
+            },
+            color: config.random_color(),
+            thumbnail: {
+                url: guild.iconURL({ forceStatic: false })
+            },
+            description: guild.description || 'Sin descripcion de servidor...',
+            title: guild.name,
+            fields: [{
+                name: '🆔 | ID',
+                value: `\`${guild.id}\``
+            }, {
+                name: '<a:Disc_ready:888311653114982400> | Fecha de creación',
+                value: `<t:${Math.floor(guild.createdTimestamp / 1000)}:F>`
+            }, {
+                name: '<:newmember:1262144151844028537> | Usuarios',
+                value: config.code_text(`Miembros [${members}]\nBots [${bots}]\nTotales [${members + bots}]`, 'js'),
+                inline: true
+            }, {
+                name: '<:Dis_channelText:888230498214760509> | Canales',
+                value: config.code_text(`Categorias [${guild.channels.cache.filter(channel => channel.type == discord.ChannelType.GuildCategory).size}]\nTexto [${guild.channels.cache.filter(channel => channel.type == discord.ChannelType.GuildText).size}]\nVoz [${guild.channels.cache.filter(channel => channel.type == discord.ChannelType.GuildVoice).size}]`, 'js'),
+                inline: true
+            }, {
+                name: '<:automoderator:1262143717683368057> | Roles y emojis',
+                value: config.code_text(`Roles [${guild.roles.cache.size}] | Emojis [${guild.emojis.cache.size}]`, 'js')
+            }, {
+                name: '<:Dis_boostLv3:888234376226295878> | Nivel de mejoras',
+                value: config.code_text(guild.premiumTier || "- sin nivel", 'diff'),
+                inline: true
+            }, {
+                name: '<:Dis_bg_discordBoost:888239632096043009> | Mejoras totales',
+                value: config.code_text(guild.premiumSubscriptionCount),
+                inline: true
+            }, {
+                name: '<:moderatorprograms:1262143721105920121> | Nivel de verificacion',
+                value: config.code_text(`${verificacion[guild.verificationLevel]}`, 'diff')
+            }],
+            footer: {
+                text: 'información del servidor'
+            }
+        }]
+    })
+    return 0
 }
 
 /**
- * Maneja el subcomando icono
+ * @param {discord.Message | discord.CommandInteraction} target 
  */
-async function handleIcon(guild, target) {
-    const iconURL = guild.iconURL({ dynamic: true, size: 512 });
+async function banner(target) {
+    let bannerUrl = target.guild.bannerURL({ forceStatic: false })
+    let embed = new discord.EmbedBuilder()
 
-    if (iconURL) {
-        const embed = new discord.EmbedBuilder()
-            .setTitle("Icono del servidor")
-            .setImage(iconURL)
-            .setFooter({ text: guild.name, iconURL });
-
-        if (target instanceof discord.Message) {
-            await target.reply({ embeds: [embed] });
-        } else {
-            await target.reply({ embeds: [embed] });
+    if (!bannerUrl) {
+        embed.setColor('Red').setDescription('> Este servidor no cuenta con un banner.')
+        if (!(target instanceof discord.Message)) {
+            await target.reply({ embeds: [embed] })
+            return 0
         }
-    } else {
-        if (target instanceof discord.Message) {
-            await target.reply("El servidor no tiene icono.");
-        } else {
-            await target.reply({ content: "El servidor no tiene icono.", ephemeral: true });
-        }
+        await target.reply({ embeds: [embed], ephemeral: true })
+        return 0
     }
+    embed.setAuthor({ name: target.guild.name, iconURL: target.guild.iconURL({ forceStatic: false }) })
+        .setTitle('Banner del servidor')
+        .setColor(config.random_color())
+        .setImage(bannerUrl)
+
+    await target.reply({
+        embeds: [embed]
+    })
+
+    return 0;
 }
 
 /**
- * Maneja el subcomando banner
+ * @param {discord.Message | discord.CommandInteraction} target 
  */
-async function handleBanner(guild, target) {
-    const bannerURL = guild.bannerURL({ dynamic: true, size: 512 });
+async function icon(target) {
+    let iconUrl = target.guild.iconURL({ forceStatic: false })
+    let embed = new discord.EmbedBuilder()
 
-    if (bannerURL) {
-        const embed = new discord.EmbedBuilder()
-            .setTitle("Banner del servidor")
-            .setImage(bannerURL)
-            .setFooter({ text: guild.name, iconURL: guild.iconURL({ dynamic: true, size: 512 }) });
-
-        if (target instanceof discord.Message) {
-            await target.reply({ embeds: [embed] });
-        } else {
-            await target.reply({ embeds: [embed] });
+    if (!iconUrl) {
+        embed.setColor('Red').setDescription('> Este servidor no cuenta con un icono.')
+        if (!(target instanceof discord.Message)) {
+            await target.reply({ embeds: [embed] })
+            return 0
         }
-    } else {
-        if (target instanceof discord.Message) {
-            await target.reply("El servidor no tiene banner.");
-        } else {
-            await target.reply({ content: "El servidor no tiene banner.", ephemeral: true });
-        }
+        await target.reply({ embeds: [embed], ephemeral: true })
+        return 0
     }
+    embed.setAuthor({ name: target.guild.name, iconURL: target.guild.iconURL({ forceStatic: false }) })
+        .setTitle('Icono del servidor')
+        .setColor(config.random_color())
+        .setImage(iconUrl)
+
+    await target.reply({
+        embeds: [embed]
+    })
+
+    return 0;
 }
 
 export {
@@ -187,4 +250,4 @@ export {
     help,
     main,
     slash
-};
+}

@@ -49,7 +49,7 @@ async function main(client, message) {
     // valida si el comando esta inactivo
     if (command.help.inactive && !configs.allowed_id(message.author.id)) {
         await message.reply({
-            content: `> Este comando esta inactivo a razon: \n\`\`\`\n${command.help.reason}\n\`\`\`\n`
+            content: `> Este comando esta inactivo a razon: \n${configs.code_text(command.help.reason)}`
         })
         return 1
     }
@@ -76,7 +76,7 @@ async function main(client, message) {
             )
         ).join('\n')
         await message.reply({
-            content: `Requiero de los siguentes permisos para ejecutar este comando:\n\`\`\`\n${permissions}\n\`\`\`\n`
+            content: `Requiero de los siguentes permisos para ejecutar este comando:\n${configs.code_text(permissions)}`
         })
         return 1
     }
@@ -95,7 +95,7 @@ async function main(client, message) {
             )
         ).join('\n')
         await message.reply({
-            content: `No puedes ejecutar este comando sin los siguentes permisos:\n\`\`\`\n${permissions}\n\`\`\`\n`
+            content: `No puedes ejecutar este comando sin los siguentes permisos:\n${configs.code_text(permissions)}`
         })
         return 1
     }
