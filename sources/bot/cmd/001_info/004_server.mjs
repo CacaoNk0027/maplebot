@@ -192,7 +192,7 @@ async function info(target) {
  * @param {discord.Message | discord.CommandInteraction} target 
  */
 async function banner(target) {
-    let bannerUrl = target.guild.bannerURL({ forceStatic: false })
+    let bannerUrl = target.guild.bannerURL({ forceStatic: false, size: 1024 })
     let embed = new discord.EmbedBuilder()
 
     if (!bannerUrl) {
@@ -220,7 +220,7 @@ async function banner(target) {
  * @param {discord.Message | discord.CommandInteraction} target 
  */
 async function icon(target) {
-    let iconUrl = target.guild.iconURL({ forceStatic: false })
+    let iconUrl = target.guild.iconURL({ forceStatic: false, size: 1024 })
     let embed = new discord.EmbedBuilder()
 
     if (!iconUrl) {
