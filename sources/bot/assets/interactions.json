@@ -27,7 +27,7 @@
             {
                 "name": "icono",
                 "type": 1,
-                "description": "Muestra el icono de tu serverf"
+                "description": "Muestra el icono de tu server"
             },
             {
                 "name": "banner",

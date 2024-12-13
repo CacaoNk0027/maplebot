@@ -46,6 +46,7 @@ async function main(client, message, args) {
     await message.reply({
         embeds: [{
             title: 'Información :heart:', 
+            url: 'https://discord.gg/E3kzS5cYzN', 
             author: {
                 name: client.user.username,
                 icon_url: client.user.avatarURL({ forceStatic: false })
@@ -57,11 +58,11 @@ async function main(client, message, args) {
                 value: `Creador | kmz_kuro\nCreacion: <t:${Math.floor(client.application.createdTimestamp/1000)}:F>\nID | ${client.user.id}\nVersión: ${config.__package.version}`,
             }, {
                 name: 'Estadisticas 📊',
-                value: `Servidores | ${totalGuilds}\nUsuarios | ${totalMembers}\nComandos | **${client.cmds.filter(cmd => cmd.help.inactive == false).size}** activos, **${client.cmds.filter(cmd => cmd.help.inactive == true).size}** inactivos\nTiempo al aire | \`${moment.duration(client.uptime).format('D [días] H [horas] m [minutos] s [segundos]')}\``,
+                value: `Servidores | ${totalGuilds}\nUsuarios | ${totalMembers}\nComandos | **${client.cmds.filter(cmd => cmd.help.inactive == false).size}** activos, **${client.cmds.filter(cmd => cmd.help.inactive == true).size}** inactivos\nTiempo al aire | \`${moment.duration(client.uptime).format('D [Días] H [Horas] m [Minutos] s [Segundos]')}\``,
                 inline: true
             }, {
                 name: 'Datos especificos 📍',
-                value: `Libreria | Discord.js ^${discord.version}\nLenguaje | Javascript\nRepositorio | [Github.com](https://github.com/CacaoNk0027/maplebot)\nPagina web | (no aplica)`,
+                value: `Libreria | Discord.js ^${discord.version}\nLenguaje | Javascript\nRepositorio | [Github.com](https://github.com/CacaoNk0027/maplebot)\nPagina web | (no aplica)\nServidor de [soporte](https://discord.gg/E3kzS5cYzN)`,
                 inline: true
             }],
             thumbnail: {
@@ -72,6 +73,11 @@ async function main(client, message, args) {
     return 0
 }
 
+/**
+ * @param {discord.Client} client 
+ * @param {discord.CommandInteraction} interaction 
+ * @returns 
+ */
 async function slash(client, interaction) {
     let totalGuilds, totalMembers
     try {
@@ -88,7 +94,8 @@ async function slash(client, interaction) {
     }
     await interaction.reply({
         embeds: [{
-            title: 'Información :heart:', 
+            title: 'Información :heart:',
+            url: 'https://discord.gg/E3kzS5cYzN', 
             author: {
                 name: client.user.username,
                 icon_url: client.user.avatarURL({ forceStatic: false })
@@ -100,7 +107,7 @@ async function slash(client, interaction) {
                 value: `Creador | kmz_kurom\nCreacion: <t:${Math.floor(client.application.createdTimestamp/1000)}:F>\nID | ${client.user.id}\nVersión: ${config.__package.version}`,
             }, {
                 name: 'Estadisticas 📊',
-                value: `Servidores | ${totalGuilds}\nUsuarios | ${totalMembers}\nComandos | **${client.cmds.filter(cmd => cmd.help.inactive == false).size}** activos, **${client.cmds.filter(cmd => cmd.help.inactive == true).size}** inactivos\nTiempo al aire | \`${moment.duration(client.uptime).format('D [días] H [horas] m [minutos] s [segundos]')}\``,
+                value: `Servidores | ${totalGuilds}\nUsuarios | ${totalMembers}\nComandos | **${client.cmds.filter(cmd => cmd.help.inactive == false).size}** activos, **${client.cmds.filter(cmd => cmd.help.inactive == true).size}** inactivos\nTiempo al aire | \`${moment.duration(client.uptime).format('D [Días] H [Horas] m [Minutos] s [Segundos]')}\``,
                 inline: true
             }, {
                 name: 'Datos especificos 📍',
