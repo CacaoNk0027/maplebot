@@ -149,7 +149,7 @@ async function info(target) {
             thumbnail: {
                 url: guild.iconURL({ forceStatic: false })
             },
-            description: guild.description || 'Sin descripcion de servidor...',
+            description: guild.description || 'Sin descripción de servidor...',
             title: guild.name,
             fields: [{
                 name: '🆔 | ID',

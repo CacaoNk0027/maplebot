@@ -7,7 +7,7 @@ const id = '003'
 
 let help = {    
     alias: ['estadisticas', 'metricas', 'sts'],
-    description: 'Checa estadisticas como el uso de ram, uso de cpu, etc',
+    description: 'Checa estadísticas como el uso de ram, uso de cpu, etc',
     category: '001',
     options: [],
     permissions: {
@@ -33,7 +33,7 @@ async function main(client, message, args) {
 
     reply = await message.reply({
         embeds: [{
-            description: '> <:004:1012749020852133918> | Espera en lo que las estadisticas cargan...',
+            description: '> <:004:1012749020852133918> | Espera en lo que las estadísticas cargan...',
             color: discord.Colors.Yellow
         }] 
     })
@@ -49,12 +49,13 @@ async function main(client, message, args) {
         network = (await os.networkStats())[0]
         cpu = (await os.currentLoad()).currentLoad.toFixed(2)
         mem = (await os.mem())
-        ram = ((mem.used / mem.total) * 100).toFixed(2)
+        used = mem.total - mem.available
+        ram = ((used / mem.total) * 100).toFixed(2)
     } catch(error) {
         console.error(error)
         reply.edit({
             embeds: [{
-                description: '> <:002:1012749017798688878> | ha sucedido un error al tratar de conseguir las estadisticas',
+                description: '> <:002:1012749017798688878> | ha sucedido un error al tratar de conseguir las estadísticas',
                 color: discord.Colors.Red
             }]
         })
@@ -67,7 +68,7 @@ async function main(client, message, args) {
             icon_url: client.user.avatarURL({ forceStatic: false })
         },
         color: config.theme_color,
-        description: 'Estadisticas cargadas <:007:1012749027508498512>',
+        description: 'Estadísticas cargadas <:007:1012749027508498512>',
         fields: [{
             name: 'Usuarios | <:newmember:1262144151844028537>',
             value: config.code_text(`+ ${totalMembers}`, 'diff'),
@@ -113,7 +114,7 @@ async function slash(client, interaction) {
 
     reply = await interaction.reply({
         embeds: [{
-            description: '> <:004:1012749020852133918> | Espera en lo que las estadisticas cargan...',
+            description: '> <:004:1012749020852133918> | Espera en lo que las estadísticas cargan...',
             color: discord.Colors.Yellow
         }] 
     })
@@ -135,7 +136,7 @@ async function slash(client, interaction) {
         console.error(error)
         reply.edit({
             embeds: [{
-                description: '> <:002:1012749017798688878> | ha sucedido un error al tratar de conseguir las estadisticas',
+                description: '> <:002:1012749017798688878> | ha sucedido un error al tratar de conseguir las estadísticas',
                 color: discord.Colors.Red
             }]
         })
@@ -148,7 +149,7 @@ async function slash(client, interaction) {
             icon_url: client.user.avatarURL({ forceStatic: false })
         },
         color: config.theme_color,
-        description: 'Estadisticas cargadas <:007:1012749027508498512>',
+        description: 'Estadísticas cargadas <:007:1012749027508498512>',
         fields: [{
             name: 'Usuarios | <:newmember:1262144151844028537>',
             value: config.code_text(`+ ${totalMembers}`, 'diff'),
