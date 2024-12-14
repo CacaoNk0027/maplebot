@@ -29,7 +29,7 @@ async function main(client, message, args) {
     let reply, embed
     let totalGuilds, totalMembers
     let network, cpu, ram
-    let mem
+    let mem, used
 
     reply = await message.reply({
         embeds: [{
