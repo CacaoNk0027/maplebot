@@ -108,20 +108,68 @@ class User {
         if (/^\d{17,19}$/.test(this.#identifier)) {
             try {
                 this.#user = await this.#client.users.fetch(this.#identifier)
-                return true
             } catch {
                 this.#user = null
+                return false
             }
+            return true
         }
         return false
     }
-
+    /**
+     * @returns {discord.User | null}
+     */
     getUser() {
         return this.#user
     }
 
     setUser(user) {
         this.#user = user;
+    }
+}
+
+class Member {
+    #message
+    #identifier
+    #member
+    
+    /**
+     * @param {discord.Message} message 
+     * @param {string} identifier 
+     */
+    constructor(message, identifier) {
+        this.#message = message
+        this.#identifier = identifier
+        this.#member = null
+    }
+
+    async valid() {
+        if (this.#message.mentions.users.size > 0) {
+            try {
+                this.#member = await this.#message.mentions.members.first().fetch()
+            } catch {
+                this.#member = null
+                return false
+            }
+            return true
+        }
+
+        if (/^\d{17,19}$/.test(this.#identifier)) {
+            try {
+                this.#member = await this.#message.guild.members.fetch(this.#identifier)
+            } catch {
+                this.#member = null
+                return false
+            }
+            return true
+        }
+        return false
+    }
+    getMember() {
+        return this.#member
+    }
+    setMember(member) {
+        this.#member = member
     }
 }
 
@@ -137,5 +185,6 @@ export {
     code_text,
     por_barra,
     get_user_flags,
-    User
+    User,
+    Member
 }
