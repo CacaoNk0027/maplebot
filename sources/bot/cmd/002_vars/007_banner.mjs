@@ -1,12 +1,12 @@
 import * as discord from 'discord.js'
 import * as config from '../../config/config.mjs'
 
-const name = 'avatar'
-const id = '006'
+const name = 'banner'
+const id = '007'
 
 let help = {
-    alias: ['icon', 'imagen', 'av', 'ic'],
-    description: 'Muestra el avatar de un usuario',
+    alias: ['fondo', 'background', 'b'],
+    description: 'Muestra el banner de un usuario',
     category: '002',
     options: [{
         name: 'user',
@@ -52,25 +52,6 @@ async function main(client, message, args) {
 }
 
 /**
- * @param {discord.Message} message 
- * @param {config.User} validator 
- * @param {string} identifier 
- */
-async function conditions(message, validator, identifier) {
-    let member_validator = new config.Member(message, validator.getUser().id)
-    if (help.options[1].name == identifier || help.options[1].alias.includes(identifier)) {
-        if((await member_validator.valid())) {
-            member_avatar(message, member_validator.getMember())
-            return 0
-        }
-        member_validator.setMember(await message.member.fetch())
-        member_avatar(message, member_validator.getMember())
-        return 0
-    }
-    global_avatar(message, validator.getUser())
-}
-
-/**
  * @param {discord.Client} client 
  * @param {discord.CommandInteraction} interaction 
  */
@@ -79,16 +60,37 @@ async function slash(client, interaction) {
 }
 
 /**
+ * @param {discord.Message} message 
+ * @param {config.User} validator 
+ * @param {string} identifier 
+ */
+async function conditions(message, validator, identifier) {
+    let member_validator = new config.Member(message, validator.getUser().id)
+    if (help.options[1].name == identifier || help.options[1].alias.includes(identifier)) {
+        if((await member_validator.valid())) {
+            member_banner(message, member_validator.getMember())
+            return 0
+        }
+        member_validator.setMember(await message.member.fetch())
+        member_banner(message, member_validator.getMember())
+        return 0
+    }
+    global_banner(message, validator.getUser())
+}
+
+
+
+/**
  * @param {discord.Message} target 
  * @param {discord.User} user 
  */
-async function global_avatar(target, user) {
-    let avatarUrl = user.avatarURL({ forceStatic: false, size: 1024 })
-    if (!avatarUrl) {
+async function global_banner(target, user) {
+    let bannerUrl = user.bannerURL({ forceStatic: false, size: 1024 })
+    if (!bannerUrl) {
         await target.reply({
             embeds: [{
                 color: discord.Colors.Red,
-                description: `> El usuario no cuenta con un avatar.`
+                description: `> El usuario no cuenta con un banner.`
             }]
         })
         return 0
@@ -96,11 +98,11 @@ async function global_avatar(target, user) {
     await target.reply({
         embeds: [{
             color: user.accentColor || config.random_color(),
-            description: `[Url del avatar](${avatarUrl})`,
+            description: `[Url del banner](${bannerUrl})`,
             image: {
-                url: avatarUrl
+                url: bannerUrl
             },
-            title: `👤 | Avatar de ${user.globalName || user.username}`
+            title: `🖼️ | Banner de ${user.globalName || user.username}`
         }]
     })
 }
@@ -109,13 +111,13 @@ async function global_avatar(target, user) {
  * @param {discord.Message} target 
  * @param {discord.GuildMember} member 
  */
-async function member_avatar(target, member) {
-    let avatarUrl = member.avatarURL({ forceStatic: false, size: 1024 })
-    if (!avatarUrl) {
+async function member_banner(target, member) {
+    let bannerUrl = await config.bannerURL(member, {size: 1024, forceStatic: false})
+    if (!bannerUrl) {
         await target.reply({
             embeds: [{
                 color: discord.Colors.Red,
-                description: `> El usuario no cuenta con un avatar de servidor.`
+                description: `> El usuario no cuenta con un banner de servidor.`
             }]
         })
         return 0
@@ -123,14 +125,15 @@ async function member_avatar(target, member) {
     await target.reply({
         embeds: [{
             color: member.accentColor || config.random_color(),
-            description: `[Url del avatar de servidor](${avatarUrl})`,
+            description: `[Url del banner de servidor](${bannerUrl})`,
             image: {
-                url: avatarUrl
+                url: bannerUrl
             },
-            title: `👤 | Avatar de ${member.user.globalName || member.user.username}`
+            title: `🖼️ | Banner de ${member.user.globalName || member.user.username}`
         }]
     })
 }
+
 
 export {
     name,

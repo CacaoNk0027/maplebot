@@ -1,6 +1,7 @@
 import * as discord from 'discord.js'
 import * as config from '../../config/config.mjs'
 import * as avatar from '../002_vars/006_avatar.mjs'
+import * as banner from '../002_vars/007_banner.mjs'
 
 const name = 'user'
 const id = '005'
@@ -23,16 +24,16 @@ let help = {
         options: []
     }, {
         name: 'avatar',
-        alias: ['imagen', 'av', 'ic', 'icon'],
-        description: 'muestra el avatar del usuario',
+        alias: avatar.help.alias,
+        description: avatar.help.description,
         required: false,
-        options: []
+        options: avatar.help.options
     }, {
         name: 'banner',
-        alias: ['fondo', 'background', 'b'],
-        description: 'muestra el banner del usuario',
+        alias: banner.help.alias,
+        description: banner.help.description,
         required: false,
-        options: []
+        options: banner.help.options
     }, {
         name: 'member',
         alias: ['miembro', 'm', 'mem'],
@@ -62,11 +63,12 @@ async function main(client, message, args) {
     validator = new config.User(client, message, identifier)
     if ((await validator.valid())) {
         identifier = args[1] || args[0]
-        conditions(message, validator, identifier)
+        // la neta se que puedo quitar el identifier de la funcion pero cambiarlo me da hueva :uxd
+        conditions(message, validator, identifier, args)
         return 0
     }
     validator.setUser(await message.author.fetch())
-    conditions(message, validator, identifier)
+    conditions(message, validator, identifier, args)
     return 0
 }
 
@@ -78,18 +80,20 @@ async function slash(client, interaction) {
  * @param {discord.Message} message 
  * @param {config.User} validator 
  * @param {string} identifier 
+ * @param {string[]} args 
  */
-async function conditions(message, validator, identifier) {
+async function conditions(message, validator, identifier, args) {
+    let simple_args = [validator.getUser().id, args.pop()]
     if (help.options[1].name == identifier || help.options[1].alias.includes(identifier) || validator.getUser().id == identifier || !identifier) {
         info(message, validator.getUser())
         return 0;
     }
     if (help.options[2].name == identifier || help.options[2].alias.includes(identifier)) {
-        avatar.main(message.client, message, [validator.getUser().id, message.content.slice(config.prefix.length).trim().split(/ +/g).pop()])
+        avatar.main(message.client, message, simple_args)
         return 0;
     }
     if (help.options[3].name == identifier || help.options[3].alias.includes(identifier)) {
-        banner(message, validator.getUser())
+        banner.main(message.client, message, simple_args)
         return 0;
     }
     if (help.options[4].name == identifier || help.options[4].alias.includes(identifier)) {
@@ -128,34 +132,6 @@ async function info(target, user) {
                 url: user.avatarURL({ forceStatic: false })
             },
             title: `Informacion del usuario`
-        }]
-    })
-    return 0
-}
-
-/**
- * @param {discord.Message} target
- * @param {discord.User} user
- */
-async function banner(target, user) {
-    let bannerUrl = user.bannerURL({ forceStatic: false, size: 1024 })
-    if (!bannerUrl) {
-        await target.reply({
-            embeds: [{
-                color: discord.Colors.Red,
-                description: `> El usuario no cuenta con un banner personalizado.`
-            }]
-        })
-        return 0
-    }
-    await target.reply({
-        embeds: [{
-            color: user.accentColor || config.random_color(),
-            description: `[Url del banner](${bannerUrl})`,
-            image: {
-                url: bannerUrl
-            },
-            title: `🖼️ | Banner de ${user.globalName || user.username}`
         }]
     })
     return 0

@@ -37,7 +37,7 @@ async function slash_manager(client) {
  * @param {string} id 
  */
 function allowed_id(id) {
-    let id_list = ['801603753631285308', '553736828860235796', '773838483793641482']
+    let id_list = ['801603753631285308', '553736828860235796', '773838483793641482', '345709334963159040']
     return id_list.includes(id)
 }
 
@@ -173,6 +173,31 @@ class Member {
     }
 }
 
+/**
+ * 
+ * @param {discord.GuildMember} member 
+ * @param {discord.ImageURLOptions} options 
+ */
+async function bannerURL(member, options) {
+    const rest = new discord.REST().setToken(process.env.TOKEN);
+    const cdn = new discord.CDN();
+    let apiMember, tempUrl, url, ext
+    try {
+        apiMember = await rest.get(discord.Routes.guildMember(member.guild.id, member.user.id));
+
+        if (!apiMember.banner) return null;
+
+        tempUrl = cdn.guildMemberBanner(member.guild.id, member.user.id, apiMember.banner, options);
+        url = new URL(tempUrl);
+        ext = url.pathname.split('.').pop();
+        url.pathname = url.pathname.replace(`.${ext}`, `s/${apiMember.banner}.${ext}`);
+
+        return url.toString();
+    } catch {
+        return null;
+    }
+}
+
 export {
     prefix,
     theme_color,
@@ -185,6 +210,7 @@ export {
     code_text,
     por_barra,
     get_user_flags,
+    bannerURL,
     User,
     Member
 }
