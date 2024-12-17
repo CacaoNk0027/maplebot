@@ -2,6 +2,7 @@ import * as discord from 'discord.js'
 import * as config from '../../config/config.mjs'
 import * as avatar from '../002_vars/001_avatar.mjs'
 import * as banner from '../002_vars/002_banner.mjs'
+import * as member from '../002_vars/003_member.mjs'
 
 const name = 'user'
 const id = '005'
@@ -36,10 +37,10 @@ let help = {
         options: banner.help.options
     }, {
         name: 'member',
-        alias: ['miembro', 'm', 'mem'],
-        description: 'muestra el perfil de miembro del usuario',
+        alias: member.help.alias,
+        description: member.help.description,
         required: false,
-        options: []
+        options: member.help.options
     }],
     permissions: {
         user: [],
@@ -97,12 +98,7 @@ async function conditions(message, validator, identifier, args) {
         return 0;
     }
     if (help.options[4].name == identifier || help.options[4].alias.includes(identifier)) {
-        await message.reply({
-            embeds: [{
-                color: discord.Colors.Yellow,
-                description: '> El perfil de miembro aun no esta disponible por el momento'
-            }]
-        })
+        member.main(message.client, message, simple_args);
         return 0;
     }
     info(message, validator.getUser())
