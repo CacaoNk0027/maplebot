@@ -1,7 +1,7 @@
 import * as discord from 'discord.js'
 import * as config from '../../config/config.mjs'
-import * as avatar from '../002_vars/006_avatar.mjs'
-import * as banner from '../002_vars/007_banner.mjs'
+import * as avatar from '../002_vars/001_avatar.mjs'
+import * as banner from '../002_vars/002_banner.mjs'
 
 const name = 'user'
 const id = '005'
