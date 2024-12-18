@@ -1,15 +1,15 @@
 import * as discord from 'discord.js'
 import * as config from '../../config/config.mjs'
-import * as avatar from '../002_vars/001_avatar.mjs'
-import * as banner from '../002_vars/002_banner.mjs'
-import * as member from '../002_vars/003_member.mjs'
+import * as avatar from '../002_util/001_avatar.mjs'
+import * as banner from '../002_util/002_banner.mjs'
+import * as member from '../002_util/003_member.mjs'
 
 const name = 'user'
 const id = '005'
 
 let help = {
     alias: ['usuario', 'userinfo'],
-    description: 've informacion acerca de un usuario\nopciones del comando: info, avatar, banner, member',
+    description: 'Ve informacion acerca de un usuario\nopciones del comando: info, avatar, banner, member',
     category: '001',
     options: [{
         name: 'user',

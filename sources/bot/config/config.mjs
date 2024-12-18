@@ -1,6 +1,7 @@
 import * as discord from 'discord.js'
 import __package from '../../../package.json' assert { type: 'json' }
 import __jinterc from '../assets/interactions.json' assert { type: 'json' }
+import __jconfig from '../assets/configs.json' assert { type: 'json' }
 
 const prefix = 'm!'
 
@@ -12,6 +13,7 @@ let default_client_permissions = [
     discord.PermissionFlagsBits.EmbedLinks,
     discord.PermissionFlagsBits.ReadMessageHistory
 ]
+let help_menu_options = __jconfig.help_menu
 
 function random_color() {
     let array = Object.entries(discord.Colors).map(([_, num]) => num)
@@ -72,6 +74,30 @@ function get_user_flags(user) {
     let userFlags = user.flags?.toArray();
     let badgeList = userFlags.length > 0 ? userFlags.map(flag => flags[flag]).join(' ') : 'Sin insignias';
     return badgeList
+}
+
+/**
+ * @param {discord.GuildMember} member 
+ * @param {discord.ImageURLOptions} options 
+ */
+async function bannerURL(member, options) {
+    const rest = new discord.REST().setToken(process.env.TOKEN);
+    const cdn = new discord.CDN();
+    let apiMember, tempUrl, url, ext
+    try {
+        apiMember = await rest.get(discord.Routes.guildMember(member.guild.id, member.user.id));
+
+        if (!apiMember.banner) return null;
+
+        tempUrl = cdn.guildMemberBanner(member.guild.id, member.user.id, apiMember.banner, options);
+        url = new URL(tempUrl);
+        ext = url.pathname.split('.').pop();
+        url.pathname = url.pathname.replace(`.${ext}`, `s/${apiMember.banner}.${ext}`);
+
+        return url.toString();
+    } catch {
+        return null;
+    }
 }
 
 class User {
@@ -173,37 +199,13 @@ class Member {
     }
 }
 
-/**
- * 
- * @param {discord.GuildMember} member 
- * @param {discord.ImageURLOptions} options 
- */
-async function bannerURL(member, options) {
-    const rest = new discord.REST().setToken(process.env.TOKEN);
-    const cdn = new discord.CDN();
-    let apiMember, tempUrl, url, ext
-    try {
-        apiMember = await rest.get(discord.Routes.guildMember(member.guild.id, member.user.id));
-
-        if (!apiMember.banner) return null;
-
-        tempUrl = cdn.guildMemberBanner(member.guild.id, member.user.id, apiMember.banner, options);
-        url = new URL(tempUrl);
-        ext = url.pathname.split('.').pop();
-        url.pathname = url.pathname.replace(`.${ext}`, `s/${apiMember.banner}.${ext}`);
-
-        return url.toString();
-    } catch {
-        return null;
-    }
-}
-
 export {
     prefix,
     theme_color,
     alt_theme_color,
     __package,
     default_client_permissions,
+    help_menu_options,
     random_color,
     slash_manager,
     allowed_id,
