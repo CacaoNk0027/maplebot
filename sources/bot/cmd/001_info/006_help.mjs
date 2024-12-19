@@ -38,10 +38,49 @@ let help = {
  */
 async function main(client, message, args) {
     let identifier = args[0]
+    let command;
     if(!identifier) {
         await menus(client, message)
         return 0;
     }
+    command = client.cmds.get(identifier) ||
+        client.cmds.find(cmd => cmd.id == identifier || cmd.help.alias.includes(identifier))
+    if(!command) {
+        await menus(client, message)
+        return 1;
+    }
+    await message.reply({
+        embeds: [{
+            author: {
+                name: client.user.username,
+                icon_url: client.user.avatarURL()
+            },
+            color: command.help.inactive ? discord.Colors.Red: config.theme_color,
+            description: command.help.description,
+            fields: [{
+                name: 'Alias',
+                value: config.code_text(command.help.alias.join(', ') || 'Sin alias')
+            }, {
+                name: 'Categoria',
+                value: config.code_text(config.help_menu.find(c => c.id == command.help.category).name),
+                inline: true
+            }, {
+                name: 'Filtro nsfw',
+                value: config.code_text(command.help.nsfw ? '- Activo': '+ Inactivo', 'diff'),
+                inline: true
+            }, {
+                name: 'Cooldown',
+                value: config.code_text(`${command.help.cooldown} segundos`, 'js'),
+                inline: true
+            }, {
+                name: 'Estado',
+                value: config.code_text(`Operación: ${command.help.inactive ? `[🔴] Comando inactivo\nRazón: ${command.help.reason || 'No se especifico motivo'}`: '[🟢] operando con normalidad'}`)
+            }],
+            footer: {
+                text: `ID | ${command.id}`
+            }
+        }]
+    })
     return 0 
 }
 
@@ -76,9 +115,9 @@ async function menus(client, message) {
             type: discord.ComponentType.ActionRow,
             components: [{
                 type: discord.ComponentType.StringSelect,
-                custom_id: '001',
+                custom_id: 'menu.001',
                 placeholder: 'Categorias',
-                options: config.help_menu_options
+                options: config.help_menu_options()
             }]
         }]
     })

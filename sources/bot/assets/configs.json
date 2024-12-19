@@ -1,14 +1,16 @@
 {
     "help_menu":  [
         {
-            "label": "Información",
+            "name": "Información",
             "emoji": "📝",
-            "value": "1"
+            "description": "Comandos para ver información relevante",
+            "id": "001"
         },
         {
-            "label": "Utilidades",
-            "emoji": "854799215993028668",
-            "value": "2"
+            "name": "Utilidades",
+            "emoji": "<:007:1012749027508498512>",
+            "description": "Comandos de utilidad, usados en el dia al dia",
+            "id": "002"
         }
     ]
 }

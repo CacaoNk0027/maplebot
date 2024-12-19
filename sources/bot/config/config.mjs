@@ -13,7 +13,8 @@ let default_client_permissions = [
     discord.PermissionFlagsBits.EmbedLinks,
     discord.PermissionFlagsBits.ReadMessageHistory
 ]
-let help_menu_options = __jconfig.help_menu
+
+let help_menu = __jconfig.help_menu
 
 function random_color() {
     let array = Object.entries(discord.Colors).map(([_, num]) => num)
@@ -199,13 +200,46 @@ class Member {
     }
 }
 
+function help_menu_options() {
+    let options = new Set()
+    __jconfig.help_menu.forEach(option => {
+        options.add({
+            label: option.name,
+            emoji: option.emoji.match(/\d+(?=>)/g)?.shift() || option.emoji,
+            description: option.description,
+            value: option.id
+        })
+    });
+    return [...options]
+}
+
+/**
+ * 
+ * @param {string} prefix 
+ * @param {} commands 
+ * @param {string} category
+ * @returns 
+ */
+function text_field_commmands(prefix, commands, category) {
+    let fi_comands = commands.filter(command => command.help.category == category);
+    let fo_commands = fi_comands.map((c, name) => ((c.help.inactive ? '[🔴] ': '[🟢] ') + prefix + name).padEnd(20, ' '));
+    let groups = [], i, finalText;
+
+    for (i = 0; i < fo_commands.length; i += 3) {
+        groups.push(fo_commands.slice(i, i + 3).join(''));
+    }
+
+    finalText = groups.join('\n');
+    return code_text(finalText);
+}
+
 export {
     prefix,
     theme_color,
     alt_theme_color,
     __package,
     default_client_permissions,
-    help_menu_options,
+    help_menu,
     random_color,
     slash_manager,
     allowed_id,
@@ -213,6 +247,8 @@ export {
     por_barra,
     get_user_flags,
     bannerURL,
+    help_menu_options,
+    text_field_commmands,
     User,
     Member
 }
