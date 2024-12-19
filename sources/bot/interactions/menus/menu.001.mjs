@@ -2,6 +2,7 @@ import * as discord from 'discord.js'
 import * as config from '../../config/config.mjs'
 
 const id = 'menu.001'
+const isUnique = true
 
 /**
  * @param {discord.Client} client 
@@ -22,7 +23,7 @@ async function main(client, interaction, message) {
 
     await message.edit({
         embeds: [embed]
-    }).then(async target => {
+    }).then(async () => {
         await interaction.deferUpdate()
     }).catch(async error => {
         console.error(error)
@@ -37,5 +38,6 @@ async function main(client, interaction, message) {
 
 export {
     id,
+    isUnique,
     main
 }

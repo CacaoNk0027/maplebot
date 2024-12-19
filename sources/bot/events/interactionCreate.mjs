@@ -61,6 +61,13 @@ async function select_menu(client, interaction) {
         })
         return 1
     } else {
+        if(menu.isUnique && interaction.user.id != (await message.channel.messages.fetch(message.reference.messageId)).author.id) {
+            await interaction.reply({
+                content: '> Este menu unicamente puede ser controlado por el usuario que solicito el comando',
+                ephemeral: true
+            })
+            return 1
+        }
         menu.main(client, interaction, message);
     }
     return 0;

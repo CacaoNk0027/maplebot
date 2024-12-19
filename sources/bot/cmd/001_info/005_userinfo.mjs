@@ -9,7 +9,7 @@ const id = '005'
 
 let help = {
     alias: ['usuario', 'userinfo'],
-    description: 'Ve informacion acerca de un usuario\nopciones del comando: info, avatar, banner, member',
+    description: 'Ve informacion acerca de un usuario',
     category: '001',
     options: [{
         name: 'user',
@@ -20,7 +20,7 @@ let help = {
     }, {
         name: 'info',
         alias: ['informacion', 'in'],
-        description: 'muestra informacion acerca del usuario',
+        description: 'Muestra informacion acerca del usuario',
         required: false,
         options: []
     }, {

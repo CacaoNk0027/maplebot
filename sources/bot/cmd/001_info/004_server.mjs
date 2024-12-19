@@ -2,7 +2,7 @@ import * as discord from 'discord.js'
 import * as config from '../../config/config.mjs'
 
 const name = 'server'
-const id = '001'
+const id = '004'
 
 let help = {
     alias: ['serverinfo', 'servidor', 'sv'],

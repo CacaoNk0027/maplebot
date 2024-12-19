@@ -48,6 +48,7 @@ fs.readdirSync(`${branch}/interactions`).forEach(dir => {
         try {
             client.interactions.set(interaction.id, {
                 id: interaction.id,
+                isUnique: interaction.isUnique,
                 main: interaction.main
             })
         } catch (error) {

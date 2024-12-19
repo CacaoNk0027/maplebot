@@ -17,7 +17,7 @@ let help = {
     }, {
         name: 'category',
         alias: [],
-        description: 'muestra informacion acerca del usuario',
+        description: 'Muestra informacion acerca del usuario',
         required: false,
         options: []
     }],
@@ -25,8 +25,8 @@ let help = {
         user: [],
         bot: []
     },
-    inactive: true,
-    reason: "comando en desarrollo",
+    inactive: false,
+    reason: null,
     nsfw: false,
     cooldown: 5
 }
@@ -38,7 +38,7 @@ let help = {
  */
 async function main(client, message, args) {
     let identifier = args[0]
-    let command;
+    let command, cmd_options;
     if(!identifier) {
         await menus(client, message)
         return 0;
@@ -49,6 +49,7 @@ async function main(client, message, args) {
         await menus(client, message)
         return 1;
     }
+
     await message.reply({
         embeds: [{
             author: {
@@ -78,7 +79,27 @@ async function main(client, message, args) {
             }],
             footer: {
                 text: `ID | ${command.id}`
-            }
+            },
+            title: `Comando | ${client.cmds.filter(cmd => cmd.id == command.id).map((cmd, n) => n).join('')}`
+        }],
+        components: [{
+            type: discord.ComponentType.ActionRow,
+            components: [{
+                type: discord.ComponentType.StringSelect,
+                custom_id: 'menu.002',
+                placeholder: 'Opciones',
+                options: [{
+                    label: 'Parametros generales',
+                    value: '001',
+                    description: 'Alias, cooldown, estado, entre otros.',
+                    emoji: '📄'
+                }, {
+                    label: 'Parametros especificos',
+                    value: '002',
+                    description: 'Opciones y permisos.',
+                    emoji: '📍'
+                }]
+            }]
         }]
     })
     return 0 
