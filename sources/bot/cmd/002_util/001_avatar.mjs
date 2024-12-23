@@ -5,7 +5,7 @@ const name = 'avatar'
 const id = '001'
 
 let help = {
-    alias: ['icon', 'imagen', 'av', 'ic'],
+    alias: ['imagen', 'av', 'ic'],
     description: 'Muestra el avatar de un usuario',
     category: '002',
     options: [{

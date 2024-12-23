@@ -15,11 +15,11 @@ async function main(client, interaction, message) {
     let embed = new discord.EmbedBuilder(message.embeds.shift().data)
 
     embed.setTitle(`${category.emoji} | ${category.name}`)
-    .setDescription(category.description)
-    .setFields([{
-        name: 'Comandos',
-        value: config.text_field_commmands(config.prefix, client.cmds, category.id)
-    }])
+        .setDescription(category.description)
+        .setFields([{
+            name: 'Comandos',
+            value: config.text_field_commmands(config.prefix, client.cmds, category.id)
+        }])
 
     await message.edit({
         embeds: [embed]

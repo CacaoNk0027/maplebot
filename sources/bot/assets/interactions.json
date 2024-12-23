@@ -35,5 +35,23 @@
                 "description": "Muestra el banner del servidor"
             }
         ]
+    },
+    {
+        "name": "icon",
+        "type": 1,
+        "description": "Muestra el ícono  del servidor"
+    },
+    {
+        "name": "help",
+        "type": 1,
+        "description": "Genera un menu de ayuda en el cual podras ver una lista de comandos de cada categoria",
+        "options": [
+            {
+                "name": "comando",
+                "type": 3,
+                "description": "Coloca el nombre, id o algun alias del comando",
+                "max_length": 15
+            }
+        ]
     }
 ]

@@ -1,5 +1,6 @@
 import * as discord from 'discord.js'
 import * as config from '../../config/config.mjs'
+import * as icon from '../../cmd/002_util/004_icon.mjs'
 
 const name = 'server'
 const id = '004'
@@ -56,7 +57,7 @@ async function main(client, message, args) {
         if (help.options[0].alias.includes(identifier) || !identifier || help.options[0].name == identifier) {
             await info(message)
         } else if (help.options[1].alias.includes(identifier) || help.options[1].name == identifier) {
-            await icon(message)
+            await icon.main(client, message, args)
         } else if (help.options[2].alias.includes(identifier) || help.options[2].name == identifier) {
             await banner(message)
         }
@@ -105,7 +106,7 @@ async function slash(client, interaction) {
                 await info(interaction)
                 break
             case 'icono':
-                await icon(interaction)
+                await icon.slash(client, interaction)
                 break
             case 'banner':
                 await banner(interaction)
@@ -208,34 +209,6 @@ async function banner(target) {
         .setTitle('Banner del servidor')
         .setColor(config.random_color())
         .setImage(bannerUrl)
-
-    await target.reply({
-        embeds: [embed]
-    })
-
-    return 0;
-}
-
-/**
- * @param {discord.Message | discord.CommandInteraction} target 
- */
-async function icon(target) {
-    let iconUrl = target.guild.iconURL({ forceStatic: false, size: 1024 })
-    let embed = new discord.EmbedBuilder()
-
-    if (!iconUrl) {
-        embed.setColor('Red').setDescription('> Este servidor no cuenta con un icono.')
-        if (!(target instanceof discord.Message)) {
-            await target.reply({ embeds: [embed] })
-            return 0
-        }
-        await target.reply({ embeds: [embed], ephemeral: true })
-        return 0
-    }
-    embed.setAuthor({ name: target.guild.name, iconURL: target.guild.iconURL({ forceStatic: false }) })
-        .setTitle('Icono del servidor')
-        .setColor(config.random_color())
-        .setImage(iconUrl)
 
     await target.reply({
         embeds: [embed]

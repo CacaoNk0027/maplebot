@@ -51,7 +51,7 @@ async function slash(client, interaction) {
  * @param {discord.AnySelectMenuInteraction} interaction 
  */
 async function select_menu(client, interaction) {
-    let menu, message 
+    let menu, message, idUser;
     menu = client.interactions.filter(target => target.id.split('.').shift() == 'menu').get(interaction.customId)
     message = interaction.message
     if(!menu) {
@@ -61,7 +61,8 @@ async function select_menu(client, interaction) {
         })
         return 1
     } else {
-        if(menu.isUnique && interaction.user.id != (await message.channel.messages.fetch(message.reference.messageId)).author.id) {
+        idUser = interaction.message.interactionMetadata?.user.id || (await message.channel.messages.fetch(message.reference?.messageId)).author.id
+        if(menu.isUnique && interaction.user.id != idUser) {
             await interaction.reply({
                 content: '> Este menu unicamente puede ser controlado por el usuario que solicito el comando',
                 ephemeral: true
