@@ -1,0 +1,72 @@
+@import url(https://www.nexatdc.work.gd/css/neekuro.css);
+
+.settings {
+    display: grid;
+    gap: 100px;
+    grid-template-columns: repeat(2, 1fr);
+    justify-items: center;
+    align-items: center;
+}
+
+.conjunto {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.text-field {
+    margin: 0 20px;
+    background: var(--background-dark-theme-2);
+    border: none;
+    border-radius: 10px;
+    padding: 10px;
+    width: 175px;
+}
+
+.btn {
+    text-align: center;
+    button {
+        padding: 10px 20px;
+        border-radius: 10px;
+        background: none;
+        border: 3px solid #bbbbbb;
+        transition: .5s;
+        cursor: pointer;
+    }
+
+    button:hover {
+        scale: 1.1;
+        border: 3px solid #a17807;
+    }
+}
+
+.btns {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 40px;
+    button {
+        padding: 10px 20px;
+        border-radius: 10px;
+        background: none;
+        border: 3px solid #bbbbbb;
+        transition: .5s;
+        cursor: pointer;
+    }
+
+    button:hover {
+        scale: 1.1;
+        border: 3px solid #551b1b;
+    }
+}
+
+@media (max-width: 650px) {
+    .settings {
+        display: grid;
+        gap: 100px;
+        grid-template-columns: repeat(1, 1fr);
+        justify-items: center;
+        align-items: center;
+    }
+}

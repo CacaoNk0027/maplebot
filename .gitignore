@@ -1,3 +1,4 @@
 node_modules
 _deprecated
 sources/config/.env
+.vscode

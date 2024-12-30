@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nekoapi | dashboard</title>
+    <link rel="stylesheet" href="https://www.nexatdc.work.gd/css/nko_index.css">
+    <link rel="stylesheet" href="https://www.nexatdc.work.gd/css/nko_dashboard.css">
+</head>
+
+<body>
+    <header id="head">
+        <nav class="nav-bar">
+            <div class="nav-buttons">
+                <button onclick="window.location = '/api'" class="login">Principal</button>
+                <button onclick="logOut()" class="login">Salir</button>
+                <ul>
+                    <li><a href="https://github.com/CacaoNk0027/nekoapi_package">Repositorio</a></li>
+                    <li><a href="https://www.npmjs.com/package/nekoapi">Paquete NPM</a></li>
+                    <li><a href="https://discord.gg/nDyVrXRdBU">Discord</a></li>
+                    <li><a href="/donations">Donaciones</a></li>
+                </ul>
+            </div>
+            <ul>
+                <li><a href="/terms">Terminos</a></li>
+            </ul>
+            <div class="m-toggle" onclick="toggleMenu()">
+                <div id="menu"></div>
+                <div id="cancel"></div>
+            </div>
+        </nav>
+        <div class="slicer"></div>
+    </header>
+    <section class="container">
+        <div class="banner">
+            <br><br><br><br><br><br><br><br><br><br>
+        </div>
+        <article class="text-cont">
+            <h1>Dashboard</h1>
+            <hr>
+            <p>Bienvenido a tu dashboard, si deseas cambiar usuario o contraseña puedes hacerlo aqui. Asi mismo puedes
+                generar un token para hacer uso de la api.</p>
+            <div class="settings">
+                <div class="option">
+                    <h2>Usuario</h2>
+                    <p>Nombre actual | <b>
+                            <%= currentName %>
+                        </b></p>
+                    <form id="cambiarUsuario">
+                        <div class="conjunto">
+                            <label for="username" class="text-label">Nuevo nombre de usuario</label>
+                            <input type="text" id="username" name="username" class="text-field" required>
+                        </div>
+                        <div class="conjunto">
+                            <label for="password" class="text-label">Contraseña</label>
+                            <input type="password" id="password" name="password" class="text-field" required>
+                        </div>
+                        <br>
+                        <div class="btn">
+                            <button type="submit">Cambiar nombre</button>
+                        </div>
+                    </form>
+                </div>
+                <div class="option">
+                    <h2>Contraseña</h2>
+                    <p>Recuerda hacer una contraseña <b>segura</b>!</p>
+                    <form id="cambiarContra">
+                        <div class="conjunto">
+                            <label for="newPassword" class="text-label">Contraseña nueva</label>
+                            <input type="password" id="newPassword" name="newPassword" class="text-field" required>
+                        </div>
+                        <div class="conjunto">
+                            <label for="oldPassword" class="text-label">Contraseña</label>
+                            <input type="password" id="oldPassword" name="oldPassword" class="text-field" required>
+                        </div>
+                        <br>
+                        <div class="btn">
+                            <button type="submit">Cambiar contraseña</button>
+                        </div>
+                    </form>
+                </div>
+                <div class="option">
+                    <h2>Token</h2>
+                    <p>Un token unico, evita compartirlo</p>
+                    <div class="token">
+                        <p><b>Token:</b></p>
+                        <% if (hasToken) { %>
+                            <p id="token-display">********</p>
+                            <% } else { %>
+                                <p id="token-display">no cuentas con un token</p>
+                                <% } %>
+                    </div>
+                    <div class="btns">
+                        <% if (hasToken) { %>
+                            <button id="generate-token">Regenerar token</button>
+                            <button id="reveal-token">Revelar token</button>
+                            <% } else { %>
+                                <button id="generate-token">Generar token</button>
+                                <button id="reveal-token" style="display: none;">Revelar token</button>
+                                <% } %>
+                    </div>
+                </div>
+                <div class="option">
+                    <h2>Eliminar Cuenta</h2>
+                    <p>Elimina esta cuenta para siempre <b>no hay vuelta atras...</b></p>
+                    <form id="eliminarCuenta">
+                        <div class="conjunto">
+                            <label for="password" class="text-label">Contraseña</label>
+                            <input type="password" id="reqPassword" name="password" class="text-field" required>
+                        </div>
+                        <br>
+                        <div class="btns">
+                            <button type="submit">Eliminar</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </article>
+        <footer class="foo">
+            <p>CC. Creative Commons <span style="opacity: .6;">libre uso.</span> NexaTDC</p>
+        </footer>
+    </section>
+    <script src="https://www.nexatdc.work.gd/js/nko_index.js"></script>
+    <script src="https://www.nexatdc.work.gd/js/nko_dashboard.js"></script>
+</body>
+
+</html>

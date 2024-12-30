@@ -2,6 +2,7 @@ import express from 'express'
 import cors from 'cors'
 import ejs from 'ejs'
 import router from './router/router.mjs'
+import sessions from './middlewares/sessions.mjs'
 
 const app = express()
 
@@ -19,6 +20,8 @@ function main() {
     app.use(express.json())
     app.use(cors())
 
+    sessions(app);
+    
     app.use(router)
     app.use('/', express.static('sources/web/public'))
 

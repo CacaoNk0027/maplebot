@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NexaTDC | NeeKuro</title>
+    <link rel="stylesheet" href="https://www.nexatdc.work.gd/css/neekuro.css">
+</head>
+
+<body>
+    <header id="head">
+        <nav class="nav-bar">
+            <div class="nav-buttons">
+                <% if (isLoggedIn) { %>
+                    <button onclick="window.location = '/api/dashboard'" class="register">Dashboard</button>
+                    <button onclick="logOut()" class="login">Salir</button>
+                    <% } else { %>
+                        <button onclick="window.location = '/api/login'" class="login">Ingresar</button>
+                        <button onclick="window.location = '/api/register'" class="register">Registrarse</button>
+                        <% } %>
+                            <ul>
+                                <li><a href="https://github.com/CacaoNk0027/nekoapi_package">Repositorio</a></li>
+                                <li><a href="https://www.npmjs.com/package/nekoapi">Paquete NPM</a></li>
+                                <li><a href="https://discord.gg/nDyVrXRdBU">Discord</a></li>
+                                <li><a href="/donations">Donaciones</a></li>
+                            </ul>
+            </div>
+            <ul>
+                <li><a href="/terms">Terminos</a></li>
+            </ul>
+            <div class="m-toggle" onclick="toggleMenu()">
+                <div id="menu"></div>
+                <div id="cancel"></div>
+            </div>
+        </nav>
+        <div class="slicer"></div>
+    </header>
+    <section class="container">
+        <div class="banner">
+            <h1>NeeKuro</h1>
+            <p>Api oficial de Maple Bot</p>
+        </div>
+        <article class="text-cont">
+            <h1>NeeKuro _ version 3.0.0</h1>
+            <hr>
+            <p>Esta es una api de imagenes hecha especialmente para Maple Bot, sin embargo ahora es libre! solo
+                necesitas registrarte y generar un token para hecer uso de la misma ;3</p>
+        </article>
+        <footer class="foo">
+            <p>CC. Creative Commons <span style="opacity: .6;">libre uso.</span> NexaTDC</p>
+        </footer>
+    </section>
+
+    <script src="https://www.nexatdc.work.gd/js/nko_index.js"></script>
+</body>
+
+</html>

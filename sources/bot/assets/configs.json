@@ -11,6 +11,12 @@
             "emoji": "<:007:1012749027508498512>",
             "description": "Comandos de utilidad, usados en el dia al dia",
             "id": "002"
+        },
+        {
+            "name": "Moderación",
+            "emoji": "<:moderatorprograms:1262143721105920121>",
+            "description": "Comandos para llevar un control dentro de tu servidor",
+            "id": "003"
         }
     ]
 }

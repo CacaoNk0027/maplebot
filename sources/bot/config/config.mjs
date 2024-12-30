@@ -171,7 +171,7 @@ class Member {
     }
 
     async valid() {
-        if (this.#message.mentions.users.size > 0) {
+        if (this.#message.mentions.members.size > 0) {
             try {
                 this.#member = await this.#message.mentions.members.first().fetch()
             } catch {
@@ -192,6 +192,9 @@ class Member {
         }
         return false
     }
+    /**
+     * @returns {discord.GuildMember}
+     */
     getMember() {
         return this.#member
     }

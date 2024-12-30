@@ -9,7 +9,7 @@ let help = {
     description: 'Envia un mensaje a mi nombre',
     category: '002',
     options: [{
-        name: 'mensaje',
+        name: 'message',
         alias: [],
         description: 'Escribe el mensaje',
         required: true,
