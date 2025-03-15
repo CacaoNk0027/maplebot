@@ -39,7 +39,7 @@
     "maple_bot": "file:",
     "moment": "^2.30.1",
     "moment-duration-format": "^2.3.2",
-    "mongoose": "^8.8.3",
+    "mongoose": "^8.12.1",
     "ms": "^2.1.3",
     "systeminformation": "^5.23.23",
     "topgg-autoposter": "^2.0.2"
