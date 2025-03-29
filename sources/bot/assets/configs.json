@@ -17,6 +17,12 @@
             "emoji": "<:moderatorprograms:1262143721105920121>",
             "description": "Comandos para llevar un control dentro de tu servidor",
             "id": "003"
+        },
+        {
+            "name": "Configuración",
+            "emoji": "<:staff:1262144147687477310>",
+            "description": "Comandos para configurar sistemas en tu servidor",
+            "id": "004"
         }
     ]
 }

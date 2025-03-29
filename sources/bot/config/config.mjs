@@ -3,6 +3,8 @@ import __package from '../../../package.json' assert { type: 'json' }
 import __jinterc from '../assets/interactions.json' assert { type: 'json' }
 import __jconfig from '../assets/configs.json' assert { type: 'json' }
 
+import Channels from '../config/models/channels.mjs'
+
 const prefix = 'm!'
 
 const theme_color = 0xfcbc6d
@@ -236,6 +238,15 @@ function text_field_commmands(prefix, commands, category) {
     return code_text(finalText);
 }
 
+/**
+ * 
+ * @param {discord.Client} client 
+ * @param {string} channelId 
+ */
+async function validate_channel(client, channelId) {
+
+}
+
 export {
     prefix,
     theme_color,
@@ -252,6 +263,8 @@ export {
     bannerURL,
     help_menu_options,
     text_field_commmands,
+    validate_channel,
     User,
-    Member
+    Member,
+    Channels
 }

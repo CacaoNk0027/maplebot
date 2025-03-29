@@ -72,22 +72,28 @@ async function main(client, message, args) {
 
     roles = await get_roles(message, args)
 
-    if(roles.length <= 0) {
+    if (roles.length <= 0) {
         await message.reply({ embeds: [embed.setDescription('> Ninguno de los argumentos dados en la opcion `<roles>` corresponde a un rol')] })
         return 1
     }
 
     valid_roles = await validate_roles(message, roles, validator.getMember())
 
-    if(valid_roles.length <= 0) {
+    if (valid_roles.length <= 0) {
         await message.reply({ embeds: [embed.setDescription('> Ninguno de los roles dados en la opcion `<roles>` es valido')] })
         return 1
     }
 
     try {
+        await member.roles.add(valid_roles)
         
+        await message.reply({
+            embeds: []
+        })
     } catch (error) {
-        
+        await message.reply({
+            embeds: [embed.setDescription('> Ha sucedido un error interno, contacta al desarrollador')]
+        })
     }
 
     return 0
@@ -152,11 +158,11 @@ async function validate_roles(message, id_rolelist, member) {
 
         embed.setDescription(`> No se puede añadir el rol \`${role.name}\``)
 
-        if(!role) return false
+        if (!role) return false
 
-        if(bot_highest.comparePositionTo(role) <= 0) {
+        if (bot_highest.comparePositionTo(role) <= 0) {
             await message.reply({
-                embeds: [embed.setFields([{ name: 'Razon', value: config.code_text('- El rol es de mayor jerarquia al mio', 'diff') }]) ]
+                embeds: [embed.setFields([{ name: 'Razon', value: config.code_text('- El rol es de mayor jerarquia al mio', 'diff') }])]
             }).then(res => {
                 setTimeout(async () => {
                     await res.delete()
@@ -165,9 +171,9 @@ async function validate_roles(message, id_rolelist, member) {
             return false
         }
 
-        if(user_highest.comparePositionTo(role) <= 0) {
+        if (user_highest.comparePositionTo(role) <= 0) {
             await message.reply({
-                embeds: [embed.setFields([{ name: 'Razon', value: config.code_text('- No tienes permisos suficientes para gestionar este rol', 'diff') }]) ]
+                embeds: [embed.setFields([{ name: 'Razon', value: config.code_text('- No tienes permisos suficientes para gestionar este rol', 'diff') }])]
             }).then(res => {
                 setTimeout(async () => {
                     await res.delete()
@@ -176,9 +182,9 @@ async function validate_roles(message, id_rolelist, member) {
             return false
         }
 
-        if(user_highest.comparePositionTo(target_highest) <= 0) {
+        if (user_highest.comparePositionTo(target_highest) <= 0) {
             await message.reply({
-                embeds: [embed.setFields([{ name: 'Razon', value: config.code_text('- No puedes colocar roles a alguien de mayor jerarquia que tu', 'diff') }]) ]
+                embeds: [embed.setFields([{ name: 'Razon', value: config.code_text('- No puedes colocar roles a alguien de mayor jerarquia que tu', 'diff') }])]
             }).then(res => {
                 setTimeout(async () => {
                     await res.delete()
@@ -187,9 +193,9 @@ async function validate_roles(message, id_rolelist, member) {
             return false
         }
 
-        if(role.permissions.has(discord.PermissionFlagsBits.Administrator)) {
+        if (role.permissions.has(discord.PermissionFlagsBits.Administrator)) {
             await message.reply({
-                embeds: [embed.setFields([{ name: 'Razon', value: config.code_text('- No puedo añadir roles con permiso de administrador', 'diff') }]) ]
+                embeds: [embed.setFields([{ name: 'Razon', value: config.code_text('- No puedo añadir roles con permiso de administrador', 'diff') }])]
             }).then(res => {
                 setTimeout(async () => {
                     await res.delete()

@@ -17,11 +17,11 @@ const manager = new discord.ShardingManager('./sources/bot/client.mjs', {
     totalShards: 'auto'
 })
 
-const topGG = AutoPoster(process.env.TOPGG_TOKEN, manager)
+// const topGG = AutoPoster(process.env.TOPGG_TOKEN, manager)
 
-topGG.on('posted', () => {
-    console.info('Estadisticas cargadas en https://top.gg/')
-})
+// topGG.on('posted', () => {
+//     console.info('Estadisticas cargadas en https://top.gg/')
+// })
 
 manager.on('shardCreate', (shard) => {
     console.info(`Shard #${shard.id} iniciada`)

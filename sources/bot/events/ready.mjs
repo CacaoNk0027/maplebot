@@ -2,7 +2,7 @@ import * as discord from 'discord.js'
 import * as configs from '../config/config.mjs'
 import sdk from '@top-gg/sdk'
 
-const topApi = new sdk.Api(process.env.TOPGG_TOKEN)
+// const topApi = new sdk.Api(process.env.TOPGG_TOKEN)
 const webhook = new discord.WebhookClient({
     url: process.env.EVENTS_WEBHOOK
 })
@@ -41,7 +41,7 @@ async function stats(client) {
 
         totalGuilds = guildCount.reduce((acc, guildCount) => acc + guildCount, 0)
         totalMembers = memberCount.reduce((acc, memberCount) => acc + memberCount, 0)
-        votes = await topApi.getVotes(client.user.id)
+        // votes = await topApi.getVotes(client.user.id)
 
     } catch (error) {
         console.error(error)
@@ -57,7 +57,7 @@ async function stats(client) {
             },
             title: "Inicio / Reinicio de la bot iniciado",
             color: configs.random_color(),
-            description: configs.code_text(`+ Status activa\n>> [${client.cmds.size}] comandos totales\n>> [${votes.length > 1? votes.length + '] votos': votes.length + '] voto'}\n>> [${totalGuilds}] Servidores\n>> [${totalMembers}] Usuarios`, 'diff')
+            description: configs.code_text(`+ Status activa\n>> [${client.cmds.size}] comandos totales\n>> [${totalGuilds}] Servidores\n>> [${totalMembers}] Usuarios`, 'diff')
         }]
     })
 
