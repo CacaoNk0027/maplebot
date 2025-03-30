@@ -49,7 +49,7 @@ router.get('/action/:category', auth, async (req, res) => {
             })
         }
 
-        return res.status(404).json({
+        return res.status(200).json({
             message: `ok >> ${category} gif`,
             code: res.statusCode,
             data: gifs[Math.floor(Math.random() * gifs.length)]
@@ -93,7 +93,7 @@ router.get('/reaction/:category', auth, async (req, res) => {
             })
         }
 
-        return res.status(404).json({
+        return res.status(200).json({
             message: `ok >> ${category} gif`,
             code: res.statusCode,
             data: gifs[Math.floor(Math.random() * gifs.length)]
