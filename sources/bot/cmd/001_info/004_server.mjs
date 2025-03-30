@@ -74,7 +74,7 @@ async function main(client, message, args) {
             }]
         })
     }
-    return 0;
+    return 0
 }
 
 /**
@@ -82,7 +82,7 @@ async function main(client, message, args) {
  * @param {discord.CommandInteraction} interaction 
  */
 async function slash(client, interaction) {
-    let identifier;
+    let identifier
     if (!interaction.guild) {
         await interaction.reply({
             embeds: [{
@@ -137,8 +137,8 @@ async function info(target) {
     let guild, owner, members, bots
     guild = await target.guild.fetch()
     owner = await guild.fetchOwner()
-    members = guild.members.cache.filter(member => !member.user.bot).size;
-    bots = guild.members.cache.filter(member => member.user.bot).size;
+    members = guild.members.cache.filter(member => !member.user.bot).size
+    bots = guild.members.cache.filter(member => member.user.bot).size
 
     await target.reply({
         embeds: [{
@@ -214,7 +214,7 @@ async function banner(target) {
         embeds: [embed]
     })
 
-    return 0;
+    return 0
 }
 
 export {

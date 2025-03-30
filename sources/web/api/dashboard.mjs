@@ -9,7 +9,7 @@ router.get('/', async (req, res) => {
         return res.status(401).json({
             message: 'No autorizado',
             code: res.statusCode
-        });
+        })
     }
 
     let user = await User.findById(req.session.userId)
@@ -19,7 +19,7 @@ router.get('/', async (req, res) => {
         currentName: user.username,
         hasToken: !!token
     })
-});
+})
 
 router.post('/chgname', async (req, res) => {
     let { newUsername, password } = req.body
@@ -30,11 +30,11 @@ router.post('/chgname', async (req, res) => {
         code: res.statusCode
     })
 
-    const usernameRegex = /^[A-Za-z0-9_-]{1,30}$/;
+    const usernameRegex = /^[A-Za-z0-9_-]{1,30}$/
     if (!usernameRegex.test(newUsername)) return res.status(400).json({
         message: 'El nombre de usuario solo puede contener letras, números, guiones y guiones bajos, y debe tener un máximo de 30 caracteres.',
         code: res.statusCode
-    });
+    })
 
     try {
 
@@ -55,7 +55,7 @@ router.post('/chgname', async (req, res) => {
         })
 
         user.username = newUsername
-        await user.save();
+        await user.save()
 
         res.status(200).json({
             message: 'Usuario cambiado correctamente',
@@ -80,11 +80,11 @@ router.post('/chgpass', async (req, res) => {
         code: res.statusCode
     })
 
-    const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[!@#$%^&*(),.?":{}|<>])[A-Za-z\d!@#$%^&*(),.?":{}|<>]{8,}$/;
+    const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[!@#$%^&*(),.?":{}|<>])[A-Za-z\d!@#$%^&*(),.?":{}|<>]{8,}$/
     if (!passwordRegex.test(newPassword)) return res.status(400).json({
         message: 'La contraseña nueva debe tener al menos 8 caracteres, contener letras, números y caracteres especiales.',
         code: res.statusCode
-    });
+    })
 
     try {
         let user = await User.findById(userId)
@@ -104,7 +104,7 @@ router.post('/chgpass', async (req, res) => {
             message: 'contraseña identica a la actual'
         })
 
-        user.password = newPassword;
+        user.password = newPassword
         await user.save()
 
         res.status(200).json({

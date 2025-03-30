@@ -38,16 +38,16 @@ let help = {
  */
 async function main(client, message, args) {
     let identifier = args[0]
-    let command;
+    let command
     if (!identifier) {
         await menus(client, message)
-        return 0;
+        return 0
     }
     command = client.cmds.get(identifier) ||
         client.cmds.find(cmd => cmd.id == identifier || cmd.help.alias.includes(identifier))
     if (!command) {
         await menus(client, message)
-        return 1;
+        return 1
     }
 
     await message.reply({
@@ -111,16 +111,16 @@ async function main(client, message, args) {
  */
 async function slash(client, interaction) {
     let identifier = interaction.options?.get('comando')?.value
-    let command;
+    let command
     if (!identifier) {
         await menus(client, interaction)
-        return 0;
+        return 0
     }
     command = client.cmds.get(identifier) ||
         client.cmds.find(cmd => cmd.id == identifier || cmd.help.alias.includes(identifier))
     if (!command) {
         await menus(client, interaction)
-        return 1;
+        return 1
     }
 
     await interaction.reply({

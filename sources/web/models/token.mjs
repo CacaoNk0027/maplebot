@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose from "mongoose"
 
 const token = new mongoose.Schema({
     userId: {
@@ -17,4 +17,4 @@ const token = new mongoose.Schema({
     }
 })
 
-export default mongoose.model('WebToken', token);
+export default mongoose.model('WebToken', token)

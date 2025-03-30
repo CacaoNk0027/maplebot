@@ -1,5 +1,8 @@
 import * as discord from 'discord.js'
 import * as fs from 'fs'
+import db_connect from '../config/database.mjs'
+
+await db_connect(process.env.URI_DBBOT)
 
 const client = new discord.Client({
     intents: 33283,
@@ -44,7 +47,7 @@ fs.readdirSync(branch + '/cmd').forEach(dir => {
 
 fs.readdirSync(`${branch}/interactions`).forEach(dir => {
     fs.readdirSync(`${branch}/interactions/${dir}`).filter(file => file.endsWith('mjs')).forEach(async file => {
-        let interaction = await import(`./interactions/${dir}/${file}`);
+        let interaction = await import(`./interactions/${dir}/${file}`)
         try {
             client.interactions.set(interaction.id, {
                 id: interaction.id,

@@ -1,8 +1,8 @@
 document.getElementById('registerForm').addEventListener('submit', async function (e) {
-    e.preventDefault();
+    e.preventDefault()
 
-    const username = document.getElementById('username').value;
-    const password = document.getElementById('password').value;
+    const username = document.getElementById('username').value
+    const password = document.getElementById('password').value
 
     const response = await fetch('/api/register', {
         method: 'POST',
@@ -10,12 +10,12 @@ document.getElementById('registerForm').addEventListener('submit', async functio
             'Content-Type': 'application/json'
         },
         body: JSON.stringify({ username, password })
-    });
+    })
 
-    const result = await response.json();
-    alert(result.message);
+    const result = await response.json()
+    alert(result.message)
 
     if (response.status === 201) {
-        window.location.href = result.redirect;
+        window.location.href = result.redirect
     }
-});
+})

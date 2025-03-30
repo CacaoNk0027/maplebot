@@ -6,14 +6,14 @@ async function logOut() {
                 'Content-Type': 'application/json'
             },
             credentials: 'same-origin'
-        });
+        })
         if (response.ok) {
-            window.location = '/api';
+            window.location = '/api'
         } else {
-            console.error('Error al cerrar sesión');
+            console.error('Error al cerrar sesión')
         }
     } catch (error) {
-        console.error('Error al cerrar sesión', error);
+        console.error('Error al cerrar sesión', error)
     }
 }
 function toggleMenu() {

@@ -51,7 +51,7 @@ async function slash(client, interaction) {
  * @param {discord.AnySelectMenuInteraction} interaction 
  */
 async function select_menu(client, interaction) {
-    let menu, message, idUser;
+    let menu, message, idUser
     menu = client.interactions.filter(target => target.id.split('.').shift() == 'menu').get(interaction.customId)
     message = interaction.message
     if(!menu) {
@@ -69,9 +69,9 @@ async function select_menu(client, interaction) {
             })
             return 1
         }
-        menu.main(client, interaction, message);
+        menu.main(client, interaction, message)
     }
-    return 0;
+    return 0
 }
 
 export {

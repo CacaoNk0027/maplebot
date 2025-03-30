@@ -31,7 +31,7 @@ let help = {
  * @param {string[]} args 
  */
 async function main(client, message, args) {
-    let text, reply;
+    let text, reply
 
     if (!args[0]) {
         await message.reply({
@@ -43,7 +43,7 @@ async function main(client, message, args) {
         return 0
     }
 
-    text = args.join(' ');
+    text = args.join(' ')
 
     try {
         (await message.delete())

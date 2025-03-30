@@ -26,8 +26,8 @@ let help = {
  */
 async function main(client, message, args) {
     let identifier = args[0]
-    let validator;
-    validator = new config.Member(message, identifier);
+    let validator
+    validator = new config.Member(message, identifier)
 
     if((await validator.valid())) {
         profile(message, validator.getMember())
@@ -52,7 +52,7 @@ async function slash(client, interaction) {
  * @param {discord.GuildMember} member 
  */
 async function profile(target, member) {
-    let user = member.user;
+    let user = member.user
     let roles = member.roles.cache.filter(rol => rol != member.guild.roles.everyone).map(rol => `<@&${rol.id}>`)
     await target.reply({
         embeds: [{

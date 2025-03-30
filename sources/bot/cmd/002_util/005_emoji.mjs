@@ -50,7 +50,7 @@ async function main(client, message, args) {
         return 1
     }
 
-    parsed = discord.parseEmoji(identifier);
+    parsed = discord.parseEmoji(identifier)
 
     if (emojiRegex().test(identifier)) {
         await message.reply({ embeds: [embed.setDescription('> no puedes colocar un emoji preterminado')] })

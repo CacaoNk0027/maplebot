@@ -8,7 +8,7 @@ function sessions(app) {
         resave: false,
         saveUninitialized: false,
         store: MongoStore.create({ 
-            mongoUrl: process.env.URI,
+            mongoUrl: process.env.URI_DBNEEKURO,
             collectionName: "websessions" 
         }),
         cookie: {

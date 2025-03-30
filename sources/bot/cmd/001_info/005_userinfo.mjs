@@ -59,7 +59,7 @@ let help = {
  */
 async function main(client, message, args) {
     let identifier = args[0]
-    let validator;
+    let validator
 
     validator = new config.User(client, message, identifier)
     if ((await validator.valid())) {
@@ -87,19 +87,19 @@ async function conditions(message, validator, identifier, args) {
     let simple_args = [validator.getUser().id, args.pop()]
     if (help.options[1].name == identifier || help.options[1].alias.includes(identifier) || validator.getUser().id == identifier || !identifier) {
         info(message, validator.getUser())
-        return 0;
+        return 0
     }
     if (help.options[2].name == identifier || help.options[2].alias.includes(identifier)) {
         avatar.main(message.client, message, simple_args)
-        return 0;
+        return 0
     }
     if (help.options[3].name == identifier || help.options[3].alias.includes(identifier)) {
         banner.main(message.client, message, simple_args)
-        return 0;
+        return 0
     }
     if (help.options[4].name == identifier || help.options[4].alias.includes(identifier)) {
-        member.main(message.client, message, simple_args);
-        return 0;
+        member.main(message.client, message, simple_args)
+        return 0
     }
     info(message, validator.getUser())
 }

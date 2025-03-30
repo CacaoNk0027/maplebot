@@ -1,5 +1,5 @@
-import Token from "../models/token.mjs";
-import User from "../models/user.mjs";
+import Token from "../models/token.mjs"
+import User from "../models/user.mjs"
 import crypto from 'crypto'
 import express from 'express'
 
@@ -15,7 +15,7 @@ router.post('/', async (req, res) => {
         data: {}
     })
 
-    let user = await User.findById(userId);
+    let user = await User.findById(userId)
 
     let match = await user.comparePassword(password)
     if (!match) return res.status(400).json({
@@ -57,7 +57,7 @@ router.post('/reveal', async (req, res) => {
         data: {}
     })
 
-    let user = await User.findById(userId);
+    let user = await User.findById(userId)
 
     let match = await user.comparePassword(password)
     if (!match) return res.status(400).json({
@@ -67,7 +67,7 @@ router.post('/reveal', async (req, res) => {
     })
 
     try {
-        let token = await Token.findOne({ userId });
+        let token = await Token.findOne({ userId })
         res.status(200).json({
             message: "token enviado",
             code: res.statusCode, 

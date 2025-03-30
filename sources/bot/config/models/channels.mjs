@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose from "mongoose"
 
 const channelsSchema = new mongoose.Schema({
     guildId: {
@@ -6,20 +6,27 @@ const channelsSchema = new mongoose.Schema({
         unique: true,
         required: true
     },
-    confessId: String,
-    farewellId: String,
-    suggestId: String,
-    welcomeId: String
+    confessId: {
+        type: String,
+        default: null
+    },
+    farewellId: {
+        type: String,
+        default: null
+    },
+    suggestId: {
+        type: String,
+        default: null
+    },
+    welcomeId: {
+        type: String,
+        default: null
+    }
 })
 
-/**
- * 
- * @param {'confessId'|'farewellId'|'suggestId'|'welcomeId'} field 
- * @param {string} ID 
- * @returns {boolean}
- */
-channelsSchema.methods.compareId = (field, ID) => {
-    return this[field] == ID
+channelsSchema.methods.compareId = function(field, ID) {
+    return this[field] === ID
 }
 
-export default mongoose.model('channels', channelsSchema)
+const Channels = mongoose.model('Channels', channelsSchema)
+export default Channels

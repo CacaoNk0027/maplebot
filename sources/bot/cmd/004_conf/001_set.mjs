@@ -25,7 +25,7 @@ let help = {
  * @param {string[]} args 
  */
 async function main(client, message, args) {
-    return 0;
+    return 0
 }
 
 /**
@@ -33,7 +33,7 @@ async function main(client, message, args) {
  * @param {discord.CommandInteraction} interaction
  */
 async function slash(client, interaction) {
-    return 0;
+    return 0
 }
 
 export {

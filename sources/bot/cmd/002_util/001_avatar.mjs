@@ -38,7 +38,7 @@ let help = {
  */
 async function main(client, message, args) {
     let identifier = args[0]
-    let validator;
+    let validator
 
     validator = new config.User(client, message, identifier)
     if ((await validator.valid())) {

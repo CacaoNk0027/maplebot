@@ -8,10 +8,10 @@ router.get('/', (req, res) => {
 })
 
 router.post('/', async (req, res) => {
-    let { username, password } = req.body;
+    let { username, password } = req.body
 
     try {
-        let user = await User.findOne({ username });
+        let user = await User.findOne({ username })
         if (!user) return res.status(400).json({
             message: "Usuario o contraseña no validos",
             code: res.statusCode

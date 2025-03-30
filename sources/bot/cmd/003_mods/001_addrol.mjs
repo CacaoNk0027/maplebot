@@ -41,8 +41,8 @@ let help = {
  * @param {string[]} args
  */
 async function main(client, message, args) {
-    let identifier = args[0];
-    let validator, member, roles, valid_roles, final;
+    let identifier = args[0]
+    let validator, member, roles, valid_roles, final
     let embed = new discord.EmbedBuilder({
         color: discord.Colors.Red
     })
@@ -63,7 +63,7 @@ async function main(client, message, args) {
 
     member = validator.getMember()
 
-    identifier = args[1];
+    identifier = args[1]
 
     if (!identifier) {
         await message.reply({ embeds: [embed.setDescription('> la opcion `<roles>` es requerida.')] })
@@ -166,7 +166,7 @@ async function validate_roles(message, id_rolelist, member) {
             }).then(res => {
                 setTimeout(async () => {
                     await res.delete()
-                }, 5000);
+                }, 5000)
             })
             return false
         }
@@ -177,7 +177,7 @@ async function validate_roles(message, id_rolelist, member) {
             }).then(res => {
                 setTimeout(async () => {
                     await res.delete()
-                }, 5000);
+                }, 5000)
             })
             return false
         }
@@ -188,7 +188,7 @@ async function validate_roles(message, id_rolelist, member) {
             }).then(res => {
                 setTimeout(async () => {
                     await res.delete()
-                }, 5000);
+                }, 5000)
             })
             return false
         }
@@ -199,7 +199,7 @@ async function validate_roles(message, id_rolelist, member) {
             }).then(res => {
                 setTimeout(async () => {
                     await res.delete()
-                }, 5000);
+                }, 5000)
             })
             return false
         }

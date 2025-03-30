@@ -74,8 +74,8 @@ function get_user_flags(user) {
         CertifiedModerator: '<:moderatorprograms:1262143721105920121>',
         ActiveDeveloper: '<:activeDeveloper:1262144149537423464>'
     }
-    let userFlags = user.flags?.toArray();
-    let badgeList = userFlags.length > 0 ? userFlags.map(flag => flags[flag]).join(' ') : 'Sin insignias';
+    let userFlags = user.flags?.toArray()
+    let badgeList = userFlags.length > 0 ? userFlags.map(flag => flags[flag]).join(' ') : 'Sin insignias'
     return badgeList
 }
 
@@ -84,22 +84,22 @@ function get_user_flags(user) {
  * @param {discord.ImageURLOptions} options 
  */
 async function bannerURL(member, options) {
-    const rest = new discord.REST().setToken(process.env.TOKEN);
-    const cdn = new discord.CDN();
+    const rest = new discord.REST().setToken(process.env.TOKEN)
+    const cdn = new discord.CDN()
     let apiMember, tempUrl, url, ext
     try {
-        apiMember = await rest.get(discord.Routes.guildMember(member.guild.id, member.user.id));
+        apiMember = await rest.get(discord.Routes.guildMember(member.guild.id, member.user.id))
 
-        if (!apiMember.banner) return null;
+        if (!apiMember.banner) return null
 
-        tempUrl = cdn.guildMemberBanner(member.guild.id, member.user.id, apiMember.banner, options);
-        url = new URL(tempUrl);
-        ext = url.pathname.split('.').pop();
-        url.pathname = url.pathname.replace(`.${ext}`, `s/${apiMember.banner}.${ext}`);
+        tempUrl = cdn.guildMemberBanner(member.guild.id, member.user.id, apiMember.banner, options)
+        url = new URL(tempUrl)
+        ext = url.pathname.split('.').pop()
+        url.pathname = url.pathname.replace(`.${ext}`, `s/${apiMember.banner}.${ext}`)
 
-        return url.toString();
+        return url.toString()
     } catch {
-        return null;
+        return null
     }
 }
 
@@ -153,7 +153,7 @@ class User {
     }
 
     setUser(user) {
-        this.#user = user;
+        this.#user = user
     }
 }
 
@@ -214,7 +214,7 @@ function help_menu_options() {
             description: option.description,
             value: option.id
         })
-    });
+    })
     return [...options]
 }
 
@@ -226,25 +226,53 @@ function help_menu_options() {
  * @returns 
  */
 function text_field_commmands(prefix, commands, category) {
-    let fi_comands = commands.filter(command => command.help.category == category);
-    let fo_commands = fi_comands.map((c, name) => ((c.help.inactive ? '[🔴] ': '[🟢] ') + prefix + name).padEnd(20, ' '));
-    let groups = [], i, finalText;
+    let fi_comands = commands.filter(command => command.help.category == category)
+    let fo_commands = fi_comands.map((c, name) => ((c.help.inactive ? '[🔴] ': '[🟢] ') + prefix + name).padEnd(20, ' '))
+    let groups = [], i, finalText
 
     for (i = 0; i < fo_commands.length; i += 3) {
-        groups.push(fo_commands.slice(i, i + 3).join(''));
+        groups.push(fo_commands.slice(i, i + 3).join(''))
     }
 
-    finalText = groups.join('\n');
-    return code_text(finalText);
+    finalText = groups.join('\n')
+    return code_text(finalText)
 }
 
 /**
  * 
- * @param {discord.Client} client 
+ * @param {discord.Message} message
  * @param {string} channelId 
  */
-async function validate_channel(client, channelId) {
+async function validate_channel(message, channelId) {
+    let channel = await message.client.channels.fetch(channelId).catch(() => null)
+    let embed = new discord.EmbedBuilder({
+        color: discord.Colors.Red
+    })
+    if(!channel) {
+        await message.reply({
+            embeds: [embed.setDescription('no se ha podido localizar el canal mencionado')]
+        })
+        return null
+    }
+    if(channel.type != discord.ChannelType.GuildText) {
+        await message.reply({
+            embeds: [embed.setDescription('Se debe mencionar un canal de texto, no otro tipo de canal')]
+        })
+        return null
+    }
+    if(!channel.permissionsFor(message.guild.members.me).has('SendMessages')) {
+        await message.reply({
+            embeds: [embed.setDescription('No puedes establecer un canal en el que no puedo hablar, cambia los permisos para enviar mensajes')]
+        })
+        return null
+    }
+    return channel.id
+}
 
+function text_wl_vars(text, variables) {
+    return text.replace(/\{(\w+)\}/g, (match, key) => {
+        return variables[key] !== undefined ? variables[key] : match
+    })
 }
 
 export {
@@ -264,6 +292,7 @@ export {
     help_menu_options,
     text_field_commmands,
     validate_channel,
+    text_wl_vars,
     User,
     Member,
     Channels

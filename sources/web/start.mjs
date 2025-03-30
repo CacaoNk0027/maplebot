@@ -20,13 +20,13 @@ function main() {
     app.use(express.json())
     app.use(cors())
 
-    sessions(app);
+    sessions(app)
     
     app.use(router)
     app.use('/', express.static('sources/web/public'))
 
     app.get('*', (req, res) => {
-        res.status(404).send('recurso no encontrado');
+        res.status(404).send('recurso no encontrado')
     })
 
     app.listen(app.get('port'), () => {
