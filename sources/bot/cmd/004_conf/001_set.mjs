@@ -1,6 +1,9 @@
 import * as discord from 'discord.js'
 import * as config from '../../config/config.mjs'
 
+import * as cmd_welcome from './002_welcome.mjs' 
+import * as cmd_prefix from './003_prefix.mjs'
+
 const name = 'set'
 const id = '001'
 
@@ -8,13 +11,25 @@ let help = {
     alias: [],
     description: 'Establece sistemas en tu servidor',
     category: '004',
-    options: [],
+    options: [{
+        name: cmd_prefix.name,
+        alias: cmd_prefix.help.alias,
+        description: cmd_prefix.help.description,
+        required: false,
+        options: cmd_prefix.help.options
+    }, {
+        name: cmd_welcome.name,
+        alias: cmd_welcome.help.alias,
+        description: cmd_welcome.help.description,
+        required: false,
+        options: cmd_welcome.help.options
+    }],
     permissions: {
         bot: [],
-        user: []
+        user: [discord.PermissionFlagsBits.ManageGuild]
     },
-    inactive: true,
-    reason: 'comando en desarrollo, los comandos de configuracion aun se encuentran en desarrollo',
+    inactive: false,
+    reason: null,
     nsfw: false,
     cooldown: 3
 }
@@ -25,6 +40,12 @@ let help = {
  * @param {string[]} args 
  */
 async function main(client, message, args) {
+    let option = args[0].toLowerCase()
+    if(!option) return 0
+    if(option == 'prefix') {
+        cmd_prefix.main(client, message, args.slice(1))
+        return 0
+    } 
     return 0
 }
 

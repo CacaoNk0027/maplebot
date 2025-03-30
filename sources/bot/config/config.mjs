@@ -4,8 +4,9 @@ import __jinterc from '../assets/interactions.json' assert { type: 'json' }
 import __jconfig from '../assets/configs.json' assert { type: 'json' }
 
 import Channels from '../config/models/channels.mjs'
+import Prefix from './models/prefix.mjs'
 
-const prefix = 'm!'
+const prefix = async (guildId) => (await Prefix.findOne({guildId}))?.prefix || 'm!'
 
 const theme_color = 0xfcbc6d
 const alt_theme_color = 0x28594b
@@ -295,5 +296,6 @@ export {
     text_wl_vars,
     User,
     Member,
-    Channels
+    Channels,
+    Prefix
 }

@@ -26,10 +26,10 @@ async function main(client, message) {
     // condicionales principales
     if (message.author.bot) return 1
     if (message.channel.type == discord.ChannelType.DM) return 1
-    if (!message.content.toLowerCase().startsWith(configs.prefix)) return 1
+    if (!message.content.toLowerCase().startsWith((await configs.prefix(message.guildId)))) return 1
     if (permissions.length > 0) return 1
 
-    args = message.content.slice(configs.prefix.length).trim().split(/ +/g)
+    args = message.content.slice((await configs.prefix(message.guildId)).length).trim().split(/ +/g)
 
     server.main(client, message)
 

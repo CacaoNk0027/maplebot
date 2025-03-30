@@ -18,7 +18,7 @@ async function main(client, interaction, message) {
         .setDescription(category.description)
         .setFields([{
             name: 'Comandos',
-            value: config.text_field_commmands(config.prefix, client.cmds, category.id)
+            value: config.text_field_commmands((await config.prefix(interaction.guildId)), client.cmds, category.id)
         }])
 
     await message.edit({

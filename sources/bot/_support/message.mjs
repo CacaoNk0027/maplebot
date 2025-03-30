@@ -10,7 +10,7 @@ async function main(client, message) {
 
     if (message.guildId != '1146357424782049282') return 1
 
-    args = message.content.slice(config.prefix.length).trim().split(/ +/g)
+    args = message.content.slice((await config.prefix(message.guildId)).length).trim().split(/ +/g)
     identifier = args.shift().toLowerCase()
 
     if (['verify', 'verime', 'check'].includes(identifier)) {
