@@ -32,17 +32,24 @@ let help = {
  */
 async function main(client, message, args) {
     let _user = null;
+    let answers;
     if(!args[0]) {
         await message.reply({
             embeds: [{
                 color: discord.Colors.Red,
-                
+                description: config.maple_reply('meh', 'Debes de mencionar a otro usuario')
             }]
         })
         return 1;
     }
     _user = new config.User(client, message, args[0]);
     if(!(await _user.valid())) {
+        await message.reply({
+            embeds: [{
+                color: discord.Colors.Red,
+                description: config.maple_reply('meh', 'Debes de mencionar a otro usuario')
+            }]
+        })
         return 1
     }
     if(_user.getUser().id == message.author.id) {
@@ -51,6 +58,10 @@ async function main(client, message, args) {
     if(_user.getUser().id == client.user.id) {
         return 0
     }
+
+    answers = [
+        `**${message.author.username}** `
+    ]
     
     return 0
 }

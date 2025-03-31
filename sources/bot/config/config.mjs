@@ -195,25 +195,25 @@ function maple_reply(action, message) {
     let message = null;
     switch (action) {
         case 'wink':
-            message = `<:001:1012749015969968138> | ${message}`
+            message = `> <:001:1012749015969968138> | ${message}`
             break
         case 'heart':
-            message = `<:007:1012749027508498512> | ${message}`
+            message = `> <:007:1012749027508498512> | ${message}`
             break
         case 'pistol':
-            message = `<:010:1012749033292431430> | ${message}`
+            message = `> <:010:1012749033292431430> | ${message}`
             break
         case 'meh':
-            message = `<:004:1012749020852133918> | ${message}`
+            message = `> <:004:1012749020852133918> | ${message}`
             break
         case 'success':
-            message = `${success[Math.floor(Math.random() * success.length)]} | ${message}`
+            message = `> ${success[Math.floor(Math.random() * success.length)]} | ${message}`
             break
         case 'error':
-            message = `${error[Math.floor(Math.random() * error.length)]} | ${message}`
+            message = `> ${error[Math.floor(Math.random() * error.length)]} | ${message}`
             break
         case 'critical':
-            message = `<:002:1012749017798688878> | ${message}`
+            message = `> <:002:1012749017798688878> | ${message}`
             break
     }
     return message
@@ -339,6 +339,7 @@ export {
     text_field_commmands,
     validate_channel,
     text_wl_vars,
+    maple_reply,
     User,
     Member,
     Channels,
