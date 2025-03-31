@@ -7,8 +7,6 @@ import Channels from '../config/models/channels.mjs'
 import Prefix from './models/prefix.mjs'
 import Welcome from './models/welcome.mjs'
 
-const prefix = async (guildId) => (await Prefix.findOne({guildId}))?.prefix || 'm!'
-
 const theme_color = 0xfcbc6d
 const alt_theme_color = 0x28594b
 
@@ -19,6 +17,8 @@ let default_client_permissions = [
 ]
 
 let help_menu = __jconfig.help_menu
+
+const prefix = async (guildId) => (await Prefix.findOne({ guildId }))?.prefix || 'm!'
 
 function random_color() {
     let array = Object.entries(discord.Colors).map(([_, num]) => num)
@@ -105,6 +105,120 @@ async function bannerURL(member, options) {
     }
 }
 
+function help_menu_options() {
+    let options = new Set()
+    __jconfig.help_menu.forEach(option => {
+        options.add({
+            label: option.name,
+            emoji: option.emoji.match(/\d+(?=>)/g)?.shift() || option.emoji,
+            description: option.description,
+            value: option.id
+        })
+    })
+    return [...options]
+}
+
+/**
+ * 
+ * @param {string} prefix 
+ * @param {} commands 
+ * @param {string} category
+ * @returns 
+ */
+function text_field_commmands(prefix, commands, category) {
+    let fi_comands = commands.filter(command => command.help.category == category)
+    let fo_commands = fi_comands.map((c, name) => ((c.help.inactive ? '[🔴] ' : '[🟢] ') + prefix + name).padEnd(20, ' '))
+    let groups = [], i, finalText
+
+    for (i = 0; i < fo_commands.length; i += 3) {
+        groups.push(fo_commands.slice(i, i + 3).join(''))
+    }
+
+    finalText = groups.join('\n')
+    return code_text(finalText)
+}
+
+/**
+ * 
+ * @param {discord.Message} message
+ * @param {string} channelId 
+ */
+async function validate_channel(message, channelId) {
+    let channel = await message.client.channels.fetch(channelId).catch(() => null)
+    let embed = new discord.EmbedBuilder({
+        color: discord.Colors.Red
+    })
+    if (!channel) {
+        await message.reply({
+            embeds: [embed.setDescription('no se ha podido localizar el canal mencionado')]
+        })
+        return null
+    }
+    if (channel.type != discord.ChannelType.GuildText) {
+        await message.reply({
+            embeds: [embed.setDescription('Se debe mencionar un canal de texto, no otro tipo de canal')]
+        })
+        return null
+    }
+    if (!channel.permissionsFor(message.guild.members.me).has('SendMessages')) {
+        await message.reply({
+            embeds: [embed.setDescription('No puedes establecer un canal en el que no puedo hablar, cambia los permisos para enviar mensajes')]
+        })
+        return null
+    }
+    return channel.id
+}
+
+function text_wl_vars(text, variables) {
+    return text.replace(/\{(\w+)\}/g, (match, key) => {
+        return variables[key] !== undefined ? variables[key] : match
+    })
+}
+
+/**
+ * @param {'wink'|'heart'|'pistol'|'meh'|'success'|'error'|'critical'} action 
+ * @param {string} message 
+ */
+function maple_reply(action, message) {
+    let success = [
+        '<:008:1012749028762603550>',
+        '<:001:1012749015969968138>',
+        '<:007:1012749027508498512>',
+        '<:003:1012749019447033966>'
+    ];
+    let error = [
+        '<:005:1012749024220155964>',
+        '<:009:1012749030138335352>',
+        '<:011:1012749035037261844>',
+        '<:006:1012749025398759425>'
+    ]
+    let message = null;
+    switch (action) {
+        case 'wink':
+            message = `<:001:1012749015969968138> | ${message}`
+            break
+        case 'heart':
+            message = `<:007:1012749027508498512> | ${message}`
+            break
+        case 'pistol':
+            message = `<:010:1012749033292431430> | ${message}`
+            break
+        case 'meh':
+            message = `<:004:1012749020852133918> | ${message}`
+            break
+        case 'success':
+            message = `${success[Math.floor(Math.random() * success.length)]} | ${message}`
+            break
+        case 'error':
+            message = `${error[Math.floor(Math.random() * error.length)]} | ${message}`
+            break
+        case 'critical':
+            message = `<:002:1012749017798688878> | ${message}`
+            break
+    }
+    return message
+}
+
 class User {
     // propiedades privadas
     #client
@@ -163,7 +277,7 @@ class Member {
     #message
     #identifier
     #member
-    
+
     /**
      * @param {discord.Message} message 
      * @param {string} identifier 
@@ -205,76 +319,6 @@ class Member {
     setMember(member) {
         this.#member = member
     }
-}
-
-function help_menu_options() {
-    let options = new Set()
-    __jconfig.help_menu.forEach(option => {
-        options.add({
-            label: option.name,
-            emoji: option.emoji.match(/\d+(?=>)/g)?.shift() || option.emoji,
-            description: option.description,
-            value: option.id
-        })
-    })
-    return [...options]
-}
-
-/**
- * 
- * @param {string} prefix 
- * @param {} commands 
- * @param {string} category
- * @returns 
- */
-function text_field_commmands(prefix, commands, category) {
-    let fi_comands = commands.filter(command => command.help.category == category)
-    let fo_commands = fi_comands.map((c, name) => ((c.help.inactive ? '[🔴] ': '[🟢] ') + prefix + name).padEnd(20, ' '))
-    let groups = [], i, finalText
-
-    for (i = 0; i < fo_commands.length; i += 3) {
-        groups.push(fo_commands.slice(i, i + 3).join(''))
-    }
-
-    finalText = groups.join('\n')
-    return code_text(finalText)
-}
-
-/**
- * 
- * @param {discord.Message} message
- * @param {string} channelId 
- */
-async function validate_channel(message, channelId) {
-    let channel = await message.client.channels.fetch(channelId).catch(() => null)
-    let embed = new discord.EmbedBuilder({
-        color: discord.Colors.Red
-    })
-    if(!channel) {
-        await message.reply({
-            embeds: [embed.setDescription('no se ha podido localizar el canal mencionado')]
-        })
-        return null
-    }
-    if(channel.type != discord.ChannelType.GuildText) {
-        await message.reply({
-            embeds: [embed.setDescription('Se debe mencionar un canal de texto, no otro tipo de canal')]
-        })
-        return null
-    }
-    if(!channel.permissionsFor(message.guild.members.me).has('SendMessages')) {
-        await message.reply({
-            embeds: [embed.setDescription('No puedes establecer un canal en el que no puedo hablar, cambia los permisos para enviar mensajes')]
-        })
-        return null
-    }
-    return channel.id
-}
-
-function text_wl_vars(text, variables) {
-    return text.replace(/\{(\w+)\}/g, (match, key) => {
-        return variables[key] !== undefined ? variables[key] : match
-    })
 }
 
 export {
