@@ -2,3 +2,4 @@ node_modules
 _deprecated
 sources/config/.env
 .vscode
+package-lock.json

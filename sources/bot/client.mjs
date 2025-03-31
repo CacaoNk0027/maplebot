@@ -1,8 +1,11 @@
 import * as discord from 'discord.js'
 import * as fs from 'fs'
+import neekuro from 'neekuro'
 import db_connect from '../config/database.mjs'
 
 await db_connect(process.env.URI_DBBOT)
+
+new neekuro.User().token(process.env.NEEKURO)
 
 const client = new discord.Client({
     intents: 33283,
