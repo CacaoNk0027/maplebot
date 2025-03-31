@@ -5,6 +5,7 @@ import __jconfig from '../assets/configs.json' assert { type: 'json' }
 
 import Channels from '../config/models/channels.mjs'
 import Prefix from './models/prefix.mjs'
+import Welcome from './models/welcome.mjs'
 
 const prefix = async (guildId) => (await Prefix.findOne({guildId}))?.prefix || 'm!'
 
@@ -297,5 +298,6 @@ export {
     User,
     Member,
     Channels,
-    Prefix
+    Prefix,
+    Welcome
 }

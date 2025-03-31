@@ -68,7 +68,7 @@
 
 ## Links
 <p align="center">
-  <a href="https://discord.gg/PKGhvUKaQN">
+  <a href="https://discord.gg/E3kzS5cYzN">
     <img src="https://img.icons8.com/color/48/000000/discord-logo.png" alt="Discord">
   </a>
   <a href="https://discord.com/api/oauth2/authorize?client_id=821452429409124451&permissions=1238334041302&scope=bot%20applications.commands">

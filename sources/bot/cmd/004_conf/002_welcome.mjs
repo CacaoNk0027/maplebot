@@ -130,21 +130,57 @@ async function main(client, message, args) {
     }
 
     exprs = help.options[0].options[1]
+    server_db = await config.Welcome.findOne({ guildId: message.guildId })
 
     // opcion de texto
     if (option == exprs.name || exprs.alias.includes(option)) {
         option = args[1]
         if (!option) {
-            return 0
+            await message.reply({
+                embeds: [{
+                    color: discord.Colors.Red,
+                    description: `Debes de elegir una de las subopciones <title, description, message>`
+                }]
+            })
+            return 1
         }
         // para titulo
         if (option == exprs.options[0].name || exprs.options[0].alias.includes(option)) {
             if (!args[2]) {
+                await message.reply({
+                    embeds: [{
+                        color: discord.Colors.Red,
+                        description: `El titulo no puede estar vacio`
+                    }]
+                })
                 return 1
             }
 
             option = args.slice(2).join(' ')
 
+            if(!server_db) {
+                new_doc = new config.Welcome({
+                    guildId: message.guildId,
+                    title: option
+                })
+
+                await new_doc.save();
+
+                await message.reply({
+                    embeds: [{
+                        color: discord.Colors.Green,
+                        description: `Este sera el nuevo titulo para la bienvenida:`,
+                        fields: [{
+                            name: 'Titulo',
+                            value: option
+                        }]
+                    }]
+                })
+                
+                return 0
+            }
+
+            
 
         }
     }
