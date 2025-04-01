@@ -1,8 +1,8 @@
 import * as discord from 'discord.js'
 import * as config from '../../config/config.mjs'
-import * as avatar from '../002_util/001_avatar.mjs'
-import * as banner from '../002_util/002_banner.mjs'
-import * as member from '../002_util/003_member.mjs'
+import * as avatar from '../002_utilidad/001_avatar.mjs'
+import * as banner from '../002_utilidad/002_banner.mjs'
+import * as member from '../002_utilidad/003_member.mjs'
 
 const name = 'user'
 const id = '005'
@@ -122,7 +122,7 @@ async function info(target, user) {
                 value: `<t:${Math.floor(user.createdTimestamp / 1000)}:F>`
             }, {
                 name: `Insignias`,
-                value: config.get_user_flags(user)
+                value: config.getuser_flags(user)
             }],
             thumbnail: {
                 url: user.avatarURL({ forceStatic: false })

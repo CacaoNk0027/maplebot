@@ -1,6 +1,6 @@
 import * as discord from 'discord.js'
 import * as config from '../../config/config.mjs'
-import * as icon from '../../cmd/002_util/004_icon.mjs'
+import * as icon from '../../cmd/002_utilidad/004_icon.mjs'
 
 const name = 'server'
 const id = '004'

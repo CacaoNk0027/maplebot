@@ -61,7 +61,7 @@ function por_barra(porcentaje, longitud = 10) {
 /**
  * @param {discord.User} user
  */
-function get_user_flags(user) {
+function getuser_flags(user) {
     let flags = {
         Staff: '<:staff:1262144147687477310>',
         Partner: '<:partner:1262143727669874761>',
@@ -192,31 +192,31 @@ function maple_reply(action, message) {
         '<:011:1012749035037261844>',
         '<:006:1012749025398759425>'
     ]
-    let message = null;
+    let text = null;
     switch (action) {
         case 'wink':
-            message = `> <:001:1012749015969968138> | ${message}`
+            text = `> <:001:1012749015969968138> | ${message}`
             break
         case 'heart':
-            message = `> <:007:1012749027508498512> | ${message}`
+            text = `> <:007:1012749027508498512> | ${message}`
             break
         case 'pistol':
-            message = `> <:010:1012749033292431430> | ${message}`
+            text = `> <:010:1012749033292431430> | ${message}`
             break
         case 'meh':
-            message = `> <:004:1012749020852133918> | ${message}`
+            text = `> <:004:1012749020852133918> | ${message}`
             break
         case 'success':
-            message = `> ${success[Math.floor(Math.random() * success.length)]} | ${message}`
+            text = `> ${success[Math.floor(Math.random() * success.length)]} | ${message}`
             break
         case 'error':
-            message = `> ${error[Math.floor(Math.random() * error.length)]} | ${message}`
+            text = `> ${error[Math.floor(Math.random() * error.length)]} | ${message}`
             break
         case 'critical':
-            message = `> <:002:1012749017798688878> | ${message}`
+            text = `> <:002:1012749017798688878> | ${message}`
             break
     }
-    return message
+    return text
 }
 
 class User {
@@ -333,7 +333,7 @@ export {
     allowed_id,
     code_text,
     por_barra,
-    get_user_flags,
+    getuser_flags,
     bannerURL,
     help_menu_options,
     text_field_commmands,
