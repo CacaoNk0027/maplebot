@@ -43,6 +43,12 @@ let help = {
                 required: false,
                 options: []
             }]
+        }, {
+            name: 'embed',
+            alias: ['isembed', 'is_embed'],
+            description: 'Establece si la bienvenida se da en un embed',
+            required: false,
+            options: []
         }]
     }],
     permissions: {
@@ -94,6 +100,7 @@ async function main(client, message, args) {
     let server_db = null;
     let new_doc = null;
     let target = null;
+    let aliases = null;
 
     try {
         let channelId = option.match(/\d{17,19}/)?.[0]
@@ -141,8 +148,16 @@ async function main(client, message, args) {
         server_db = await config.Welcome.findOne({ guildId: message.guildId })
 
         // texto
-        if(option == target.name || target.alias.includes(option)) {
-            if(!sub_option) {
+        if (option.toLowerCase() == target.name || target.alias.includes(option.toLowerCase())) {
+            aliases = [
+                target.options[0].name,
+                ...target.options[0].alias,
+                target.options[1].name,
+                ...target.options[1].alias,
+                target.options[2].name,
+                ...target.options[2].alias,
+            ]
+            if (!sub_option || !aliases.includes(sub_option.toLowerCase())) {
                 await reply(message, {
                     color: discord.Colors.Red,
                     description: config.maple_reply('error', 'Necesitas seleccionar una opcion de texto <title | description | message>')
@@ -152,23 +167,90 @@ async function main(client, message, args) {
 
             target = target.options
 
-            if(sub_option == target[0].name || target[0].alias.includes(sub_option)) {
-                if(!value) {
+            if (sub_option.toLowerCase() == target[0].name || target[0].alias.includes(sub_option.toLowerCase())) {
+                if (!value) {
                     await reply(message, {
                         color: discord.Colors.Red,
                         description: config.maple_reply('error', 'Necesitas escribir el nuevo titulo para la bienvenida')
                     })
                     return 1
                 }
-                if(value.length < 1 || value.length > 40) {
+                if (value.length < 1 || value.length > 40) {
                     await reply(message, {
                         color: discord.Colors.Red,
                         description: config.maple_reply('error', 'El titulo debe tener de uno a cuarenta letras')
                     })
                     return 1
                 }
-                
+                if (!server_db) {
+                    new_doc = new config.Welcome({
+                        guildId: message.guildId,
+                        title: value
+                    })
+                    await new_doc.save()
+                } else {
+                    if (value == server_db.title) {
+                        await reply(message, {
+                            color: discord.Colors.Red,
+                            description: config.maple_reply('error', 'El titulo debe tener de uno a cuarenta letras')
+                        })
+                        return 1
+                    }
+                    server_db.title = value
+                    await server_db.save();
+                }
+                await message.reply({
+                    embeds: [{
+                        color: discord.Colors.Green,
+                        description: config.maple_reply('success', 'El nuevo titulo de bienvenida sera el siguente:'),
+                        fields: [{
+                            name: 'Titulo [Ejemplo]',
+                            value: config.text_wl_vars(value, {
+                                user: message.author.globalName || message.author.username,
+                                server: message.guild?.name,
+                                count: message.guild.memberCount
+                            }).trim()
+                        }]
+                    }]
+                })
+                return 0
             }
+        }
+
+        target = help.options[0].options[2]
+
+        // texto
+        if (option.toLowerCase() == target.name || target.alias.includes(option.toLowerCase())) {
+            if(!sub_option || !['y', 'n'].includes(sub_option.toLowerCase())) {
+                await reply(message, {
+                    color: discord.Colors.Red,
+                    description: config.maple_reply('error', 'Necesitas seleccionar una opcion <y | n>')
+                })
+                return 1
+            }
+            value = sub_option.toLowerCase() == 'y' ? true: false
+            if(!server_db) {
+                new_doc = new config.Welcome({
+                    guildId: message.guildId,
+                    isEmbed: value
+                })
+                await new_doc.save()
+            } else {
+                if(value == server_db.isEmbed) {
+                    await reply(message, {
+                        color: discord.Colors.Red,
+                        description: config.maple_reply('error', 'El valor a establecer no puede ser igual al ya configurado')
+                    })
+                    return 1
+                }
+                server_db.isEmbed = value
+                await server_db.save()
+            }
+            await reply(message, {
+                color: discord.Colors.Red,
+                description: config.maple_reply('success', value ? 'Se mostrara la bienvenida como embed': 'Se mostrara la bienvenida como imagen')
+            })
+            return 0
         }
 
     } catch (error) {
@@ -179,89 +261,6 @@ async function main(client, message, args) {
         })
         return 1
     }
-
-    // exprs = help.options[0].options[1]
-    // server_db = await config.Welcome.findOne({ guildId: message.guildId })
-
-    // // opcion de texto
-    // if (option == exprs.name || exprs.alias.includes(option)) {
-    //     option = args[1]
-    //     if (!option) {
-    //         await message.reply({
-    //             embeds: [{
-    //                 color: discord.Colors.Red,
-    //                 description: `Debes de elegir una de las subopciones <title, description, message>`
-    //             }]
-    //         })
-    //         return 1
-    //     }
-    //     // para titulo
-    //     if (option == exprs.options[0].name || exprs.options[0].alias.includes(option)) {
-    //         if (!args[2]) {
-    //             await message.reply({
-    //                 embeds: [{
-    //                     color: discord.Colors.Red,
-    //                     description: `El titulo no puede estar vacio`
-    //                 }]
-    //             })
-    //             return 1
-    //         }
-
-    //         option = args.slice(2).join(' ').trim();
-
-    //         if (!server_db) {
-    //             new_doc = new config.Welcome({
-    //                 guildId: message.guildId,
-    //                 title: option
-    //             })
-
-    //             await new_doc.save();
-
-    //             await message.reply({
-    //                 embeds: [{
-    //                     color: discord.Colors.Green,
-    //                     description: `Este sera el nuevo titulo para la bienvenida:`,
-    //                     fields: [{
-    //                         name: 'Titulo',
-    //                         value: option
-    //                     }]
-    //                 }]
-    //             })
-
-    //             return 0
-    //         }
-
-    //         if (server_db.title == option) {
-
-    //             await message.reply({
-    //                 embeds: [{
-    //                     color: discord.Colors.Red,
-    //                     description: `El titulo no puede ser exactamente igual al anterior`
-    //                 }]
-    //             })
-
-    //             return 1
-    //         }
-
-    //         server_db.title = option;
-    //         await server_db.save();
-
-    //         await message.reply({
-    //             embeds: [{
-    //                 color: discord.Colors.Green,
-    //                 description: `Este sera el nuevo titulo para la bienvenida:`,
-    //                 fields: [{
-    //                     name: 'Titulo',
-    //                     value: option
-    //                 }]
-    //             }]
-    //         })
-
-    //         return 0
-
-    //     }
-    // }
-    // return 0
 }
 
 async function reply(message, { color, description, fields = [] }) {

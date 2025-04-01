@@ -43,7 +43,7 @@ async function main(client, interaction, message) {
                     , 'html')
             }, {
                 name: 'Formateadores',
-                value: config.code_text(`Los formateadores sirven para añadir cosas a los textos\n{user} : añade el nombre de usuario nuevo\n{server} : añade el nombre del servidor\n{count} : conteo de personas en el server`)
+                value: config.code_text(`Los formateadores sirven para añadir cosas a los textos\n{user} : añade el nombre de usuario nuevo\n{mention} : menciona al usuario\n{server} : añade el nombre del servidor\n{count} : conteo de personas en el server`)
             }]
         }],
         components: [{

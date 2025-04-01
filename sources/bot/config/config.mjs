@@ -169,9 +169,16 @@ async function validate_channel(message, channelId) {
     return channel.id
 }
 
+/**
+ * 
+ * @param {string} text texto a establecer
+ * @param {Object} variables es un objeto
+ * @example
+ * text_wl_vars('hola {user}', { user: 'Juan '});
+ */
 function text_wl_vars(text, variables) {
     return text.replace(/\{(\w+)\}/g, (match, key) => {
-        return variables[key] !== undefined ? variables[key] : match
+        return variables[key] != undefined ? variables[key] : match
     })
 }
 
