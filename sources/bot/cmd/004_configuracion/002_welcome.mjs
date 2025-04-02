@@ -1,4 +1,6 @@
 import * as discord from 'discord.js'
+import hex_regex from 'hex-color-regex'
+import fetch from 'node-fetch'
 import * as config from '../../config/config.mjs'
 
 const name = 'welcome'
@@ -45,8 +47,14 @@ let help = {
             }]
         }, {
             name: 'embed',
-            alias: ['isembed', 'is_embed'],
+            alias: ['isembed', 'is_embed', 'e'],
             description: 'Establece si la bienvenida se da en un embed',
+            required: false,
+            options: []
+        }, {
+            name: 'background',
+            alias: ['b', 'back', 'bk', 'fondo'],
+            description: 'Añade un fondo a la imagen de bienvenida',
             required: false,
             options: []
         }]
@@ -167,76 +175,64 @@ async function main(client, message, args) {
 
             target = target.options
 
-            if (sub_option.toLowerCase() == target[0].name || target[0].alias.includes(sub_option.toLowerCase())) {
-                if (!value) {
-                    await reply(message, {
-                        color: discord.Colors.Red,
-                        description: config.maple_reply('error', 'Necesitas escribir el nuevo titulo para la bienvenida')
-                    })
-                    return 1
-                }
-                if (value.length < 1 || value.length > 40) {
-                    await reply(message, {
-                        color: discord.Colors.Red,
-                        description: config.maple_reply('error', 'El titulo debe tener de uno a cuarenta letras')
-                    })
-                    return 1
-                }
-                if (!server_db) {
-                    new_doc = new config.Welcome({
-                        guildId: message.guildId,
-                        title: value
-                    })
-                    await new_doc.save()
-                } else {
-                    if (value == server_db.title) {
-                        await reply(message, {
-                            color: discord.Colors.Red,
-                            description: config.maple_reply('error', 'El titulo debe tener de uno a cuarenta letras')
-                        })
-                        return 1
-                    }
-                    server_db.title = value
-                    await server_db.save();
-                }
-                await message.reply({
-                    embeds: [{
-                        color: discord.Colors.Green,
-                        description: config.maple_reply('success', 'El nuevo titulo de bienvenida sera el siguente:'),
-                        fields: [{
-                            name: 'Titulo [Ejemplo]',
-                            value: config.text_wl_vars(value, {
-                                user: message.author.globalName || message.author.username,
-                                server: message.guild?.name,
-                                count: message.guild.memberCount
-                            }).trim()
-                        }]
-                    }]
-                })
-                return 0
-            }
+            if (await text({
+                message,
+                server_db,
+                value,
+                sub_option,
+                target
+            }, {
+                index: 0,
+                msg: 'El titulo',
+                rank_maxval: 40
+            })) return 0;
+
+            if (await text({
+                message,
+                server_db,
+                value,
+                sub_option,
+                target
+            }, {
+                index: 1,
+                msg: 'La descripción',
+                rank_maxval: 60
+            })) return 0;
+
+            if (await text({
+                message,
+                server_db,
+                value,
+                sub_option,
+                target
+            }, {
+                index: 2,
+                msg: 'El mensaje',
+                rank_maxval: 400
+            })) return 0;
+
         }
 
         target = help.options[0].options[2]
 
-        // texto
+        // embed
         if (option.toLowerCase() == target.name || target.alias.includes(option.toLowerCase())) {
-            if(!sub_option || !['y', 'n'].includes(sub_option.toLowerCase())) {
+            if (!sub_option || !['y', 'n'].includes(sub_option.toLowerCase())) {
                 await reply(message, {
                     color: discord.Colors.Red,
                     description: config.maple_reply('error', 'Necesitas seleccionar una opcion <y | n>')
                 })
                 return 1
             }
-            value = sub_option.toLowerCase() == 'y' ? true: false
-            if(!server_db) {
+            value = sub_option.toLowerCase() == 'y' ? true : false
+            if (!server_db) {
                 new_doc = new config.Welcome({
                     guildId: message.guildId,
                     isEmbed: value
                 })
                 await new_doc.save()
             } else {
-                if(value == server_db.isEmbed) {
+                if (value == server_db.isEmbed) {
                     await reply(message, {
                         color: discord.Colors.Red,
                         description: config.maple_reply('error', 'El valor a establecer no puede ser igual al ya configurado')
@@ -248,8 +244,150 @@ async function main(client, message, args) {
             }
             await reply(message, {
                 color: discord.Colors.Red,
-                description: config.maple_reply('success', value ? 'Se mostrara la bienvenida como embed': 'Se mostrara la bienvenida como imagen')
+                description: config.maple_reply('success', value ? 'Se mostrara la bienvenida como embed' : 'Se mostrara la bienvenida como imagen')
             })
+            return 0
+        }
+
+        target = help.options[0].options[3]
+
+        // background
+        if (option.toLowerCase() == target.name || target.alias.includes(option.toLowerCase())) {
+            if (!sub_option) {
+                await reply(message, {
+                    color: discord.Colors.Red,
+                    description: config.maple_reply('error', 'Debes ingresar un color hexadecimal o una URL')
+                })
+                return 1
+            }
+            if (hex_regex().test(sub_option)) {
+                if (!server_db) {
+                    new_doc = new config.Welcome({
+                        guildId: message.guildId,
+                        background: {
+                            data: sub_option,
+                            type: 'color'
+                        }
+                    })
+                    await new_doc.save();
+                } else {
+                    if (sub_option == server_db.background?.data) {
+                        await reply(message, {
+                            color: discord.Colors.Red,
+                            description: config.maple_reply('error', 'El color a establecer es exactamente igual al ya establecido')
+                        })
+                        return 1
+                    }
+                    server_db.background.data = sub_option
+                    server_db.background.type = 'color'
+                    await server_db.save();
+                }
+                await reply(message, {
+                    color: parseInt(sub_option.replace('#', ''), 16),
+                    description: config.maple_reply('success', 'Se ha establecido el color correctamente')
+                })
+                return 0
+            }
+
+            try {
+                let url = new URL(sub_option);
+                let response = null;
+
+                if (!['http:', 'https:'].includes(url.protocol)) {
+                    await reply(message, {
+                        color: discord.Colors.Red,
+                        description: config.maple_reply('error', 'La URL de la imagen es inválida, necesita usar HTTP/HTTPS'),
+                        fields: [{
+                            name: 'Formato de URL',
+                            value: config.code_text('<http|https>://(www.)imagen.com/url_a_la_imagen.<jpg|jpeg|png|gif>')
+                        }]
+                    });
+                    return 1;
+                }
+
+                let extension = url.pathname.toLowerCase().split('.').pop();
+                if (!['jpg', 'jpeg', 'png', 'gif'].includes(extension)) {
+                    await reply(message, {
+                        color: discord.Colors.Red,
+                        description: config.maple_reply('error', 'La URL de la imagen es inválida, necesita tener extensión <jpg | jpeg | png | gif | webp>'),
+                        fields: [{
+                            name: 'Formato de URL',
+                            value: config.code_text('<http|https>://(www.)imagen.com/url_a_la_imagen.<jpg|jpeg|png|gif|webp>')
+                        }]
+                    });
+                    return 1;
+                }
+
+                let controller = new AbortController();
+                let timeout = setTimeout(() => controller.abort(), 5000);
+
+                try {
+
+                    response = await fetch(url, {
+                        method: 'HEAD',
+                        signal: controller.signal,
+                        redirect: 'follow'
+                    });
+
+                    clearTimeout(timeout);
+
+                    if (!response.ok || !response.headers.get('content-type')?.startsWith('image/')) {
+                        await reply(message, {
+                            color: discord.Colors.Red,
+                            description: config.maple_reply('error', 'La URL no apunta a una imagen válida o el servidor no está disponible')
+                        });
+                        return 1;
+                    }
+
+                } catch (fetchError) {
+                    clearTimeout(timeout);
+                    await reply(message, {
+                        color: discord.Colors.Red,
+                        description: config.maple_reply('critical', fetchError.name === 'AbortError'
+                            ? 'La verificación de la URL tardó demasiado'
+                            : 'No se pudo verificar la URL de la imagen')
+                    });
+                    return 1;
+                }
+
+            } catch (urlError) {
+                await reply(message, {
+                    color: discord.Colors.Red,
+                    description: config.maple_reply('error', 'No se ha detectado una URL válida o un color hexadecimal')
+                });
+                return 1;
+            }
+
+            if (!server_db) {
+                new_doc = new config.Welcome({
+                    guildId: message.guildId,
+                    background: {
+                        data: sub_option,
+                        type: 'image'
+                    }
+                })
+                await new_doc.save();
+            } else {
+                if (sub_option == server_db.background?.data) {
+                    await reply(message, {
+                        color: discord.Colors.Red,
+                        description: config.maple_reply('error', 'La URL a establecer es exactamente igual al ya establecida')
+                    })
+                    return 1
+                }
+                server_db.background.data = sub_option
+                server_db.background.type = 'image'
+                await server_db.save();
+            }
+
+            await reply(message, {
+                color: discord.Colors.Green,
+                description: config.maple_reply('success', 'Se ha establecido la imagen correctamente'),
+                image: {
+                    url: sub_option
+                }
+            })
+            
             return 0
         }
 
@@ -263,16 +401,6 @@ async function main(client, message, args) {
     }
 }
 
-async function reply(message, { color, description, fields = [] }) {
-    await message.reply({
-        embeds: [{
-            color,
-            description,
-            fields
-        }]
-    });
-}
-
 /**
  * @param {discord.Client} client
  * @param {discord.CommandInteraction} interaction
@@ -281,15 +409,84 @@ async function slash(client, interaction) {
     return 0
 }
 
-/**
- * @param {discord.Client} client 
- * @param {discord.Message} message 
- * @param {string[]} args 
- */
-async function text(client, message, args) {
-
+let entries = {
+    index: NaN,
+    rank_maxval: NaN,
+    msg: null
+}
+let confsg = {
+    message: null,
+    server_db: null,
+    value: null,
+    sub_option: null,
+    target: null
 }
 
+async function text(confs = confsg, obj = entries) {
+    let { message, server_db, value, sub_option, target } = confs
+    let { index, msg, rank_maxval } = obj
+    let new_doc = null;
+    if (sub_option.toLowerCase() == target[index].name || target[index].alias.includes(sub_option.toLowerCase())) {
+        if (!value) {
+            await reply(message, {
+                color: discord.Colors.Red,
+                description: config.maple_reply('error', 'Necesitas escribir ' + msg.toLowerCase() + ' para la bienvenida')
+            })
+            return 1
+        }
+        if (value.length < 1 || value.length > rank_maxval) {
+            await reply(message, {
+                color: discord.Colors.Red,
+                description: config.maple_reply('error', msg + ' debe tener de 1 a ' + rank_maxval + ' letras')
+            })
+            return 1
+        }
+        if (!server_db) {
+            new_doc = new config.Welcome({
+                guildId: message.guildId,
+            })
+            new_doc[target[index].name] = value
+            await new_doc.save()
+        } else {
+            if (value == server_db.title) {
+                await reply(message, {
+                    color: discord.Colors.Red,
+                    description: config.maple_reply('error', msg + ' no debe ser igual al valor que se establecio anteriormente')
+                })
+                return 1
+            }
+            server_db[target[index].name] = value
+            await server_db.save();
+        }
+        await message.reply({
+            embeds: [{
+                color: discord.Colors.Green,
+                description: config.maple_reply('success', msg + ' de bienvenida sera el siguente:'),
+                fields: [{
+                    name: msg.slice(3) + ' [Ejemplo]',
+                    value: config.text_wl_vars(value, {
+                        user: message.author.globalName || message.author.username,
+                        server: message.guild?.name,
+                        count: message.guild.memberCount
+                    }).trim()
+                }]
+            }]
+        })
+        return 0
+    }
+    return 0
+}
+
+async function reply(message, { color, description, fields = [], ...args }) {
+    await message.reply({
+        embeds: [{
+            color,
+            description,
+            fields,
+            ...args
+        }]
+    });
+}
 export {
     name,
     id,
