@@ -174,7 +174,7 @@ async function validate_channel(message, channelId) {
  * @param {string} text texto a establecer
  * @param {Object} variables es un objeto
  * @example
- * text_wl_vars('hola {user}', { user: 'Juan '});
+ * text_wl_vars('hola {user}', { user: 'Juan '})
  */
 function text_wl_vars(text, variables) {
     return text.replace(/\{(\w+)\}/g, (match, key) => {
@@ -192,14 +192,14 @@ function maple_reply(action, message) {
         '<:001:1012749015969968138>',
         '<:007:1012749027508498512>',
         '<:003:1012749019447033966>'
-    ];
+    ]
     let error = [
         '<:005:1012749024220155964>',
         '<:009:1012749030138335352>',
         '<:011:1012749035037261844>',
         '<:006:1012749025398759425>'
     ]
-    let text = null;
+    let text = null
     switch (action) {
         case 'wink':
             text = `> <:001:1012749015969968138> | ${message}`

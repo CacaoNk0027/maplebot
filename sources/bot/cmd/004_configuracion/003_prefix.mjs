@@ -31,7 +31,7 @@ let help = {
  * @param {string[]} args
  */
 async function main(client, message, args) {
-    let new_doc = null;
+    let new_doc = null
     let server_db = await config.Prefix.findOne({ guildId: message.guildId })
     if (!args[0]) {
         await message.reply({

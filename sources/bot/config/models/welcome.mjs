@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose from "mongoose"
 import hex from 'hex-color-regex'
 
 const welcomeSchema = new mongoose.Schema({

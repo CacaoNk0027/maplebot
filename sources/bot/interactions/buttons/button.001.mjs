@@ -37,7 +37,7 @@ async function main(client, interaction, message) {
                     `\t{url | hex} : url a imagen o color hexadecimal\n` +
                     `Ejemplo: ${await config.prefix(message.guildId)}wlc background #fff\n` +
                     `\n<color> : cambia los colores de la imagen\n` +
-                    `\t{msg | desc | tit} : mensaje, descripción y titulo\n` +
+                    `\t{desc | tit | border} : descripción, titulo y borde\n` +
                     `\t\t<hex> : color hexadecimal de X subopción\n` +
                     `Ejemplo: ${await config.prefix(message.guildId)}wlc color tit #000`
                     , 'html')

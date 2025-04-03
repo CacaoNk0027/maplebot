@@ -41,7 +41,7 @@ async function main(client, message, args) {
         validator.setUser(message.author)
     }
 
-    user = validator.getUser();
+    user = validator.getUser()
     if (user.id == message.author.id) {
         await message.reply({
             embeds: [{

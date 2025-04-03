@@ -1,6 +1,7 @@
 import * as discord from 'discord.js'
 import hex_regex from 'hex-color-regex'
 import fetch from 'node-fetch'
+import neekuro from 'neekuro'
 import * as config from '../../config/config.mjs'
 
 const name = 'welcome'
@@ -19,42 +20,120 @@ let help = {
             name: 'channel',
             alias: [],
             description: 'Menciona el canal donde se establecera el sistema de bienvenidas',
-            required: true,
+            required: false,
             options: []
         }, {
             name: 'text',
             alias: ['tx', 't', 'texto'],
             description: 'Modifica los textos de la bienvenida',
-            required: true,
+            required: false,
             options: [{
                 name: 'title',
                 alias: ['t', 'tit', 'titulo'],
                 description: 'Modifica el título de la bienvenida | por defecto si se deja vacio',
                 required: false,
-                options: []
+                options: [{
+                    name: '...args',
+                    alias: [],
+                    description: 'valor a establecer',
+                    required: true,
+                    options: []
+                }]
             }, {
                 name: 'description',
                 alias: ['desc', 'd', 'descripcion'],
                 description: 'Modifica la descripción de la bienvenida | por defecto si se deja vacio',
                 required: false,
-                options: []
+                options: [{
+                    name: '...args',
+                    alias: [],
+                    description: 'valor a establecer',
+                    required: true,
+                    options: []
+                }]
             }, {
                 name: 'message',
                 alias: ['m', 'msg', 'mensaje'],
                 description: 'Modifica el mensaje de la bienvenida | por defecto si se deja vacio',
                 required: false,
-                options: []
+                options: [{
+                    name: '...args',
+                    alias: [],
+                    description: 'valor a establecer',
+                    required: true,
+                    options: []
+                }]
             }]
         }, {
             name: 'embed',
             alias: ['isembed', 'is_embed', 'e'],
             description: 'Establece si la bienvenida se da en un embed',
             required: false,
-            options: []
+            options: [{
+                name: 'y | n',
+                alias: [],
+                description: 'valor a establecer',
+                required: true,
+                options: []
+            }]
         }, {
             name: 'background',
             alias: ['b', 'back', 'bk', 'fondo'],
             description: 'Añade un fondo a la imagen de bienvenida',
+            required: false,
+            options: [{
+                name: 'hexcolor | url',
+                alias: [],
+                description: 'valor a establecer',
+                required: true,
+                options: []
+            }]
+        }, {
+            name: 'color',
+            alias: ['c', 'col'],
+            description: 'Modifica el color de los textos',
+            required: false,
+            options: [{
+                name: 'title',
+                alias: ['t', 'tit', 'titulo'],
+                description: 'Modifica el color del titulo',
+                required: false,
+                options: [{
+                    name: 'hexcolor',
+                    alias: [],
+                    description: 'valor a establecer',
+                    required: true,
+                    options: []
+                }]
+            }, {
+                name: 'description',
+                alias: ['desc', 'd', 'descripcion'],
+                description: 'Modifica el color de la descripción',
+                required: false,
+                options: [{
+                    name: 'hexcolor',
+                    alias: [],
+                    description: 'valor a establecer',
+                    required: true,
+                    options: []
+                }]
+            },  {
+                name: 'border',
+                alias: ['b', 'borde'],
+                description: 'Modifica el color del borde del avatar',
+                required: false,
+                options: [{
+                    name: 'hexcolor',
+                    alias: [],
+                    description: 'valor a establecer',
+                    required: true,
+                    options: []
+                }]
+            }]
+        }, {
+            name: 'test',
+            alias: ['prueba'],
+            description: 'Prueba como se vera la bienvenida',
             required: false,
             options: []
         }]
@@ -105,10 +184,11 @@ async function main(client, message, args) {
 
     let [option, sub_option, ...values] = args
     let value = values.join(' ').trim()
-    let server_db = null;
-    let new_doc = null;
-    let target = null;
-    let aliases = null;
+    let server_db = null
+    let new_doc = null
+    let target = null
+    let aliases = null
+    let image = null
 
     try {
         let channelId = option.match(/\d{17,19}/)?.[0]
@@ -185,7 +265,7 @@ async function main(client, message, args) {
                 index: 0,
                 msg: 'El titulo',
                 rank_maxval: 40
-            })) return 0;
+            })) return 0
 
             if (await text({
                 message,
@@ -197,7 +277,7 @@ async function main(client, message, args) {
                 index: 1,
                 msg: 'La descripción',
                 rank_maxval: 60
-            })) return 0;
+            })) return 0
 
             if (await text({
                 message,
@@ -209,7 +289,7 @@ async function main(client, message, args) {
                 index: 2,
                 msg: 'El mensaje',
                 rank_maxval: 400
-            })) return 0;
+            })) return 0
 
         }
 
@@ -254,11 +334,15 @@ async function main(client, message, args) {
         // background
         if (option.toLowerCase() == target.name || target.alias.includes(option.toLowerCase())) {
             if (!sub_option) {
-                await reply(message, {
-                    color: discord.Colors.Red,
-                    description: config.maple_reply('error', 'Debes ingresar un color hexadecimal o una URL')
-                })
-                return 1
+                if(message.attachments.size > 0) {
+                    sub_option = message.attachments.first().url
+                } else {
+                    await reply(message, {
+                        color: discord.Colors.Red,
+                        description: config.maple_reply('error', 'Debes ingresar un color hexadecimal, una URL o cargar una imagen formato <png | jpg | jpeg>')
+                    })
+                    return 1
+                }
             }
             if (hex_regex().test(sub_option)) {
                 if (!server_db) {
@@ -269,7 +353,7 @@ async function main(client, message, args) {
                             type: 'color'
                         }
                     })
-                    await new_doc.save();
+                    await new_doc.save()
                 } else {
                     if (sub_option == server_db.background?.data) {
                         await reply(message, {
@@ -280,7 +364,7 @@ async function main(client, message, args) {
                     }
                     server_db.background.data = sub_option
                     server_db.background.type = 'color'
-                    await server_db.save();
+                    await server_db.save()
                 }
                 await reply(message, {
                     color: parseInt(sub_option.replace('#', ''), 16),
@@ -290,8 +374,8 @@ async function main(client, message, args) {
             }
 
             try {
-                let url = new URL(sub_option);
-                let response = null;
+                let url = new URL(sub_option)
+                let response = null
 
                 if (!['http:', 'https:'].includes(url.protocol)) {
                     await reply(message, {
@@ -301,11 +385,11 @@ async function main(client, message, args) {
                             name: 'Formato de URL',
                             value: config.code_text('<http|https>://(www.)imagen.com/url_a_la_imagen.<jpg|jpeg|png|gif>')
                         }]
-                    });
-                    return 1;
+                    })
+                    return 1
                 }
 
-                let extension = url.pathname.toLowerCase().split('.').pop();
+                let extension = url.pathname.toLowerCase().split('.').pop()
                 if (!['jpg', 'jpeg', 'png', 'gif'].includes(extension)) {
                     await reply(message, {
                         color: discord.Colors.Red,
@@ -314,12 +398,12 @@ async function main(client, message, args) {
                             name: 'Formato de URL',
                             value: config.code_text('<http|https>://(www.)imagen.com/url_a_la_imagen.<jpg|jpeg|png|gif|webp>')
                         }]
-                    });
-                    return 1;
+                    })
+                    return 1
                 }
 
-                let controller = new AbortController();
-                let timeout = setTimeout(() => controller.abort(), 5000);
+                let controller = new AbortController()
+                let timeout = setTimeout(() => controller.abort(), 5000)
 
                 try {
 
@@ -327,35 +411,35 @@ async function main(client, message, args) {
                         method: 'HEAD',
                         signal: controller.signal,
                         redirect: 'follow'
-                    });
+                    })
 
-                    clearTimeout(timeout);
+                    clearTimeout(timeout)
 
                     if (!response.ok || !response.headers.get('content-type')?.startsWith('image/')) {
                         await reply(message, {
                             color: discord.Colors.Red,
                             description: config.maple_reply('error', 'La URL no apunta a una imagen válida o el servidor no está disponible')
-                        });
-                        return 1;
+                        })
+                        return 1
                     }
 
                 } catch (fetchError) {
-                    clearTimeout(timeout);
+                    clearTimeout(timeout)
                     await reply(message, {
                         color: discord.Colors.Red,
                         description: config.maple_reply('critical', fetchError.name === 'AbortError'
                             ? 'La verificación de la URL tardó demasiado'
                             : 'No se pudo verificar la URL de la imagen')
-                    });
-                    return 1;
+                    })
+                    return 1
                 }
 
             } catch (urlError) {
                 await reply(message, {
                     color: discord.Colors.Red,
                     description: config.maple_reply('error', 'No se ha detectado una URL válida o un color hexadecimal')
-                });
-                return 1;
+                })
+                return 1
             }
 
             if (!server_db) {
@@ -366,7 +450,7 @@ async function main(client, message, args) {
                         type: 'image'
                     }
                 })
-                await new_doc.save();
+                await new_doc.save()
             } else {
                 if (sub_option == server_db.background?.data) {
                     await reply(message, {
@@ -377,7 +461,7 @@ async function main(client, message, args) {
                 }
                 server_db.background.data = sub_option
                 server_db.background.type = 'image'
-                await server_db.save();
+                await server_db.save()
             }
 
             await reply(message, {
@@ -391,6 +475,94 @@ async function main(client, message, args) {
             return 0
         }
 
+        target = help.options[0].options[4]
+
+        // color
+        if (option.toLowerCase() == target.name || target.alias.includes(option.toLowerCase())) {
+            aliases = [
+                target.options[0].name,
+                ...target.options[0].alias,
+                target.options[1].name,
+                ...target.options[1].alias,
+                target.options[2].name,
+                ...target.options[2].alias
+            ]
+            if (!sub_option || !aliases.includes(sub_option.toLowerCase())) {
+                await reply(message, {
+                    color: discord.Colors.Red,
+                    description: config.maple_reply('error', 'Necesitas seleccionar una opcion de texto <title | description>')
+                })
+                return 1
+            }
+
+            target = target.options
+
+            if(await colors({
+                message,
+                server_db,
+                value,
+                sub_option,
+                target
+            }, {
+                index: 0,
+                msg: 'el titulo'
+            })) return 0
+
+            if(await colors({
+                message,
+                server_db,
+                value,
+                sub_option,
+                target
+            }, {
+                index: 1,
+                msg: 'la descripcion'
+            })) return 0
+
+            if(await colors({
+                message,
+                server_db,
+                value,
+                sub_option,
+                target
+            }, {
+                index: 2,
+                msg: 'el borde'
+            })) return 0
+
+        }
+
+        target = help.options[0].options[5]
+
+        // test
+        if (option.toLowerCase() == target.name || target.alias.includes(option.toLowerCase())) {
+            if(!server_db) {
+                await reply(message, {
+                    color: discord.Colors.Red,
+                    description: config.maple_reply('error', 'No tienes un sistema de bienvenidas establecido')
+                })
+                return 1
+            }
+            if(server_db.isEmbed) {
+                return 0
+            }
+
+            image = new neekuro.Welcome()
+            .setAvatar(message.author.avatarURL(), {
+                border: server_db.colors?.border
+            })
+            .setBackground(server_db.background?.type, server_db.background?.data)
+            .setDescription(config.text_wl_vars(server_db.description, {
+                user: message.author.globalName || message.author.username
+            }), {
+                text_color: server_db.colors?.description
+            })
+            .setTitle(server_db.title, {
+                text_color: server_db.colors?.title
+            })
+
+            
+        }
     } catch (error) {
         console.error(error)
         await reply(message, {
@@ -399,6 +571,7 @@ async function main(client, message, args) {
         })
         return 1
     }
+    return 0
 }
 
 /**
@@ -425,7 +598,7 @@ let confsg = {
 async function text(confs = confsg, obj = entries) {
     let { message, server_db, value, sub_option, target } = confs
     let { index, msg, rank_maxval } = obj
-    let new_doc = null;
+    let new_doc = null
     if (sub_option.toLowerCase() == target[index].name || target[index].alias.includes(sub_option.toLowerCase())) {
         if (!value) {
             await reply(message, {
@@ -456,7 +629,7 @@ async function text(confs = confsg, obj = entries) {
                 return 1
             }
             server_db[target[index].name] = value
-            await server_db.save();
+            await server_db.save()
         }
         await message.reply({
             embeds: [{
@@ -477,6 +650,44 @@ async function text(confs = confsg, obj = entries) {
     return 0
 }
 
+async function colors(confs = confsg, obj = entries) {
+    let {message, server_db, sub_option, target, value} = confs
+    let {index, msg} = obj
+    if (sub_option.toLowerCase() == target[index].name || target[index].alias.includes(sub_option.toLowerCase())) {
+        if (!value) {
+            await reply(message, {
+                color: discord.Colors.Red,
+                description: config.maple_reply('error', 'Escribe un color hexadecimal')
+            })
+            return 1
+        }
+        if (hex_regex().test(value)) {
+            if (!server_db) {
+                new_doc = new config.Welcome({
+                    guildId: message.guildId
+                })
+                new_doc.colors[target[index].name] = value
+                await new_doc.save()
+            } else {
+                if (value == server_db.colors[target[index].name]) {
+                    await reply(message, {
+                        color: discord.Colors.Red,
+                        description: config.maple_reply('error', 'El color a establecer es exactamente igual al ya establecido')
+                    })
+                    return 1
+                }
+                server_db.colors[target[index].name] = value
+                await server_db.save()
+            }
+            await reply(message, {
+                color: parseInt(value.replace('#', ''), 16),
+                description: config.maple_reply('success', 'El color para '+msg+' se establecio correctamente')
+            })
+            return 0
+        }
+    }
+}
+
 async function reply(message, { color, description, fields = [], ...args }) {
     await message.reply({
         embeds: [{
@@ -485,7 +696,7 @@ async function reply(message, { color, description, fields = [], ...args }) {
             fields,
             ...args
         }]
-    });
+    })
 }
 export {
     name,
