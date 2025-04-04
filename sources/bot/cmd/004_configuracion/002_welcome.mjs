@@ -544,23 +544,47 @@ async function main(client, message, args) {
                 return 1
             }
             if(server_db.isEmbed) {
+                console.log('embed')
                 return 0
             }
 
+            console.log('imagen')
             image = new neekuro.Welcome()
-            .setAvatar(message.author.avatarURL(), {
+            .setAvatar(message.author.avatarURL({ extension: 'png' }), {
                 border: server_db.colors?.border
             })
             .setBackground(server_db.background?.type, server_db.background?.data)
             .setDescription(config.text_wl_vars(server_db.description, {
-                user: message.author.globalName || message.author.username
+                user: message.author.globalName || message.author.username,
+                server: message.guild.name,
+                count: message.guild.memberCount
             }), {
                 text_color: server_db.colors?.description
             })
-            .setTitle(server_db.title, {
+            .setTitle(config.text_wl_vars(server_db.title, {
+                user: message.author.globalName || message.author.username,
+                server: message.guild.name,
+                count: message.guild.memberCount
+            }), {
                 text_color: server_db.colors?.title
             })
 
+            image = new discord.AttachmentBuilder()
+            .setDescription(`@Maple Bot | Imagen de bienvenida para ${message.author.username}`)
+            .setName('welcome.png')
+            .setFile(await image.build())
+
+            await message.reply({
+                content: '> Este es un test de la imagen de bienvenida\n\n'+config.text_wl_vars(server_db.message, {
+                    user: message.author.globalName || message.author.username,
+                    server: message.guild.name,
+                    count: message.guild.memberCount,
+                    mention: `<@${message.author.id}>`
+                }),
+                files: [image]
+            })
+
+            return 0
             
         }
     } catch (error) {
