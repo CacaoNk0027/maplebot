@@ -64,9 +64,9 @@ fs.readdirSync(`${branch}/interactions`).forEach(dir => {
 })
 
 process.on('unhandledRejection', (error) => {
-    console.log(error)
+    console.error(error)
 })
 
 process.on('uncaughtException', (error) => {
-    console.log(error)
+    console.error(error)
 })

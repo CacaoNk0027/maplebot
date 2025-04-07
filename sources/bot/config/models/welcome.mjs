@@ -32,7 +32,7 @@ const welcomeSchema = new mongoose.Schema({
             enum: ['color', 'image'],
             default: 'color'
         },
-        data: {
+        value: {
             type: String,
             default: '#1a1d1f'
         }

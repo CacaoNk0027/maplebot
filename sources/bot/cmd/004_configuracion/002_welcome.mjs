@@ -323,7 +323,7 @@ async function main(client, message, args) {
                 await server_db.save()
             }
             await reply(message, {
-                color: discord.Colors.Red,
+                color: discord.Colors.Green,
                 description: config.maple_reply('success', value ? 'Se mostrara la bienvenida como embed' : 'Se mostrara la bienvenida como imagen')
             })
             return 0
@@ -355,14 +355,14 @@ async function main(client, message, args) {
                     })
                     await new_doc.save()
                 } else {
-                    if (sub_option == server_db.background?.data) {
+                    if (sub_option == server_db.background?.value) {
                         await reply(message, {
                             color: discord.Colors.Red,
                             description: config.maple_reply('error', 'El color a establecer es exactamente igual al ya establecido')
                         })
                         return 1
                     }
-                    server_db.background.data = sub_option
+                    server_db.background.value = sub_option
                     server_db.background.type = 'color'
                     await server_db.save()
                 }
@@ -452,14 +452,14 @@ async function main(client, message, args) {
                 })
                 await new_doc.save()
             } else {
-                if (sub_option == server_db.background?.data) {
+                if (sub_option == server_db.background?.value) {
                     await reply(message, {
                         color: discord.Colors.Red,
                         description: config.maple_reply('error', 'La URL a establecer es exactamente igual al ya establecida')
                     })
                     return 1
                 }
-                server_db.background.data = sub_option
+                server_db.background.value = sub_option
                 server_db.background.type = 'image'
                 await server_db.save()
             }
@@ -544,16 +544,51 @@ async function main(client, message, args) {
                 return 1
             }
             if(server_db.isEmbed) {
-                console.log('embed')
+                let embed = new discord.EmbedBuilder()
+                .setAuthor({
+                    name: message.author.globalName || message.author.username,
+                    iconURL: message.author.avatarURL({ forceStatic: false })
+                })
+            
+                if(server_db.background.type == 'color') {
+                    embed.setColor(parseInt(server_db.background?.value.replace('#', ''), 16))
+                } else {
+                    embed.setColor(config.random_color())
+                    .setImage(server_db.background?.value)
+                }
+
+                embed.setDescription(config.text_wl_vars(server_db.description, {
+                    user: message.author.globalName || message.author.username,
+                    server: message.guild.name,
+                    count: message.guild.memberCount
+                }))
+                .setFooter({
+                    text: message.guild.name,
+                    iconURL: message.guild.iconURL({ forceStatic: false })
+                })
+                .setTitle(config.text_wl_vars(server_db.title, {
+                    user: message.author.globalName || message.author.username,
+                    server: message.guild.name,
+                    count: message.guild.memberCount
+                }))
+
+                await message.reply({
+                    content: '> Este es un test de la imagen de bienvenida\n\n'+config.text_wl_vars(server_db.message, {
+                        user: message.author.globalName || message.author.username,
+                        server: message.guild.name,
+                        count: message.guild.memberCount,
+                        mention: `<@${message.author.id}>`
+                    }),
+                    embeds: [embed]
+                })
                 return 0
             }
 
-            console.log('imagen')
             image = new neekuro.Welcome()
             .setAvatar(message.author.avatarURL({ extension: 'png' }), {
                 border: server_db.colors?.border
             })
-            .setBackground(server_db.background?.type, server_db.background?.data)
+            .setBackground(server_db.background?.type, server_db.background?.value)
             .setDescription(config.text_wl_vars(server_db.description, {
                 user: message.author.globalName || message.author.username,
                 server: message.guild.name,
@@ -664,7 +699,8 @@ async function text(confs = confsg, obj = entries) {
                     value: config.text_wl_vars(value, {
                         user: message.author.globalName || message.author.username,
                         server: message.guild?.name,
-                        count: message.guild.memberCount
+                        count: message.guild.memberCount,
+                        mention: `<@${message.author.id}>`
                     }).trim()
                 }]
             }]

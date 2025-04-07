@@ -98,7 +98,7 @@ async function main(client, message, args) {
                 embeds: [embed]
             })
         } catch (error) {
-            console.log(error)
+            console.error(error)
             await message.reply({ embeds: [embed.setDescription('> El emoji debe ser de este servidor para poder obtener informacion del mismo.')] })
             return 1
         }
