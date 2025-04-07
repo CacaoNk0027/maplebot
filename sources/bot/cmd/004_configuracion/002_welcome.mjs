@@ -589,20 +589,25 @@ async function main(client, message, args) {
                 border: server_db.colors?.border
             })
             .setBackground(server_db.background?.type, server_db.background?.value)
-            .setDescription(config.text_wl_vars(server_db.description, {
-                user: message.author.globalName || message.author.username,
-                server: message.guild.name,
-                count: message.guild.memberCount
-            }), {
-                text_color: server_db.colors?.description
-            })
-            .setTitle(config.text_wl_vars(server_db.title, {
-                user: message.author.globalName || message.author.username,
-                server: message.guild.name,
-                count: message.guild.memberCount
-            }), {
-                text_color: server_db.colors?.title
-            })
+
+            if(server_db.description) {
+                image.setDescription(config.text_wl_vars(server_db.description, {
+                    user: message.author.globalName || message.author.username,
+                    server: message.guild.name,
+                    count: message.guild.memberCount
+                }), {
+                    text_color: server_db.colors?.description
+                })
+            }
+            if(server_db.title) {
+                image.setTitle(config.text_wl_vars(server_db.title, {
+                    user: message.author.globalName || message.author.username,
+                    server: message.guild.name,
+                    count: message.guild.memberCount
+                }), {
+                    text_color: server_db.colors?.title
+                })
+            }
 
             image = new discord.AttachmentBuilder()
             .setDescription(`@Maple Bot | Imagen de bienvenida para ${message.author.username}`)
@@ -713,6 +718,7 @@ async function text(confs = confsg, obj = entries) {
 async function colors(confs = confsg, obj = entries) {
     let {message, server_db, sub_option, target, value} = confs
     let {index, msg} = obj
+    let new_doc = null
     if (sub_option.toLowerCase() == target[index].name || target[index].alias.includes(sub_option.toLowerCase())) {
         if (!value) {
             await reply(message, {

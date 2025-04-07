@@ -177,7 +177,8 @@ async function validate_channel(message, channelId) {
  * text_wl_vars('hola {user}', { user: 'Juan '})
  */
 function text_wl_vars(text, variables) {
-    return text.replace(/\{(\w+)\}/g, (match, key) => {
+    if(!text) return null;
+    return text?.replace(/\{(\w+)\}/g, (match, key) => {
         return variables[key] != undefined ? variables[key] : match
     })
 }
