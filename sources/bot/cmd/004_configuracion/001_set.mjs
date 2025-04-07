@@ -42,8 +42,12 @@ let help = {
 async function main(client, message, args) {
     let option = args[0].toLowerCase()
     if(!option) return 0
-    if(option == 'prefix') {
+    if(help.options[0].name == option || help.options[0].alias.includes(option)) {
         cmd_prefix.main(client, message, args.slice(1))
+        return 0
+    } 
+    if(help.options[1].name == option || help.options[1].alias.includes(option)) {
+        cmd_welcome.main(client, message, args.slice(1))
         return 0
     } 
     return 0

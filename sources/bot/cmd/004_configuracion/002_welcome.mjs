@@ -14,7 +14,7 @@ let help = {
     options: [{
         name: 'options',
         alias: [],
-        description: 'selecciona una de las opciones para el sistema de bienvenidas',
+        description: 'para ver las opciones disponibles escribe el comando welcome',
         required: true,
         options: [{
             name: 'channel',
@@ -146,8 +146,8 @@ let help = {
             discord.PermissionFlagsBits.ManageChannels
         ]
     },
-    inactive: true,
-    reason: 'comando en desarrollo',
+    inactive: false,
+    reason: null,
     nsfw: false,
     cooldown: 3
 }
@@ -297,14 +297,14 @@ async function main(client, message, args) {
 
         // embed
         if (option.toLowerCase() == target.name || target.alias.includes(option.toLowerCase())) {
-            if (!sub_option || !['y', 'n'].includes(sub_option.toLowerCase())) {
+            if (!sub_option || !['y', 'n', 'true', 'false', 's', 'si', 'no', 'yes', 't', 'f', 'verdadero', 'falso'].includes(sub_option.toLowerCase())) {
                 await reply(message, {
                     color: discord.Colors.Red,
                     description: config.maple_reply('error', 'Necesitas seleccionar una opcion <y | n>')
                 })
                 return 1
             }
-            value = sub_option.toLowerCase() == 'y' ? true : false
+            value = ['y', 'true', 's', 'si', 'yes', 't', 'verdadero'].includes(sub_option.toLowerCase()) ? true : false
             if (!server_db) {
                 new_doc = new config.Welcome({
                     guildId: message.guildId,
