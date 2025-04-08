@@ -10,4 +10,8 @@ router.get('/', async (req, res) => {
     res.render('index.html')
 })
 
+router.get('/kmzkuro', async (req, res) => {
+    res.render('kmzkuro.html')
+})
+
 export default router
