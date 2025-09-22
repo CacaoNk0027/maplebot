@@ -3,6 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const discord_js_1 = require("discord.js");
 const event_handler_1 = require("../config/event_handler");
 const set_commands_1 = require("../../bot/config/set_commands");
+const packageJson = require('../../../package.json');
 class MapleBot {
     client;
     constructor() {
@@ -20,7 +21,7 @@ class MapleBot {
             await (0, set_commands_1.set_commands)(this.client.application?.id || this.client.user?.id || process.env['bot_id']);
             this.client.user?.setPresence({
                 activities: [{
-                        name: 'Hola! soy Maple',
+                        name: `m!maple 🍁 | ${packageJson.version} | Dr. Syndrome`,
                         type: discord_js_1.ActivityType.Playing
                     }],
                 status: 'idle'
