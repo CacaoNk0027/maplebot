@@ -8,6 +8,8 @@ const cors_1 = __importDefault(require("cors"));
 const ejs_1 = __importDefault(require("ejs"));
 const sessions_1 = __importDefault(require("./middlewares/sessions"));
 const router_1 = __importDefault(require("./router/router"));
+const db_connect_1 = __importDefault(require("shared/config/db_connect"));
+(0, db_connect_1.default)(process.env.URI_NEEKURO);
 const app = (0, express_1.default)();
 function main() {
     app.set('port', process.env.PORT || 449);

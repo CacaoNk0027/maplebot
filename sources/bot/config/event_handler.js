@@ -60,7 +60,7 @@ async function events(client) {
     }
 }
 async function private_events(client) {
-    let private_branch = 'dist/bot/private';
+    let private_branch = 'sources/bot/private';
     try {
         let files = (0, fs_1.readdirSync)(private_branch + '/events').filter(f => f.endsWith('.js'));
         for (let file of files) {

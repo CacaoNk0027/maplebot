@@ -15,7 +15,7 @@ let managers = [
     "801603753631285308"
 ];
 exports.theme_color = 0xfcbc6d;
-exports.branch = "dist/bot";
+exports.branch = "sources/bot";
 function is_allowed_id(id) {
     return managers.includes(id);
 }

@@ -65,7 +65,7 @@ async function get_data() {
 }
 async function get_private_commands_data() {
     try {
-        let private_branch = 'dist/bot/private';
+        let private_branch = 'sources/bot/private';
         let folders = (0, fs_1.readdirSync)(`${private_branch}/cmd`);
         await Promise.all(folders.map(async (dir) => {
             let files = (0, fs_1.readdirSync)(`${private_branch}/cmd/${dir}`).filter(f => f.endsWith('.js'));

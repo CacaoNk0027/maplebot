@@ -99,7 +99,7 @@ const command = {
                                 value: `Creador | kmz_kuro\nCreación | <t:${Math.floor(Date.now() / 1000)}:F>\nID | ${message.client.user?.id || 'sn/info'}\nVersión | ${packageJson.version || 'sn/info'}`
                             }, {
                                 name: 'Estadísticas 📊',
-                                value: `Servidores | ${totalGuilds}\nUsuarios | ${totalMembers}\nComandos | **${commands.size}** totales (**${commands.filter(c => c.data.inactive == false).size}** activos, **${commands.filter(c => c.data.inactive == true).size}** inactivos)\nTiempo de actividad | **${moment_1.default.duration(message.client.uptime).format('d [días], h [horas], m [minutos], s [segundos]')}**`,
+                                value: `Servidores | ${totalGuilds}\nUsuarios | ${totalMembers}\nComandos | **${commands.size}** totales (**${commands.filter(c => c.data.inactive == false).size}** activos, **${commands.filter(c => c.data.inactive == true).size}** inactivos)\nTiempo de actividad | **${moment_1.default.duration(message.client.uptime).humanize()}**`,
                                 inline: true
                             }, {
                                 name: 'Datos específicos 🔍',
