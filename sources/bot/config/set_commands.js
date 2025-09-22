@@ -89,7 +89,7 @@ async function get_private_commands_data() {
     }
 }
 async function set_commands(clientId) {
-    const rest = new discord_js_1.REST().setToken(process.env['bot_token']);
+    const rest = new discord_js_1.REST().setToken(process.env['BOT_TOKEN']);
     await get_data().then(async () => {
         let commands = [...collection.values()];
         try {

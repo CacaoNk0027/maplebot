@@ -7,7 +7,7 @@ const discord_js_1 = require("discord.js");
 const dotenv_1 = __importDefault(require("dotenv"));
 dotenv_1.default.config({ path: 'config/.env' });
 const manager = new discord_js_1.ShardingManager('dist/bot/client/bot.js', {
-    token: process.env['bot_token'],
+    token: process.env['BOT_TOKEN'],
     totalShards: 'auto'
 });
 manager.on('shardCreate', (shard) => {

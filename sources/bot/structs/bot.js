@@ -16,7 +16,7 @@ class MapleBot {
     async start() {
         try {
             await this.handlers();
-            await this.client.login(process.env['bot_token']);
+            await this.client.login(process.env['BOT_TOKEN']);
             await (0, set_commands_1.set_commands)(this.client.application?.id || this.client.user?.id || process.env['bot_id']);
             this.client.user?.setPresence({
                 activities: [{
