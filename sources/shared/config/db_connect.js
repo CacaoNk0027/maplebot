@@ -14,7 +14,7 @@ async function connectDB(URI) {
             serverSelectionTimeoutMS: (0, ms_1.default)('20s')
         });
         ping = await cluster.connection.db?.admin().ping();
-        console.info('ping a base de datos: Status', ping);
+        console.info(`[${cluster.connection.db?.databaseName}] ping a base de datos: Status`, ping);
     }
     catch (error) {
         console.error('⛔ Error crítico [BOT_DATABASE]:', error);
