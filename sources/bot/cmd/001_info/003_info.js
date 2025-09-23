@@ -13,7 +13,7 @@ const packageJson = require('../../../../package.json');
 const command = {
     data: new command_data_1.default()
         .setName('info')
-        .setAliases('botinfo', 'maplebot', 'infobot', 'bot', 'informacion')
+        .setAliases('botinfo', 'maplebot', 'infobot', 'bot', 'informacion', 'maple')
         .setId('003', '001')
         .setDescription('Aprende más sobre mí y mis estadísticas')
         .setDescriptionLocalization('en-US', 'Learn more about me and my statistics'),
