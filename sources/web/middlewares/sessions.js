@@ -12,7 +12,7 @@ function sessions(app) {
         resave: false,
         saveUninitialized: false,
         store: connect_mongo_1.default.create({
-            mongoUrl: process.env['URI_DBNEEKURO'],
+            mongoUrl: process.env['URI_NEEKURO'],
             collectionName: "websessions"
         }),
         cookie: {
