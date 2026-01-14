@@ -22,5 +22,10 @@
         "emoji": "<:staff:1262144147687477310>",
         "description": "Comandos para configurar cosas o sistemas en tu servidor",
         "id": "004"
+    }, {
+        "name": "Acción",
+        "emoji": "<:010:1012749033292431430>",
+        "description": "Comandos con los que puedes interactuar con otros usuarios",
+        "id": "005"
     }
 ]

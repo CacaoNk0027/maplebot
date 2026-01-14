@@ -7,6 +7,7 @@ const discord_js_1 = require("discord.js");
 const config_1 = require("../../bot/config/config");
 const command_handler_1 = require("../../bot/config/command_handler");
 const Guild_1 = __importDefault(require("../../shared/bot/models/Guild"));
+const User_1 = __importDefault(require("../../shared/bot/models/User"));
 const cooldown = new discord_js_1.Collection();
 const warnings = new discord_js_1.Collection();
 const event = {
@@ -37,14 +38,14 @@ const event = {
             let permissions = command.data.bot_permissions.filter(p => !message.guild?.members.me?.permissions.has(p));
             if (permissions.length > 0) {
                 await message.reply({
-                    content: `Requiero de los siguentes permisos para ejecutar este comando:\n${(0, config_1.code_text)(permissions.join(' '))}`
+                    content: `Requiero de los siguientes permisos para ejecutar este comando:\n${(0, config_1.code_text)(permissions.join(' '))}`
                 });
                 return;
             }
             permissions = command.data.user_permissions.filter(p => !message.member?.permissions.has(p));
             if (permissions.length > 0) {
                 await message.reply({
-                    content: `No puedes ejecutar este comando sin los siguentes permisos:\n${(0, config_1.code_text)(permissions.join(' '))}`
+                    content: `No puedes ejecutar este comando sin los siguientes permisos:\n${(0, config_1.code_text)(permissions.join(' '))}`
                 });
                 return;
             }
@@ -76,6 +77,9 @@ const event = {
             setTimeout(() => {
                 timeStamp?.delete(message.author.id);
             }, cooldownAmount);
+            if (command.data.leveling) {
+                await User_1.default.updateLevel(message.author.id);
+            }
             await command.message(message, args);
         }
         catch (error) {

@@ -10,6 +10,7 @@ exports.user_flags = user_flags;
 exports.send = send;
 exports.reply = reply;
 exports.rand = rand;
+exports.rp_embed = rp_embed;
 const discord_js_1 = require("discord.js");
 let managers = [
     "801603753631285308"
@@ -132,4 +133,15 @@ function reply(msg_type, description) {
 }
 function rand(list) {
     return list[Math.floor(Math.random() * list.length)];
+}
+async function rp_embed(target, message, gif) {
+    let image = gif.getUrl() || '';
+    await target.reply({
+        embeds: [{
+                description: message,
+                image: { url: image },
+                color: random_color(),
+                footer: { text: `Name | ${gif.getAnime()}` }
+            }]
+    });
 }

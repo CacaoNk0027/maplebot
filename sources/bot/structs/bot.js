@@ -3,9 +3,18 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const discord_js_1 = require("discord.js");
 const event_handler_1 = require("../config/event_handler");
 const set_commands_1 = require("../../bot/config/set_commands");
+const config_1 = require("../../bot/config/config");
 const packageJson = require('../../../package.json');
 class MapleBot {
     client;
+    precences = [
+        "Todo bien? todo correcto?",
+        "Te bendigo Dr. Syndrome",
+        "Actualizacion en curso...",
+        "Oye, no nada",
+        "Miyabi my beloved",
+        "Programando Typescript"
+    ];
     constructor() {
         this.client = new discord_js_1.Client({
             intents: 33283,
@@ -21,7 +30,7 @@ class MapleBot {
             await (0, set_commands_1.set_commands)(this.client.application?.id || this.client.user?.id || process.env['bot_id']);
             this.client.user?.setPresence({
                 activities: [{
-                        name: `m!maple 🍁 | ${packageJson.version} | Dr. Syndrome`,
+                        name: `m!maple 🍁 | ${packageJson.version} | ${(0, config_1.rand)(this.precences)}`,
                         type: discord_js_1.ActivityType.Playing
                     }],
                 status: 'idle'

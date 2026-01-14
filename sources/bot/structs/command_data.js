@@ -10,6 +10,7 @@ class CommandData extends discord_js_1.SlashCommandBuilder {
     cooldown;
     bot_permissions;
     user_permissions;
+    leveling;
     constructor() {
         super();
         this.alias = [];
@@ -20,6 +21,7 @@ class CommandData extends discord_js_1.SlashCommandBuilder {
         this.cooldown = 3;
         this.bot_permissions = ['SendMessages', 'EmbedLinks', 'ReadMessageHistory'];
         this.user_permissions = [];
+        this.leveling = false;
     }
     setAliases(...aliases) {
         this.alias = aliases;
@@ -48,6 +50,10 @@ class CommandData extends discord_js_1.SlashCommandBuilder {
     }
     setUserPermissions(...permissions) {
         this.user_permissions = [...this.user_permissions, ...permissions];
+        return this;
+    }
+    validForLeveling() {
+        this.leveling = true;
         return this;
     }
 }
