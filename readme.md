@@ -34,7 +34,7 @@ En Linux y macOS, usa `cp .env.example .env` en lugar de `Copy-Item`.
 | `CORS_ORIGINS` | Orígenes permitidos, separados por comas; opcional. |
 | `NODE_ENV` | Entorno de ejecución, por ejemplo `production`. |
 
-No publiques `.env` ni ninguno de sus valores.
+`.env` nunca se publica, ni ninguno de sus valores.
 
 ## Verificación y despliegue
 
