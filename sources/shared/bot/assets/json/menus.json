@@ -1,0 +1,31 @@
+[
+    {
+        "name": "Información",
+        "emoji": "📝",
+        "description": "Comandos para ver información relevante",
+        "id": "001"
+    },
+    {
+        "name": "Utilidades",
+        "emoji": "<:tea:1533702747033964615>",
+        "description": "Comandos de utilidad, usados en el dia al dia",
+        "id": "002"
+    },
+    {
+        "name": "Moderación",
+        "emoji": "<:moderator:1533961001966239795>",
+        "description": "Comandos para llevar un control dentro de tu servidor",
+        "id": "003"
+    },
+    {
+        "name": "Configuración",
+        "emoji": "<:Dis_settings:888231676533153864>",
+        "description": "Comandos para configurar cosas o sistemas en tu servidor",
+        "id": "004"
+    }, {
+        "name": "Acción",
+        "emoji": "<:kiss:1533702798372245565>",
+        "description": "Comandos con los que puedes interactuar con otros usuarios",
+        "id": "005"
+    }
+]

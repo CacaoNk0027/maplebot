@@ -1,5 +1,5 @@
-node_modules
-_deprecated
-sources/config/.env
-.vscode
+/.env
+/node_modules
 /package-lock.json
+/.vscode
+*.log
