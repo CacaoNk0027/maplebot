@@ -1,6 +1,6 @@
 {
   "name": "maplebot",
-  "version": "4.2.0",
+  "version": "4.2.1",
   "description": "Bot multifuncional de Discord con panel web, distribuido como JavaScript compilado.",
   "main": "sources/index.js",
   "type": "commonjs",
