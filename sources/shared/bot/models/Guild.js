@@ -21,6 +21,10 @@ const guild_schema = new mongoose_1.default.Schema({
     welcome: {
         type: mongoose_1.default.Types.ObjectId,
         ref: 'Welcome'
+    },
+    farewell: {
+        type: mongoose_1.default.Types.ObjectId,
+        ref: 'Farewell'
     }
 }, {
     statics: {

@@ -34,11 +34,4 @@ router.post('/', async (req, res) => {
         return res.status(500).json({ message: 'Error interno del servidor', code: res.statusCode, data: {} });
     }
 });
-router.post('/reveal', (_req, res) => {
-    return res.status(410).json({
-        message: 'Por seguridad los tokens no se pueden revelar. Genera uno nuevo si lo perdiste.',
-        code: res.statusCode,
-        data: {}
-    });
-});
 exports.default = router;

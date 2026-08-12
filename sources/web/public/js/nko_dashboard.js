@@ -66,8 +66,17 @@ document.addEventListener('DOMContentLoaded', () => {
     })
 })
 
-document.getElementById('generate-token').addEventListener('click', async () => {
-    let password = prompt('ingresa tu contraseña para generar un token')
+const tokenDisplay = document.getElementById('token-display')
+const generateTokenButton = document.getElementById('generate-token')
+let hideTokenTimeout
+
+function hideToken() {
+    tokenDisplay.textContent = '********'
+    hideTokenTimeout = undefined
+}
+
+generateTokenButton.addEventListener('click', async () => {
+    let password = prompt('Ingresa tu contraseña para generar un token. Si ya tienes uno, sera reemplazado.')
     if (!password) return alert('no se puede generar un token sin la contraseña')
 
     try {
@@ -81,44 +90,18 @@ document.getElementById('generate-token').addEventListener('click', async () => 
 
         let data = await response.json()
         if (response.ok) {
-            document.getElementById('token-display').textContent = "********"
-            document.getElementById('reveal-token').style.display = 'block'
-            alert('Token generado exitosamente')
-            document.getElementById('generate-token').textContent = 'Regenerar token'
+            if (hideTokenTimeout) clearTimeout(hideTokenTimeout)
+
+            tokenDisplay.textContent = data.data.token
+            hideTokenTimeout = setTimeout(hideToken, 30_000)
+            generateTokenButton.textContent = 'Regenerar token'
+            alert('Token generado. Copialo ahora: se ocultara en 30 segundos y no podra volver a mostrarse.')
         } else {
             alert(data.message)
         }
     } catch (error) {
         console.error(error)
         alert('Error al generar el token.')
-    }
-})
-
-document.getElementById('reveal-token').addEventListener('click', async () => {
-    let password = prompt('ingresa tu contraseña para generar un token')
-    if (!password) return alert('no se puede generar un token sin la contraseña')
-
-    try {
-        let response = await fetch('/api/tokens/reveal', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ password })
-        })
-
-        let data = await response.json()
-        if (response.ok) {
-            document.getElementById('token-display').textContent = data.data.token
-            document.getElementById('reveal-token').disabled = true
-            document.getElementById('reveal-token').style.opacity = 0.5
-            document.getElementById('reveal-token').style.cursor = 'not-allowed'
-        } else {
-            alert(data.message)
-        }
-    } catch (error) {
-        console.error(error)
-        alert('Error al revelar el token.')
     }
 })
 

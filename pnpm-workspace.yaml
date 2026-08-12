@@ -1,2 +1,2 @@
 allowBuilds:
-  canvas: true
+  canvas: set this to true or false

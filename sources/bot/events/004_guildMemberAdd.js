@@ -48,7 +48,7 @@ const gma = {
                     embed.setImage(welcome.background?.value || null);
                 }
                 await channel.send({
-                    content: replace_in_message(welcome.message || '{user}'),
+                    content: replace_in_message(welcome.message || '**{user}** ha ingresado al servidor!'),
                     embeds: [embed],
                     allowedMentions: { parse: ['users'] }
                 });
@@ -81,7 +81,7 @@ const gma = {
                 let attachment = new discord_js_1.AttachmentBuilder(await image.build(), { name: 'welcome.png' })
                     .setDescription('Imagen de bienvenida generada');
                 await channel.send({
-                    content: replace_in_message(welcome.message || `{user}`),
+                    content: replace_in_message(welcome.message || `**{user}** ha ingresado al servidor!`),
                     files: [attachment],
                     allowedMentions: { parse: ['users'] }
                 });

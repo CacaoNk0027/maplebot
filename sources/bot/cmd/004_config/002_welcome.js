@@ -15,13 +15,17 @@ const command = {
         .setName('welcome')
         .setAliases('bienvenida', 'set-welcome', 'setwlc', 'wlc')
         .setId('002', '004')
-        .setDescription('Configura el mensaje de bienvenida para nuevos miembros')
+        .setDescription('Configura el mensaje de bienvenida para nuevos usuarios')
         .setDescriptionLocalization('en-US', 'Set the welcome message for new members')
         .setUserPermissions('ManageGuild')
         .setBotPermissions('AttachFiles')
         .setContexts(discord_js_1.InteractionContextType.Guild)
         .setCooldown(3)
-        .ignoreSlash(),
+        .ignoreSlash()
+        .addSubcommand(new discord_js_1.SlashCommandSubcommandBuilder()
+        .setName('test')
+        .setDescription('Prueba el sistema de bienvenidas establecido')
+        .setDescriptionLocalization('en-US', 'Execute a test for the system')),
     exec: async (interaction) => { },
     message: async (message, args) => {
         if (args[0]?.toLowerCase() == 'test') {
