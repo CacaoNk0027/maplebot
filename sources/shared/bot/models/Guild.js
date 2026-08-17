@@ -25,6 +25,11 @@ const guild_schema = new mongoose_1.default.Schema({
     farewell: {
         type: mongoose_1.default.Types.ObjectId,
         ref: 'Farewell'
+    },
+    language: {
+        type: String,
+        enum: ['es-ES', 'en-US'],
+        default: 'es-ES'
     }
 }, {
     statics: {

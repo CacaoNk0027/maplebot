@@ -72,17 +72,28 @@ async function send(target, type, content, is_embed) {
         'warn': discord_js_1.Colors.Yellow,
         'error': discord_js_1.Colors.Red
     };
-    if (target instanceof discord_js_1.ChatInputCommandInteraction) {
-        return is_embed ? await target.reply({
+    if (!(target instanceof discord_js_1.Message)) {
+        const payload = is_embed ? {
             embeds: [{
                     color: color[type],
                     description: reply(type, content)
                 }],
             flags: ['Ephemeral']
-        }) : await target.reply({
+        } : {
             content,
             flags: ['Ephemeral']
-        });
+        };
+        if (target.deferred) {
+            if (target.isMessageComponent()) {
+                return await target.followUp(payload);
+            }
+            const { flags, ...editPayload } = payload;
+            return await target.editReply(editPayload);
+        }
+        if (target.replied) {
+            return await target.followUp(payload);
+        }
+        return await target.reply(payload);
     }
     else {
         return is_embed ? await target.reply({

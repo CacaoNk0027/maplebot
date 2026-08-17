@@ -1,12 +1,196 @@
-<!DOCTYPE html>
-<html lang="en">
+<!doctype html>
+<html lang="es">
+
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NexaTDC | inicial</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#f3a94d">
+    <meta name="description"
+        content="Maple es un bot de Discord multipropósito con moderación, utilidades, acciones y bienvenidas personalizables.">
+    <meta property="og:site_name" content="Maple Bot">
+    <meta property="og:title" content="Maple Bot — Tu comunidad, más acogedora">
+    <meta property="og:description" content="Configura, modera y dale personalidad a tu servidor con Maple.">
+    <meta property="og:image" content="/images/mapleavatar.webp">
+    <title>Maple Bot — Tu comunidad, más acogedora</title>
+    <link rel="icon" href="/favicon.ico">
+    <link rel="stylesheet" href="/css/index.css">
 </head>
+
 <body>
-    <h1>Pagina en desarrollo</h1>
-    <p>esta es la pagina inicial</p>
+    <header class="site-header" data-header>
+        <div class="nav-shell">
+            <a class="brand" href="#inicio" aria-label="Maple, página principal">
+                <img src="/images/mapleavatar.webp" alt="" width="44" height="44">
+                <span>Maple</span>
+            </a>
+
+            <button class="menu-toggle" type="button" aria-label="Abrir menú" aria-expanded="false"
+                aria-controls="main-navigation" data-menu-toggle>
+                <span></span><span></span><span></span>
+            </button>
+
+            <nav class="main-nav" id="main-navigation" aria-label="Navegación principal" data-navigation>
+                <a href="#funciones">Funciones</a>
+                <a href="#historia">Historia</a>
+                <a href="#comunidad">Comunidad</a>
+                <a href="https://discord.gg/E3kzS5cYzN" target="_blank" rel="noreferrer">Soporte</a>
+            </nav>
+
+            <a class="button button-small header-action"
+                href="https://discord.com/oauth2/authorize?client_id=821452429409124451&amp;scope=bot%20applications.commands"
+                target="_blank" rel="noreferrer">
+                Invitar a Maple
+            </a>
+        </div>
+    </header>
+
+    <main>
+        <section class="hero" id="inicio">
+            <div class="hero-glow hero-glow-one"></div>
+            <div class="hero-glow hero-glow-two"></div>
+            <div class="page-shell hero-layout">
+                <div class="hero-copy reveal">
+                    <p class="eyebrow"><span></span> Maple ya está aquí</p>
+                    <h1>Haz que tu comunidad se sienta como en casa.</h1>
+                    <p class="hero-description">Maple te ayuda a recibir, organizar y cuidar tu servidor de Discord con
+                        herramientas fáciles de configurar y una personalidad muy suya.</p>
+                    <div class="hero-actions">
+                        <a class="button"
+                            href="https://discord.com/oauth2/authorize?client_id=821452429409124451&amp;scope=bot%20applications.commands"
+                            target="_blank" rel="noreferrer">Añadir a Discord</a>
+                        <a class="button button-secondary" href="#funciones">Conocer a Maple</a>
+                    </div>
+                    <ul class="hero-notes" aria-label="Características principales">
+                        <li>Configuración sencilla</li>
+                        <li>En desarrollo activo</li>
+                    </ul>
+                </div>
+
+                <div class="hero-visual reveal" aria-label="Maple Bot">
+                    <div class="hero-card">
+                        <img class="hero-avatar" src="/images/mapleavatar.webp" alt="Avatar de Maple">
+                        <div class="online-pill"><span></span> En línea</div>
+                        <div class="welcome-preview">
+                            <p class="preview-label">Nueva bienvenida</p>
+                            <strong>¡Bienvenido a la comunidad!</strong>
+                            <p>Esperamos que disfrutes tu estancia. Ya somos <b>1,248</b> miembros.</p>
+                        </div>
+                    </div>
+                    <span class="floating-leaf leaf-one">◆</span>
+                    <span class="floating-leaf leaf-two">◆</span>
+                </div>
+            </div>
+        </section>
+
+        <section class="section page-shell" id="funciones">
+            <div class="section-heading reveal">
+                <p class="eyebrow"><span></span> Todo en un mismo bot</p>
+                <h2>Las herramientas que tu servidor necesita.</h2>
+                <p>Desde el primer saludo hasta la moderación diaria, Maple mantiene las cosas simples para ti y
+                    agradables para tu comunidad.</p>
+            </div>
+
+            <div class="feature-grid">
+                <article class="feature-card feature-card-large reveal">
+                    <div class="feature-icon">✦</div>
+                    <div>
+                        <p class="card-kicker">Novedad en 4.2.1</p>
+                        <h3>Bienvenidas y despedidas a tu estilo</h3>
+                        <p>Elige entre mensajes, embeds o imágenes. Personaliza textos, colores, fondos y el canal donde
+                            Maple recibirá a cada persona.</p>
+                    </div>
+                    <div class="mini-message">
+                        <img src="/images/mapleavatar.webp" alt="">
+                        <div><strong>Maple</strong><span>¡Qué gusto tenerte aquí, @usuario!</span></div>
+                    </div>
+                </article>
+
+                <article class="feature-card reveal">
+                    <div class="feature-icon">◇</div>
+                    <h3>Moderación clara</h3>
+                    <p>Roles, silencios, bloqueo de canales y herramientas para mantener el orden sin complicar el
+                        trabajo de tu equipo.</p>
+                </article>
+
+                <article class="feature-card reveal">
+                    <div class="feature-icon">⌁</div>
+                    <h3>Utilidades cotidianas</h3>
+                    <p>Consulta perfiles, avatares, banners, emojis e información del servidor directamente desde
+                        Discord.</p>
+                </article>
+
+                <article class="feature-card reveal">
+                    <div class="feature-icon">♡</div>
+                    <h3>Acciones para convivir</h3>
+                    <p>Abraza, saluda, cocina, juega y comparte decenas de interacciones que le dan vida a las
+                        conversaciones.</p>
+                </article>
+
+                <article class="feature-card reveal">
+                    <div class="feature-icon">⚙</div>
+                    <h3>Hecha para crecer</h3>
+                    <p>Maple evoluciona junto a su comunidad, con nuevas funciones y una experiencia multilenguaje en
+                        camino.</p>
+                </article>
+            </div>
+        </section>
+
+        <section class="story-section" id="historia">
+            <div class="page-shell story-layout">
+                <div class="story-image reveal">
+                    <img src="/images/mapleNeko.gif" alt="Ilustración de Maple">
+                    <div class="story-badge"><strong>Desde 2021</strong><span>Creciendo contigo</span></div>
+                </div>
+                <div class="story-copy reveal">
+                    <p class="eyebrow"><span></span> Nuestra historia</p>
+                    <h2>Maple nació para hacer Discord un poco más cercano.</h2>
+                    <p>El proyecto comenzó el 16 de marzo de 2021 con una idea sencilla: ayudar a comunidades nuevas a
+                        construir un espacio bonito, organizado y fácil de disfrutar.</p>
+                    <p>Hoy Maple sigue creciendo con ese mismo propósito. Cada actualización busca ahorrar trabajo a
+                        quienes administran servidores y crear mejores momentos para quienes los habitan.</p>
+                    <a class="text-link" href="https://discord.gg/E3kzS5cYzN" target="_blank" rel="noreferrer">Conoce a
+                        la comunidad <span>→</span></a>
+                </div>
+            </div>
+        </section>
+
+        <section class="section page-shell" id="comunidad">
+            <div class="community-card reveal">
+                <div>
+                    <p class="eyebrow eyebrow-light"><span></span> El siguiente capítulo</p>
+                    <h2>Tu servidor también puede crecer con Maple.</h2>
+                    <p>Invítala, configura tus primeras bienvenidas y comienza a construir una comunidad con
+                        personalidad propia.</p>
+                </div>
+                <div class="community-actions">
+                    <a class="button button-light"
+                        href="https://discord.com/oauth2/authorize?client_id=821452429409124451&amp;scope=bot%20applications.commands"
+                        target="_blank" rel="noreferrer">Invitar a Maple</a>
+                    <a class="support-link" href="https://discord.gg/E3kzS5cYzN" target="_blank"
+                        rel="noreferrer">Necesito ayuda →</a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <div class="page-shell footer-layout">
+            <div class="footer-brand">
+                <a class="brand" href="#inicio"><img src="/images/mapleavatar.webp" alt="" width="40"
+                        height="40"><span>Maple</span></a>
+                <p>Una compañera para tu comunidad de Discord.</p>
+            </div>
+            <nav aria-label="Enlaces del pie de página">
+                <a href="#funciones">Funciones</a>
+                <a href="https://discord.gg/E3kzS5cYzN" target="_blank" rel="noreferrer">Soporte</a>
+                <a href="/privacy">Privacidad</a>
+                <a href="/terms">Términos</a>
+            </nav>
+            <p class="copyright">© <span data-year></span> Maple Bot</p>
+        </div>
+    </footer>
+
+    <script src="/js/index.js" defer></script>
 </body>
+
 </html>

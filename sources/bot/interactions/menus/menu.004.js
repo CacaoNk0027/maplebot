@@ -98,7 +98,9 @@ const interaction = {
                 .setStyle(discord.TextInputStyle.Short)
                 .setMaxLength(40)
                 .setRequired(true));
-            modal.addLabelComponents(title);
+            let params = new discord.TextDisplayBuilder()
+                .setContent('\nTambien puedes hacer uso de estos parametros:\n\n`{user}` > Nombre de usuario\n`{server}` > Nombre del servidor\n`{memberCount}` > Miembros del servidor');
+            modal.addLabelComponents(title).addTextDisplayComponents(params);
             await interaction.showModal(modal);
             return;
         }
@@ -113,7 +115,9 @@ const interaction = {
                 .setMaxLength(60)
                 .setStyle(discord.TextInputStyle.Short)
                 .setRequired(true));
-            modal.addLabelComponents(description);
+            let params = new discord.TextDisplayBuilder()
+                .setContent('\nTambien puedes hacer uso de estos parametros:\n\n`{user}` > Nombre de usuario\n`{server}` > Nombre del servidor\n`{memberCount}` > Miembros del servidor');
+            modal.addLabelComponents(description).addTextDisplayComponents(params);
             await interaction.showModal(modal);
             return;
         }
@@ -128,10 +132,9 @@ const interaction = {
                 .setMaxLength(400)
                 .setStyle(discord.TextInputStyle.Paragraph)
                 .setRequired(true));
-            let params = new discord.LabelBuilder()
-                .setLabel('Parametros a usar')
-                .setDescription('\n`{user}` > Mencion a usuario\n`{server}` > Nombre del servidor\n`{count}` > Cantidad de miembros del servidor');
-            modal.addLabelComponents(message, params);
+            let params = new discord.TextDisplayBuilder()
+                .setContent('\nTambien puedes hacer uso de estos parametros:\n\n`{user}` > Mencion a usuario\n`{server}` > Nombre del servidor\n`{memberCount}` > Miembros del servidor');
+            modal.addLabelComponents(message).addTextDisplayComponents(params);
             await interaction.showModal(modal);
             return;
         }

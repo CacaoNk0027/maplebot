@@ -10,6 +10,12 @@ router.use('/api', api_1.default);
 router.get('/', async (req, res) => {
     res.render('index.html');
 });
+router.get(['/terms', '/terms-of-use'], async (req, res) => {
+    res.render('terms.html');
+});
+router.get(['/privacy', '/privacy-policy'], async (req, res) => {
+    res.render('privacy.html');
+});
 router.get('/kmzkuro', async (req, res) => {
     res.render('kmzkuro.html');
 });

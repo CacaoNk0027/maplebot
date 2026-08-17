@@ -33,10 +33,11 @@ const command = {
         .setDescription('Razón del aislamiento')
         .setDescriptionLocalization('en-US', 'Reason for the mute')),
     async exec(interaction) {
-        addMute(interaction);
+        await interaction.deferReply();
+        await addMute(interaction);
     },
     async message(message, args) {
-        addMute(message, args);
+        await addMute(message, args);
     }
 };
 exports.command = command;
@@ -84,12 +85,18 @@ async function addMute(target, args) {
         await (0, config_1.send)(target, 'error', 'No se pudo aplicar el aislamiento, por favor intenta de nuevo', true);
         return;
     }
-    await target.reply({
+    const response = {
         embeds: [{
                 color: discord_js_1.Colors.Green,
                 description: (0, config_1.reply)('info', `**${member.nickname || member.user.globalName || member.user.username}** fue aislado correctamente`)
             }]
-    });
+    };
+    if (target instanceof discord_js_1.ChatInputCommandInteraction) {
+        await target.editReply(response);
+    }
+    else {
+        await target.reply(response);
+    }
 }
 function getTime(value) {
     if (!value)
