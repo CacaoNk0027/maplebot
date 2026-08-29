@@ -1,2 +1,14 @@
 allowBuilds:
-  canvas: set this to true or false
+  canvas: true
+minimumReleaseAgeExclude:
+  - neekuro@2.2.0
+overrides:
+  body-parser: 2.3.0
+  bn.js: 4.12.3
+  brace-expansion: 2.1.4
+  lodash: 4.18.1
+  minimatch: 5.1.8
+  path-to-regexp: 8.4.0
+  qs: 6.15.2
+  undici: 6.28.0
+  ws: 8.21.0

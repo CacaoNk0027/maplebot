@@ -14,16 +14,28 @@ const warnings = new discord_js_1.Collection();
 const event = {
     name: discord_js_1.Events.MessageCreate,
     async exec(message) {
+        let locale = 'es-ES';
+        let shouldReplyOnError = false;
         try {
-            let commands = await (0, command_handler_1.load_commands)();
             if (message.author.bot)
                 return;
             if (message.channel.type != discord_js_1.ChannelType.GuildText)
                 return;
-            let prefix = await Guild_1.default.getPrefix(message.guild.id) || 'm!';
-            if (!message.content.toLowerCase().startsWith(prefix))
+            const prefix = await Guild_1.default.getPrefix(message.guild.id) || 'm!';
+            const mentionPrefix = new RegExp(`^<@!?${message.client.user.id}>(?:\\s+|$)`);
+            const mentionMatch = message.content.match(mentionPrefix);
+            const usesGuildPrefix = message.content.toLowerCase().startsWith(prefix.toLowerCase());
+            if (!usesGuildPrefix && !mentionMatch)
                 return;
-            let args = message.content.slice(prefix.length).trim().split(/ +/g);
+            shouldReplyOnError = true;
+            const content = message.content
+                .slice(mentionMatch ? mentionMatch[0].length : prefix.length)
+                .trim();
+            if (!content)
+                return;
+            locale = await (0, config_1._locale)(message.guild);
+            const commands = await (0, command_handler_1.load_commands)();
+            let args = content.split(/ +/g);
             let identifier = args.shift()?.toLowerCase();
             const privateCommands = await (0, command_handler_2.load_private_commands)();
             const privateCommand = privateCommands.get(identifier)
@@ -35,33 +47,34 @@ const event = {
             let command = commands.get(identifier) || commands.find(cmd => cmd.data.id == identifier || cmd.data.alias.includes(identifier));
             if (!command)
                 return;
+            const cooldownKey = command.data.name;
             if (command.data.inactive && !(0, config_1.is_allowed_id)(message.author.id)) {
-                await (0, config_1.send)(message, 'error', 'El comando actual esta inactivo', true);
+                await (0, config_1.send)(message, 'error', (0, config_1.text)(locale, 'command.inactive'), true);
                 return;
             }
             if (command.data.nsfw && !message.channel.nsfw) {
-                await (0, config_1.send)(message, 'warn', 'Este comando necesita ser ejecutado en un canal nsfw', true);
+                await (0, config_1.send)(message, 'warn', (0, config_1.text)(locale, 'system.command.nsfw'), true);
                 return;
             }
             let permissions = command.data.bot_permissions.filter(p => !message.guild?.members.me?.permissions.has(p));
             if (permissions.length > 0) {
                 await message.reply({
-                    content: `Requiero de los siguientes permisos para ejecutar este comando:\n${(0, config_1.code_text)(permissions.join(' '))}`
+                    content: (0, config_1.text)(locale, 'system.command.permissions.bot', (0, config_1.code_text)(permissions.join(' ')))
                 });
                 return;
             }
             permissions = command.data.user_permissions.filter(p => !message.member?.permissions.has(p));
             if (permissions.length > 0) {
                 await message.reply({
-                    content: `No puedes ejecutar este comando sin los siguientes permisos:\n${(0, config_1.code_text)(permissions.join(' '))}`
+                    content: (0, config_1.text)(locale, 'system.command.permissions.user', (0, config_1.code_text)(permissions.join(' ')))
                 });
                 return;
             }
-            if (!cooldown.has(identifier)) {
-                cooldown.set(identifier, new discord_js_1.Collection());
+            if (!cooldown.has(cooldownKey)) {
+                cooldown.set(cooldownKey, new discord_js_1.Collection());
             }
             let timeNow = Date.now();
-            let timeStamp = cooldown.get(identifier);
+            let timeStamp = cooldown.get(cooldownKey);
             let cooldownAmount = command.data.cooldown * 1000;
             if (timeStamp?.has(message.author.id)) {
                 let expirationTime = timeStamp.get(message.author.id) + cooldownAmount;
@@ -70,7 +83,7 @@ const event = {
                         return;
                     let timeLeft = expirationTime - timeNow;
                     await message.reply({
-                        content: `Usa este comando <t:${Math.floor(expirationTime / 1000)}:R>`
+                        content: (0, config_1.text)(locale, 'system.command.cooldown', Math.floor(expirationTime / 1000))
                     }).then(msg => {
                         setTimeout(async () => {
                             await msg.delete().catch(console.error);
@@ -85,13 +98,18 @@ const event = {
             setTimeout(() => {
                 timeStamp?.delete(message.author.id);
             }, cooldownAmount);
-            if (command.data.leveling) {
+            const succeeded = await command.message(message, args);
+            if (command.data.leveling && succeeded !== false) {
                 await User_1.default.updateLevel(message.author.id);
             }
-            await command.message(message, args);
         }
         catch (error) {
             console.error('[MessageCreate:ERR]! ha ocurrido un error:', error);
+            if (shouldReplyOnError) {
+                await (0, config_1.send)(message, 'error', (0, config_1.text)(locale, 'reply.error'), true).catch(replyError => {
+                    console.error('[MessageCreate:ERR]! no se pudo responder el error:', replyError);
+                });
+            }
         }
     }
 };

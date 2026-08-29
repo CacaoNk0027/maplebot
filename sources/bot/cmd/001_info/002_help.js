@@ -6,181 +6,109 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.command = void 0;
 const discord_js_1 = require("discord.js");
 const command_data_1 = __importDefault(require("../../structs/command_data"));
-const command_handler_1 = require("../../../bot/config/command_handler");
-const config_1 = require("../../../bot/config/config");
-const menus_json_1 = __importDefault(require("../../../shared/bot/assets/json/menus.json"));
+const command_handler_1 = require("../../config/command_handler");
+const config_1 = require("../../config/config");
+const help_1 = require("../../structs/help");
 const command = {
     data: new command_data_1.default()
         .setName('help')
         .setId('002', '001')
         .setAliases('h', 'ayuda')
-        .setDescription('Da un menu de ayuda interactivo')
-        .setDescriptionLocalization('en-US', 'Give an interactive help menu')
+        .setDescription((0, config_1.text)('es-ES', 'cmd.001.002.description'))
+        .setDescriptionLocalization('en-US', (0, config_1.text)('en-US', 'cmd.001.002.description'))
         .addStringOption(new discord_js_1.SlashCommandStringOption()
         .setName('command')
-        .setDescription('Escribe un comando para desplegar un cuadro de información')
-        .setDescriptionLocalization('en-US', 'Type a command to display an information box')),
+        .setDescription((0, config_1.text)('es-ES', 'cmd.001.002.command_option'))
+        .setDescriptionLocalization('en-US', (0, config_1.text)('en-US', 'cmd.001.002.command_option'))),
     async exec(interaction) {
-        let commands = await (0, command_handler_1.load_commands)();
-        let identifier = interaction.options.getString('command');
-        if (!identifier) {
-            await menús(interaction.client, interaction);
-            return;
-        }
-        let command = commands.get(identifier.toLowerCase()) || commands.find(cmd => cmd.data.alias.includes(identifier.toLowerCase())) || commands.find(cmd => cmd.data.id === identifier.toLowerCase());
-        if (!command) {
-            await menús(interaction.client, interaction);
-            return;
-        }
-        await interaction.reply({
-            embeds: [{
-                    author: {
-                        name: interaction.client.user.username,
-                        icon_url: interaction.client.user.avatarURL() || ''
-                    },
-                    color: command.data.inactive ? discord_js_1.Colors.Red : config_1.theme_color,
-                    description: command.data.description,
-                    fields: [{
-                            name: 'Alias',
-                            value: (0, config_1.code_text)(command.data.alias.join(', ') || 'Sin alias')
-                        }, {
-                            name: 'Categoría',
-                            value: (0, config_1.code_text)(menus_json_1.default.find(menu => menu.id === command.data.category)?.name || 'Sin categoría'),
-                            inline: true
-                        }, {
-                            name: 'Filtro nsfw',
-                            value: (0, config_1.code_text)(command.data.nsfw ? '- Activo' : '+ Inactivo', 'diff'),
-                            inline: true
-                        }, {
-                            name: 'Cooldown',
-                            value: (0, config_1.code_text)(command.data.cooldown ? `${command.data.cooldown} segundos` : 'Sin cooldown', 'js'),
-                            inline: true
-                        }, {
-                            name: 'Estado',
-                            value: (0, config_1.code_text)(`Operación: ${command.data.inactive ? `[🔴] Comando inactivo` : '[🟢] operando con normalidad'}`)
-                        }],
-                    footer: {
-                        text: `ID | ${command.data.id}`
-                    },
-                    title: `Comando | ${command.data.name}`,
-                }],
-            components: [{
-                    type: discord_js_1.ComponentType.ActionRow,
-                    components: [{
-                            type: discord_js_1.ComponentType.StringSelect,
-                            custom_id: 'menu.002',
-                            placeholder: 'Opciones',
-                            options: [{
-                                    label: 'Parámetros generales',
-                                    value: '001',
-                                    description: 'Alias, cooldown, estado, entre otros.',
-                                    emoji: { name: '📄' }
-                                }, {
-                                    label: 'Parámetros específicos',
-                                    value: '002',
-                                    description: 'Opciones y permisos.',
-                                    emoji: { name: '📍' }
-                                }]
-                        }]
-                }]
-        });
+        await response(interaction, interaction.options.getString('command'));
     },
     async message(message, args) {
-        let identifier = args[0];
-        let commands = await (0, command_handler_1.load_commands)();
-        if (!identifier) {
-            await menús(message.client, message);
-            return;
-        }
-        let command = commands.get(identifier.toLowerCase()) || commands.find(cmd => cmd.data.alias.includes(identifier.toLowerCase())) || commands.find(cmd => cmd.data.id === identifier.toLowerCase());
-        if (!command) {
-            await menús(message.client, message);
-            return;
-        }
-        await message.reply({
-            embeds: [{
-                    author: {
-                        name: message.client.user.username,
-                        icon_url: message.client.user.avatarURL() || ''
-                    },
-                    color: command.data.inactive ? discord_js_1.Colors.Red : config_1.theme_color,
-                    description: command.data.description,
-                    fields: [{
-                            name: 'Alias',
-                            value: (0, config_1.code_text)(command.data.alias.join(', ') || 'Sin alias')
-                        }, {
-                            name: 'Categoría',
-                            value: (0, config_1.code_text)(menus_json_1.default.find(menu => menu.id === command.data.category)?.name || 'Sin categoría'),
-                            inline: true
-                        }, {
-                            name: 'Filtro nsfw',
-                            value: (0, config_1.code_text)(command.data.nsfw ? '- Activo' : '+ Inactivo', 'diff'),
-                            inline: true
-                        }, {
-                            name: 'Cooldown',
-                            value: (0, config_1.code_text)(command.data.cooldown ? `${command.data.cooldown} segundos` : 'Sin cooldown', 'js'),
-                            inline: true
-                        }, {
-                            name: 'Estado',
-                            value: (0, config_1.code_text)(`Operación: ${command.data.inactive ? `[🔴] Comando inactivo` : '[🟢] operando con normalidad'}`)
-                        }],
-                    footer: {
-                        text: `ID | ${command.data.id}`
-                    },
-                    title: `Comando | ${command.data.name}`,
-                }],
-            components: [{
-                    type: discord_js_1.ComponentType.ActionRow,
-                    components: [{
-                            type: discord_js_1.ComponentType.StringSelect,
-                            custom_id: 'menu.002',
-                            placeholder: 'Opciones',
-                            options: [{
-                                    label: 'Parámetros generales',
-                                    value: '001',
-                                    description: 'Alias, cooldown, estado, entre otros.',
-                                    emoji: { name: '📄' }
-                                }, {
-                                    label: 'Parámetros específicos',
-                                    value: '002',
-                                    description: 'Opciones y permisos.',
-                                    emoji: { name: '📍' }
-                                }]
-                        }]
-                }]
-        });
-    },
+        await response(message, args[0]);
+    }
 };
 exports.command = command;
-async function menús(client, msg) {
-    await msg.reply({
+async function response(target, name) {
+    const locale = await (0, config_1._locale)(target.guild);
+    if (!name) {
+        await showMenu(target, locale);
+        return;
+    }
+    const commands = await (0, command_handler_1.load_commands)();
+    const identifier = name.toLowerCase();
+    const entry = commands.get(identifier)
+        ?? commands.find(candidate => candidate.data.alias.some(alias => alias.toLowerCase() === identifier)
+            || candidate.data.id === identifier);
+    if (!entry) {
+        await (0, config_1.send)(target, 'warn', (0, config_1.text)(locale, 'cmd.001.002.command_not_found', name), true);
+        return;
+    }
+    await showCommand(target, entry, locale);
+}
+async function showMenu(target, locale) {
+    const actorId = target instanceof discord_js_1.Message ? target.author.id : target.user.id;
+    const categories = (0, help_1.helpCategories)(locale);
+    await target.reply({
         embeds: [{
                 author: {
-                    name: client.user?.username || '',
-                    icon_url: client.user?.avatarURL() || ''
+                    name: target.client.user?.username ?? '',
+                    icon_url: target.client.user?.avatarURL() ?? ''
                 },
                 color: config_1.theme_color,
-                description: 'Selecciona una de las categorías del menu desplegable',
+                title: `<:tea:1533702747033964615> | ${(0, config_1.text)(locale, 'cmd.001.002.menu.title')}`,
+                description: (0, config_1.text)(locale, 'cmd.001.002.menu.description'),
                 fields: [{
-                        name: '<:wink:1533702744895000596> | Soporte',
-                        value: `Si requieres algún tipo de ayuda especial, únete a mi [servidor de soporte](https://discord.gg/E3kzS5cYzN)`
-                    }],
-                title: `<:tea:1533702747033964615> | Menu de ayuda`
+                        name: `<:wink:1533702744895000596> | ${(0, config_1.text)(locale, 'cmd.001.002.menu.support.name')}`,
+                        value: (0, config_1.text)(locale, 'cmd.001.002.menu.support.value')
+                    }]
             }],
         components: [{
                 type: discord_js_1.ComponentType.ActionRow,
                 components: [{
                         type: discord_js_1.ComponentType.StringSelect,
-                        custom_id: 'menu.001',
-                        placeholder: 'Selecciona una categoría',
-                        options: menus_json_1.default.map(menu => ({
-                            label: menu.name,
-                            value: menu.id,
-                            description: menu.description,
-                            emoji: menu.emoji.match(/\d+(?=>)/g)
-                                ? { id: menu.emoji.match(/\d+(?=>)/g)?.shift() }
-                                : { name: menu.emoji.replace(/<|:[^:]+:|\d+>/g, '') }
+                        custom_id: `menu.001:${actorId}`,
+                        placeholder: (0, config_1.text)(locale, 'cmd.001.002.menu.placeholder'),
+                        options: categories.map(category => ({
+                            label: category.name,
+                            value: category.id,
+                            description: category.description,
+                            emoji: (0, help_1.selectEmoji)(category.emoji)
                         }))
+                    }]
+            }]
+    });
+}
+async function showCommand(target, entry, locale) {
+    const actorId = target instanceof discord_js_1.Message ? target.author.id : target.user.id;
+    await target.reply({
+        embeds: [{
+                author: {
+                    name: target.client.user.username,
+                    icon_url: target.client.user.avatarURL() ?? ''
+                },
+                color: entry.data.inactive ? discord_js_1.Colors.Red : config_1.theme_color,
+                title: (0, config_1.text)(locale, 'cmd.001.002.command.title', entry.data.name),
+                description: (0, help_1.localizedCommandDescription)(entry, locale),
+                fields: (0, help_1.generalHelpFields)(entry, locale),
+                footer: { text: `ID | ${entry.data.id}` }
+            }],
+        components: [{
+                type: discord_js_1.ComponentType.ActionRow,
+                components: [{
+                        type: discord_js_1.ComponentType.StringSelect,
+                        custom_id: `menu.002:${actorId}`,
+                        placeholder: (0, config_1.text)(locale, 'cmd.001.002.details.placeholder'),
+                        options: [{
+                                label: (0, config_1.text)(locale, 'cmd.001.002.details.general.label'),
+                                value: '001',
+                                description: (0, config_1.text)(locale, 'cmd.001.002.details.general.description'),
+                                emoji: { name: '📄' }
+                            }, {
+                                label: (0, config_1.text)(locale, 'cmd.001.002.details.specific.label'),
+                                value: '002',
+                                description: (0, config_1.text)(locale, 'cmd.001.002.details.specific.description'),
+                                emoji: { name: '📍' }
+                            }]
                     }]
             }]
     });

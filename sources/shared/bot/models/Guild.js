@@ -4,6 +4,21 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const mongoose_1 = __importDefault(require("mongoose"));
+const settingsCache = new Map();
+const SETTINGS_CACHE_TTL = 60_000;
+async function cachedSettings(model, guildId) {
+    const cached = settingsCache.get(guildId);
+    if (cached && cached.expiresAt > Date.now())
+        return cached;
+    const guild = await model.findOne({ guildId }).select('prefix language').lean();
+    const settings = {
+        prefix: guild?.prefix || null,
+        language: guild?.language || null,
+        expiresAt: Date.now() + SETTINGS_CACHE_TTL
+    };
+    settingsCache.set(guildId, settings);
+    return settings;
+}
 const guild_schema = new mongoose_1.default.Schema({
     guildId: {
         type: String,
@@ -29,7 +44,7 @@ const guild_schema = new mongoose_1.default.Schema({
     language: {
         type: String,
         enum: ['es-ES', 'en-US'],
-        default: 'es-ES'
+        default: null
     }
 }, {
     statics: {
@@ -37,25 +52,38 @@ const guild_schema = new mongoose_1.default.Schema({
             return this.findOne({ guildId });
         },
         async getPrefix(guildId) {
-            let guild = await this.findOne({ guildId });
-            if (!guild)
-                return null;
-            if (guild.prefix.length < 1)
-                return null;
-            return guild.prefix;
+            return (await cachedSettings(this, guildId)).prefix;
+        },
+        async getLanguage(guildId) {
+            return (await cachedSettings(this, guildId)).language;
+        },
+        async setLanguage(guildId, language) {
+            await this.findOneAndUpdate({ guildId }, { $set: { language } }, { upsert: true, runValidators: true });
+            const cached = settingsCache.get(guildId);
+            if (cached) {
+                settingsCache.set(guildId, {
+                    ...cached,
+                    language,
+                    expiresAt: Date.now() + SETTINGS_CACHE_TTL
+                });
+            }
+            else {
+                settingsCache.delete(guildId);
+            }
         },
         async setPrefix(guildId, prefix) {
-            let guild = await this.findOne({ guildId });
-            if (!guild) {
-                let new_guild = new Guild({
-                    guildId: guildId,
-                    prefix: prefix
+            await this.findOneAndUpdate({ guildId }, { $set: { prefix } }, { upsert: true, runValidators: true });
+            const cached = settingsCache.get(guildId);
+            if (cached) {
+                settingsCache.set(guildId, {
+                    ...cached,
+                    prefix: prefix || null,
+                    expiresAt: Date.now() + SETTINGS_CACHE_TTL
                 });
-                await new_guild.save();
-                return;
             }
-            guild.prefix = prefix;
-            await guild.save();
+            else {
+                settingsCache.delete(guildId);
+            }
         }
     }
 });

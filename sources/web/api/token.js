@@ -7,6 +7,7 @@ const crypto_1 = __importDefault(require("crypto"));
 const express_1 = require("express");
 const user_1 = __importDefault(require("../models/user"));
 const token_1 = __importDefault(require("../models/token"));
+const authorization_1 = require("../middlewares/authorization");
 const router = (0, express_1.Router)();
 router.post('/', async (req, res) => {
     const { password } = req.body;
@@ -21,8 +22,9 @@ router.post('/', async (req, res) => {
         }
         const token = crypto_1.default.randomBytes(32).toString('base64url');
         const tokenHash = crypto_1.default.createHash('sha256').update(token).digest('hex');
-        await token_1.default.deleteMany({ userId });
-        await new token_1.default({ userId, tokenHash }).save();
+        const previousToken = await token_1.default.findOneAndUpdate({ userId }, { $set: { tokenHash, createdAt: new Date() } }, { upsert: true, returnDocument: 'before' }).lean();
+        if (previousToken?.tokenHash)
+            (0, authorization_1.invalidateTokenCache)([previousToken.tokenHash]);
         return res.status(201).json({
             message: 'Token generado correctamente. Guardalo ahora: no podra volver a mostrarse.',
             code: res.statusCode,

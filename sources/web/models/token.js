@@ -8,6 +8,7 @@ const token = new mongoose_1.default.Schema({
     userId: {
         type: mongoose_1.default.Schema.Types.ObjectId,
         required: true,
+        unique: true,
         ref: 'WebUser'
     },
     tokenHash: {

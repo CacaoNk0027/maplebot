@@ -26,7 +26,7 @@ async function execute(target) {
     if (target instanceof discord_js_1.Message)
         await target.delete();
     else
-        target.deferReply();
+        await target.deferReply();
     if ((target.member?.roles).cache.size <= 0 ||
         !(target.member?.roles).cache.has('1147817071380541470')) {
         await (target.member?.roles).add('1147817071380541470');

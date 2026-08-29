@@ -4,82 +4,99 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.command = void 0;
-const command_data_1 = __importDefault(require("../../../bot/structs/command_data"));
 const discord_js_1 = require("discord.js");
-const config_1 = require("../../../bot/config/config");
+const command_data_1 = __importDefault(require("../../structs/command_data"));
+const config_1 = require("../../config/config");
+const moderation_1 = require("../../structs/moderation");
 const command = {
     data: new command_data_1.default()
         .setName('purgue')
-        .setAliases('pg', 'bulkdelete')
+        .setAliases('pg', 'bulkdelete', 'purge', 'purgar', 'limpiar')
         .setId('008', '003')
-        .setDescription('Elimina una cantidad determinada de mensajes')
-        .setDescriptionLocalization('en-US', 'Delete one number of messages')
+        .setDescription((0, config_1.text)('es-ES', 'cmd.003.008.description'))
+        .setDescriptionLocalization('en-US', (0, config_1.text)('en-US', 'cmd.003.008.description'))
         .setDefaultMemberPermissions(discord_js_1.PermissionFlagsBits.ManageMessages)
         .setBotPermissions('ManageMessages')
         .setUserPermissions('ManageMessages')
         .setContexts(discord_js_1.InteractionContextType.Guild)
         .setCooldown(5)
-        .addNumberOption(new discord_js_1.SlashCommandNumberOption()
+        .addIntegerOption(new discord_js_1.SlashCommandIntegerOption()
         .setName('number')
-        .setDescription('Numero de mensajes a eliminar')
+        .setDescription((0, config_1.text)('es-ES', 'cmd.003.008.number_option'))
+        .setDescriptionLocalization('en-US', (0, config_1.text)('en-US', 'cmd.003.008.number_option'))
         .setRequired(true)
-        .setMaxValue(100)
         .setMinValue(2)
-        .setDescriptionLocalization('en-US', 'Number of messages to delete')),
+        .setMaxValue(100)),
     async exec(interaction) {
-        execute(interaction);
+        await response(interaction);
     },
     async message(message, args) {
-        execute(message, args);
+        await response(message, args);
     }
 };
 exports.command = command;
-async function execute(target, args) {
-    let option = 0;
+async function response(target, args = []) {
+    const locale = await (0, moderation_1.moderationLocale)(target);
+    if (!await (0, moderation_1.ensureModerationPermissions)(target, locale, ['ManageMessages'], ['ManageMessages']))
+        return;
+    if (!target.channel || target.channel.type !== discord_js_1.ChannelType.GuildText) {
+        await (0, config_1.send)(target, 'warn', (0, config_1.text)(locale, 'system.003.channel.text_only'), true);
+        return;
+    }
+    const actor = await target.guild.members.fetch(target instanceof discord_js_1.Message ? target.author.id : target.user.id);
+    const bot = await target.guild.members.fetchMe();
+    if (!target.channel.permissionsFor(actor).has(discord_js_1.PermissionFlagsBits.ManageMessages)) {
+        await (0, config_1.send)(target, 'warn', (0, config_1.text)(locale, 'system.003.permissions.user', 'ManageMessages'), true);
+        return;
+    }
+    if (!target.channel.permissionsFor(bot).has(discord_js_1.PermissionFlagsBits.ManageMessages)) {
+        await (0, config_1.send)(target, 'warn', (0, config_1.text)(locale, 'system.003.permissions.bot', 'ManageMessages'), true);
+        return;
+    }
+    const amount = target instanceof discord_js_1.ChatInputCommandInteraction
+        ? target.options.getInteger('number', true)
+        : Number(args[0]);
+    if (!Number.isInteger(amount) || amount < 2 || amount > 100) {
+        await (0, config_1.send)(target, 'warn', (0, config_1.text)(locale, 'cmd.003.008.range'), true);
+        return;
+    }
     if (target instanceof discord_js_1.ChatInputCommandInteraction) {
-        option = target.options.getNumber('number', true);
-    }
-    else if (target instanceof discord_js_1.Message && args && args.length > 0) {
-        option = Math.round(parseInt(args[0]));
+        await target.deferReply({ flags: discord_js_1.MessageFlags.Ephemeral });
     }
     else {
-        await (0, config_1.send)(target, 'error', 'No haz puesto el numero de mensajes a eliminar', true);
-        return;
+        try {
+            await target.delete();
+        }
+        catch (error) {
+            if (!isUnknownMessage(error)) {
+                console.error('[CommandPurge:ERR] No se pudo eliminar el mensaje del comando:', error);
+                await (0, config_1.send)(target, 'error', (0, config_1.text)(locale, 'reply.error'), true);
+                return;
+            }
+        }
     }
-    if (isNaN(option)) {
-        await (0, config_1.send)(target, 'warn', 'No puedes colocar letras ni símbolos', true);
-        return;
+    try {
+        const deleted = await target.channel.bulkDelete(amount, true);
+        const description = (0, config_1.reply)('ok', (0, config_1.text)(locale, 'cmd.003.008.success', amount, deleted.size));
+        if (target instanceof discord_js_1.ChatInputCommandInteraction) {
+            await target.editReply({ embeds: [{ color: discord_js_1.Colors.Green, description }] });
+        }
+        else {
+            await target.channel.send({ embeds: [{ color: discord_js_1.Colors.Green, description }] });
+        }
     }
-    if (!(option > 1 && option < 101)) {
-        await (0, config_1.send)(target, 'warn', 'El numero debe estar en el rango [2, 100]', true);
-        return;
+    catch (error) {
+        console.error('[CommandPurge:ERR] No se pudieron eliminar los mensajes:', error);
+        if (target instanceof discord_js_1.ChatInputCommandInteraction) {
+            await (0, config_1.send)(target, 'error', (0, config_1.text)(locale, 'reply.error'), true);
+        }
+        else {
+            await target.channel.send({
+                embeds: [{ color: discord_js_1.Colors.Red, description: (0, config_1.reply)('error', (0, config_1.text)(locale, 'reply.error')) }]
+            });
+        }
     }
-    if (target instanceof discord_js_1.Message) {
-        await target.delete().then(async () => {
-            await bulkdelete(target, option);
-        });
-        return;
-    }
-    await target.deferReply().then(async () => {
-        await bulkdelete(target, option);
-    });
 }
-async function bulkdelete(target, number) {
-    let total = (await target.channel.bulkDelete(number, true)).size;
-    if (total > 0) {
-        await target.channel.send({
-            embeds: [{
-                    color: discord_js_1.Colors.Green,
-                    description: (0, config_1.reply)('ok', `Se eliminaron **${total}** mensajes`)
-                }]
-        });
-    }
-    else {
-        await target.channel.send({
-            embeds: [{
-                    color: discord_js_1.Colors.Blue,
-                    description: (0, config_1.reply)('warn', `No se pudieron eliminar mensajes... son demasiado viejos`)
-                }]
-        });
-    }
+function isUnknownMessage(error) {
+    return typeof error === 'object' && error !== null && 'code' in error && error.code === 10008;
 }

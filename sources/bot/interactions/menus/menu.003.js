@@ -4,75 +4,71 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.interaction = void 0;
-const interaction_data_1 = __importDefault(require("../../../bot/structs/interaction_data"));
 const discord_js_1 = require("discord.js");
-const member_1 = __importDefault(require("../../../bot/structs/member"));
-const config_1 = require("../../../bot/config/config");
+const interaction_data_1 = __importDefault(require("../../structs/interaction_data"));
+const config_1 = require("../../config/config");
+const moderation_1 = require("../../structs/moderation");
 const interaction = {
-    data: new interaction_data_1.default()
-        .setId('menu.003')
-        .setUnique(),
-    async exec(interaction, message) {
-        if (!interaction.isRoleSelectMenu())
+    data: new interaction_data_1.default().setId('menu.003').setUnique(),
+    async exec(target) {
+        if (!target.isRoleSelectMenu())
             return;
-        await interaction.deferUpdate();
-        let embed = new discord_js_1.EmbedBuilder(message.embeds.shift()?.data);
-        let args = embed.data.footer?.text.trim().split(/ +/g);
-        let member = await new member_1.default().getInfo(message, args, true);
-        let menu = new discord_js_1.RoleSelectMenuBuilder(message.components[0].components[0].data);
+        await target.deferUpdate();
+        const locale = await (0, moderation_1.moderationLocale)(target);
+        if (!await (0, moderation_1.ensureModerationPermissions)(target, locale, ['ManageRoles'], ['ManageRoles']))
+            return;
+        const memberId = target.message.embeds[0]?.footer?.text.match(/\d{16,22}/)?.[0];
+        const member = memberId
+            ? await target.guild?.members.fetch(memberId).catch(() => null)
+            : null;
         if (!member) {
-            await (0, config_1.send)(interaction, 'error', 'No se pudo obtener el usuario, comunicate con el desarrollador', true);
+            await (0, config_1.send)(target, 'error', (0, config_1.text)(locale, 'system.003.member.required'), true);
             return;
         }
-        const actor = interaction.member;
-        const actorCanManageMember = actor.id === interaction.guild?.ownerId
-            || actor.roles.highest.comparePositionTo(member.roles.highest) > 0;
-        if (!member.manageable || !actorCanManageMember) {
-            await (0, config_1.send)(interaction, 'warn', 'No se pueden modificar los roles de este usuario por la jerarquía del servidor.', true);
+        if (!await (0, moderation_1.validateTargetMember)(target, member, locale, 'roles'))
+            return;
+        const roles = target.values
+            .map(roleId => target.guild?.roles.cache.get(roleId))
+            .filter((role) => Boolean(role));
+        if (roles.length !== target.values.length) {
+            await (0, config_1.send)(target, 'error', (0, config_1.text)(locale, 'system.003.role.invalid'), true);
+            return;
+        }
+        for (const role of roles) {
+            if (!await (0, moderation_1.validateAssignableRole)(target, role, locale))
+                return;
+        }
+        const rolesToAdd = roles.filter(role => !member.roles.cache.has(role.id));
+        if (!rolesToAdd.length) {
+            await (0, config_1.send)(target, 'warn', (0, config_1.text)(locale, 'system.003.role.already_has'), true);
             return;
         }
         try {
-            const roles = interaction.values
-                .map(roleId => interaction.guild?.roles.cache.get(roleId))
-                .filter((role) => Boolean(role));
-            if (roles.length !== interaction.values.length) {
-                await (0, config_1.send)(interaction, 'error', 'No se pudieron obtener todos los roles seleccionados. Intenta nuevamente.', true);
-                return;
-            }
-            const invalidRole = roles.find(role => !canAssignRole(actor, role));
-            if (invalidRole) {
-                await (0, config_1.send)(interaction, 'warn', `No puedes asignar el rol <@&${invalidRole.id}>. Revisa su jerarquía y permisos.`, true);
-                return;
-            }
-            await member.roles.add(roles);
-            await message.edit({
-                embeds: [
-                    embed.setColor(discord_js_1.Colors.Green)
-                        .setDescription((0, config_1.reply)('ok', 'Se añadieron correctamente los roles a **' + member.user.username + '**'))
-                        .setFields([{
-                            name: 'Roles añadidos',
-                            value: roles.map(role => `<@&${role.id}>`).join(' ')
-                        }])
-                ],
-                components: [{
-                        type: discord_js_1.ComponentType.ActionRow,
-                        components: [menu.setDisabled()]
-                    }]
+            await member.roles.add(rolesToAdd, `Roles added by ${target.user.tag} (${target.user.id})`);
+            const originalEmbed = target.message.embeds[0];
+            const embed = new discord_js_1.EmbedBuilder(originalEmbed?.data)
+                .setColor(discord_js_1.Colors.Green)
+                .setDescription((0, config_1.reply)('ok', (0, config_1.text)(locale, 'cmd.003.001.menu_success', (0, moderation_1.memberDisplayName)(member))))
+                .setFields([{
+                    name: (0, config_1.text)(locale, 'cmd.003.001.menu_roles'),
+                    value: rolesToAdd.map(role => role.toString()).join(' ')
+                }]);
+            const component = target.component;
+            const menu = component instanceof discord_js_1.RoleSelectMenuComponent
+                ? discord_js_1.RoleSelectMenuBuilder.from(component).setDisabled(true)
+                : new discord_js_1.RoleSelectMenuBuilder()
+                    .setCustomId(`menu.003:${target.user.id}`)
+                    .setPlaceholder((0, config_1.text)(locale, 'cmd.003.001.select.placeholder'))
+                    .setDisabled(true);
+            await target.message.edit({
+                embeds: [embed],
+                components: [{ type: discord_js_1.ComponentType.ActionRow, components: [menu] }]
             });
         }
         catch (error) {
-            console.error(error);
-            await (0, config_1.send)(interaction, 'error', 'No se pudieron añadir los roles al usuario especificado', true);
+            console.error('[RoleMenu:ERR] No se pudieron añadir los roles:', error);
+            await (0, config_1.send)(target, 'error', (0, config_1.text)(locale, 'reply.error'), true);
         }
     }
 };
 exports.interaction = interaction;
-function canAssignRole(actor, role) {
-    const botMember = role.guild.members.me;
-    return role.id !== role.guild.roles.everyone.id
-        && !role.managed
-        && Boolean(botMember?.permissions.has(discord_js_1.PermissionFlagsBits.ManageRoles))
-        && Boolean(botMember && botMember.roles.highest.comparePositionTo(role) > 0)
-        && actor.permissions.has(discord_js_1.PermissionFlagsBits.ManageRoles)
-        && actor.roles.highest.comparePositionTo(role) > 0;
-}

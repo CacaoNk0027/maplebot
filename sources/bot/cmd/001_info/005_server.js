@@ -7,13 +7,7 @@ exports.command = void 0;
 const discord_js_1 = require("discord.js");
 const command_data_1 = __importDefault(require("../../../bot/structs/command_data"));
 const config_1 = require("../../../bot/config/config");
-let verificacion = [
-    '- sin restricciones',
-    'baja',
-    'media',
-    'alta',
-    '+ muy alta'
-];
+const _004_icon_1 = require("../002_util/004_icon");
 const command = {
     data: new command_data_1.default()
         .setName('server')
@@ -33,50 +27,50 @@ const command = {
         .setDescription('Muestra el banner del servidor')
         .setDescriptionLocalization('en-US', 'Shows the server banner')),
     async exec(interaction) {
-        try {
-            let identifier = interaction.options.getSubcommand();
-            switch (identifier) {
-                case 'info':
-                    await info(interaction);
-                    break;
-                case 'banner':
-                    await banner(interaction);
-                    break;
-                default:
-                    await info(interaction);
-            }
-        }
-        catch (error) {
-            console.error(error);
-            await (0, config_1.send)(interaction, 'error', 'Ha sucedido un error al ejecutar este comando.', true);
-        }
+        await response(interaction, interaction.options.getSubcommand());
     },
     async message(message, args) {
-        try {
-            let identifier = args[0];
-            switch (identifier) {
-                case 'info':
-                    await info(message);
-                    break;
-                case 'banner':
-                    await banner(message);
-                    break;
-                default:
-                    await info(message);
-            }
-        }
-        catch (error) {
-            console.error(error);
-            await (0, config_1.send)(message, 'error', 'Ha sucedido un error al ejecutar este comando.', true);
-        }
+        await response(message, args[0]);
     }
 };
 exports.command = command;
+async function response(caller, identifier) {
+    let locale = await (0, config_1._locale)(caller.guild);
+    try {
+        if (!caller.guild) {
+            await (0, config_1.send)(caller, 'warn', (0, config_1.text)(locale, 'cmd.001.005.guild_only'), true);
+            return;
+        }
+        switch (identifier) {
+            case 'info':
+                await info(caller);
+                break;
+            case 'banner':
+                await banner(caller);
+                break;
+            case 'icon':
+                if (caller instanceof discord_js_1.ChatInputCommandInteraction) {
+                    await _004_icon_1.command.exec(caller);
+                }
+                else if (_004_icon_1.command.message) {
+                    await _004_icon_1.command.message(caller, []);
+                }
+                break;
+            default:
+                await info(caller);
+        }
+    }
+    catch (error) {
+        console.error(error);
+        await (0, config_1.send)(caller, 'error', (0, config_1.text)(locale, 'reply.error'), true);
+    }
+}
 async function info(message) {
-    let guild = await message.guild?.fetch();
-    let owner = await guild?.fetchOwner();
-    let members = guild?.members.cache.filter(member => !member.user.bot).size ?? 0;
-    let bots = guild?.members.cache.filter(member => member.user.bot).size ?? 0;
+    let locale = await (0, config_1._locale)(message.guild);
+    let guild = await message.guild.fetch();
+    let owner = await guild.fetchOwner();
+    let bots = guild.members.cache.filter(member => member.user.bot).size;
+    let members = guild.members.cache.filter(member => !member.user.bot).size;
     await message.reply({
         embeds: [{
                 author: {
@@ -87,52 +81,51 @@ async function info(message) {
                 thumbnail: {
                     url: guild?.iconURL({ forceStatic: false }) || ''
                 },
-                description: guild?.description || 'Sin descripción de servidor',
+                description: guild?.description || (0, config_1.text)(locale, 'cmd.001.005.description'),
                 title: guild?.name,
                 fields: [{
                         name: '🆔 | ID',
                         value: `\`${guild?.id}\``
                     }, {
-                        name: '<:Dis_pinnedMessages:888232861684084747> | Fecha de creación',
-                        value: `<t:${Math.floor((guild?.createdTimestamp ?? 0) / 1000)}:F>`
+                        name: `<:Dis_pinnedMessages:888232861684084747> | ${(0, config_1.text)(locale, 'cmd.001.005.field2.name')}`,
+                        value: `<t:${Math.floor(guild.createdTimestamp / 1000)}:F>`
                     }, {
-                        name: '<:Dis_memberList:888232778418749491> | Usuarios',
-                        value: (0, config_1.code_text)(`Miembros [${members}]\nBots [${bots}]\nTotales [${members + bots}]`, 'js'),
+                        name: `<:Dis_memberList:888232778418749491> | ${(0, config_1.text)(locale, 'cmd.001.004.field1.name')}`,
+                        value: (0, config_1.code_text)((0, config_1.text)(locale, 'cmd.001.005.field3.value', members, bots, members + bots), 'js'),
                         inline: true
                     }, {
-                        name: '<:Dis_channelThread:888230841942151171> | Canales',
-                        value: (0, config_1.code_text)(`Categorias [${guild?.channels.cache.filter(channel => channel.type == discord_js_1.ChannelType.GuildCategory).size}]\nTexto [${guild?.channels.cache.filter(channel => channel.type == discord_js_1.ChannelType.GuildText).size}]\nVoz [${guild?.channels.cache.filter(channel => channel.type == discord_js_1.ChannelType.GuildVoice).size}]`, 'js'),
+                        name: `<:Dis_channelThread:888230841942151171> | ${(0, config_1.text)(locale, "cmd.001.004.field3.name")}`,
+                        value: (0, config_1.code_text)((0, config_1.text)(locale, 'cmd.001.005.field4.value', guild?.channels.cache.filter(c => c.type == discord_js_1.ChannelType.GuildCategory).size, guild?.channels.cache.filter(c => c.type == discord_js_1.ChannelType.GuildText).size, guild?.channels.cache.filter(c => c.type == discord_js_1.ChannelType.GuildVoice).size), 'js'),
                         inline: true
                     }, {
-                        name: '<:Dis_sticker:888234162903994378> | Roles y emojis',
-                        value: (0, config_1.code_text)(`Roles [${guild?.roles.cache.size}] | Emojis [${guild?.emojis.cache.size}]`, 'js')
+                        name: `<:Dis_sticker:888234162903994378> | ${(0, config_1.text)(locale, 'cmd.001.005.field5.name')}`,
+                        value: (0, config_1.code_text)((0, config_1.text)(locale, 'cmd.001.005.field5.value', guild?.roles.cache.size, guild?.emojis.cache.size), 'js')
                     }, {
-                        name: '<:Dis_boostLv1:888234250757890099> | Nivel de mejoras',
-                        value: (0, config_1.code_text)((guild?.premiumTier !== undefined && guild?.premiumTier !== null ? String(guild.premiumTier) : "- sin nivel"), 'diff'),
+                        name: `<:Dis_boostLv1:888234250757890099> | ${(0, config_1.text)(locale, 'cmd.001.005.field6.name')}`,
+                        value: (0, config_1.code_text)((guild?.premiumTier !== undefined && guild?.premiumTier !== null ? String(guild.premiumTier) : "- N/a"), 'diff'),
                         inline: true
                     }, {
-                        name: '<:Dis_boostLv2:888234340121727006> | Mejoras totales',
+                        name: `<:Dis_boostLv2:888234340121727006> | ${(0, config_1.text)(locale, 'cmd.001.005.field7.name')}`,
                         value: (0, config_1.code_text)(guild?.premiumSubscriptionCount != null ? guild.premiumSubscriptionCount.toString() : '0'),
                         inline: true
                     }, {
-                        name: '<:Dis_channelRules:888231318876487731> | Nivel de verificacion',
-                        value: (0, config_1.code_text)(`${guild?.verificationLevel !== undefined ? verificacion[guild.verificationLevel] : '- desconocido'}`, 'diff')
-                    }],
-                footer: {
-                    text: 'información del servidor'
-                }
+                        name: `<:Dis_channelRules:888231318876487731> | ${(0, config_1.text)(locale, 'cmd.001.005.field8.name')}`,
+                        value: (0, config_1.code_text)(`${guild?.verificationLevel !== undefined ? (0, config_1.verificacion)(guild.verificationLevel, locale) : '- N/a'}`, 'diff')
+                    }]
             }]
     });
 }
 async function banner(target) {
+    let locale = await (0, config_1._locale)(target.guild);
     let bannerUrl = target.guild?.bannerURL({ forceStatic: false, size: 1024 });
     let embed = new discord_js_1.EmbedBuilder();
     if (!bannerUrl) {
-        await (0, config_1.send)(target, 'warn', 'Este servidor no tiene un banner establecido', true);
+        await (0, config_1.send)(target, 'warn', (0, config_1.text)(locale, 'cmd.001.005.banner.warn'), true);
         return;
     }
-    embed.setAuthor({ name: target.guild?.name || '', iconURL: target.guild?.iconURL({ forceStatic: false }) || '' })
-        .setTitle('Banner del servidor')
+    embed.setAuthor({ name: target.guild?.name || 'n/a', iconURL: target.guild?.iconURL({ forceStatic: false }) || undefined })
+        .setTitle('Banner')
+        .setDescription(`[URL](${bannerUrl})`)
         .setColor((0, config_1.random_color)())
         .setImage(bannerUrl);
     await target.reply({

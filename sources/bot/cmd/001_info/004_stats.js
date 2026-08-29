@@ -1,11 +1,44 @@
 "use strict";
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || (function () {
+    var ownKeys = function(o) {
+        ownKeys = Object.getOwnPropertyNames || function (o) {
+            var ar = [];
+            for (var k in o) if (Object.prototype.hasOwnProperty.call(o, k)) ar[ar.length] = k;
+            return ar;
+        };
+        return ownKeys(o);
+    };
+    return function (mod) {
+        if (mod && mod.__esModule) return mod;
+        var result = {};
+        if (mod != null) for (var k = ownKeys(mod), i = 0; i < k.length; i++) if (k[i] !== "default") __createBinding(result, mod, k[i]);
+        __setModuleDefault(result, mod);
+        return result;
+    };
+})();
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.command = void 0;
+const discord = __importStar(require("discord.js"));
 const command_data_1 = __importDefault(require("../../../bot/structs/command_data"));
-const discord_js_1 = require("discord.js");
 const systeminformation_1 = __importDefault(require("systeminformation"));
 const config_1 = require("../../../bot/config/config");
 const command_handler_1 = require("../../../bot/config/command_handler");
@@ -17,87 +50,78 @@ const command = {
         .setDescription('Muestra estadísticas como uso de ram, uso de cpu, entre otros.')
         .setDescriptionLocalization('en-US', 'Shows statistics such as RAM usage, CPU usage, among others.'),
     async exec(interaction) {
-        await use(interaction);
+        await response(interaction);
     },
     async message(message, args) {
-        await use(message, args);
+        await response(message);
     }
 };
 exports.command = command;
-async function use(interaction, args) {
-    const commands = await (0, command_handler_1.load_commands)();
-    let msg = await interaction.reply({
-        embeds: [{
-                description: (0, config_1.reply)('info', 'Cargando estadísticas...'),
-                color: discord_js_1.Colors.Yellow
-            }]
-    });
-    let totalGuilds = 0;
-    let totalMembers = 0;
-    let network, cpu, memory, usedMemory, ram;
+async function response(caller) {
+    const locale = await (0, config_1._locale)(caller.guild);
     try {
-        if (interaction.client.shard) {
-            let [guilds, members] = await Promise.all([
-                interaction.client.shard.fetchClientValues('guilds.cache.size'),
-                interaction.client.shard.broadcastEval((c) => c.guilds.cache.reduce((acc, guild) => acc + guild.memberCount, 0))
+        let cmds_size = (await (0, command_handler_1.load_commands)()).size;
+        let total_guilds = 0, total_members = 0, total_channels = 0;
+        let network, cpu, memory, used_memory, ram;
+        if (caller.client.shard) {
+            let [guilds, members, channels] = await Promise.all([
+                caller.client.shard.fetchClientValues('guilds.cache.size'),
+                caller.client.shard.broadcastEval(client => client.guilds.cache.reduce((total, guild) => total + guild.memberCount, 0)),
+                caller.client.shard.fetchClientValues('channels.cache.size')
             ]);
-            totalGuilds = guilds.reduce((acc, guildCount) => acc + guildCount, 0);
-            totalMembers = members.reduce((acc, memberCount) => acc + memberCount, 0);
+            total_guilds = guilds.reduce((total, count) => total + count, 0);
+            total_members = members.reduce((total, count) => total + count, 0);
+            total_channels = channels.reduce((total, count) => total + count, 0);
         }
         else {
-            totalGuilds = interaction.client.guilds.cache.size;
-            totalMembers = interaction.client.guilds.cache.reduce((acc, guild) => acc + guild.memberCount, 0);
+            total_guilds = caller.client.guilds.cache.size;
+            total_members = caller.client.guilds.cache.reduce((total, guild) => total + guild.memberCount, 0);
+            total_channels = caller.client.channels.cache.size;
         }
         network = (await systeminformation_1.default.networkStats())[0];
         cpu = (await systeminformation_1.default.currentLoad()).currentLoad.toFixed(2);
         memory = (await systeminformation_1.default.mem());
-        usedMemory = memory.total - memory.available;
-        ram = (usedMemory / memory.total * 100).toFixed(2);
+        used_memory = memory.total - memory.available;
+        ram = (used_memory / memory.total * 100).toFixed(2);
+        let embed = new discord.EmbedBuilder()
+            .setAuthor({
+            name: caller.client.user?.username,
+            iconURL: caller.client.user?.avatarURL() || undefined
+        })
+            .setColor(config_1.theme_color)
+            .setDescription(`${(0, config_1.text)(locale, 'cmd.001.004.description')} <:wink:1533702744895000596>`)
+            .setFields([{
+                name: `${(0, config_1.text)(locale, 'cmd.001.004.field1.name')} | <:Dis_memberList:888232778418749491>`,
+                value: (0, config_1.code_text)(`+ ${total_members}`, 'diff'),
+                inline: true
+            }, {
+                name: `${(0, config_1.text)(locale, 'cmd.001.004.field2.name')} | <:Dis_channelText:888230498214760509>`,
+                value: (0, config_1.code_text)(`+ ${total_guilds}`, 'diff'),
+                inline: true
+            }, {
+                name: `${(0, config_1.text)(locale, 'cmd.001.004.field3.name')} | 📺`,
+                value: (0, config_1.code_text)(`+ ${total_channels}`, 'diff')
+            }, {
+                name: `${(0, config_1.text)(locale, 'cmd.001.004.field4.name')} | ❗`,
+                value: (0, config_1.code_text)(`+ ${cmds_size}`, 'diff'),
+                inline: true
+            }, {
+                name: `${(0, config_1.text)(locale, 'cmd.001.004.field5.name')} | <:slash:1533974691948007434>`,
+                value: (0, config_1.code_text)(`+ ${(await caller.client.application.commands.fetch()).size}`, 'diff'),
+                inline: true
+            }, {
+                name: `${(0, config_1.text)(locale, 'cmd.001.004.field6.name')} | 🛜`,
+                value: (0, config_1.code_text)(`↑ ${(network.tx_bytes / (1024 * 1024)).toFixed(2)} MB - ↓ ${(network.rx_bytes / (1024 * 1024)).toFixed(2)} MB`)
+            }, {
+                name: `${(0, config_1.text)(locale, 'cmd.001.004.field7.name')} | 🐧`,
+                value: (0, config_1.code_text)(`CPU | [${(0, config_1.por_barra)(parseFloat(cpu), 15)}] ${cpu}%\nRAM | [${(0, config_1.por_barra)(parseFloat(ram), 15)}] ${ram}%`)
+            }]);
+        await caller.reply({
+            embeds: [embed]
+        });
     }
     catch (error) {
         console.error(error);
-        msg.edit({
-            embeds: [{
-                    description: (0, config_1.reply)('error', 'ha sucedido un error al tratar de conseguir las estadísticas'),
-                    color: discord_js_1.Colors.Red
-                }]
-        });
-        return;
+        await (0, config_1.send)(caller, 'error', (0, config_1.text)(locale, 'reply.error'), true);
     }
-    let embed = new discord_js_1.EmbedBuilder()
-        .setAuthor({
-        name: interaction.client.user?.username,
-        iconURL: interaction.client.user?.avatarURL() || ''
-    })
-        .setColor(config_1.theme_color)
-        .setDescription('Estadísticas cargadas <:wink:1533702744895000596>')
-        .setFields([{
-            name: 'Usuarios | <:Dis_memberList:888232778418749491>',
-            value: (0, config_1.code_text)(`+ ${totalMembers}`, 'diff'),
-            inline: true
-        }, {
-            name: 'Servidores | <:Dis_channelText:888230498214760509>',
-            value: (0, config_1.code_text)(`+ ${totalGuilds}`, 'diff'),
-            inline: true
-        }, {
-            name: 'Canales | 📺',
-            value: (0, config_1.code_text)(`+ ${interaction.client.channels.cache.size}`, 'diff')
-        }, {
-            name: 'Comandos | ❗',
-            value: (0, config_1.code_text)(`+ ${commands.size}`, 'diff'),
-            inline: true
-        }, {
-            name: 'Interacciones | <:slash:1533974691948007434>',
-            value: (0, config_1.code_text)(`+ ${(await (await interaction.client.application?.fetch()).commands.fetch()).size}`, 'diff'),
-            inline: true
-        }, {
-            name: 'Uso de red | 🛜',
-            value: (0, config_1.code_text)(`↑ ${(network.tx_bytes / (1024 * 1024)).toFixed(2)} MB - ↓ ${(network.rx_bytes / (1024 * 1024)).toFixed(2)} MB`)
-        }, {
-            name: 'Sistema | 🐧',
-            value: (0, config_1.code_text)(`CPU | [${(0, config_1.por_barra)(parseFloat(cpu), 15)}] ${cpu}%\nRAM | [${(0, config_1.por_barra)(parseFloat(ram), 15)}] ${ram}%`)
-        }]);
-    await msg.edit({
-        embeds: [embed]
-    });
 }

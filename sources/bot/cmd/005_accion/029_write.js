@@ -1,29 +1,6 @@
 "use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.command = void 0;
-const command_data_1 = __importDefault(require("../../../bot/structs/command_data"));
-const discord_js_1 = require("discord.js");
-const command = {
-    data: new command_data_1.default()
-        .setName('write')
-        .setAliases('escribir')
-        .setDescription('Escribe algo')
-        .setId('029', '005')
-        .setContexts(discord_js_1.InteractionContextType.Guild)
-        .setCooldown(5)
-        .ignoreSlash()
-        .validForLeveling()
-        .setInactive(),
-    exec: async () => {
-        return;
-    },
-    message: async (message, args) => {
-        execute(message, args);
-    }
-};
+const action_factory_1 = require("../../structs/action_factory");
+const command = (0, action_factory_1.createActionCommand)('write');
 exports.command = command;
-async function execute(target, args) {
-}

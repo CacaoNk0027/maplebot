@@ -4,18 +4,17 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.command = void 0;
-const command_data_1 = __importDefault(require("../../../bot/structs/command_data"));
 const discord_js_1 = require("discord.js");
-const member_1 = __importDefault(require("../../../bot/structs/member"));
-const config_1 = require("../../../bot/config/config");
-const role_1 = __importDefault(require("../../../bot/structs/role"));
+const command_data_1 = __importDefault(require("../../structs/command_data"));
+const config_1 = require("../../config/config");
+const moderation_1 = require("../../structs/moderation");
 const command = {
     data: new command_data_1.default()
         .setName('removerol')
-        .setAliases('rolremove', 'removerole', 'rrole', 'rrol')
+        .setAliases('rolremove', 'removerole', 'rrole', 'rrol', 'quitarrol')
         .setId('007', '003')
-        .setDescription('Remueve un rol a un usuario')
-        .setDescriptionLocalization('en-US', 'Remove a rol to a user')
+        .setDescription((0, config_1.text)('es-ES', 'cmd.003.007.description'))
+        .setDescriptionLocalization('en-US', (0, config_1.text)('en-US', 'cmd.003.007.description'))
         .setDefaultMemberPermissions(discord_js_1.PermissionFlagsBits.ManageRoles)
         .setBotPermissions('ManageRoles')
         .setUserPermissions('ManageRoles')
@@ -23,102 +22,57 @@ const command = {
         .setCooldown(5)
         .addUserOption(new discord_js_1.SlashCommandUserOption()
         .setName('user')
-        .setDescription('El usuario al que remover el rol')
-        .setRequired(true)
-        .setDescriptionLocalization('en-US', 'The user to remove the rol')).addRoleOption(new discord_js_1.SlashCommandRoleOption()
+        .setDescription((0, config_1.text)('es-ES', 'cmd.003.007.user_option'))
+        .setDescriptionLocalization('en-US', (0, config_1.text)('en-US', 'cmd.003.007.user_option'))
+        .setRequired(true))
+        .addRoleOption(new discord_js_1.SlashCommandRoleOption()
         .setName('role')
-        .setDescription('El rol a remover')
-        .setDescriptionLocalization('en-US', 'The rol to remove')
+        .setDescription((0, config_1.text)('es-ES', 'cmd.003.007.role_option'))
+        .setDescriptionLocalization('en-US', (0, config_1.text)('en-US', 'cmd.003.007.role_option'))
         .setRequired(true)),
     async exec(interaction) {
-        execute(interaction);
+        await response(interaction);
     },
     async message(message, args) {
-        execute(message, args);
+        await response(message, args);
     }
 };
 exports.command = command;
-async function execute(target, args) {
-    let member = await new member_1.default().getInfo(target, args);
-    if (!member) {
-        await (0, config_1.send)(target, 'error', 'No se pudo obtener el usuario, por favor intenta de nuevo', true);
+async function response(target, args = []) {
+    const locale = await (0, moderation_1.moderationLocale)(target);
+    if (!await (0, moderation_1.ensureModerationPermissions)(target, locale, ['ManageRoles'], ['ManageRoles']))
+        return;
+    const resolved = await (0, moderation_1.resolveGuildMember)(target, args);
+    if (!resolved) {
+        await (0, config_1.send)(target, 'warn', (0, config_1.text)(locale, 'system.003.member.required'), true);
         return;
     }
-    if (!await valid_member(target, member))
+    if (!await (0, moderation_1.validateTargetMember)(target, resolved.member, locale, 'roles'))
         return;
-    let role = await new role_1.default().getInfo(target, args);
+    const role = await (0, moderation_1.resolveGuildRole)(target, args, resolved.consumedArgument === null ? [resolved.member.id] : []);
     if (!role) {
-        await (0, config_1.send)(target, 'error', 'No se ha podido obtener el rol, por favor intentalo de nuevo');
+        await (0, config_1.send)(target, 'warn', (0, config_1.text)(locale, 'system.003.role.required'), true);
         return;
     }
-    remove_rol(target, member, role);
-}
-async function valid_member(target, member) {
-    if (member.user.bot) {
-        await (0, config_1.send)(target, 'warn', 'No puedes remover roles a un bot', true);
-        return false;
-    }
-    if (!member.manageable) {
-        await (0, config_1.send)(target, 'warn', 'No puedo remover roles a este usuario', true);
-        return false;
-    }
-    if (member.id == target.member.id) {
-        await (0, config_1.send)(target, 'warn', 'No puedes removerte roles a ti mismo', true);
-        return false;
-    }
-    if (member.id == target.guild?.ownerId) {
-        await (0, config_1.send)(target, 'warn', 'No puedes remover roles al dueño del servidor', true);
-        return false;
-    }
-    if (member.id == target.client.user?.id) {
-        await (0, config_1.send)(target, 'warn', 'No puedes removerme roles', true);
-        return false;
-    }
-    return true;
-}
-async function remove_rol(target, member, role) {
-    if (!await validate_rol(target, member, role))
+    if (!await (0, moderation_1.validateAssignableRole)(target, role, locale))
         return;
-    if (!member.roles.cache.has(role.id)) {
-        await (0, config_1.send)(target, 'warn', 'El usuario no cuenta con el rol especificado', true);
+    if (!resolved.member.roles.cache.has(role.id)) {
+        await (0, config_1.send)(target, 'warn', (0, config_1.text)(locale, 'system.003.role.missing'), true);
         return;
     }
     try {
-        await member.roles.remove(role);
+        const actor = target instanceof discord_js_1.Message ? target.author : target.user;
+        await resolved.member.roles.remove(role, `Role removed by ${actor.tag} (${actor.id})`);
         await target.reply({
             embeds: [{
-                    description: (0, config_1.reply)('ok', `Se removio un rol a **${member.nickname || member.user.globalName || member.user.username}**`),
                     color: discord_js_1.Colors.Green,
-                    fields: [{
-                            name: '🔰 | Rol',
-                            value: `<@&${role.id}>`
-                        }]
+                    description: (0, config_1.reply)('ok', (0, config_1.text)(locale, 'cmd.003.007.success', (0, moderation_1.memberDisplayName)(resolved.member))),
+                    fields: [{ name: (0, config_1.text)(locale, 'system.003.role.field'), value: role.toString() }]
                 }]
         });
     }
     catch (error) {
-        await (0, config_1.send)(target, 'error', 'no se pudo añadir el rol, por favor intentalo de nuevo', true);
+        console.error('[CommandRemoveRole:ERR] No se pudo remover el rol:', error);
+        await (0, config_1.send)(target, 'error', (0, config_1.text)(locale, 'reply.error'), true);
     }
-}
-async function validate_rol(target, member, role) {
-    if (role == target.guild?.roles.everyone || role.name == '@here') {
-        await (0, config_1.send)(target, 'warn', 'Los roles everyone y here no son validos para remover', true);
-        return false;
-    }
-    if (!role.editable ||
-        !target.guild?.members.me ||
-        !target.guild.members.me.roles.highest ||
-        target.guild.members.me.roles.highest.comparePositionTo(role) <= 0) {
-        await (0, config_1.send)(target, 'warn', 'No puedo acceder a ese rol, por lo que no puedo removerlo a alguien más', true);
-        return false;
-    }
-    if ((target.member?.roles).highest.comparePositionTo(role) <= 0) {
-        await (0, config_1.send)(target, 'warn', 'No puedes remover un rol de mayor jerarquía al tuyo', true);
-        return false;
-    }
-    if ((target.member?.roles).highest.comparePositionTo(member.roles.highest) <= 0) {
-        await (0, config_1.send)(target, 'warn', "el usuario mencionado tiene un rol de mayor o igual jerarquia al tuyo", true);
-        return false;
-    }
-    return true;
 }

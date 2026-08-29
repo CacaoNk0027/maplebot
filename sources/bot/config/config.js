@@ -1,4 +1,7 @@
 "use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.branch = exports.theme_color = void 0;
 exports.is_allowed_id = is_allowed_id;
@@ -11,7 +14,17 @@ exports.send = send;
 exports.reply = reply;
 exports.rand = rand;
 exports.rp_embed = rp_embed;
+exports.text = text;
+exports._locale = _locale;
+exports.verificacion = verificacion;
 const discord_js_1 = require("discord.js");
+const es_ES_json_1 = __importDefault(require("../../shared/bot/locales/es-ES.json"));
+const en_US_json_1 = __importDefault(require("../../shared/bot/locales/en-US.json"));
+const Guild_1 = __importDefault(require("../../shared/bot/models/Guild"));
+const locales = {
+    'es-ES': es_ES_json_1.default,
+    'en-US': en_US_json_1.default
+};
 let managers = [
     "801603753631285308"
 ];
@@ -21,7 +34,7 @@ function is_allowed_id(id) {
     return managers.includes(id);
 }
 function code_text(text, format) {
-    return '```' + format + '\n' + text + '\n```';
+    return '```' + (format ?? '') + '\n' + text + '\n```';
 }
 function random_color() {
     let array = Object.entries(discord_js_1.Colors).map(([_, num]) => num);
@@ -142,14 +155,41 @@ function reply(msg_type, description) {
 function rand(list) {
     return list[Math.floor(Math.random() * list.length)];
 }
-async function rp_embed(target, message, gif) {
+async function rp_embed(target, message, gif, locale = 'es-ES', customFooter) {
     let image = gif.getUrl() || '';
     await target.reply({
         embeds: [{
                 description: message,
                 image: { url: image },
                 color: random_color(),
-                footer: { text: `Name | ${gif.getAnime()}` }
+                footer: {
+                    text: customFooter ?? text(locale, 'system.005.embed.source', gif.getAnime() || text(locale, 'system.005.embed.unknown'))
+                }
             }]
     });
+}
+function text(lang, id, ...args) {
+    const locale = lang?.toLowerCase().startsWith('en') ? 'en-US' : 'es-ES';
+    const template = locales[locale][id] ?? locales['es-ES'][id] ?? id;
+    let argIndex = 0;
+    return template.replace(/%%|%[ds]/g, placeholder => {
+        if (placeholder === '%%')
+            return '%';
+        if (argIndex >= args.length)
+            return placeholder;
+        const value = args[argIndex++];
+        if (placeholder === '%d') {
+            const number = Number(value);
+            return Number.isFinite(number) ? String(number) : String(value);
+        }
+        return String(value);
+    });
+}
+async function _locale(guild) {
+    if (!guild)
+        return 'es-ES';
+    return guild.id ? await Guild_1.default.getLanguage(guild.id) ?? guild?.preferredLocale : 'es-ES';
+}
+function verificacion(level, locale) {
+    return text(locale, `config.verif.${level}`);
 }

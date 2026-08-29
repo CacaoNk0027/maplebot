@@ -4,6 +4,7 @@ const discord_js_1 = require("discord.js");
 const command_handler_1 = require("../../bot/config/command_handler");
 const interaction_handler_1 = require("../../bot/config/interaction_handler");
 const command_handler_2 = require("../../bot/private/handlers/command_handler");
+const config_1 = require("../config/config");
 const event = {
     name: discord_js_1.Events.InteractionCreate,
     async exec(interaction) {
@@ -27,6 +28,7 @@ const event = {
     }
 };
 async function slash_command(interaction) {
+    const locale = await (0, config_1._locale)(interaction.guild);
     const privateCommands = await (0, command_handler_2.load_private_commands)();
     const privateCommand = privateCommands.get(interaction.commandName)
         || privateCommands.find(command => command.data.id === interaction.commandName || command.data.alias.includes(interaction.commandName));
@@ -37,10 +39,7 @@ async function slash_command(interaction) {
     let commands = await (0, command_handler_1.load_commands)();
     let command = commands.get(interaction.commandName);
     if (!command) {
-        await interaction.reply({
-            content: '> Comando desconocido!? Intenta ver el menu help, si crees que se trata de un error comunicate con el desarrollador',
-            flags: ['Ephemeral']
-        });
+        await (0, config_1.send)(interaction, 'warn', (0, config_1.text)(locale, 'interaction.command.unknown'), true);
         return;
     }
     try {
@@ -48,20 +47,8 @@ async function slash_command(interaction) {
     }
     catch (error) {
         console.error('[InteractionCreate:ERR]! ha ocurrido un error al ejecutar un comando:', error);
-        let errorMessage = '> No se pudo procesar bien la ejecucion del comando, comunicate con el desarrollador';
         try {
-            if (interaction.replied || interaction.deferred) {
-                await interaction.followUp({
-                    content: errorMessage,
-                    flags: ['Ephemeral'],
-                });
-            }
-            else {
-                await interaction.reply({
-                    content: errorMessage,
-                    flags: ['Ephemeral'],
-                });
-            }
+            await (0, config_1.send)(interaction, 'error', (0, config_1.text)(locale, 'reply.error'), true);
         }
         catch (replyError) {
             console.error('[InteractionCreate:ERR]! no se ha podido editar el mensaje de error al ejecutar:', replyError);
@@ -69,14 +56,12 @@ async function slash_command(interaction) {
     }
 }
 async function select_menu(interaction) {
+    const locale = await (0, config_1._locale)(interaction.guild);
     let interactions = await (0, interaction_handler_1.load_interactions)();
     const [menuId, ownerId] = interaction.customId.split(':', 2);
     let menu = interactions.filter(target => target.data.id.startsWith("menu.")).get(menuId);
     if (!menu) {
-        await interaction.reply({
-            content: '> Menu desconocido!? Intenta ver el menu help, si crees que se trata de un error comunicate con el desarrollador',
-            flags: ['Ephemeral']
-        });
+        await (0, config_1.send)(interaction, 'warn', (0, config_1.text)(locale, 'interaction.menu.unknown'), true);
         return;
     }
     try {
@@ -91,10 +76,7 @@ async function select_menu(interaction) {
                 isOwner = interaction.user.id === user?.id;
             }
             if (!isOwner) {
-                await interaction.reply({
-                    content: '> Este menu es unico y no puedes interactuar con el.',
-                    flags: ['Ephemeral']
-                });
+                await (0, config_1.send)(interaction, 'warn', (0, config_1.text)(locale, 'interaction.menu.owner'), true);
                 return;
             }
         }
@@ -102,20 +84,8 @@ async function select_menu(interaction) {
     }
     catch (error) {
         console.error('[InteractionCreate:ERR]! ha ocurrido un error al ejecutar un menu:', error);
-        let errorMessage = '> No se pudo procesar bien la ejecucion del menu, comunicate con el desarrollador';
         try {
-            if (interaction.replied || interaction.deferred) {
-                await interaction.followUp({
-                    content: errorMessage,
-                    flags: ['Ephemeral'],
-                });
-            }
-            else {
-                await interaction.reply({
-                    content: errorMessage,
-                    flags: ['Ephemeral'],
-                });
-            }
+            await (0, config_1.send)(interaction, 'error', (0, config_1.text)(locale, 'reply.error'), true);
         }
         catch (replyError) {
             console.error('[InteractionCreate:ERR]! no se ha podido editar el mensaje de error al ejecutar:', replyError);
@@ -123,13 +93,11 @@ async function select_menu(interaction) {
     }
 }
 async function modal_submit(interaction) {
+    const locale = await (0, config_1._locale)(interaction.guild);
     const modals = await (0, interaction_handler_1.load_modals)();
     const modal = modals.get(interaction.customId);
     if (!modal) {
-        await interaction.reply({
-            content: '> Modal desconocido. Intenta ejecutar el comando otra vez.',
-            flags: ['Ephemeral']
-        });
+        await (0, config_1.send)(interaction, 'warn', (0, config_1.text)(locale, 'interaction.modal.unknown'), true);
         return;
     }
     try {
@@ -137,12 +105,7 @@ async function modal_submit(interaction) {
     }
     catch (error) {
         console.error('[InteractionCreate:ERR]! ha ocurrido un error al ejecutar un modal:', error);
-        if (interaction.replied || interaction.deferred)
-            return;
-        await interaction.reply({
-            content: '> No se pudo procesar el formulario. Intenta de nuevo.',
-            flags: ['Ephemeral']
-        }).catch(replyError => {
+        await (0, config_1.send)(interaction, 'error', (0, config_1.text)(locale, 'reply.error'), true).catch(replyError => {
             console.error('[InteractionCreate:ERR]! no se pudo responder el error del modal:', replyError);
         });
     }

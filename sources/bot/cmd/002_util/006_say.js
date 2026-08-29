@@ -5,8 +5,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.command = void 0;
 const discord_js_1 = require("discord.js");
-const command_data_1 = __importDefault(require("../../../bot/structs/command_data"));
-const config_1 = require("../../../bot/config/config");
+const command_data_1 = __importDefault(require("../../structs/command_data"));
+const config_1 = require("../../config/config");
 const command = {
     data: new command_data_1.default()
         .setName('say')
@@ -18,66 +18,71 @@ const command = {
         .setName('message')
         .setDescription('El mensaje a enviar')
         .setDescriptionLocalization('en-US', 'The message to send')
-        .setRequired(true)).addStringOption(new discord_js_1.SlashCommandStringOption()
+        .setMaxLength(2000)
+        .setRequired(true))
+        .addStringOption(new discord_js_1.SlashCommandStringOption()
         .setName('reference')
-        .setDescription('Id de un mensaje a responder')
-        .setDescriptionLocalization('en-US', 'The ID of a message to reply to')),
+        .setDescription('ID de un mensaje al cual responder')
+        .setDescriptionLocalization('en-US', 'ID of a message to reply to')),
     async exec(interaction) {
-        await say(interaction);
+        await response(interaction);
     },
     async message(message, args) {
-        await say(message, args);
+        await response(message, args);
     }
 };
 exports.command = command;
-async function say(target, args) {
-    let message;
-    let reference = null;
-    if (target instanceof discord_js_1.ChatInputCommandInteraction) {
-        message = target.options.getString('message', true);
-        reference = target.options.getString('reference');
-    }
-    else if (target instanceof discord_js_1.Message && args) {
-        message = args.join(' ');
-    }
-    else {
-        message = null;
-    }
+async function response(caller, args = []) {
+    const locale = await (0, config_1._locale)(caller.guild);
     try {
-        if (!message) {
-            await (0, config_1.send)(target, 'warn', 'Debes colocar un mensaje para enviar', true).then((reply) => {
-                setTimeout(() => {
-                    reply.delete();
-                }, 5000);
-            });
+        const content = caller instanceof discord_js_1.ChatInputCommandInteraction
+            ? caller.options.getString('message', true)
+            : args.join(' ').trim();
+        const referenceId = caller instanceof discord_js_1.ChatInputCommandInteraction
+            ? caller.options.getString('reference')
+            : caller.reference?.messageId ?? null;
+        if (!content) {
+            await (0, config_1.send)(caller, 'warn', (0, config_1.text)(locale, 'cmd.002.006.required'), true);
             return;
         }
-        if (target instanceof discord_js_1.Message) {
-            await target.delete();
-            target.reference?.messageId ? (await (await target.channel.messages.fetch(target.reference.messageId)).reply({ content: message })) : await target.channel.send({ content: message });
+        if (content.length > 2000) {
+            await (0, config_1.send)(caller, 'warn', (0, config_1.text)(locale, 'cmd.002.006.too_long'), true);
+            return;
+        }
+        const channel = caller.channel;
+        if (!channel?.isSendable()) {
+            await (0, config_1.send)(caller, 'warn', (0, config_1.text)(locale, 'cmd.002.006.unsupported_channel'), true);
+            return;
+        }
+        if (caller instanceof discord_js_1.Message) {
+            try {
+                await caller.delete();
+            }
+            catch (deleteError) {
+                if (!isUnknownMessageError(deleteError)) {
+                    console.warn('[CommandSay:WARN] No se pudo eliminar el mensaje original:', deleteError);
+                }
+            }
+        }
+        if (referenceId) {
+            const referencedMessage = await channel.messages.fetch(referenceId);
+            await referencedMessage.reply({ content });
         }
         else {
-            if (!reference) {
-                await target.channel.send({ content: message });
-                await (0, config_1.send)(target, 'ok', 'Mensaje enviado correctamente.', false);
-            }
-            else {
-                try {
-                    await (await target.channel?.messages.fetch(reference))?.reply({ content: message });
-                    await (0, config_1.send)(target, 'ok', 'Mensaje enviado correctamente.', false);
-                }
-                catch (error) {
-                    await (0, config_1.send)(target, 'error', 'No se pudo encontrar el mensaje de referencia', true);
-                }
-            }
+            await channel.send({ content });
+        }
+        if (caller instanceof discord_js_1.ChatInputCommandInteraction) {
+            await (0, config_1.send)(caller, 'ok', (0, config_1.text)(locale, 'cmd.002.006.success'), false);
         }
     }
     catch (error) {
-        await (0, config_1.send)(target, 'error', 'Ocurrió un error al intentar enviar el mensaje, por favor intenta de nuevo', true).then((reply) => {
-            setTimeout(() => {
-                reply.delete();
-            }, 5000);
-        });
-        return;
+        console.error('[CommandSay:ERR] No se pudo enviar el mensaje:', error);
+        await (0, config_1.send)(caller, 'error', (0, config_1.text)(locale, 'reply.error'), true);
     }
+}
+function isUnknownMessageError(error) {
+    return typeof error === 'object'
+        && error !== null
+        && 'code' in error
+        && error.code === 10_008;
 }

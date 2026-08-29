@@ -4,41 +4,42 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.interaction = void 0;
-const interaction_data_1 = __importDefault(require("../../../bot/structs/interaction_data"));
-const menus_json_1 = __importDefault(require("../../../shared/bot/assets/json/menus.json"));
 const discord_js_1 = require("discord.js");
-const config_1 = require("../../../bot/config/config");
-const command_handler_1 = require("../../../bot/config/command_handler");
+const interaction_data_1 = __importDefault(require("../../structs/interaction_data"));
+const command_handler_1 = require("../../config/command_handler");
+const config_1 = require("../../config/config");
+const help_1 = require("../../structs/help");
 const Guild_1 = __importDefault(require("../../../shared/bot/models/Guild"));
 const interaction = {
-    data: new interaction_data_1.default()
-        .setId("menu.001")
-        .setUnique(),
-    async exec(interaction, message) {
-        if (!interaction.isAnySelectMenu())
+    data: new interaction_data_1.default().setId('menu.001').setUnique(),
+    async exec(target) {
+        if (!target.isStringSelectMenu())
             return;
-        let identifier = interaction.values.shift();
-        let category = menus_json_1.default.find(menu => menu.id === identifier);
-        let embed = new discord_js_1.EmbedBuilder(message.embeds.shift()?.data);
-        let commands = await (0, command_handler_1.load_commands)();
-        let prefix = await Guild_1.default.getPrefix(message.guild.id) || 'm!';
-        embed.setTitle(`${category?.emoji} | ${category?.name}`)
-            .setDescription(category?.description || 'sin descripción establecida')
-            .setFields({
-            name: 'Comandos',
-            value: (0, config_1.commands_menu)(prefix, commands, category?.id || '')
-        });
-        await message.edit({
-            embeds: [embed]
-        }).then(async () => {
-            await interaction.deferUpdate();
-        }).catch(async (err) => {
-            console.error(err);
-            await interaction.reply({
-                content: 'Ha ocurrido un error interno al editar el menu, comunicate con el desarrollador',
-                flags: ['Ephemeral']
+        await target.deferUpdate();
+        const locale = await (0, config_1._locale)(target.guild);
+        const category = (0, help_1.helpCategory)(locale, target.values[0]);
+        if (!category || !target.guild) {
+            await (0, config_1.send)(target, 'error', (0, config_1.text)(locale, 'reply.error'), true);
+            return;
+        }
+        try {
+            const [commands, prefix] = await Promise.all([
+                (0, command_handler_1.load_commands)(),
+                Guild_1.default.getPrefix(target.guild.id)
+            ]);
+            const embed = new discord_js_1.EmbedBuilder(target.message.embeds[0]?.data)
+                .setTitle(`${category.emoji} | ${category.name}`)
+                .setDescription(category.description)
+                .setFields({
+                name: (0, config_1.text)(locale, 'cmd.001.002.field.commands'),
+                value: (0, help_1.commandList)(locale, prefix ?? 'm!', commands, category.id)
             });
-        });
+            await target.message.edit({ embeds: [embed] });
+        }
+        catch (error) {
+            console.error('[HelpCategoryMenu:ERR] No se pudo editar el menú:', error);
+            await (0, config_1.send)(target, 'error', (0, config_1.text)(locale, 'reply.error'), true);
+        }
     }
 };
 exports.interaction = interaction;

@@ -5,9 +5,9 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.command = void 0;
 const discord_js_1 = require("discord.js");
-const command_data_1 = __importDefault(require("../../../bot/structs/command_data"));
-const member_1 = __importDefault(require("../../../bot/structs/member"));
-const config_1 = require("../../../bot/config/config");
+const command_data_1 = __importDefault(require("../../structs/command_data"));
+const member_1 = __importDefault(require("../../structs/member"));
+const config_1 = require("../../config/config");
 const command = {
     data: new command_data_1.default()
         .setName('member')
@@ -21,59 +21,66 @@ const command = {
         .setDescription('El usuario a mostrar')
         .setDescriptionLocalization('en-US', 'The user to show')),
     async exec(interaction) {
-        let member = (await (await new member_1.default().getInfo(interaction)).fetch());
-        let user = await member.user.fetch();
-        let roles = member.roles.cache.filter(rol => rol != member.guild.roles.everyone).map(rol => `<@&${rol.id}>`);
-        await interaction.reply({
-            embeds: [{
-                    author: {
-                        name: user.username,
-                        icon_url: user.avatarURL({ forceStatic: false }) ?? undefined
-                    },
-                    description: description(member),
-                    color: member.displayColor || user.accentColor || (0, config_1.random_color)(),
-                    fields: [{
-                            name: '<:Dis_pinnedMessages:888232861684084747> | Fecha de ingreso',
-                            value: `<t:${Math.floor(member.joinedTimestamp || 0 / 1000)}:F>`,
-                        }, {
-                            name: '<:Dis_rol:888234105332981781> | Roles',
-                            value: roles.length > 1 ? roles.join(' ') : 'Sin roles'
-                        }],
-                    thumbnail: {
-                        url: member.avatarURL({ forceStatic: false }) ?? user.avatarURL({ forceStatic: false }) ?? ''
-                    },
-                    title: 'Miembro del servidor'
-                }]
-        });
+        await response(interaction);
     },
     async message(message, args) {
-        let member = (await (await new member_1.default().getInfo(message, args)).fetch());
-        let user = member.user;
-        let roles = member.roles.cache.filter(rol => rol != member.guild.roles.everyone).map(rol => `<@&${rol.id}>`);
-        await message.reply({
-            embeds: [{
-                    author: {
-                        name: user.username,
-                        icon_url: user.avatarURL({ forceStatic: false }) ?? undefined
-                    },
-                    description: description(member),
-                    color: member.displayColor || user.accentColor || (0, config_1.random_color)(),
-                    fields: [{
-                            name: '<:Dis_pinnedMessages:888232861684084747> | Fecha de ingreso',
-                            value: `<t:${Math.floor(member.joinedTimestamp || 0 / 1000)}:F>`,
-                        }, {
-                            name: '<:Dis_rol:888234105332981781> | Roles',
-                            value: roles.length > 1 ? roles.join(' ') : 'Sin roles'
-                        }],
-                    thumbnail: {
-                        url: member.avatarURL({ forceStatic: false }) ?? user.avatarURL({ forceStatic: false }) ?? ''
-                    },
-                    title: 'Miembro del servidor'
-                }]
-        });
+        await response(message, args);
     }
 };
 exports.command = command;
-function description(member) {
-    return `**ID** | \`${member.id}\`${member.displayName ? `\n**Nombre de servidor** | ${member.displayName}` : ''}${member.avatarDecorationData ? `\n**Decoración de avatar** | [Link](${member.avatarDecorationURL()})` : ''}${member.banner ? `\n**Banner** | [Link](${member.bannerURL()})` : ''}${member.displayColor ? `\n**Color establecido** | ${member.displayColor}` : ''}`;
+async function response(caller, args = []) {
+    const locale = await (0, config_1._locale)(caller.guild);
+    try {
+        if (!caller.guild) {
+            await (0, config_1.send)(caller, 'warn', (0, config_1.text)(locale, 'cmd.002.guild_only'), true);
+            return;
+        }
+        const selectedMember = await new member_1.default().getInfo(caller, args);
+        if (!selectedMember) {
+            await (0, config_1.send)(caller, 'warn', (0, config_1.text)(locale, 'cmd.002.member.not_found'), true);
+            return;
+        }
+        const member = await selectedMember.fetch();
+        const user = await member.user.fetch();
+        const roles = member.roles.cache
+            .filter(role => role.id !== member.guild.id)
+            .map(role => `<@&${role.id}>`);
+        const visibleRoles = roles.slice(0, 30);
+        const rolesText = roles.length === 0
+            ? (0, config_1.text)(locale, 'cmd.002.003.roles.none')
+            : `${visibleRoles.join(' ')}${roles.length > visibleRoles.length
+                ? `\n${(0, config_1.text)(locale, 'cmd.002.003.roles.more', roles.length - visibleRoles.length)}`
+                : ''}`;
+        const joinedTimestamp = Math.floor((member.joinedTimestamp ?? 0) / 1000);
+        await caller.reply({
+            embeds: [{
+                    author: {
+                        name: user.username,
+                        icon_url: user.displayAvatarURL({ forceStatic: false })
+                    },
+                    color: member.displayColor || user.accentColor || (0, config_1.random_color)(),
+                    description: memberDescription(locale, member),
+                    fields: [{
+                            name: `<:Dis_pinnedMessages:888232861684084747> | ${(0, config_1.text)(locale, 'cmd.002.003.joined')}`,
+                            value: joinedTimestamp > 0 ? `<t:${joinedTimestamp}:F>` : (0, config_1.text)(locale, 'cmd.002.unknown')
+                        }, {
+                            name: `<:Dis_rol:888234105332981781> | ${(0, config_1.text)(locale, 'cmd.002.003.roles')}`,
+                            value: rolesText
+                        }],
+                    thumbnail: {
+                        url: member.displayAvatarURL({ forceStatic: false })
+                    },
+                    title: (0, config_1.text)(locale, 'cmd.002.003.title')
+                }]
+        });
+    }
+    catch (error) {
+        console.error('[CommandMember:ERR] No se pudo obtener la información del miembro:', error);
+        await (0, config_1.send)(caller, 'error', (0, config_1.text)(locale, 'reply.error'), true);
+    }
+}
+function memberDescription(locale, member) {
+    const decorationURL = member.avatarDecorationURL();
+    const bannerURL = member.bannerURL({ forceStatic: false, size: 1024 });
+    return (0, config_1.text)(locale, 'cmd.002.003.description', member.id, member.displayName, decorationURL ? `[URL](${decorationURL})` : (0, config_1.text)(locale, 'cmd.002.none'), bannerURL ? `[URL](${bannerURL})` : (0, config_1.text)(locale, 'cmd.002.none'), member.displayColor ? member.displayHexColor : (0, config_1.text)(locale, 'cmd.002.none'));
 }
