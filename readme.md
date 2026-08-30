@@ -104,7 +104,7 @@ El TypeScript fuente se mantiene en el proyecto de desarrollo. Los cambios funci
 
 ## Comunidad
 
-- [Invitar a Maple](https://discord.com/oauth2/authorize?client_id=821452429409124451&scope=bot%20applications.commands)
+- [Invitar a Maple](https://discord.com/oauth2/authorize?client_id=821452429409124451&permissions=1477740719158&integration_type=0&scope=applications.commands+bot)
 - [Servidor de soporte](https://discord.gg/E3kzS5cYzN)
 - [Reportar un problema](https://github.com/CacaoNk0027/maplebot/issues)
 

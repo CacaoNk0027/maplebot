@@ -18,7 +18,14 @@ class MapleBot {
     ];
     constructor() {
         this.client = new discord_js_1.Client({
-            intents: 33283,
+            intents: [
+                discord_js_1.GatewayIntentBits.Guilds,
+                discord_js_1.GatewayIntentBits.GuildMembers,
+                discord_js_1.GatewayIntentBits.GuildMessages,
+                discord_js_1.GatewayIntentBits.MessageContent,
+                discord_js_1.GatewayIntentBits.AutoModerationConfiguration,
+                discord_js_1.GatewayIntentBits.AutoModerationExecution
+            ],
             allowedMentions: {
                 repliedUser: false
             }
