@@ -6,6 +6,10 @@ El formato está basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1
 
 ## [Sin publicar]
 
+### Seguridad
+
+- Dependencia transitiva `qs` actualizada de `6.15.2` a `6.16.0`. La versión fijada anteriormente estaba afectada por dos avisos de denegación de servicio ([GHSA-x5fp-wj9c-mxmx](https://github.com/advisories/GHSA-x5fp-wj9c-mxmx) y [GHSA-4mjr-xmp4-gh2g](https://github.com/advisories/GHSA-4mjr-xmp4-gh2g)). La auditoría de producción no reporta vulnerabilidades conocidas.
+
 ## [4.4.0] - 2026-09-11
 
 ### Añadido
