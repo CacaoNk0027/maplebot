@@ -51,7 +51,12 @@ const actionSchema = new mongoose_1.default.Schema({
     stare: [action_item],
     tickle: [action_item],
     travel: [action_item],
-    work: [action_item]
+    work: [action_item],
+    read: [action_item],
+    handwash: [action_item],
+    wave: [action_item],
+    highfive: [action_item],
+    handhold: [action_item]
 });
 const Action = mongoose_1.default.model('Action', actionSchema);
 exports.default = Action;

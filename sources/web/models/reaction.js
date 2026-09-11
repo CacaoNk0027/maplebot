@@ -37,7 +37,15 @@ const reactionSchema = new mongoose_1.default.Schema({
     smug: [reactionItem],
     think: [reactionItem],
     vomit: [reactionItem],
-    wink: [reactionItem]
+    wink: [reactionItem],
+    happy: [reactionItem],
+    sad: [reactionItem],
+    surprised: [reactionItem],
+    disgust: [reactionItem],
+    nervous: [reactionItem],
+    love: [reactionItem],
+    facepalm: [reactionItem],
+    shrug: [reactionItem],
 });
 const Reaction = mongoose_1.default.model('Reaction', reactionSchema);
 exports.default = Reaction;

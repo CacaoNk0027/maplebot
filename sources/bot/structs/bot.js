@@ -35,7 +35,12 @@ class MapleBot {
         try {
             await this.handlers();
             await this.client.login(process.env['BOT_TOKEN']);
-            await (0, set_commands_1.set_commands)(this.client.application?.id || this.client.user?.id || process.env['bot_id']);
+            // Cada shard es un proceso completo, asi que sin esta comprobacion
+            // todos registrarian la misma lista de comandos globales. Sin
+            // sharding, client.shard es null y el registro debe ocurrir igual.
+            if (!this.client.shard || this.client.shard.ids.includes(0)) {
+                await (0, set_commands_1.set_commands)(this.client.application?.id || this.client.user?.id || process.env['bot_id']);
+            }
             this.client.user?.setPresence({
                 activities: [{
                         name: `m!maple 🍁 | ${packageJson.version} | ${(0, config_1.rand)(this.precences)}`,

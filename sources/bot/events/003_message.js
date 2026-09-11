@@ -6,7 +6,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const discord_js_1 = require("discord.js");
 const config_1 = require("../../bot/config/config");
 const command_handler_1 = require("../../bot/config/command_handler");
-const command_handler_2 = require("../../bot/private/handlers/command_handler");
 const Guild_1 = __importDefault(require("../../shared/bot/models/Guild"));
 const User_1 = __importDefault(require("../../shared/bot/models/User"));
 const cooldown = new discord_js_1.Collection();
@@ -37,13 +36,6 @@ const event = {
             const commands = await (0, command_handler_1.load_commands)();
             let args = content.split(/ +/g);
             let identifier = args.shift()?.toLowerCase();
-            const privateCommands = await (0, command_handler_2.load_private_commands)();
-            const privateCommand = privateCommands.get(identifier)
-                || privateCommands.find(command => command.data.id === identifier || command.data.alias.includes(identifier));
-            if (privateCommand && privateCommand.guild === message.guild?.id && privateCommand.message) {
-                await privateCommand.message(message, args);
-                return;
-            }
             let command = commands.get(identifier) || commands.find(cmd => cmd.data.id == identifier || cmd.data.alias.includes(identifier));
             if (!command)
                 return;

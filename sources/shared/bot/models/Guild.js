@@ -41,6 +41,14 @@ const guild_schema = new mongoose_1.default.Schema({
         type: mongoose_1.default.Types.ObjectId,
         ref: 'Farewell'
     },
+    logs: {
+        type: mongoose_1.default.Types.ObjectId,
+        ref: 'Logs'
+    },
+    escalation: {
+        type: mongoose_1.default.Types.ObjectId,
+        ref: 'Escalation'
+    },
     language: {
         type: String,
         enum: ['es-ES', 'en-US'],

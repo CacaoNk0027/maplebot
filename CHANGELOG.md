@@ -6,6 +6,40 @@ El formato está basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1
 
 ## [Sin publicar]
 
+## [4.4.0] - 2026-09-11
+
+### Añadido
+
+- Sistema de automoderación completo: `automod` cubre los cinco disparadores de Discord (palabras personalizadas, expresiones regulares, listas predefinidas, spam general, spam de menciones y perfil de miembro).
+- Creación de reglas con vista previa y confirmación, que revalida permisos, conflictos de nombre y existencia de canales y roles antes de aplicar.
+- Edición de reglas campo por campo mediante un menú de selección y formularios precargados con el valor actual, con menús de roles y canales en lugar de listas de identificadores.
+- Registro de la actividad de AutoMod en un canal configurable: mensajes bloqueados y altas, cambios y bajas de reglas, con el responsable obtenido del registro de auditoría.
+- Comando `logs` para elegir el canal y activar cada tipo de registro por separado.
+- Historial de infracciones por usuario y resumen del servidor mediante el comando `infractions`, con navegación por páginas.
+- Sanciones automáticas por reincidencia configurables con el comando `escalation`: escalera de avisos y aislamientos, ventana de reincidencia ajustable y desactivadas por defecto.
+- Comando `ban` con baneo, softban para purgar mensajes sin expulsión permanente, baneo por identificador sobre cuentas ausentes y retirada de baneo.
+
+### Cambiado
+
+- `automod` deja de estar inactivo y pasa a ser un sistema completo.
+- Las sanciones manuales quedan registradas en el historial junto a las automáticas, distinguidas por origen.
+- Los comandos de barra se registran únicamente desde el primer shard, en lugar de una vez por proceso.
+- Página principal actualizada para presentar Maple 4.4.0.
+
+### Eliminado
+
+- Categoría de comandos privados del servidor de soporte, que pasa a atenderse con un bot independiente.
+
+### Seguridad
+
+- Las infracciones almacenan solo la coincidencia detectada, nunca el contenido completo del mensaje, y se eliminan solas a los noventa días.
+- El escalado automático se limita a sanciones reversibles: avisos y aislamientos, nunca expulsión ni baneo.
+- La edición de reglas revalida los permisos al enviarse el formulario y no solo al abrirlo.
+
+### Inactivo
+
+- `handwash` y `read`: sin una categoría de GIF válida disponible actualmente en la API.
+
 ## [4.3.0] - 2026-08-28
 
 ### Añadido
@@ -60,5 +94,6 @@ El formato está basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1
 - `automod`: reservado para una actualización posterior del sistema de automoderación.
 - `handwash` y `read`: sin una categoría de GIF válida disponible actualmente en la API.
 
-[Sin publicar]: https://github.com/CacaoNk0027/maplebot/compare/v4.3.0...HEAD
+[Sin publicar]: https://github.com/CacaoNk0027/maplebot/compare/v4.4.0...HEAD
+[4.4.0]: https://github.com/CacaoNk0027/maplebot/compare/v4.3.0...v4.4.0
 [4.3.0]: https://github.com/CacaoNk0027/maplebot/compare/v4.2.2...v4.3.0

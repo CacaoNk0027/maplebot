@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="theme-color" content="#f3a94d">
     <meta name="description"
-        content="Maple <%= version %> es un bot de Discord bilingüe con moderación, utilidades, acciones y bienvenidas personalizables.">
+        content="Maple <%= version %> es un bot de Discord bilingüe con automoderación, historial de infracciones, utilidades, acciones y bienvenidas personalizables.">
     <meta property="og:site_name" content="Maple Bot">
     <meta property="og:title" content="Maple Bot <%= version %> — Tu comunidad, más acogedora">
     <meta property="og:description" content="Configura, modera y dale personalidad a tu servidor en español o inglés.">
@@ -61,7 +61,7 @@
                         <a class="button button-secondary" href="#funciones">Conocer a Maple</a>
                     </div>
                     <ul class="hero-notes" aria-label="Características principales">
-                        <li>50 comandos activos</li>
+                        <li>55 comandos activos</li>
                         <li>Español + English</li>
                         <li>Configuración sencilla</li>
                     </ul>
@@ -86,9 +86,9 @@
         <section class="section page-shell" id="funciones">
             <div class="section-heading reveal">
                 <p class="eyebrow"><span></span> Novedades de la versión <%= version %></p>
-                <h2>Más clara, segura y cercana a tu comunidad.</h2>
-                <p>Esta actualización renueva los comandos, completa la experiencia bilingüe y fortalece los sistemas
-                    que Maple utiliza todos los días.</p>
+                <h2>Moderación que trabaja sola, sin perder el control.</h2>
+                <p>Esta actualización convierte a Maple en una moderadora activa: detecta, registra, avisa y sanciona
+                    por su cuenta, pero siempre con la última palabra de tu equipo.</p>
             </div>
 
             <div class="feature-grid">
@@ -96,42 +96,43 @@
                     <div class="feature-icon">✦</div>
                     <div>
                         <p class="card-kicker">Novedad en <%= version %></p>
-                        <h3>Maple ahora habla tu idioma</h3>
-                        <p>Configura el servidor en español o inglés. Los comandos, menús, respuestas, permisos y el
-                            nuevo sistema de ayuda se adaptarán automáticamente.</p>
+                        <h3>AutoMod completo, sin salir de Discord</h3>
+                        <p>Crea y edita reglas de automoderación desde el bot: palabras personalizadas, expresiones
+                            regulares, listas predefinidas, spam, menciones masivas y filtrado de apodos. Cada campo se
+                            modifica por separado, con menús y formularios que ya vienen rellenos.</p>
                     </div>
                     <div class="mini-message">
                         <img src="/images/mapleavatar.webp" alt="">
-                        <div><strong>Maple · /help</strong><span>Selecciona una categoría · Select a category</span></div>
+                        <div><strong>Maple · /automod editar</strong><span>Selecciona el campo que quieres modificar</span></div>
                     </div>
                 </article>
 
                 <article class="feature-card reveal">
                     <div class="feature-icon">◇</div>
-                    <h3>Moderación más segura</h3>
-                    <p>Roles, aislamientos y bloqueos ahora validan permisos y jerarquías con mayor precisión, sin
-                        reemplazar por accidente configuraciones existentes.</p>
+                    <h3>Un registro de todo lo que pasa</h3>
+                    <p>Elige un canal y Maple anotará cada mensaje bloqueado y cada cambio en tus reglas, indicando
+                        quién lo hizo. Nada ocurre a tus espaldas.</p>
                 </article>
 
                 <article class="feature-card reveal">
                     <div class="feature-icon">⌁</div>
-                    <h3>Ayuda y utilidades renovadas</h3>
-                    <p>Consulta perfiles, avatares, banners y emojis, o encuentra cualquier comando desde un menú de
-                        ayuda compacto y completamente traducido.</p>
+                    <h3>Historial por usuario</h3>
+                    <p>Consulta las infracciones de cualquier miembro o el resumen del servidor, con navegación por
+                        páginas. Los registros se conservan noventa días y se borran solos.</p>
                 </article>
 
                 <article class="feature-card reveal">
                     <div class="feature-icon">♡</div>
-                    <h3>Acciones con más personalidad</h3>
-                    <p>Disfruta GIF aleatorios, juega con Maple y descubre respuestas especiales al interactuar con
-                        ella. Cada llamada puede ofrecer un resultado distinto.</p>
+                    <h3>Sanciones que escalan solas</h3>
+                    <p>Define tu propia escalera: un aviso a las tres faltas, aislamientos que crecen con la
+                        reincidencia. Solo cuenta lo ocurrido en los últimos días y nunca aplica nada irreversible.</p>
                 </article>
 
                 <article class="feature-card reveal">
                     <div class="feature-icon">⚙</div>
-                    <h3>Configuración a tu estilo</h3>
-                    <p>Personaliza bienvenidas y despedidas como mensaje, embed o imagen, y llama a Maple usando el
-                        prefijo del servidor o mencionándola directamente.</p>
+                    <h3>Baneos con más matices</h3>
+                    <p>Además del baneo normal, limpia los mensajes de alguien sin cerrarle la puerta para siempre, o
+                        actúa por ID sobre cuentas que aún no han entrado al servidor.</p>
                 </article>
             </div>
         </section>

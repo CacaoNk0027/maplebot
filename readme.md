@@ -1,23 +1,24 @@
 # Maple Bot
 
-Maple es un bot bilingüe y multifuncional para Discord. Incluye comandos de información y utilidad, moderación, acciones sociales y sistemas configurables de bienvenida y despedida.
+Maple es un bot bilingüe y multifuncional para Discord. Incluye comandos de información y utilidad, automoderación y moderación, acciones sociales y sistemas configurables de bienvenida y despedida.
 
 Este repositorio contiene la distribución pública en JavaScript CommonJS generada desde el proyecto TypeScript de Maple. El código ejecutable se encuentra en [`sources/`](sources/); no necesita compilarse para desplegarlo.
 
-## Maple 4.3.0
+## Maple 4.4.0
 
-Esta versión consolida la arquitectura de Maple 4 y renueva sus cinco categorías de comandos:
+Esta versión convierte a Maple en una moderadora activa, sobre la arquitectura consolidada en 4.3:
 
-- Experiencia completa en español (`es-ES`) e inglés (`en-US`).
-- Menú `help` interactivo, bilingüe y organizado por categorías.
-- Moderación con validaciones de permisos, jerarquías y objetivos dentro del servidor.
+- Automoderación completa: los cinco disparadores de Discord, creados y editados desde el bot.
+- Edición de reglas campo por campo, con menús y formularios precargados.
+- Registro de mensajes bloqueados y de cambios en las reglas en un canal configurable.
+- Historial de infracciones por usuario y resumen del servidor, con navegación por páginas.
+- Sanciones automáticas por reincidencia, configurables y limitadas a acciones reversibles.
+- Baneos con purga de mensajes y por identificador, sobre cuentas ausentes del servidor.
+- Experiencia completa en español (`es-ES`) e inglés (`en-US`), heredada de 4.3.
 - Bienvenidas y despedidas configurables como mensaje, embed o imagen.
-- Acciones con GIF aleatorio, respuestas especiales y nuevas interacciones con Maple.
-- Prefijo configurable y compatibilidad con la mención al bot como prefijo.
-- Menor cantidad de consultas repetidas a MongoDB y a la API de acciones.
 - API web con tokens almacenados mediante hash y límites de autenticación.
 
-Maple ofrece actualmente **53 comandos**, de los cuales **50 están activos**. `automod`, `handwash` y `read` permanecen inactivos hasta una actualización posterior.
+Maple ofrece actualmente **57 comandos**, de los cuales **55 están activos**. `handwash` y `read` permanecen inactivos hasta que la API disponga de una categoría de GIF válida.
 
 Consulta el detalle completo en [CHANGELOG.md](CHANGELOG.md).
 

@@ -3,7 +3,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const discord_js_1 = require("discord.js");
 const command_handler_1 = require("../../bot/config/command_handler");
 const interaction_handler_1 = require("../../bot/config/interaction_handler");
-const command_handler_2 = require("../../bot/private/handlers/command_handler");
 const config_1 = require("../config/config");
 const event = {
     name: discord_js_1.Events.InteractionCreate,
@@ -29,13 +28,6 @@ const event = {
 };
 async function slash_command(interaction) {
     const locale = await (0, config_1._locale)(interaction.guild);
-    const privateCommands = await (0, command_handler_2.load_private_commands)();
-    const privateCommand = privateCommands.get(interaction.commandName)
-        || privateCommands.find(command => command.data.id === interaction.commandName || command.data.alias.includes(interaction.commandName));
-    if (privateCommand?.guild === interaction.guildId) {
-        await privateCommand.exec(interaction);
-        return;
-    }
     let commands = await (0, command_handler_1.load_commands)();
     let command = commands.get(interaction.commandName);
     if (!command) {
@@ -95,7 +87,10 @@ async function select_menu(interaction) {
 async function modal_submit(interaction) {
     const locale = await (0, config_1._locale)(interaction.guild);
     const modals = await (0, interaction_handler_1.load_modals)();
-    const modal = modals.get(interaction.customId);
+    // Los modales con parámetros usan `modal.NNN:dato:dato`; los antiguos
+    // siguen resolviéndose por igualdad exacta.
+    const modal = modals.get(interaction.customId)
+        ?? modals.find(candidate => interaction.customId.startsWith(`${candidate.data.id}:`));
     if (!modal) {
         await (0, config_1.send)(interaction, 'warn', (0, config_1.text)(locale, 'interaction.modal.unknown'), true);
         return;
