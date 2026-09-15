@@ -6,9 +6,28 @@ El formato está basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1
 
 ## [Sin publicar]
 
+## [4.4.1] - 2026-09-15
+
+### Cambiado
+
+- Las categorías de GIF que acepta la API se toman directamente del esquema de la base, en lugar de una lista mantenida aparte.
+- Las rutas de reacción de la API validan la categoría y cachean el catálogo cinco minutos, igual que las de acción.
+
+### Corregido
+
+- El inicio de sesión en la web respondía como exitoso pero no daba acceso a la dashboard: el proxy del host no indica que la conexión es HTTPS y la cookie de sesión se descartaba.
+- Cerrar sesión no borraba la cookie del navegador.
+- Eliminar la cuenta desde la dashboard llamaba a una ruta inexistente. Ahora pide la contraseña, borra el token invalidándolo en el acto y cierra la sesión; las sesiones abiertas en otros dispositivos se cierran en su siguiente acceso.
+- Las categorías de acción `read`, `wave`, `highfive` y `handhold` respondían 404 en la API pese a tener GIF cargados.
+- Consultar una categoría de reacción inexistente, como `_id`, devolvía datos internos del documento en lugar de un 404.
+
 ### Seguridad
 
 - Dependencia transitiva `qs` actualizada de `6.15.2` a `6.16.0`. La versión fijada anteriormente estaba afectada por dos avisos de denegación de servicio ([GHSA-x5fp-wj9c-mxmx](https://github.com/advisories/GHSA-x5fp-wj9c-mxmx) y [GHSA-4mjr-xmp4-gh2g](https://github.com/advisories/GHSA-4mjr-xmp4-gh2g)). La auditoría de producción no reporta vulnerabilidades conocidas.
+
+### Inactivo
+
+- `handwash` y `read`: pendientes en el bot. `read` ya dispone de GIF en la API; `handwash` todavía no.
 
 ## [4.4.0] - 2026-09-11
 

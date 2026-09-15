@@ -1,6 +1,6 @@
 {
   "name": "maplebot",
-  "version": "4.4.0",
+  "version": "4.4.1",
   "description": "Bot bilingüe y multifuncional de Discord con automoderación, moderación, utilidades, acciones y aplicación web.",
   "main": "sources/index.js",
   "type": "commonjs",

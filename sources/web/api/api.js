@@ -9,6 +9,7 @@ const dashboard_1 = __importDefault(require("./dashboard"));
 const logout_1 = __importDefault(require("./logout"));
 const token_1 = __importDefault(require("./token"));
 const login_1 = __importDefault(require("./login"));
+const delete_account_1 = __importDefault(require("./delete_account"));
 const sfw_1 = __importDefault(require("./categorias/sfw"));
 const express_rate_limit_1 = require("express-rate-limit");
 const router = express_1.default.Router();
@@ -24,6 +25,7 @@ router.use('/register', authenticationLimiter, register_1.default);
 router.use('/tokens', authenticationLimiter, token_1.default);
 router.use('/logout', logout_1.default);
 router.use('/login', authenticationLimiter, login_1.default);
+router.use('/delacc', authenticationLimiter, delete_account_1.default);
 router.use('/sfw', sfw_1.default);
 router.get('/', (req, res) => {
     let isLoggedIn = req.session.userId ? true : false;

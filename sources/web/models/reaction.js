@@ -3,7 +3,9 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.REACTION_CATEGORIES = void 0;
 const mongoose_1 = __importDefault(require("mongoose"));
+const gif_categories_1 = require("./gif_categories");
 const reactionItem = new mongoose_1.default.Schema({
     _id: {
         type: mongoose_1.default.Schema.Types.ObjectId,
@@ -48,4 +50,5 @@ const reactionSchema = new mongoose_1.default.Schema({
     shrug: [reactionItem],
 });
 const Reaction = mongoose_1.default.model('Reaction', reactionSchema);
+exports.REACTION_CATEGORIES = (0, gif_categories_1.gifCategories)(reactionSchema);
 exports.default = Reaction;

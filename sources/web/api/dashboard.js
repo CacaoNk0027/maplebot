@@ -15,6 +15,16 @@ router.get('/', async (req, res) => {
         });
     }
     let user = await user_1.default.findById(req.session.userId);
+    if (!user) {
+        // La cuenta se eliminó desde otra sesión: esta ya no representa a nadie.
+        return req.session.destroy(() => {
+            res.clearCookie('maplebot.sid');
+            res.status(401).json({
+                message: 'No autorizado',
+                code: res.statusCode
+            });
+        });
+    }
     let token = await token_1.default.findOne({ userId: req.session.userId });
     res.render('api/dashboard.html', {
         currentName: user?.username,

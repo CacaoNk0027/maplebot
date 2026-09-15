@@ -14,7 +14,7 @@ router.post('/', (req, res) => {
                 code: res.statusCode
             });
         }
-        res.clearCookie('connect.sid');
+        res.clearCookie('maplebot.sid');
         res.status(200).json({ message: 'Cierre de sesión exitoso' });
     });
 });

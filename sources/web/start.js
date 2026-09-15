@@ -8,6 +8,7 @@ const dotenv_1 = __importDefault(require("dotenv"));
 const cors_1 = __importDefault(require("cors"));
 const ejs_1 = __importDefault(require("ejs"));
 const sessions_1 = __importDefault(require("./middlewares/sessions"));
+const https_proxy_1 = __importDefault(require("./middlewares/https_proxy"));
 const router_1 = __importDefault(require("./router/router"));
 const db_connect_1 = __importDefault(require("../shared/config/db_connect"));
 dotenv_1.default.config();
@@ -16,6 +17,7 @@ const app = (0, express_1.default)();
 function main() {
     if (process.env.NODE_ENV === 'production') {
         app.set('trust proxy', 1);
+        app.use(https_proxy_1.default);
     }
     app.set('port', process.env.PORT || 449);
     app.set('json spaces', 2);

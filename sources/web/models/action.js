@@ -3,7 +3,9 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.ACTION_CATEGORIES = void 0;
 const mongoose_1 = __importDefault(require("mongoose"));
+const gif_categories_1 = require("./gif_categories");
 const action_item = new mongoose_1.default.Schema({
     _id: {
         type: mongoose_1.default.Schema.Types.ObjectId,
@@ -59,4 +61,5 @@ const actionSchema = new mongoose_1.default.Schema({
     handhold: [action_item]
 });
 const Action = mongoose_1.default.model('Action', actionSchema);
+exports.ACTION_CATEGORIES = (0, gif_categories_1.gifCategories)(actionSchema);
 exports.default = Action;
