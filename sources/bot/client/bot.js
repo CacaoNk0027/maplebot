@@ -42,6 +42,11 @@ const neekuro = __importStar(require("neekuro"));
 (0, db_connect_1.default)(process.env.URI_DBBOT);
 const client = new bot_1.default();
 const user = new neekuro.User(process.env.NEEKURO);
+// El paquete trae la URL del API como valor por defecto, así que un cambio de
+// dominio obligaría a publicar una versión nueva y a que todos la instalaran.
+// Fijarla aquí desacopla al bot de eso, y la variable permite apuntar a otro
+// entorno sin tocar el código.
+neekuro.SFW.setBaseURL(process.env.NEEKURO_API?.trim() || 'https://maplebot.fyi/api/sfw');
 client.start();
 process.on('unhandledRejection', (reason, promise) => {
     console.error('Unhandled Rejection at:', promise, 'reason:', reason);

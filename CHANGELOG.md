@@ -6,6 +6,14 @@ El formato está basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1
 
 ## [Sin publicar]
 
+## [4.5.1] - 2026-10-07
+
+### Corregido
+
+- Las vistas y las hojas de estilo pedían el CSS, el JS y las imágenes al dominio anterior, que dejó de resolver, y esas páginas quedaban sin estilos. Ahora usan rutas desde la raíz, así que funcionan con cualquier dominio.
+- El bot fija la URL del API de GIFs al arrancar, configurable con `NEEKURO_API`. Antes la tomaba del valor por defecto del paquete `neekuro`, de modo que un cambio de dominio exigía publicar una versión nueva de la librería.
+- Se retira de la dashboard el enlace a una hoja de estilos que ya no existe.
+
 ## [4.5.0] - 2026-10-06
 
 ### Añadido

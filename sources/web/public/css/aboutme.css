@@ -20,7 +20,7 @@ body {
     height: 100%;
     top: 0;
     left: 0;
-    background: linear-gradient(0deg, var(--base-background), #00000091, #304e753d), url(https://www.nexatdc.work.gd/images/collage.webp);
+    background: linear-gradient(0deg, var(--base-background), #00000091, #304e753d), url(/images/collage.webp);
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center;
@@ -32,7 +32,7 @@ body {
     gap: 200px;
 
     .avatar {
-        background: linear-gradient(360deg, #49494933, #a7a7a744), url(https://www.nexatdc.work.gd/images/avatar.webp);
+        background: linear-gradient(360deg, #49494933, #a7a7a744), url(/images/avatar.webp);
         border: 10px #456869 outset;
         border-radius: 100%;
         width: 300px;
@@ -264,7 +264,7 @@ body {
         height: 100%;
         top: 0;
         left: 0;
-        background: linear-gradient(0deg, var(--base-background), #00000091, #304e753d), url(https://www.nexatdc.work.gd/images/collage.webp);
+        background: linear-gradient(0deg, var(--base-background), #00000091, #304e753d), url(/images/collage.webp);
         background-size: cover;
         background-repeat: no-repeat;
         background-position: center;
@@ -277,7 +277,7 @@ body {
         gap: 0;
     
         .avatar {
-            background: linear-gradient(360deg, #49494933, #a7a7a744), url(https://www.nexatdc.work.gd/images/avatar.webp);
+            background: linear-gradient(360deg, #49494933, #a7a7a744), url(/images/avatar.webp);
             border: 10px #456869 outset;
             border-radius: 100%;
             width: 250px;
