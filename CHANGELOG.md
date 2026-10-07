@@ -6,6 +6,45 @@ El formato está basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1
 
 ## [Sin publicar]
 
+## [4.5.0] - 2026-10-06
+
+### Añadido
+
+- Sistema de registros configurable evento por evento: mensajes borrados, editados y purgados, entradas y salidas, bienvenidas y despedidas, y toda la actividad de AutoMod. Cada tipo se activa por separado y puede enviarse a su propio canal o a uno común.
+- Panel de registros con menús y botones en `logs`, en lugar de subcomandos. La configuración anterior de AutoMod se traslada sola la primera vez que se lee.
+- Categoría de comandos de reacción con veintiún comandos: un GIF distinto cada vez para responder sin escribir. Ninguna reacción puede dirigirse al bot.
+- Comandos `kick` y `warn`. Ambos quedan en el historial de infracciones y los avisos suman para el escalado por reincidencia, que se evalúa en el acto. `warn retirar` borra el aviso más reciente.
+- Comando `embed` con constructor interactivo: título, descripción, color, imágenes y vista previa antes de enviar.
+- Comandos `color` y `roleinfo` en utilidades.
+- Acciones `explosion`, `handhold`, `highfive` y `wave`.
+- Comando `features` en información, que resume lo que trae la versión.
+- Aviso de nueva versión, mostrado una sola vez por servidor al primer comando tras la actualización. Se puede desactivar con `features avisos off`, que requiere Gestionar servidor.
+- Rotación diaria de la frase de presencia, programada para cada medianoche en lugar de un intervalo fijo, de modo que no deriva con los reinicios ni con el horario de verano.
+
+### Cambiado
+
+- La acción `read` queda activa, ya con GIF disponibles en la API.
+- Los emojis personalizados se centralizan en un catálogo tipado, en lugar de repetir los identificadores por cinco archivos.
+- La caché de mensajes se acota a doscientos por canal con limpieza cada treinta minutos, necesaria para que los registros de borrado y edición conserven el texto sin que la memoria crezca sin límite.
+- El compilado se construye en un directorio temporal y se intercambia de golpe, así que un build fallido deja el despliegue anterior intacto.
+
+### Eliminado
+
+- Acción `handwash`, descontinuada. Su categoría permanece en la API.
+
+### Corregido
+
+- El panel de registros no podía guardar ningún ajuste: las claves de evento llevan un punto y Mongoose no lo admite en las claves de un mapa. Los guardados que abren una transacción confirman la interacción antes de escribir, para no agotar el plazo de tres segundos de Discord.
+- Enviar un embed desde el panel fallaba indicando que el canal no existía.
+- El interruptor de avisos solo respondía a `features off`, y no a la forma larga que el propio mensaje indicaba.
+- La presencia del bot se perdía cuando Discord invalidaba la sesión; ahora se repone al reconectar.
+
+### Seguridad
+
+- Cinco avisos de dependencias cerrados, uno de ellos crítico: `proxy-addr` actualizado a `2.0.8` ([GHSA-9j49-pjc9-vhv5](https://github.com/advisories/GHSA-9j49-pjc9-vhv5), suplantación de IP mediante direcciones IPv4 asignadas en IPv6, que afectaba directamente a la configuración de `trust proxy`), junto a `undici` `6.28.1`, `brace-expansion` `2.1.7`, `ip-address` `10.7.1` y `moment` `2.31.0`. La auditoría de producción no reporta vulnerabilidades conocidas.
+- Las infracciones manuales siguen la misma regla de privacidad que las automáticas: se guarda el motivo, nunca el contenido del mensaje.
+- Maple no envía mensajes directos en ninguna sanción; el aviso llega mencionando al usuario en el canal.
+
 ## [4.4.1] - 2026-09-15
 
 ### Cambiado
@@ -117,6 +156,8 @@ El formato está basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1
 - `automod`: reservado para una actualización posterior del sistema de automoderación.
 - `handwash` y `read`: sin una categoría de GIF válida disponible actualmente en la API.
 
-[Sin publicar]: https://github.com/CacaoNk0027/maplebot/compare/v4.4.0...HEAD
+[Sin publicar]: https://github.com/CacaoNk0027/maplebot/compare/v4.5.0...HEAD
+[4.5.0]: https://github.com/CacaoNk0027/maplebot/compare/v4.4.1...v4.5.0
+[4.4.1]: https://github.com/CacaoNk0027/maplebot/compare/v4.4.0...v4.4.1
 [4.4.0]: https://github.com/CacaoNk0027/maplebot/compare/v4.3.0...v4.4.0
 [4.3.0]: https://github.com/CacaoNk0027/maplebot/compare/v4.2.2...v4.3.0

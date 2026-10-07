@@ -4,6 +4,7 @@ const discord_js_1 = require("discord.js");
 const command_handler_1 = require("../../bot/config/command_handler");
 const interaction_handler_1 = require("../../bot/config/interaction_handler");
 const config_1 = require("../config/config");
+const update_notice_1 = require("../structs/update_notice");
 const event = {
     name: discord_js_1.Events.InteractionCreate,
     async exec(interaction) {
@@ -14,6 +15,10 @@ const event = {
             }
             if (interaction.type == discord_js_1.InteractionType.MessageComponent && interaction.isAnySelectMenu()) {
                 await select_menu(interaction);
+                return;
+            }
+            if (interaction.isButton()) {
+                await button_click(interaction);
                 return;
             }
             if (interaction.isModalSubmit()) {
@@ -36,6 +41,15 @@ async function slash_command(interaction) {
     }
     try {
         await command.exec(interaction);
+        // Mismo criterio que en el despachador de prefijo: al final y aislado,
+        // para que no arrastre al comando si falla.
+        if (interaction.guild) {
+            await (0, update_notice_1.maybeAnnounceUpdate)(interaction.guild, interaction.channel?.isTextBased() && !interaction.channel.isDMBased()
+                ? interaction.channel
+                : null).catch(announceError => {
+                console.warn('[InteractionCreate:WARN]! no se pudo anunciar la actualizacion:', announceError);
+            });
+        }
     }
     catch (error) {
         console.error('[InteractionCreate:ERR]! ha ocurrido un error al ejecutar un comando:', error);
@@ -82,6 +96,33 @@ async function select_menu(interaction) {
         catch (replyError) {
             console.error('[InteractionCreate:ERR]! no se ha podido editar el mensaje de error al ejecutar:', replyError);
         }
+    }
+}
+async function button_click(interaction) {
+    const locale = await (0, config_1._locale)(interaction.guild);
+    // Mismo formato que los menús: `button.NNN:dueño:dato`. Solo se extrae el
+    // dueño para la comprobación; cada manejador lee del `customId` los datos
+    // que le interesan, en el mismo orden en que los escribió.
+    const [buttonId, ownerId] = interaction.customId.split(':');
+    const button = (await (0, interaction_handler_1.load_buttons)()).get(buttonId);
+    if (!button) {
+        await (0, config_1.send)(interaction, 'warn', (0, config_1.text)(locale, 'interaction.button.unknown'), true);
+        return;
+    }
+    // Un panel enviado por prefijo lo ve todo el canal: sin esta comprobación
+    // cualquiera podría pulsar los botones de otro.
+    if (button.data.unique && ownerId !== interaction.user.id) {
+        await (0, config_1.send)(interaction, 'warn', (0, config_1.text)(locale, 'interaction.button.owner'), true);
+        return;
+    }
+    try {
+        await button.exec(interaction);
+    }
+    catch (error) {
+        console.error('[InteractionCreate:ERR]! ha ocurrido un error al ejecutar un boton:', error);
+        await (0, config_1.send)(interaction, 'error', (0, config_1.text)(locale, 'reply.error'), true).catch(replyError => {
+            console.error('[InteractionCreate:ERR]! no se pudo responder el error del boton:', replyError);
+        });
     }
 }
 async function modal_submit(interaction) {

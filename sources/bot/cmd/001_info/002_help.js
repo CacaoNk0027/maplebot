@@ -9,6 +9,7 @@ const command_data_1 = __importDefault(require("../../structs/command_data"));
 const command_handler_1 = require("../../config/command_handler");
 const config_1 = require("../../config/config");
 const help_1 = require("../../structs/help");
+const emojis_1 = require("../../../shared/config/emojis");
 const command = {
     data: new command_data_1.default()
         .setName('help')
@@ -55,10 +56,10 @@ async function showMenu(target, locale) {
                     icon_url: target.client.user?.avatarURL() ?? ''
                 },
                 color: config_1.theme_color,
-                title: `<:tea:1533702747033964615> | ${(0, config_1.text)(locale, 'cmd.001.002.menu.title')}`,
+                title: `${emojis_1.EMOJI.tea} | ${(0, config_1.text)(locale, 'cmd.001.002.menu.title')}`,
                 description: (0, config_1.text)(locale, 'cmd.001.002.menu.description'),
                 fields: [{
-                        name: `<:wink:1533702744895000596> | ${(0, config_1.text)(locale, 'cmd.001.002.menu.support.name')}`,
+                        name: `${emojis_1.EMOJI.wink} | ${(0, config_1.text)(locale, 'cmd.001.002.menu.support.name')}`,
                         value: (0, config_1.text)(locale, 'cmd.001.002.menu.support.value')
                     }]
             }],

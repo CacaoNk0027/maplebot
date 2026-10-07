@@ -42,6 +42,7 @@ const command_data_1 = __importDefault(require("../../../bot/structs/command_dat
 const systeminformation_1 = __importDefault(require("systeminformation"));
 const config_1 = require("../../../bot/config/config");
 const command_handler_1 = require("../../../bot/config/command_handler");
+const emojis_1 = require("../../../shared/config/emojis");
 const command = {
     data: new command_data_1.default()
         .setName("stats")
@@ -89,13 +90,13 @@ async function response(caller) {
             iconURL: caller.client.user?.avatarURL() || undefined
         })
             .setColor(config_1.theme_color)
-            .setDescription(`${(0, config_1.text)(locale, 'cmd.001.004.description')} <:wink:1533702744895000596>`)
+            .setDescription(`${(0, config_1.text)(locale, 'cmd.001.004.description')} ${emojis_1.EMOJI.wink}`)
             .setFields([{
-                name: `${(0, config_1.text)(locale, 'cmd.001.004.field1.name')} | <:Dis_memberList:888232778418749491>`,
+                name: `${(0, config_1.text)(locale, 'cmd.001.004.field1.name')} | ${emojis_1.EMOJI.memberList}`,
                 value: (0, config_1.code_text)(`+ ${total_members}`, 'diff'),
                 inline: true
             }, {
-                name: `${(0, config_1.text)(locale, 'cmd.001.004.field2.name')} | <:Dis_channelText:888230498214760509>`,
+                name: `${(0, config_1.text)(locale, 'cmd.001.004.field2.name')} | ${emojis_1.EMOJI.channelText}`,
                 value: (0, config_1.code_text)(`+ ${total_guilds}`, 'diff'),
                 inline: true
             }, {
@@ -106,7 +107,7 @@ async function response(caller) {
                 value: (0, config_1.code_text)(`+ ${cmds_size}`, 'diff'),
                 inline: true
             }, {
-                name: `${(0, config_1.text)(locale, 'cmd.001.004.field5.name')} | <:slash:1533974691948007434>`,
+                name: `${(0, config_1.text)(locale, 'cmd.001.004.field5.name')} | ${emojis_1.EMOJI.slash}`,
                 value: (0, config_1.code_text)(`+ ${(await caller.client.application.commands.fetch()).size}`, 'diff'),
                 inline: true
             }, {

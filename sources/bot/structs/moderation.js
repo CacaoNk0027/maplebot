@@ -1,4 +1,7 @@
 "use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.moderationLocale = moderationLocale;
 exports.ensureModerationPermissions = ensureModerationPermissions;
@@ -7,10 +10,14 @@ exports.resolveGuildRole = resolveGuildRole;
 exports.resolveGuildChannel = resolveGuildChannel;
 exports.validateTargetMember = validateTargetMember;
 exports.validateAssignableRole = validateAssignableRole;
+exports.readModerationReason = readModerationReason;
+exports.recordManualInfraction = recordManualInfraction;
 exports.remainingArguments = remainingArguments;
 exports.memberDisplayName = memberDisplayName;
 const discord_js_1 = require("discord.js");
 const config_1 = require("../config/config");
+const Infraction_1 = __importDefault(require("../../shared/bot/models/Infraction"));
+const MODERATION_REASON_LIMIT = 400;
 async function moderationLocale(target) {
     return await (0, config_1._locale)(target.guild);
 }
@@ -126,7 +133,9 @@ async function validateTargetMember(target, member, locale, action) {
         await (0, config_1.send)(target, 'warn', (0, config_1.text)(locale, 'system.003.member.owner'), true);
         return false;
     }
-    if (member.user.bot) {
+    // Expulsar un bot es un uso legítimo (quitar uno no deseado); avisarlo o
+    // aislarlo no tiene sentido.
+    if (member.user.bot && action !== 'kick') {
         await (0, config_1.send)(target, 'warn', (0, config_1.text)(locale, 'system.003.member.bot'), true);
         return false;
     }
@@ -135,7 +144,11 @@ async function validateTargetMember(target, member, locale, action) {
         await (0, config_1.send)(target, 'warn', (0, config_1.text)(locale, 'system.003.member.hierarchy'), true);
         return false;
     }
-    const botCanAct = action === 'timeout' ? member.moderatable : member.manageable;
+    // Un aviso no requiere que el bot actúe sobre el miembro.
+    const botCanAct = action === 'timeout' ? member.moderatable
+        : action === 'kick' ? member.kickable
+            : action === 'roles' ? member.manageable
+                : true;
     if (!botCanAct) {
         await (0, config_1.send)(target, 'warn', (0, config_1.text)(locale, `system.003.member.${action}.unavailable`), true);
         return false;
@@ -165,6 +178,35 @@ async function validateAssignableRole(target, role, locale) {
         return false;
     }
     return true;
+}
+/**
+ * Lee el motivo de una sanción: la opción `reason` por slash, o los argumentos
+ * que sobran tras el objetivo por prefijo. Devuelve null si excede el límite.
+ */
+async function readModerationReason(target, args, consumedArgument, locale) {
+    const raw = target instanceof discord_js_1.ChatInputCommandInteraction
+        ? target.options.getString('reason')
+        : remainingArguments(args, consumedArgument).join(' ');
+    const reason = raw?.trim() || (0, config_1.text)(locale, 'system.003.reason.default');
+    if (reason.length > MODERATION_REASON_LIMIT) {
+        await (0, config_1.send)(target, 'warn', (0, config_1.text)(locale, 'system.003.reason.too_long'), true);
+        return null;
+    }
+    return reason;
+}
+/**
+ * Deja una sanción manual en el historial. Es el mismo registro que usa
+ * AutoMod, distinguido por `source`, así que cuenta para el escalado.
+ */
+async function recordManualInfraction(guildId, userId, moderatorId, action, reason) {
+    try {
+        await Infraction_1.default.record({ guildId, userId, source: 'manual', moderatorId, action, reason });
+        return true;
+    }
+    catch (error) {
+        console.error('[Moderation:ERR] No se pudo registrar la sanción en el historial:', error);
+        return false;
+    }
 }
 function remainingArguments(args = [], consumedArgument) {
     return consumedArgument === null

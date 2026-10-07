@@ -18,6 +18,9 @@ class ActionCommand {
         this.data = data;
         this.user = data.user ?? null;
     }
+    get systemPrefix() {
+        return this.data.systemPrefix ?? '005';
+    }
     async execute() {
         let locale = 'es-ES';
         try {
@@ -37,7 +40,7 @@ class ActionCommand {
         await this.resolveUser();
         if (!this.user || this.user.id === author.id) {
             if (this.data.targetMode === 'required') {
-                await (0, config_1.send)(this.target, 'error', (0, config_1.text)(locale, 'system.005.user.required'), true);
+                await (0, config_1.send)(this.target, 'error', (0, config_1.text)(locale, `system.${this.systemPrefix}.user.required`), true);
                 return false;
             }
             return await this.replyWithGif(locale, 'author', author);
@@ -47,7 +50,7 @@ class ActionCommand {
             if (easterEggResult !== null)
                 return easterEggResult;
             if (this.data.botCanBeMentioned === false) {
-                await (0, config_1.send)(this.target, 'warn', (0, config_1.text)(locale, 'system.005.bot.denied'), true);
+                await (0, config_1.send)(this.target, 'warn', (0, config_1.text)(locale, `system.${this.systemPrefix}.bot.denied`), true);
                 return false;
             }
             return await this.replyWithGif(locale, 'bot', author, this.user);
@@ -68,17 +71,18 @@ class ActionCommand {
     async replyWithGif(locale, variant, author, user, customFooter) {
         const gif = await this.getGif();
         const message = this.getMessage(locale, variant, author, user);
-        await (0, config_1.rp_embed)(this.target, message, gif, locale, customFooter);
+        await (0, config_1.rp_embed)(this.target, message, gif, locale, customFooter, this.systemPrefix);
         return true;
     }
     getMessage(locale, variant, author, user) {
         const key = `${this.data.messageKey}.${variant}`;
         const authorName = author.globalName ?? author.username;
         const userName = user?.globalName ?? user?.username;
-        return this.getRandomLocalizedText(locale, key, [authorName, userName ?? ''], (0, config_1.text)(locale, 'system.005.message.fallback', authorName));
+        return this.getRandomLocalizedText(locale, key, [authorName, userName ?? ''], (0, config_1.text)(locale, `system.${this.systemPrefix}.message.fallback`, authorName));
     }
     async handleBotEasterEgg(locale, author) {
         if (this.data.botEasterEgg === 'retaliation') {
+            // Los easter eggs solo los declara la fábrica de acciones, nunca la de reacciones.
             if (!(0, action_easter_eggs_1.registerRetaliationAttempt)(author.id, this.data.action))
                 return null;
             const footer = this.getRandomLocalizedText(locale, 'system.005.easter.retaliation.footer');
@@ -119,7 +123,9 @@ class ActionCommand {
         return (0, config_1.text)(locale, template, ...args);
     }
     async getGif() {
-        const gif = await neekuro_1.SFW.getGif('action', this.data.action);
+        const gif = this.data.category === 'reaction'
+            ? await neekuro_1.SFW.getGif('reaction', this.data.action)
+            : await neekuro_1.SFW.getGif('action', this.data.action);
         if (!gif.getUrl()) {
             throw new Error(`La API no devolvió un GIF para la acción ${this.data.action}`);
         }

@@ -35,11 +35,13 @@ var __importStar = (this && this.__importStar) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.load_interactions = load_interactions;
 exports.load_modals = load_modals;
+exports.load_buttons = load_buttons;
 const discord_js_1 = require("discord.js");
 const config_1 = require("./config");
 const fs_1 = require("fs");
 let cachedMenus;
 let cachedModals;
+let cachedButtons;
 async function load_interactions() {
     if (cachedMenus)
         return cachedMenus;
@@ -51,6 +53,12 @@ async function load_modals() {
         return cachedModals;
     cachedModals = await load_handlers('modals', 'modal');
     return cachedModals;
+}
+async function load_buttons() {
+    if (cachedButtons)
+        return cachedButtons;
+    cachedButtons = await load_handlers('buttons', 'button');
+    return cachedButtons;
 }
 async function load_handlers(folder, exportName) {
     const handlers = new discord_js_1.Collection();

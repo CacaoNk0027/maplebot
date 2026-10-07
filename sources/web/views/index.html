@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="theme-color" content="#f3a94d">
     <meta name="description"
-        content="Maple <%= version %> es un bot de Discord bilingüe con automoderación, historial de infracciones, utilidades, acciones y bienvenidas personalizables.">
+        content="Maple <%= version %> es un bot de Discord bilingüe con automoderación, registros configurables, historial de infracciones, utilidades, acciones, reacciones y bienvenidas personalizables.">
     <meta property="og:site_name" content="Maple Bot">
     <meta property="og:title" content="Maple Bot <%= version %> — Tu comunidad, más acogedora">
     <meta property="og:description" content="Configura, modera y dale personalidad a tu servidor en español o inglés.">
@@ -61,7 +61,7 @@
                         <a class="button button-secondary" href="#funciones">Conocer a Maple</a>
                     </div>
                     <ul class="hero-notes" aria-label="Características principales">
-                        <li>55 comandos activos</li>
+                        <li>87 comandos activos</li>
                         <li>Español + English</li>
                         <li>Configuración sencilla</li>
                     </ul>
@@ -86,9 +86,9 @@
         <section class="section page-shell" id="funciones">
             <div class="section-heading reveal">
                 <p class="eyebrow"><span></span> Novedades de la versión <%= version %></p>
-                <h2>Moderación que trabaja sola, sin perder el control.</h2>
-                <p>Esta actualización convierte a Maple en una moderadora activa: detecta, registra, avisa y sanciona
-                    por su cuenta, pero siempre con la última palabra de tu equipo.</p>
+                <h2>Ahora Maple también lleva la memoria de tu servidor.</h2>
+                <p>Esta actualización añade registros configurables evento por evento, dos sanciones más que cuentan
+                    para el historial, y una categoría entera de reacciones para darle vida al chat.</p>
             </div>
 
             <div class="feature-grid">
@@ -96,43 +96,43 @@
                     <div class="feature-icon">✦</div>
                     <div>
                         <p class="card-kicker">Novedad en <%= version %></p>
-                        <h3>AutoMod completo, sin salir de Discord</h3>
-                        <p>Crea y edita reglas de automoderación desde el bot: palabras personalizadas, expresiones
-                            regulares, listas predefinidas, spam, menciones masivas y filtrado de apodos. Cada campo se
-                            modifica por separado, con menús y formularios que ya vienen rellenos.</p>
+                        <h3>Registros a tu medida, evento por evento</h3>
+                        <p>Mensajes borrados y editados, purgas, entradas y salidas, y toda la actividad de AutoMod.
+                            Enciende solo lo que te interese y manda cada tipo al canal que quieras, o todo a uno
+                            común, desde un panel con menús y botones.</p>
                     </div>
                     <div class="mini-message">
                         <img src="/images/mapleavatar.webp" alt="">
-                        <div><strong>Maple · /automod editar</strong><span>Selecciona el campo que quieres modificar</span></div>
+                        <div><strong>Maple · /logs</strong><span>Elige qué quieres registrar y dónde</span></div>
                     </div>
                 </article>
 
                 <article class="feature-card reveal">
                     <div class="feature-icon">◇</div>
-                    <h3>Un registro de todo lo que pasa</h3>
-                    <p>Elige un canal y Maple anotará cada mensaje bloqueado y cada cambio en tus reglas, indicando
-                        quién lo hizo. Nada ocurre a tus espaldas.</p>
-                </article>
-
-                <article class="feature-card reveal">
-                    <div class="feature-icon">⌁</div>
-                    <h3>Historial por usuario</h3>
-                    <p>Consulta las infracciones de cualquier miembro o el resumen del servidor, con navegación por
-                        páginas. Los registros se conservan noventa días y se borran solos.</p>
+                    <h3>Avisos y expulsiones que cuentan</h3>
+                    <p>Avisa o expulsa a un miembro y queda registrado junto a lo que detecta AutoMod. Los avisos suman
+                        para el escalado, así que la reincidencia se sanciona sola.</p>
                 </article>
 
                 <article class="feature-card reveal">
                     <div class="feature-icon">♡</div>
-                    <h3>Sanciones que escalan solas</h3>
-                    <p>Define tu propia escalera: un aviso a las tres faltas, aislamientos que crecen con la
-                        reincidencia. Solo cuenta lo ocurrido en los últimos días y nunca aplica nada irreversible.</p>
+                    <h3>Veintiuna reacciones nuevas</h3>
+                    <p>Ríe, llora, baila o pon los ojos en blanco con un GIF distinto cada vez. Una categoría entera
+                        para responder sin escribir una palabra.</p>
+                </article>
+
+                <article class="feature-card reveal">
+                    <div class="feature-icon">⌁</div>
+                    <h3>Embeds sin pelearte con el JSON</h3>
+                    <p>Construye un mensaje enriquecido paso a paso desde el propio Discord: título, descripción,
+                        colores e imágenes, viendo cómo queda antes de enviarlo.</p>
                 </article>
 
                 <article class="feature-card reveal">
                     <div class="feature-icon">⚙</div>
-                    <h3>Baneos con más matices</h3>
-                    <p>Además del baneo normal, limpia los mensajes de alguien sin cerrarle la puerta para siempre, o
-                        actúa por ID sobre cuentas que aún no han entrado al servidor.</p>
+                    <h3>Más utilidades y más acciones</h3>
+                    <p>Consulta cualquier color o los detalles de un rol, y estrena cuatro acciones: explosión, chocar
+                        los cinco, saludar y ir de la mano.</p>
                 </article>
             </div>
         </section>

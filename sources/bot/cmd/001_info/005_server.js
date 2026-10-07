@@ -8,6 +8,7 @@ const discord_js_1 = require("discord.js");
 const command_data_1 = __importDefault(require("../../../bot/structs/command_data"));
 const config_1 = require("../../../bot/config/config");
 const _004_icon_1 = require("../002_util/004_icon");
+const emojis_1 = require("../../../shared/config/emojis");
 const command = {
     data: new command_data_1.default()
         .setName('server')
@@ -87,29 +88,29 @@ async function info(message) {
                         name: '🆔 | ID',
                         value: `\`${guild?.id}\``
                     }, {
-                        name: `<:Dis_pinnedMessages:888232861684084747> | ${(0, config_1.text)(locale, 'cmd.001.005.field2.name')}`,
+                        name: `${emojis_1.EMOJI.pinnedMessages} | ${(0, config_1.text)(locale, 'cmd.001.005.field2.name')}`,
                         value: `<t:${Math.floor(guild.createdTimestamp / 1000)}:F>`
                     }, {
-                        name: `<:Dis_memberList:888232778418749491> | ${(0, config_1.text)(locale, 'cmd.001.004.field1.name')}`,
+                        name: `${emojis_1.EMOJI.memberList} | ${(0, config_1.text)(locale, 'cmd.001.004.field1.name')}`,
                         value: (0, config_1.code_text)((0, config_1.text)(locale, 'cmd.001.005.field3.value', members, bots, members + bots), 'js'),
                         inline: true
                     }, {
-                        name: `<:Dis_channelThread:888230841942151171> | ${(0, config_1.text)(locale, "cmd.001.004.field3.name")}`,
+                        name: `${emojis_1.EMOJI.channelThread} | ${(0, config_1.text)(locale, "cmd.001.004.field3.name")}`,
                         value: (0, config_1.code_text)((0, config_1.text)(locale, 'cmd.001.005.field4.value', guild?.channels.cache.filter(c => c.type == discord_js_1.ChannelType.GuildCategory).size, guild?.channels.cache.filter(c => c.type == discord_js_1.ChannelType.GuildText).size, guild?.channels.cache.filter(c => c.type == discord_js_1.ChannelType.GuildVoice).size), 'js'),
                         inline: true
                     }, {
-                        name: `<:Dis_sticker:888234162903994378> | ${(0, config_1.text)(locale, 'cmd.001.005.field5.name')}`,
+                        name: `${emojis_1.EMOJI.sticker} | ${(0, config_1.text)(locale, 'cmd.001.005.field5.name')}`,
                         value: (0, config_1.code_text)((0, config_1.text)(locale, 'cmd.001.005.field5.value', guild?.roles.cache.size, guild?.emojis.cache.size), 'js')
                     }, {
-                        name: `<:Dis_boostLv1:888234250757890099> | ${(0, config_1.text)(locale, 'cmd.001.005.field6.name')}`,
+                        name: `${emojis_1.EMOJI.boostLv1} | ${(0, config_1.text)(locale, 'cmd.001.005.field6.name')}`,
                         value: (0, config_1.code_text)((guild?.premiumTier !== undefined && guild?.premiumTier !== null ? String(guild.premiumTier) : "- N/a"), 'diff'),
                         inline: true
                     }, {
-                        name: `<:Dis_boostLv2:888234340121727006> | ${(0, config_1.text)(locale, 'cmd.001.005.field7.name')}`,
+                        name: `${emojis_1.EMOJI.boostLv2} | ${(0, config_1.text)(locale, 'cmd.001.005.field7.name')}`,
                         value: (0, config_1.code_text)(guild?.premiumSubscriptionCount != null ? guild.premiumSubscriptionCount.toString() : '0'),
                         inline: true
                     }, {
-                        name: `<:Dis_channelRules:888231318876487731> | ${(0, config_1.text)(locale, 'cmd.001.005.field8.name')}`,
+                        name: `${emojis_1.EMOJI.channelRules} | ${(0, config_1.text)(locale, 'cmd.001.005.field8.name')}`,
                         value: (0, config_1.code_text)(`${guild?.verificationLevel !== undefined ? (0, config_1.verificacion)(guild.verificationLevel, locale) : '- N/a'}`, 'diff')
                     }]
             }]

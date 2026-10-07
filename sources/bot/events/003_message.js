@@ -8,6 +8,7 @@ const config_1 = require("../../bot/config/config");
 const command_handler_1 = require("../../bot/config/command_handler");
 const Guild_1 = __importDefault(require("../../shared/bot/models/Guild"));
 const User_1 = __importDefault(require("../../shared/bot/models/User"));
+const update_notice_1 = require("../structs/update_notice");
 const cooldown = new discord_js_1.Collection();
 const warnings = new discord_js_1.Collection();
 const event = {
@@ -16,7 +17,7 @@ const event = {
         let locale = 'es-ES';
         let shouldReplyOnError = false;
         try {
-            if (message.author.bot)
+            if (!message.author || message.author.bot)
                 return;
             if (message.channel.type != discord_js_1.ChannelType.GuildText)
                 return;
@@ -94,6 +95,11 @@ const event = {
             if (command.data.leveling && succeeded !== false) {
                 await User_1.default.updateLevel(message.author.id);
             }
+            // Va al final y con su propio catch: el aviso de actualizacion no
+            // debe estropear un comando que ya respondio bien.
+            await (0, update_notice_1.maybeAnnounceUpdate)(message.guild, message.channel).catch(error => {
+                console.warn('[MessageCreate:WARN]! no se pudo anunciar la actualizacion:', error);
+            });
         }
         catch (error) {
             console.error('[MessageCreate:ERR]! ha ocurrido un error:', error);

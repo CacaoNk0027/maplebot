@@ -6,6 +6,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.getEscalationSettings = getEscalationSettings;
 exports.clearEscalationCache = clearEscalationCache;
 exports.applyAutoModEscalation = applyAutoModEscalation;
+exports.applyManualEscalation = applyManualEscalation;
 const discord_js_1 = require("discord.js");
 const Escalation_1 = __importDefault(require("../../shared/bot/models/Escalation"));
 const Infraction_1 = __importDefault(require("../../shared/bot/models/Infraction"));
@@ -43,35 +44,50 @@ async function getEscalationSettings(guildId) {
 function clearEscalationCache(guildId) {
     configCache.delete(guildId);
 }
+/** Evalúa el escalado tras una infracción de AutoMod. */
+async function applyAutoModEscalation(execution) {
+    const { guild } = execution;
+    if (!guild || !execution.userId)
+        return;
+    await evaluateEscalation(guild, execution.userId, execution.channelId ?? null, true);
+}
+/**
+ * Evalúa el escalado tras un aviso manual.
+ *
+ * No pasa por la guarda de ráfagas: esa guarda existe porque un solo mensaje
+ * puede activar varias reglas a la vez, y un aviso manual es un acto aislado.
+ * Si se saltara, el aviso sumaría al total sin evaluarse y, como el escalón
+ * exige coincidencia exacta, ese escalón se perdería para siempre.
+ */
+async function applyManualEscalation(guild, userId, channelId) {
+    await evaluateEscalation(guild, userId, channelId, false);
+}
 /**
  * Evalúa si la infracción recién registrada alcanza un escalón y aplica su
  * sanción.
  *
  * El escalón se activa cuando el total dentro de la ventana coincide
  * exactamente con su umbral, de modo que cada escalón se aplica una sola vez
- * por usuario y ventana.
+ * por usuario y ventana. El total incluye las sanciones manuales.
  */
-async function applyAutoModEscalation(execution) {
-    const { guild } = execution;
-    if (!guild || !execution.userId)
-        return;
+async function evaluateEscalation(guild, userId, channelId, burstGuard) {
     const settings = await getEscalationSettings(guild.id);
     if (!settings?.enabled || !settings.steps.length)
         return;
-    if (isWithinBurstWindow(guild.id, execution.userId))
+    if (burstGuard && isWithinBurstWindow(guild.id, userId))
         return;
     const since = new Date(Date.now() - settings.windowDays * DAY_MS);
-    const total = await Infraction_1.default.countByUser(guild.id, execution.userId, since);
+    const total = await Infraction_1.default.countByUser(guild.id, userId, since);
     const step = settings.steps.find(candidate => candidate.threshold === total);
     if (!step)
         return;
-    const member = await guild.members.fetch(execution.userId).catch(() => null);
+    const member = await guild.members.fetch(userId).catch(() => null);
     if (!member)
         return;
     const locale = await (0, config_1._locale)(guild);
     const applied = step.action === 'timeout'
         ? await applyTimeout(member, step, locale, total)
-        : await applyWarning(execution, member, locale, total);
+        : await applyWarning(channelId, member, locale, total);
     if (applied)
         await notifyEscalation(guild, member, step, total, locale);
 }
@@ -109,9 +125,9 @@ async function applyTimeout(member, step, locale, total) {
     });
     return true;
 }
-async function applyWarning(execution, member, locale, total) {
-    const channel = execution.channelId
-        ? await member.guild.channels.fetch(execution.channelId).catch(() => null)
+async function applyWarning(channelId, member, locale, total) {
+    const channel = channelId
+        ? await member.guild.channels.fetch(channelId).catch(() => null)
         : null;
     if (channel?.type !== discord_js_1.ChannelType.GuildText && channel?.type !== discord_js_1.ChannelType.GuildAnnouncement) {
         return true;

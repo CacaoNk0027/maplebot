@@ -1,7 +1,7 @@
 {
   "name": "maplebot",
-  "version": "4.4.1",
-  "description": "Bot bilingüe y multifuncional de Discord con automoderación, moderación, utilidades, acciones y aplicación web.",
+  "version": "4.5.0",
+  "description": "Bot bilingüe y multifuncional de Discord con automoderación, registros configurables, moderación, utilidades, acciones, reacciones y aplicación web.",
   "main": "sources/index.js",
   "type": "commonjs",
   "packageManager": "pnpm@11.15.1",
@@ -40,10 +40,10 @@
     "express-rate-limit": "^8.6.1",
     "express-session": "^1.19.0",
     "hex-color-regex": "^1.1.0",
-    "moment": "^2.30.1",
+    "moment": "^2.31.0",
     "mongoose": "^8.24.3",
     "ms": "^2.1.3",
-    "neekuro": "^2.2.0",
+    "neekuro": "^2.3.0",
     "systeminformation": "^5.33.1"
   }
 }

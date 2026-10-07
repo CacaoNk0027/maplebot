@@ -8,6 +8,7 @@ const discord_js_1 = require("discord.js");
 const command_data_1 = __importDefault(require("../../structs/command_data"));
 const member_1 = __importDefault(require("../../structs/member"));
 const config_1 = require("../../config/config");
+const emojis_1 = require("../../../shared/config/emojis");
 const command = {
     data: new command_data_1.default()
         .setName('member')
@@ -61,10 +62,10 @@ async function response(caller, args = []) {
                     color: member.displayColor || user.accentColor || (0, config_1.random_color)(),
                     description: memberDescription(locale, member),
                     fields: [{
-                            name: `<:Dis_pinnedMessages:888232861684084747> | ${(0, config_1.text)(locale, 'cmd.002.003.joined')}`,
+                            name: `${emojis_1.EMOJI.pinnedMessages} | ${(0, config_1.text)(locale, 'cmd.002.003.joined')}`,
                             value: joinedTimestamp > 0 ? `<t:${joinedTimestamp}:F>` : (0, config_1.text)(locale, 'cmd.002.unknown')
                         }, {
-                            name: `<:Dis_rol:888234105332981781> | ${(0, config_1.text)(locale, 'cmd.002.003.roles')}`,
+                            name: `${emojis_1.EMOJI.rol} | ${(0, config_1.text)(locale, 'cmd.002.003.roles')}`,
                             value: rolesText
                         }],
                     thumbnail: {

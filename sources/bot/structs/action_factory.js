@@ -17,7 +17,6 @@ const definitions = {
     drive: { id: '005', action: 'drive', aliases: ['conducir', 'manejar'], target: 'none', botCanBeMentioned: false },
     eat: { id: '006', action: 'eat', aliases: ['comer'], target: 'none', botCanBeMentioned: false },
     feed: { id: '007', action: 'feed', aliases: ['alimentar'], target: 'required' },
-    handwash: { id: '008', aliases: ['hdw', 'handw', 'lavarmanos', 'lavarsemanos'], target: 'none', inactive: true },
     hug: { id: '009', action: 'hug', aliases: ['abrazo', 'abrazar'], target: 'required', statistic: 'received' },
     kickbut: { id: '010', action: 'kickbut', aliases: ['patada', 'patear'], target: 'required', botCanBeMentioned: false, botEasterEgg: 'retaliation', statistic: 'pair' },
     kill: { id: '011', action: 'kill', aliases: ['matar', 'asesinar'], target: 'required', botCanBeMentioned: false, botEasterEgg: 'retaliation' },
@@ -28,7 +27,7 @@ const definitions = {
     play: { id: '016', action: 'playing', aliases: ['jugar', 'playing'], target: 'optional' },
     poke: { id: '017', action: 'poke', aliases: ['molestar', 'fastidio', 'fastidiar'], target: 'required', botCanBeMentioned: false },
     punch: { id: '018', action: 'punch', aliases: ['golpear'], target: 'required', botCanBeMentioned: false, botEasterEgg: 'retaliation', statistic: 'received' },
-    read: { id: '019', aliases: ['leer'], target: 'none', inactive: true },
+    read: { id: '019', action: 'read', aliases: ['leer'], target: 'none' },
     run: { id: '020', action: 'run', aliases: ['correr'], target: 'none', botCanBeMentioned: false },
     sape: { id: '021', action: 'sape', aliases: ['zape'], target: 'required', botCanBeMentioned: false, botEasterEgg: 'retaliation', statistic: 'received' },
     shot: { id: '022', action: 'shoot', aliases: ['disparar'], target: 'optional', botCanBeMentioned: false, botEasterEgg: 'retaliation' },
@@ -38,7 +37,11 @@ const definitions = {
     stare: { id: '026', action: 'stare', aliases: ['mirar', 'observar'], target: 'optional' },
     tickle: { id: '027', action: 'tickle', aliases: ['cosquillas'], target: 'required' },
     travel: { id: '028', action: 'travel', aliases: ['viajar'], target: 'none' },
-    write: { id: '029', action: 'work', aliases: ['escribir'], target: 'none' }
+    write: { id: '029', action: 'work', aliases: ['escribir'], target: 'none' },
+    explosion: { id: '030', action: 'explosion', aliases: ['explotar', 'boom'], target: 'none' },
+    handhold: { id: '031', action: 'handhold', aliases: ['tomarmano', 'manos'], target: 'required' },
+    highfive: { id: '032', action: 'highfive', aliases: ['cinco', 'chocacinco'], target: 'required' },
+    wave: { id: '033', action: 'wave', aliases: ['saludar', 'saludo'], target: 'optional' }
 };
 function createActionCommand(name) {
     const definition = definitions[name];

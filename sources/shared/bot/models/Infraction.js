@@ -6,7 +6,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const mongoose_1 = __importDefault(require("mongoose"));
 const RETENTION_SECONDS = 60 * 60 * 24 * 90;
 const sources = ['automod', 'manual'];
-const manualActions = ['ban', 'softban', 'kick'];
+const manualActions = ['ban', 'softban', 'kick', 'warn'];
 /** Los datos de la regla solo existen cuando la infracción viene de AutoMod. */
 function requiredForAutoMod() {
     return this.source === 'automod';
@@ -54,6 +54,12 @@ const infraction_schema = new mongoose_1.default.Schema({
                 { $project: { _id: 0, userId: '$_id', total: 1 } }
             ]);
             return results;
+        },
+        async countWarnings(guildId, userId) {
+            return await this.countDocuments({ guildId, userId, source: 'manual', action: 'warn' });
+        },
+        async removeLatestWarning(guildId, userId) {
+            return await this.findOneAndDelete({ guildId, userId, source: 'manual', action: 'warn' }, { sort: { createdAt: -1 } });
         }
     }
 });

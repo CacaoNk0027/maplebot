@@ -21,6 +21,7 @@ const discord_js_1 = require("discord.js");
 const es_ES_json_1 = __importDefault(require("../../shared/bot/locales/es-ES.json"));
 const en_US_json_1 = __importDefault(require("../../shared/bot/locales/en-US.json"));
 const Guild_1 = __importDefault(require("../../shared/bot/models/Guild"));
+const emojis_1 = require("../../shared/config/emojis");
 const locales = {
     'es-ES': es_ES_json_1.default,
     'en-US': en_US_json_1.default
@@ -57,17 +58,17 @@ function por_barra(porcentaje, longitud = 10) {
 }
 function user_flags(user) {
     let flags = {
-        Staff: '<:staff:1533961256329941153>',
-        Partner: '<:partner:1533971787749265532>',
-        Hypesquad: '<:hypesquad:1533961258552787026>',
-        BugHunterLevel1: '<:bughunter1:1533971876630499528>',
-        HypeSquadOnlineHouse1: '<:bravery:1533961213359423599>',
-        HypeSquadOnlineHouse2: '<:brilliance:1533961205885047045>',
-        HypeSquadOnlineHouse3: '<:balance:1533961197765001428>',
-        PremiumEarlySupporter: '<:earlynitro:1533961141968044122>',
-        BugHunterLevel2: '<:bughunter2:1533960902339068166>',
-        VerifiedDeveloper: '<:earlydev:1533961060095365120>',
-        CertifiedModerator: '<:moderator:1533961001966239795>'
+        Staff: emojis_1.EMOJI.staff,
+        Partner: emojis_1.EMOJI.partner,
+        Hypesquad: emojis_1.EMOJI.hypesquad,
+        BugHunterLevel1: emojis_1.EMOJI.bughunter1,
+        HypeSquadOnlineHouse1: emojis_1.EMOJI.bravery,
+        HypeSquadOnlineHouse2: emojis_1.EMOJI.brilliance,
+        HypeSquadOnlineHouse3: emojis_1.EMOJI.balance,
+        PremiumEarlySupporter: emojis_1.EMOJI.earlynitro,
+        BugHunterLevel2: emojis_1.EMOJI.bughunter2,
+        VerifiedDeveloper: emojis_1.EMOJI.earlydev,
+        CertifiedModerator: emojis_1.EMOJI.moderator
     };
     let available = user.flags?.toArray() || [];
     let badges = available?.length > 0
@@ -124,28 +125,28 @@ function reply(msg_type, description) {
     switch (msg_type) {
         case 'info':
             message = `> ${rand([
-                '<:okay:1533702743233925160>',
-                '<:tea:1533702747033964615>'
+                emojis_1.EMOJI.okay,
+                emojis_1.EMOJI.tea
             ])} | ${description}`;
             break;
         case 'warn':
             message = `> ${rand([
-                '<:angry:1533702738930696362>',
-                '<:idk:1533702736980218018>'
+                emojis_1.EMOJI.angry,
+                emojis_1.EMOJI.idk
             ])} | ${description}`;
             break;
         case 'error':
             message = `> ${rand([
-                '<:fall:1533702734602309662>',
-                '<:confused:1533702742051127507>',
-                '<:surprise:1533702740340113520>',
+                emojis_1.EMOJI.fall,
+                emojis_1.EMOJI.confused,
+                emojis_1.EMOJI.surprise,
             ])} | ${description}`;
             break;
         case "ok":
             message = `> ${rand([
-                '<:kiss:1533702798372245565>',
-                '<:wink:1533702744895000596>',
-                '<:tea:1533702747033964615>'
+                emojis_1.EMOJI.kiss,
+                emojis_1.EMOJI.wink,
+                emojis_1.EMOJI.tea
             ])} | ${description}`;
             break;
         default: message = description;
@@ -155,7 +156,7 @@ function reply(msg_type, description) {
 function rand(list) {
     return list[Math.floor(Math.random() * list.length)];
 }
-async function rp_embed(target, message, gif, locale = 'es-ES', customFooter) {
+async function rp_embed(target, message, gif, locale = 'es-ES', customFooter, systemPrefix = '005') {
     let image = gif.getUrl() || '';
     await target.reply({
         embeds: [{
@@ -163,7 +164,7 @@ async function rp_embed(target, message, gif, locale = 'es-ES', customFooter) {
                 image: { url: image },
                 color: random_color(),
                 footer: {
-                    text: customFooter ?? text(locale, 'system.005.embed.source', gif.getAnime() || text(locale, 'system.005.embed.unknown'))
+                    text: customFooter ?? text(locale, `system.${systemPrefix}.embed.source`, gif.getAnime() || text(locale, `system.${systemPrefix}.embed.unknown`))
                 }
             }]
     });

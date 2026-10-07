@@ -4,18 +4,9 @@ const discord_js_1 = require("discord.js");
 const event_handler_1 = require("../config/event_handler");
 const interaction_handler_1 = require("../config/interaction_handler");
 const set_commands_1 = require("../../bot/config/set_commands");
-const config_1 = require("../../bot/config/config");
-const packageJson = require('../../../package.json');
+const presence_1 = require("./presence");
 class MapleBot {
     client;
-    precences = [
-        "Todo bien? todo correcto?",
-        "Te bendigo Dr. Syndrome",
-        "Actualizacion en curso...",
-        "Oye, no nada",
-        "Miyabi my beloved",
-        "Programando Typescript"
-    ];
     constructor() {
         this.client = new discord_js_1.Client({
             intents: [
@@ -28,8 +19,29 @@ class MapleBot {
             ],
             allowedMentions: {
                 repliedUser: false
+            },
+            // Va en las opciones para que viaje en cada IDENTIFY. El valor por
+            // defecto es {}, que se envía igual y deja al bot sin estado.
+            presence: (0, presence_1.presenceData)(),
+            // Sin estos parciales Discord no emite los eventos de mensajes que
+            // el bot no tiene en caché, y los borrados antiguos no se registrarían.
+            partials: [discord_js_1.Partials.Message, discord_js_1.Partials.Channel, discord_js_1.Partials.GuildMember],
+            // La caché de mensajes es lo único que permite registrar el texto de
+            // un mensaje borrado o editado. Se acota a propósito: con cientos de
+            // servidores, sin tope crece hasta comerse la memoria.
+            makeCache: discord_js_1.Options.cacheWithLimits({
+                ...discord_js_1.Options.DefaultMakeCacheSettings,
+                MessageManager: 200
+            }),
+            sweepers: {
+                ...discord_js_1.Options.DefaultSweeperSettings,
+                messages: { interval: 1_800, lifetime: 3_600 }
             }
         });
+        // Red de seguridad por si la sesión se rehace: reponerla al conectar
+        // una shard y al reanudar cuesta nada y evita quedarse sin estado.
+        this.client.on(discord_js_1.Events.ShardReady, () => (0, presence_1.applyPresence)(this.client));
+        this.client.on(discord_js_1.Events.ShardResume, () => (0, presence_1.applyPresence)(this.client));
     }
     async start() {
         try {
@@ -41,13 +53,7 @@ class MapleBot {
             if (!this.client.shard || this.client.shard.ids.includes(0)) {
                 await (0, set_commands_1.set_commands)(this.client.application?.id || this.client.user?.id || process.env['bot_id']);
             }
-            this.client.user?.setPresence({
-                activities: [{
-                        name: `m!maple 🍁 | ${packageJson.version} | ${(0, config_1.rand)(this.precences)}`,
-                        type: discord_js_1.ActivityType.Playing
-                    }],
-                status: 'idle'
-            });
+            (0, presence_1.startPresenceRotation)(this.client);
             console.info('>>> El cliente inicio correctamente');
         }
         catch (error) {

@@ -1,7 +1,4 @@
 "use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.MAX_DELETE_DAYS = void 0;
 exports.banUser = banUser;
@@ -9,7 +6,6 @@ exports.unbanUser = unbanUser;
 const discord_js_1 = require("discord.js");
 const config_1 = require("../config/config");
 const moderation_1 = require("./moderation");
-const Infraction_1 = __importDefault(require("../../shared/bot/models/Infraction"));
 /** Discord solo permite borrar mensajes de los últimos 7 días al banear. */
 const MAX_DELETE_DAYS = 7;
 exports.MAX_DELETE_DAYS = MAX_DELETE_DAYS;
@@ -48,7 +44,7 @@ async function banUser(target, args, mode) {
         if (mode === 'softban') {
             await guild.bans.remove(user.id, auditReason);
         }
-        await recordManualInfraction(guild.id, user.id, actor.id, mode, options.reason);
+        await (0, moderation_1.recordManualInfraction)(guild.id, user.id, actor.id, mode, options.reason);
         await target.reply({
             embeds: [{
                     color: discord_js_1.Colors.Green,
@@ -171,18 +167,6 @@ async function parseOptions(target, args, locale, mode) {
         return null;
     }
     return { deleteDays, reason };
-}
-async function recordManualInfraction(guildId, userId, moderatorId, action, reason) {
-    await Infraction_1.default.record({
-        guildId,
-        userId,
-        source: 'manual',
-        moderatorId,
-        action,
-        reason
-    }).catch(error => {
-        console.error('[CommandBan:ERR] No se pudo registrar la sanción en el historial:', error);
-    });
 }
 function extractSnowflake(value) {
     if (!value)

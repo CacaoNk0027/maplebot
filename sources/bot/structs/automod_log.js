@@ -1,22 +1,15 @@
 "use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getAutoModLogSettings = getAutoModLogSettings;
 exports.clearAutoModLogCache = clearAutoModLogCache;
 exports.sendAutoModLogEmbed = sendAutoModLogEmbed;
 exports.logAutoModExecution = logAutoModExecution;
 exports.logAutoModRuleChange = logAutoModRuleChange;
 const discord_js_1 = require("discord.js");
-const Logs_1 = __importDefault(require("../../shared/bot/models/Logs"));
 const config_1 = require("../config/config");
 const automod_1 = require("./automod");
-const LOG_CACHE_TTL = 60_000;
+const log_dispatch_1 = require("./log_dispatch");
 const CONTENT_LIMIT = 900;
 const AUDIT_WINDOW = 10_000;
-const requiredChannelPermissions = ['ViewChannel', 'SendMessages', 'EmbedLinks'];
-const logCache = new Map();
 const auditTypeByKind = {
     created: discord_js_1.AuditLogEvent.AutoModerationRuleCreate,
     updated: discord_js_1.AuditLogEvent.AutoModerationRuleUpdate,
@@ -27,21 +20,9 @@ const colorByKind = {
     updated: discord_js_1.Colors.Yellow,
     deleted: discord_js_1.Colors.Red
 };
-async function getAutoModLogSettings(guildId) {
-    const cached = logCache.get(guildId);
-    if (cached && cached.expiresAt > Date.now())
-        return cached.value;
-    const document = await Logs_1.default.getByGuildId(guildId);
-    const value = document?.automod ? {
-        channel: document.automod.channel ?? null,
-        executions: document.automod.executions ?? true,
-        rules: document.automod.rules ?? true
-    } : null;
-    logCache.set(guildId, { value, expiresAt: Date.now() + LOG_CACHE_TTL });
-    return value;
-}
+/** Alias histórico: la configuración de registros ya es común a todos los eventos. */
 function clearAutoModLogCache(guildId) {
-    logCache.delete(guildId);
+    (0, log_dispatch_1.clearLogCache)(guildId);
 }
 /**
  * Envía un embed al canal de registro de AutoMod, si está configurado.
@@ -50,17 +31,11 @@ function clearAutoModLogCache(guildId) {
  * directa de ellas.
  */
 async function sendAutoModLogEmbed(guild, embed) {
-    const channel = await resolveLogChannel(guild, settings => settings.executions);
-    if (!channel)
-        return;
-    await channel.send({ embeds: [embed] }).catch(error => {
-        console.error('[AutoModLog:ERR] No se pudo enviar el registro:', error);
-    });
+    await (0, log_dispatch_1.sendLog)(guild, 'automod.executions', embed);
 }
 async function logAutoModExecution(execution) {
     const { guild } = execution;
-    const channel = await resolveLogChannel(guild, settings => settings.executions);
-    if (!channel)
+    if (!await (0, log_dispatch_1.isLogEnabled)(guild.id, 'automod.executions'))
         return;
     const locale = await (0, config_1._locale)(guild);
     const rule = await (0, automod_1.fetchAutoModRule)(guild, execution.ruleId);
@@ -103,14 +78,11 @@ async function logAutoModExecution(execution) {
     }
     if (author)
         embed.setFooter({ text: `ID: ${author.id}`, iconURL: author.displayAvatarURL() });
-    await channel.send({ embeds: [embed] }).catch(error => {
-        console.error('[AutoModLog:ERR] No se pudo registrar una ejecución de AutoMod:', error);
-    });
+    await (0, log_dispatch_1.sendLog)(guild, 'automod.executions', embed);
 }
 async function logAutoModRuleChange(kind, rule, previous) {
     const { guild } = rule;
-    const channel = await resolveLogChannel(guild, settings => settings.rules);
-    if (!channel)
+    if (!await (0, log_dispatch_1.isLogEnabled)(guild.id, 'automod.rules'))
         return;
     const locale = await (0, config_1._locale)(guild);
     const actor = await resolveAuditActor(guild, kind, rule.id);
@@ -141,29 +113,7 @@ async function logAutoModRuleChange(kind, rule, previous) {
             inline: true
         });
     }
-    await channel.send({ embeds: [embed] }).catch(error => {
-        console.error('[AutoModLog:ERR] No se pudo registrar un cambio de regla de AutoMod:', error);
-    });
-}
-async function resolveLogChannel(guild, isEnabled) {
-    const settings = await getAutoModLogSettings(guild.id).catch(error => {
-        console.error('[AutoModLog:ERR] No se pudo consultar la configuración de registros:', error);
-        return null;
-    });
-    if (!settings?.channel || !isEnabled(settings))
-        return null;
-    const channel = await guild.channels.fetch(settings.channel).catch(() => null);
-    if (channel?.type !== discord_js_1.ChannelType.GuildText && channel?.type !== discord_js_1.ChannelType.GuildAnnouncement)
-        return null;
-    const me = guild.members.me ?? await guild.members.fetchMe().catch(() => null);
-    if (!me)
-        return null;
-    const permissions = channel.permissionsFor(me);
-    if (!permissions || requiredChannelPermissions.some(permission => !permissions.has(permission))) {
-        console.warn(`[AutoModLog:WARN] Faltan permisos para registrar en el canal ${channel.id} de ${guild.id}`);
-        return null;
-    }
-    return channel;
+    await (0, log_dispatch_1.sendLog)(guild, 'automod.rules', embed);
 }
 async function resolveAuditActor(guild, kind, ruleId) {
     const me = guild.members.me ?? await guild.members.fetchMe().catch(() => null);

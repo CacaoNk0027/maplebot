@@ -1,14 +1,16 @@
 allowBuilds:
   canvas: true
 minimumReleaseAgeExclude:
-  - neekuro@2.2.0
+  - neekuro@2.2.0 || 2.3.0
 overrides:
   body-parser: 2.3.0
   bn.js: 4.12.3
-  brace-expansion: 2.1.4
+  brace-expansion: 2.1.7
   lodash: 4.18.1
   minimatch: 5.1.8
+  ip-address: 10.7.1
   path-to-regexp: 8.4.0
+  proxy-addr: 2.0.8
   qs: 6.16.0
-  undici: 6.28.0
+  undici: 6.28.1
   ws: 8.21.0
