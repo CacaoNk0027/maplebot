@@ -3,8 +3,11 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.syncInfractionRetention = syncInfractionRetention;
 const mongoose_1 = __importDefault(require("mongoose"));
-const RETENTION_SECONDS = 60 * 60 * 24 * 90;
+// Discord no permite conservar contenido de mensajes más de 30 días, y `matched`
+// puede llevar un fragmento del mensaje.
+const RETENTION_SECONDS = 60 * 60 * 24 * 30;
 const sources = ['automod', 'manual'];
 const manualActions = ['ban', 'softban', 'kick', 'warn'];
 /** Los datos de la regla solo existen cuando la infracción viene de AutoMod. */
@@ -65,4 +68,37 @@ const infraction_schema = new mongoose_1.default.Schema({
 });
 infraction_schema.index({ guildId: 1, userId: 1, createdAt: -1 });
 const Infraction = mongoose_1.default.model('Infraction', infraction_schema);
+/**
+ * Ajusta el plazo del índice TTL que ya existe en la base.
+ *
+ * Mongo no modifica un índice al cambiar el esquema: Mongoose intenta crearlo
+ * con el valor nuevo, choca con el viejo y lo deja como estaba. Sin esto, bajar
+ * `RETENTION_SECONDS` no surtiría efecto en una base ya desplegada.
+ *
+ * Se borra y se vuelve a crear en vez de usar `collMod` porque el usuario de la
+ * base solo tiene permisos de lectura y escritura, y `collMod` exige `dbAdmin`.
+ */
+async function syncInfractionRetention() {
+    try {
+        const collection = Infraction.collection;
+        const indexes = await collection.indexes();
+        const ttl = indexes.find(index => typeof index.expireAfterSeconds === 'number');
+        if (!ttl?.name || ttl.expireAfterSeconds === RETENTION_SECONDS)
+            return;
+        // Varios shards arrancan a la vez: otro puede haberlo borrado ya.
+        await collection.dropIndex(ttl.name).catch((error) => {
+            if (error.code !== 27)
+                throw error;
+        });
+        await collection.createIndex({ createdAt: 1 }, { expireAfterSeconds: RETENTION_SECONDS });
+        console.info(`[Infraction] Retención ajustada a ${RETENTION_SECONDS / 86400} días`);
+    }
+    catch (error) {
+        // 26: la colección aún no existe, así que Mongoose creará el índice ya
+        // con el plazo correcto.
+        if (error.code === 26)
+            return;
+        console.error('[Infraction:ERR] No se pudo ajustar la retención:', error);
+    }
+}
 exports.default = Infraction;

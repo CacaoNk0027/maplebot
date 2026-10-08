@@ -4,7 +4,7 @@ Maple es un bot bilingüe y multifuncional para Discord. Incluye comandos de inf
 
 Este repositorio contiene la distribución pública en JavaScript CommonJS generada desde el proyecto TypeScript de Maple. El código ejecutable se encuentra en [`sources/`](sources/); no necesita compilarse para desplegarlo.
 
-## Maple 4.5.3
+## Maple 4.5.4
 
 Esta versión le da memoria al servidor y más formas de responder, sobre la moderación consolidada en 4.4:
 

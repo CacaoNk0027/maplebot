@@ -37,9 +37,10 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const db_connect_1 = __importDefault(require("../../shared/config/db_connect"));
+const Infraction_1 = require("../../shared/bot/models/Infraction");
 const bot_1 = __importDefault(require("../structs/bot"));
 const neekuro = __importStar(require("neekuro"));
-(0, db_connect_1.default)(process.env.URI_DBBOT);
+(0, db_connect_1.default)(process.env.URI_DBBOT).then(Infraction_1.syncInfractionRetention);
 const client = new bot_1.default();
 const user = new neekuro.User(process.env.NEEKURO);
 // El paquete trae la URL del API como valor por defecto, así que un cambio de

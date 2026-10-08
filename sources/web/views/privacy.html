@@ -35,7 +35,7 @@
                     href="#seguridad">Seguridad</a><a href="#derechos">Tus opciones</a><a href="#cambios">Cambios</a><a
                     href="#contacto">Contacto</a></aside>
             <article class="legal-content">
-                <span class="legal-meta">Última actualización: 12 de agosto de 2026</span>
+                <span class="legal-meta">Última actualización: 7 de octubre de 2026</span>
                 <p class="legal-notice">Esta política se aplica al bot Maple en Discord, a esta web y a sus funciones
                     asociadas. Discord procesa información por separado conforme a su propia política.</p>
                 <section id="alcance">
@@ -61,6 +61,9 @@
                         <li>Canales, roles y ajustes escogidos por quienes administran el servidor.</li>
                         <li>Textos, colores, fondos y enlaces configurados para bienvenidas y despedidas.</li>
                         <li>Identificador de usuario, nivel, experiencia y logros únicos para funciones de progresión.</li>
+                        <li>Historial de moderación del servidor: identificador de la persona sancionada y de quien
+                            modera, regla o sanción aplicada, canal, motivo indicado y, en las detecciones de AutoMod,
+                            el fragmento que activó la regla.</li>
                     </ul>
                     <h3>Datos de la web</h3>
                     <ul>
@@ -91,9 +94,22 @@
                     <p>Maple puede recibir y procesar el contenido de mensajes cuando es necesario para detectar
                         comandos tradicionales por prefijo, moderar o ejecutar una función expresamente utilizada. Las
                         interacciones slash entregan a Maple las opciones enviadas mediante Discord.</p>
-                    <p>No declaramos que todo mensaje visible para Maple se almacene permanentemente. Algunos contenidos
-                        sí se guardan cuando forman parte de una configuración, como un texto de bienvenida o despedida.
+                    <p>Los mensajes no se guardan en nuestra base de datos. Para que el registro de mensajes editados
+                        y borrados pueda mostrar el texto anterior, Maple mantiene los mensajes recientes en una memoria
+                        temporal (hasta 200 por canal, depurada cada 30 minutos) que se pierde al reiniciar. Ese
+                        registro es opcional, lo activa la administración del servidor y solo se publica en el canal
+                        que esta elija dentro del mismo servidor.</p>
+                    <p>La única excepción es el historial de AutoMod: cuando una regla se activa se guarda el fragmento
+                        detectado, nunca el mensaje completo, y se elimina automáticamente a los 30 días. También se
+                        guardan los textos que forman parte de una configuración, como una bienvenida o una despedida.
                         Evita introducir datos sensibles en comandos o configuraciones.</p>
+                    <p>El contenido de los mensajes no se vende, no se comparte con terceros y no se utiliza para
+                        entrenar modelos de inteligencia artificial.</p>
+                    <h3>Entradas y salidas de miembros</h3>
+                    <p>Maple recibe de Discord el aviso de que alguien entra o sale de un servidor para enviar la
+                        bienvenida o la despedida configurada y, si la administración lo activa, registrarlo en su
+                        canal de registros. Estos avisos se procesan en el momento: Maple no guarda la lista de
+                        miembros ni crea perfiles de ellos.</p>
                 </section>
                 <section id="terceros">
                     <h2>5. Servicios y terceros</h2>
@@ -112,8 +128,9 @@
                 <section id="conservacion">
                     <h2>6. Conservación y eliminación</h2>
                     <p>Conservamos configuraciones mientras Maple siga presente o la función continúe activa, y datos de
-                        cuenta mientras exista la cuenta o sean necesarios para seguridad. Los periodos exactos pueden
-                        variar según el tipo de dato y las copias de seguridad.</p>
+                        cuenta mientras exista la cuenta o sean necesarios para seguridad. El historial de moderación,
+                        incluido el fragmento detectado por AutoMod, se elimina automáticamente a los 30 días. Los
+                        demás periodos pueden variar según el tipo de dato y las copias de seguridad.</p>
                     <p>Retirar Maple de un servidor no garantiza la eliminación inmediata de toda configuración. Un
                         administrador o la persona afectada puede solicitar eliminación mediante soporte. Podremos
                         conservar información mínima cuando sea necesaria para prevenir abuso, resolver disputas o

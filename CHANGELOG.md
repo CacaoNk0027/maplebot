@@ -6,6 +6,13 @@ El formato está basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1
 
 ## [Sin publicar]
 
+## [4.5.4] - 2026-10-07
+
+### Cambiado
+
+- El historial de infracciones se conserva 30 días en lugar de 90, que es el máximo que Discord permite para datos que pueden incluir contenido de mensajes. Los pies de `infractions` muestran el plazo nuevo.
+- La política de privacidad describe ahora el historial de moderación, cómo se trata el contenido de los mensajes en los registros y en AutoMod, y el uso de las entradas y salidas de miembros.
+
 ## [4.5.3] - 2026-10-07
 
 ### Cambiado
