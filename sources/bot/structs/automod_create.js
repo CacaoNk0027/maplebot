@@ -67,7 +67,13 @@ async function requestAutoModRuleCreation(options) {
         }
         collector.stop('handled');
         try {
-            await interaction.deferUpdate();
+            // Confirmar el botón es solo acuse de recibo: si su token ya murió
+            // (un tirón del host basta para pasarse de los 3 s), crear la regla
+            // sigue siendo lo correcto. El resultado se edita con el token del
+            // comando original, que dura 15 minutos y no depende de este.
+            await interaction.deferUpdate().catch(error => {
+                console.warn('[CommandAutoMod:WARN] No se pudo confirmar el boton; se continua:', error);
+            });
             if (!await (0, moderation_1.ensureModerationPermissions)(interaction, locale, [...permissions], [...permissions])) {
                 await editAutoModConfirmation(target, confirmation, {
                     embeds: [autoModResultEmbed(discord_js_1.Colors.Red, 'error', (0, config_1.text)(locale, 'cmd.003.002.create.permissions_changed'))],

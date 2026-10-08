@@ -62,9 +62,14 @@ async function slash_command(interaction) {
     }
 }
 async function select_menu(interaction) {
+    const [menuId, ownerId] = interaction.customId.split(':', 2);
+    // Igual que con los botones: un menú que viva en un colector no está en el
+    // registro y lo atiende quien lo creó. Hoy no hay ninguno, pero el día que
+    // se añada heredaría la misma carrera por una interacción de un solo uso.
+    if (!menuId?.startsWith('menu.'))
+        return;
     const locale = await (0, config_1._locale)(interaction.guild);
     let interactions = await (0, interaction_handler_1.load_interactions)();
-    const [menuId, ownerId] = interaction.customId.split(':', 2);
     let menu = interactions.filter(target => target.data.id.startsWith("menu.")).get(menuId);
     if (!menu) {
         await (0, config_1.send)(interaction, 'warn', (0, config_1.text)(locale, 'interaction.menu.unknown'), true);
@@ -99,11 +104,20 @@ async function select_menu(interaction) {
     }
 }
 async function button_click(interaction) {
-    const locale = await (0, config_1._locale)(interaction.guild);
     // Mismo formato que los menús: `button.NNN:dueño:dato`. Solo se extrae el
     // dueño para la comprobación; cada manejador lee del `customId` los datos
     // que le interesan, en el mismo orden en que los escribió.
     const [buttonId, ownerId] = interaction.customId.split(':');
+    // Los botones de un colector (paginación, confirmaciones de AutoMod) no
+    // están en el registro: los atiende quien los creó. El despachador tiene
+    // que desentenderse de ellos, porque una interacción es de un solo uso y
+    // ambos manejadores reciben el evento: si contestara aquí, consumiría la
+    // interacción y el colector fallaría con 10062 al confirmarla. Ganaba el
+    // colector solo porque el despachador leía antes el idioma, así que era
+    // una carrera, no un orden garantizado.
+    if (!buttonId?.startsWith('button.'))
+        return;
+    const locale = await (0, config_1._locale)(interaction.guild);
     const button = (await (0, interaction_handler_1.load_buttons)()).get(buttonId);
     if (!button) {
         await (0, config_1.send)(interaction, 'warn', (0, config_1.text)(locale, 'interaction.button.unknown'), true);

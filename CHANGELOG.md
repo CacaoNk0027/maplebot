@@ -6,6 +6,14 @@ El formato está basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1
 
 ## [Sin publicar]
 
+## [4.5.2] - 2026-10-07
+
+### Corregido
+
+- Confirmar la creación de una regla de AutoMod podía fallar con «Unknown interaction» y la regla no se creaba. El despachador de interacciones atendía también los botones que pertenecen a un colector y, al no reconocerlos, respondía «botón desconocido»; como una interacción de Discord es de un solo uso, el colector se quedaba sin ella. Ahora el despachador ignora los botones y menús que no son suyos.
+- La paginación de listas compartía ese mismo defecto y podía dejar de responder por el mismo motivo.
+- Un acuse de recibo fallido ya no cancela la creación de la regla: el resultado se informa con el mensaje del comando original.
+
 ## [4.5.1] - 2026-10-07
 
 ### Corregido
@@ -164,7 +172,9 @@ El formato está basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1
 - `automod`: reservado para una actualización posterior del sistema de automoderación.
 - `handwash` y `read`: sin una categoría de GIF válida disponible actualmente en la API.
 
-[Sin publicar]: https://github.com/CacaoNk0027/maplebot/compare/v4.5.0...HEAD
+[Sin publicar]: https://github.com/CacaoNk0027/maplebot/compare/v4.5.2...HEAD
+[4.5.2]: https://github.com/CacaoNk0027/maplebot/compare/v4.5.1...v4.5.2
+[4.5.1]: https://github.com/CacaoNk0027/maplebot/compare/v4.5.0...v4.5.1
 [4.5.0]: https://github.com/CacaoNk0027/maplebot/compare/v4.4.1...v4.5.0
 [4.4.1]: https://github.com/CacaoNk0027/maplebot/compare/v4.4.0...v4.4.1
 [4.4.0]: https://github.com/CacaoNk0027/maplebot/compare/v4.3.0...v4.4.0
