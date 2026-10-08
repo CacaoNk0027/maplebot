@@ -6,6 +6,12 @@ El formato está basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1
 
 ## [Sin publicar]
 
+## [4.5.3] - 2026-10-07
+
+### Cambiado
+
+- El aviso de nueva versión se anuncia por serie y no por versión exacta: una corrección como `4.5.2` o `4.5.3` ya no vuelve a anunciarse, y solo se avisa al cambiar de `4.5` a `4.6`. Se sigue guardando la versión completa de cada servidor.
+
 ## [4.5.2] - 2026-10-07
 
 ### Corregido
@@ -172,7 +178,8 @@ El formato está basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1
 - `automod`: reservado para una actualización posterior del sistema de automoderación.
 - `handwash` y `read`: sin una categoría de GIF válida disponible actualmente en la API.
 
-[Sin publicar]: https://github.com/CacaoNk0027/maplebot/compare/v4.5.2...HEAD
+[Sin publicar]: https://github.com/CacaoNk0027/maplebot/compare/v4.5.3...HEAD
+[4.5.3]: https://github.com/CacaoNk0027/maplebot/compare/v4.5.2...v4.5.3
 [4.5.2]: https://github.com/CacaoNk0027/maplebot/compare/v4.5.1...v4.5.2
 [4.5.1]: https://github.com/CacaoNk0027/maplebot/compare/v4.5.0...v4.5.1
 [4.5.0]: https://github.com/CacaoNk0027/maplebot/compare/v4.4.1...v4.5.0
