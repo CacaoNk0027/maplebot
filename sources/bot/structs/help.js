@@ -53,12 +53,6 @@ function generalHelpFields(command, locale) {
             value: (0, config_1.code_text)(category?.name ?? (0, config_1.text)(locale, 'cmd.001.002.none.category')),
             inline: true
         }, {
-            name: (0, config_1.text)(locale, 'cmd.001.002.field.nsfw'),
-            value: (0, config_1.code_text)(command.data.nsfw
-                ? `- ${(0, config_1.text)(locale, 'cmd.001.002.state.enabled')}`
-                : `+ ${(0, config_1.text)(locale, 'cmd.001.002.state.disabled')}`, 'diff'),
-            inline: true
-        }, {
             name: (0, config_1.text)(locale, 'cmd.001.002.field.cooldown'),
             value: (0, config_1.code_text)(cooldown, 'js'),
             inline: true

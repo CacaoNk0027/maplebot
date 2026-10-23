@@ -1,0 +1,642 @@
+/* NeeKuro usa la base de Maple (index.css) con su propio acento verde. */
+.nko {
+    --maple-dark: #1f6650;
+    --accent: #2a7d63;
+    --accent-soft: #dcefe6;
+    --code-bg: #1f2521;
+    --code-ink: #e4efe8;
+    --danger: #b3261e;
+    --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+}
+
+/* :where() deja la especificidad baja para que .button-danger la pise sin más. */
+.nko :where(.button:not(.button-secondary, .button-light)) {
+    border-color: var(--accent);
+    color: #fff;
+    background: linear-gradient(135deg, var(--accent), var(--maple-dark));
+    box-shadow: 0 10px 24px rgba(31, 102, 80, .2);
+}
+
+.nko .button:hover {
+    box-shadow: 0 14px 30px rgba(31, 102, 80, .28);
+}
+
+.nko .button-light {
+    color: var(--maple-dark);
+}
+
+.nko .button-danger {
+    border-color: var(--danger);
+    background: var(--danger);
+    box-shadow: none;
+}
+
+.nko .button-danger:hover {
+    box-shadow: 0 10px 24px rgba(179, 38, 30, .22);
+}
+
+.nko .button:disabled {
+    opacity: .6;
+    cursor: progress;
+    transform: none;
+}
+
+.nko .community-card {
+    background: linear-gradient(125deg, #1d3d33, #2a5c4b);
+}
+
+code {
+    font-family: var(--mono);
+    font-size: .9em;
+}
+
+:not(pre)>code {
+    padding: .1em .4em;
+    border-radius: 6px;
+    background: var(--paper-deep);
+}
+
+.brand-tag {
+    padding: 4px 8px;
+    border-radius: 8px;
+    color: var(--maple-dark);
+    background: var(--accent-soft);
+    font: 700 11px/1 'DM Sans', sans-serif;
+    letter-spacing: .04em;
+    text-transform: uppercase;
+}
+
+.nav-button {
+    padding: 0;
+    border: 0;
+    color: #554f47;
+    background: none;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: color .2s;
+}
+
+.nav-button:hover {
+    color: var(--maple-dark);
+}
+
+.mobile-only {
+    display: none;
+}
+
+.inline-link {
+    color: var(--maple-dark);
+    font-weight: 700;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+}
+
+/* Portada de la API */
+.nko-hero {
+    padding: 150px 0 90px;
+    background: linear-gradient(145deg, #fbf8f2 25%, #e3eee6 100%);
+}
+
+.nko-hero-layout {
+    display: grid;
+    grid-template-columns: 1fr minmax(0, .95fr);
+    gap: 60px;
+    align-items: center;
+}
+
+.nko-hero h1 {
+    font-size: clamp(40px, 5.4vw, 64px);
+}
+
+.code-card {
+    min-width: 0;
+    border-radius: 22px;
+    color: var(--code-ink);
+    background: var(--code-bg);
+    box-shadow: var(--shadow);
+    overflow: hidden;
+}
+
+.code-card-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 12px 18px;
+    border-bottom: 1px solid rgba(255, 255, 255, .08);
+    color: rgba(228, 239, 232, .6);
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: .06em;
+    text-transform: uppercase;
+}
+
+.code-card-bar:not(:first-child) {
+    border-top: 1px solid rgba(255, 255, 255, .08);
+}
+
+pre {
+    margin: 0;
+    padding: 18px;
+    overflow-x: auto;
+    font-size: 14px;
+    line-height: 1.65;
+}
+
+.doc-block pre {
+    border-radius: 14px;
+    color: var(--code-ink);
+    background: var(--code-bg);
+}
+
+.copy-button {
+    padding: 6px 12px;
+    border: 1px solid currentColor;
+    border-radius: 9px;
+    color: inherit;
+    background: transparent;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0;
+    text-transform: none;
+    cursor: pointer;
+}
+
+.copy-button:hover {
+    background: rgba(127, 127, 127, .14);
+}
+
+.code-card .copy-button:focus-visible {
+    outline-color: #fff;
+}
+
+/* Pasos */
+.steps {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 18px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    counter-reset: paso;
+}
+
+.steps li {
+    counter-increment: paso;
+}
+
+.steps li::before {
+    content: counter(paso);
+    display: grid;
+    place-items: center;
+    width: 42px;
+    height: 42px;
+    margin-bottom: 22px;
+    border-radius: 13px;
+    color: var(--maple-dark);
+    background: var(--accent-soft);
+    font: 800 18px/1 'Manrope', sans-serif;
+}
+
+/* Documentación */
+.doc-section {
+    padding-block: 110px;
+    background: var(--paper-deep);
+}
+
+.doc-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 22px;
+}
+
+.doc-layout>* {
+    max-width: 900px;
+}
+
+.doc-layout .section-heading {
+    margin-bottom: 18px;
+}
+
+.doc-block {
+    padding: 28px 30px;
+    border: 1px solid var(--line);
+    border-radius: 23px;
+    background: var(--card);
+}
+
+.doc-block h3 {
+    margin: 0 0 10px;
+    font-size: 22px;
+}
+
+.doc-block p, .doc-block li {
+    color: var(--muted);
+}
+
+.doc-block p:last-child {
+    margin-bottom: 0;
+}
+
+.doc-block ul {
+    margin: 0;
+    padding-left: 20px;
+}
+
+.doc-block li+li {
+    margin-top: 8px;
+}
+
+.note {
+    border-color: #bcd9cb;
+    background: #eef6f1;
+}
+
+.inline-code {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 10px 10px 16px;
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    background: var(--paper);
+}
+
+.inline-code code {
+    flex: 1;
+    min-width: 0;
+    padding: 0;
+    background: none;
+    overflow-wrap: anywhere;
+}
+
+.inline-code .copy-button {
+    flex-shrink: 0;
+    color: var(--maple-dark);
+}
+
+.table-wrap {
+    margin: 14px 0;
+    overflow-x: auto;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 15px;
+}
+
+th, td {
+    padding: 12px 14px;
+    border-bottom: 1px solid var(--line);
+    text-align: left;
+    vertical-align: top;
+}
+
+th {
+    color: var(--muted);
+    font-size: 12px;
+    letter-spacing: .06em;
+    text-transform: uppercase;
+}
+
+td code {
+    white-space: nowrap;
+}
+
+/* En pantallas estrechas se desplaza de lado en vez de aplastar la última columna. */
+.table-wide {
+    min-width: 640px;
+}
+
+.method, .status {
+    display: inline-block;
+    padding: 3px 8px;
+    border-radius: 7px;
+    color: var(--maple-dark);
+    background: var(--accent-soft);
+    font: 700 12px/1.4 var(--mono);
+    font-variant-numeric: tabular-nums;
+}
+
+.status {
+    color: #8a3d12;
+    background: #f8e2cf;
+}
+
+/* Categorías */
+.category-groups {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 18px;
+}
+
+.category-group {
+    padding: 30px;
+    border: 1px solid var(--line);
+    border-radius: 23px;
+    background: var(--card);
+}
+
+.category-group h3 {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 0 0 6px;
+    font-size: 24px;
+}
+
+.category-group>p {
+    margin: 0 0 20px;
+    color: var(--muted);
+}
+
+.count {
+    padding: 3px 10px;
+    border-radius: 20px;
+    color: var(--maple-dark);
+    background: var(--accent-soft);
+    font: 700 13px/1.4 'DM Sans', sans-serif;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: 0;
+}
+
+.chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.chips code {
+    display: inline-block;
+    padding: 5px 10px;
+    border: 1px solid var(--line);
+    border-radius: 9px;
+    background: var(--paper);
+}
+
+/* Paquete */
+.package-layout {
+    display: grid;
+    grid-template-columns: .9fr minmax(0, 1.1fr);
+    gap: 60px;
+    align-items: center;
+}
+
+.package-layout .section-heading {
+    margin-bottom: 0;
+}
+
+/* Formularios y paneles */
+.panel {
+    padding: 30px;
+    border: 1px solid var(--line);
+    border-radius: 23px;
+    background: var(--card);
+}
+
+.panel h2 {
+    margin: 0 0 8px;
+    font-size: 24px;
+}
+
+.panel>p {
+    margin: 0 0 22px;
+    color: var(--muted);
+}
+
+.field {
+    margin-bottom: 16px;
+}
+
+.field label {
+    display: block;
+    margin-bottom: 6px;
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.field input {
+    width: 100%;
+    min-height: 48px;
+    padding: 0 14px;
+    border: 1px solid #968a7d;
+    border-radius: 12px;
+    color: var(--ink);
+    background: #fff;
+    font: inherit;
+    transition: border-color .2s, box-shadow .2s;
+}
+
+.field input:focus-visible {
+    border-color: var(--accent);
+    outline: none;
+    box-shadow: 0 0 0 4px rgba(42, 125, 99, .2);
+}
+
+.field-hint {
+    margin: 6px 0 0;
+    color: var(--muted);
+    font-size: 13px;
+}
+
+.check {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 18px;
+    font-size: 15px;
+    cursor: pointer;
+}
+
+.check input {
+    width: 18px;
+    height: 18px;
+    accent-color: var(--danger);
+}
+
+.form-status {
+    margin: 14px 0 0;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.form-status:empty {
+    display: none;
+}
+
+.form-status[data-state="error"] {
+    color: var(--danger);
+}
+
+.form-status[data-state="success"] {
+    color: var(--maple-dark);
+}
+
+/* Cuenta */
+.account-page {
+    padding: 140px 0 100px;
+}
+
+.account-page h1 {
+    font-size: clamp(36px, 5vw, 56px);
+    overflow-wrap: anywhere;
+}
+
+.account-page .section-heading>p:last-child {
+    color: var(--muted);
+    font-size: 17px;
+}
+
+.account-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 18px;
+    align-items: start;
+}
+
+.panel-token {
+    grid-column: 1/-1;
+    background: linear-gradient(150deg, #fbfdfb, #e5f1ea);
+}
+
+.panel-token form {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    gap: 14px;
+}
+
+.panel-token .field {
+    flex: 1 1 260px;
+    margin: 0;
+}
+
+.panel-token .form-status {
+    flex-basis: 100%;
+    margin: 0;
+}
+
+.token-output {
+    margin-top: 22px;
+    padding-top: 22px;
+    border-top: 1px solid var(--line);
+}
+
+.token-output p {
+    margin: 0 0 12px;
+}
+
+.panel strong {
+    overflow-wrap: anywhere;
+}
+
+.panel-danger {
+    grid-column: 1/-1;
+    border-color: #efc9c4;
+}
+
+.panel-danger form {
+    max-width: 420px;
+}
+
+.panel-danger h2 {
+    color: var(--danger);
+}
+
+/* Ingresar y crear cuenta */
+.auth-page {
+    background: linear-gradient(145deg, #fbf8f2 25%, #e3eee6 100%);
+}
+
+.auth-shell {
+    display: flex;
+    min-height: 100vh;
+    min-height: 100dvh;
+    padding: 40px 16px;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 24px;
+}
+
+.auth-card {
+    width: min(440px, 100%);
+    box-shadow: var(--shadow);
+}
+
+.auth-card h1 {
+    margin-bottom: 8px;
+    font-size: 34px;
+}
+
+.auth-card>p {
+    margin: 0 0 24px;
+    color: var(--muted);
+}
+
+.auth-card .button {
+    width: 100%;
+}
+
+.auth-switch {
+    margin: 0;
+    color: var(--muted);
+}
+
+@media (max-width: 860px) {
+    .mobile-only {
+        display: block;
+    }
+
+    .nav-button {
+        padding: 12px;
+    }
+
+    .nko-hero {
+        padding-top: 120px;
+    }
+
+    /* minmax(0, …) impide que el código ancho estire la columna y desborde la página. */
+    .nko-hero-layout, .package-layout {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .nko-hero .hero-actions, .nko-hero .hero-notes {
+        justify-content: flex-start;
+    }
+
+    .steps {
+        grid-template-columns: 1fr;
+    }
+
+    .category-groups, .account-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 620px) {
+    .brand-tag {
+        display: none;
+    }
+
+    .nko-hero {
+        padding-bottom: 60px;
+    }
+
+    .doc-section {
+        padding-block: 75px;
+    }
+
+    .doc-block, .category-group, .panel {
+        padding: 22px;
+    }
+
+    .account-page {
+        padding: 115px 0 70px;
+    }
+}

@@ -1,30 +1,42 @@
-<!DOCTYPE html>
-<html lang="en">
+<!doctype html>
+<html lang="es">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NeeKuro | iniciar sesión</title>
-    <link rel="stylesheet" href="/css/nko_register.css">
+<%- include('partials/head.html', {
+    title: 'Ingresar — NeeKuro',
+    description: 'Ingresa a tu cuenta de NeeKuro para administrar tu token.'
+}) %>
 </head>
 
-<body>
-    <div class="register">
-        <h1>Inicia Sesión</h1>
-        <hr>
-        <form id="loginForm">
-            <label for="username" class="label">Nombre de usuario</label>
-            <br>
-            <input type="text" id="username" name="username" class="input" required>
-            <br>
-            <label for="password" class="label">Contraseña</label>
-            <br>
-            <input type="password" id="password" name="password" class="input" required>
-            <br>
-            <button type="submit" class="reg-btn">Ingresar</button>
-        </form>
-    </div>
-    <script src="/js/nko_login.js"></script>
+<body class="nko auth-page">
+    <main class="auth-shell">
+        <a class="brand" href="/api" aria-label="NeeKuro, inicio de la API">
+            <img src="/images/mapleavatar-96.webp" alt="" width="44" height="44">
+            <span translate="no">NeeKuro</span>
+        </a>
+
+        <div class="panel auth-card">
+            <h1>Ingresar</h1>
+            <p>Entra para generar o regenerar tu token.</p>
+            <form data-api-form="login" novalidate>
+                <div class="field">
+                    <label for="usuario">Nombre de usuario</label>
+                    <input type="text" id="usuario" name="username" autocomplete="username" spellcheck="false"
+                        autocapitalize="none" required>
+                </div>
+                <div class="field">
+                    <label for="password">Contraseña</label>
+                    <input type="password" id="password" name="password" autocomplete="current-password" required>
+                </div>
+                <button class="button" type="submit" data-busy="Ingresando…">Ingresar</button>
+                <p class="form-status" role="status" aria-live="polite" data-status></p>
+            </form>
+        </div>
+
+        <p class="auth-switch">¿Aún no tienes cuenta? <a class="inline-link" href="/api/register">Crea una</a></p>
+    </main>
+
+    <script src="/js/nko.js" defer></script>
 </body>
 
 </html>

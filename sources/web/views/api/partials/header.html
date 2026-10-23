@@ -1,0 +1,36 @@
+    <a class="skip-link" href="#contenido">Saltar al contenido</a>
+    <header class="site-header" data-header>
+        <div class="nav-shell">
+            <a class="brand" href="/api" aria-label="NeeKuro, inicio de la API">
+                <img src="/images/mapleavatar-96.webp" alt="" width="44" height="44">
+                <span translate="no">NeeKuro</span>
+                <small class="brand-tag">API de Maple</small>
+            </a>
+
+            <button class="menu-toggle" type="button" aria-label="Abrir menú" aria-expanded="false"
+                aria-controls="main-navigation" data-menu-toggle>
+                <span></span><span></span><span></span>
+            </button>
+
+            <nav class="main-nav" id="main-navigation" aria-label="Navegación principal" data-navigation>
+                <a href="/api#empezar">Empezar</a>
+                <a href="/api#endpoints">Endpoints</a>
+                <a href="/api#categorias">Categorías</a>
+                <a href="/api#paquete">Paquete npm</a>
+                <a href="/">Maple</a>
+                <% if (isLoggedIn) { %>
+                    <a class="mobile-only" href="/api/dashboard">Mi cuenta</a>
+                    <button class="nav-button" type="button" data-logout>Salir</button>
+                <% } else { %>
+                    <a href="/api/login">Ingresar</a>
+                    <a class="mobile-only" href="/api/register">Crear cuenta</a>
+                <% } %>
+            </nav>
+
+            <% if (isLoggedIn) { %>
+                <a class="button button-small header-action" href="/api/dashboard">Mi cuenta</a>
+            <% } else { %>
+                <a class="button button-small header-action" href="/api/register">Crear cuenta</a>
+            <% } %>
+        </div>
+    </header>

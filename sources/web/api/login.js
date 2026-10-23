@@ -7,6 +7,8 @@ const express_1 = __importDefault(require("express"));
 const user_1 = __importDefault(require("../models/user"));
 const router = express_1.default.Router();
 router.get('/', (req, res) => {
+    if (req.session.userId)
+        return res.redirect('/api/dashboard');
     res.render('api/login.html');
 });
 router.post('/', async (req, res) => {
@@ -23,7 +25,7 @@ router.post('/', async (req, res) => {
             }
             ;
             req.session.userId = user._id;
-            return res.status(200).json({ message: 'Inicio de sesion exitoso', code: res.statusCode, redirect: '/api' });
+            return res.status(200).json({ message: 'Inicio de sesion exitoso', code: res.statusCode, redirect: '/api/dashboard' });
         });
     }
     catch (error) {

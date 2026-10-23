@@ -38,10 +38,6 @@ const guild_schema = new mongoose_1.default.Schema({
         type: String,
         default: ''
     },
-    roles: {
-        type: mongoose_1.default.Types.ObjectId,
-        ref: 'Rolelist'
-    },
     welcome: {
         type: mongoose_1.default.Types.ObjectId,
         ref: 'Welcome'

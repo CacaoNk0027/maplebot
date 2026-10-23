@@ -1,58 +1,283 @@
-<!DOCTYPE html>
-<html lang="en">
+<!doctype html>
+<html lang="es">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NeeKuro | Inicio</title>
-    <link rel="stylesheet" href="/css/neekuro.css">
+<%- include('partials/head.html', {
+    title: 'NeeKuro — La API de GIFs de Maple',
+    description: 'NeeKuro es la API de GIFs de anime que usa Maple Bot, abierta y gratuita para cualquier bot de Discord.'
+}) %>
 </head>
 
-<body>
-    <header id="head">
-        <nav class="nav-bar">
-            <div class="nav-buttons">
-                <% if (isLoggedIn) { %>
-                    <button onclick="window.location = '/api/dashboard'" class="register">Dashboard</button>
-                    <button onclick="logOut()" class="login">Salir</button>
-                    <% } else { %>
-                        <button onclick="window.location = '/api/login'" class="login">Ingresar</button>
-                        <button onclick="window.location = '/api/register'" class="register">Registrarse</button>
-                        <% } %>
-                            <ul>
-                                <li><a href="#">Repositorio</a></li>
-                                <li><a href="#">Paquete NPM</a></li>
-                                <li><a href="https://discord.gg/E3kzS5cYzN">Discord</a></li>
-                                <li><a href="/donations">Donaciones</a></li>
-                            </ul>
-            </div>
-            <ul>
-                <li><a href="/terms">Terminos</a></li>
-            </ul>
-            <div class="m-toggle" onclick="toggleMenu()">
-                <div id="menu"></div>
-                <div id="cancel"></div>
-            </div>
-        </nav>
-        <div class="slicer"></div>
-    </header>
-    <section class="container">
-        <div class="banner">
-            <h1>NeeKuro</h1>
-            <p>Api oficial de Maple Bot</p>
-        </div>
-        <article class="text-cont">
-            <h1>NeeKuro _ version 3.0.0</h1>
-            <hr>
-            <p>Esta es una api de imagenes hecha especialmente para Maple Bot, sin embargo ahora es libre! solo
-                necesitas registrarte y generar un token para hecer uso de la misma ;3</p>
-        </article>
-        <footer class="foo">
-            <p>CC. Creative Commons <span style="opacity: .6;">libre uso.</span> NexaTDC</p>
-        </footer>
-    </section>
+<body class="nko">
+<%- include('partials/header.html', { isLoggedIn }) %>
 
-    <script src="/js/nko_index.js"></script>
+    <main id="contenido">
+        <section class="nko-hero">
+            <div class="page-shell nko-hero-layout">
+                <div class="reveal">
+                    <p class="eyebrow"><span></span> API de GIFs de anime</p>
+                    <h1>GIFs de anime para tu bot, en una sola petición.</h1>
+                    <p class="hero-description">NeeKuro es la API que da vida a las acciones y reacciones de Maple, y
+                        está abierta para cualquiera: crea una cuenta, genera tu token y empieza a pedir GIFs.</p>
+                    <div class="hero-actions">
+                        <% if (isLoggedIn) { %>
+                            <a class="button" href="/api/dashboard">Ir a mi cuenta</a>
+                        <% } else { %>
+                            <a class="button" href="/api/register">Crear cuenta gratis</a>
+                        <% } %>
+                        <a class="button button-secondary" href="#endpoints">Ver la documentación</a>
+                    </div>
+                    <ul class="hero-notes" aria-label="Características">
+                        <li><%= actions.length + reactions.length %> categorías</li>
+                        <li>Gratis</li>
+                        <li>Paquete para Node.js</li>
+                    </ul>
+                </div>
+
+                <div class="code-card reveal">
+                    <div class="code-card-bar">
+                        <span>Petición</span>
+                        <button class="copy-button" type="button" data-copy="#ejemplo-curl">Copiar</button>
+                    </div>
+                    <pre><code id="ejemplo-curl">curl -H "Authorization: Bearer TU_TOKEN" \
+  "<%= baseUrl %>/action/hug?random=true"</code></pre>
+                    <div class="code-card-bar">
+                        <span>Respuesta</span>
+                    </div>
+                    <pre><code>{
+  "message": "ok >> hug gif",
+  "code": 200,
+  "data": {
+    "_id": "6650f1c2a8e4b2d9c3f1a7e0",
+    "url": "https://…/hug.gif",
+    "anime": "Nombre del anime"
+  }
+}</code></pre>
+                </div>
+            </div>
+        </section>
+
+        <section class="section page-shell" id="empezar">
+            <div class="section-heading reveal">
+                <p class="eyebrow"><span></span> Empezar</p>
+                <h2>Tres pasos y tu bot ya responde con GIFs.</h2>
+            </div>
+            <ol class="steps">
+                <li class="feature-card reveal">
+                    <h3>Crea una cuenta</h3>
+                    <p>Solo pide un nombre de usuario y una contraseña. No necesitas vincular Discord.</p>
+                </li>
+                <li class="feature-card reveal">
+                    <h3>Genera tu token</h3>
+                    <p>Desde tu cuenta. Se muestra una sola vez, así que guárdalo en las variables de entorno de tu
+                        bot.</p>
+                </li>
+                <li class="feature-card reveal">
+                    <h3>Pide GIFs</h3>
+                    <p>Con cualquier cliente HTTP, o con el paquete <code>neekuro</code> si tu bot usa Node.js.</p>
+                </li>
+            </ol>
+        </section>
+
+        <section class="doc-section" id="endpoints">
+            <div class="page-shell doc-layout">
+                <div class="section-heading reveal">
+                    <p class="eyebrow"><span></span> Referencia</p>
+                    <h2>Endpoints</h2>
+                    <p>Todas las rutas responden JSON con la misma forma: <code>message</code>, <code>code</code> y
+                        <code>data</code>.
+                    </p>
+                </div>
+
+                <div class="doc-block reveal">
+                    <h3>URL base</h3>
+                    <div class="inline-code">
+                        <code id="url-base"><%= baseUrl %></code>
+                        <button class="copy-button" type="button" data-copy="#url-base">Copiar</button>
+                    </div>
+                </div>
+
+                <div class="doc-block reveal">
+                    <h3>Autenticación</h3>
+                    <p>Envía tu token en la cabecera <code>Authorization</code> de cada petición. El prefijo
+                        <code>Bearer</code> es opcional.</p>
+                    <pre><code>Authorization: Bearer TU_TOKEN</code></pre>
+                </div>
+
+                <div class="doc-block reveal">
+                    <h3>Rutas</h3>
+                    <p><code>{tipo}</code> es <code>action</code> o <code>reaction</code>, y <code>{categoría}</code>
+                        cualquiera de la <a class="inline-link" href="#categorias">lista de categorías</a>.</p>
+                    <div class="table-wrap">
+                        <table class="table-wide">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Método</th>
+                                    <th scope="col">Ruta</th>
+                                    <th scope="col">Devuelve</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><span class="method">GET</span></td>
+                                    <td><code>/api/sfw</code></td>
+                                    <td>Las rutas de los dos tipos.</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="method">GET</span></td>
+                                    <td><code>/api/sfw/{tipo}</code></td>
+                                    <td>El catálogo completo del tipo, con todas sus categorías.</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="method">GET</span></td>
+                                    <td><code>/api/sfw/{tipo}/{categoría}</code></td>
+                                    <td>Todos los GIFs de la categoría.</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="method">GET</span></td>
+                                    <td><code>/api/sfw/{tipo}/{categoría}?random=true</code></td>
+                                    <td>Un GIF al azar de la categoría.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <p>Cada GIF trae su <code>url</code>, el <code>anime</code> del que viene y un <code>_id</code>.
+                    </p>
+                </div>
+
+                <div class="doc-block reveal">
+                    <h3>Errores</h3>
+                    <div class="table-wrap">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th scope="col">Código</th>
+                                    <th scope="col">Significa</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><span class="status">401</span></td>
+                                    <td>Falta la cabecera <code>Authorization</code>.</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="status">403</span></td>
+                                    <td>El token no es válido, o se regeneró y ya no está vigente.</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="status">404</span></td>
+                                    <td>La categoría no existe o todavía no tiene GIFs.</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="status">500</span></td>
+                                    <td>Error del servidor. Vuelve a intentarlo en unos minutos.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="doc-block note reveal">
+                    <h3>Ten en cuenta</h3>
+                    <ul>
+                        <li>Al regenerar el token, el anterior deja de funcionar al instante.</li>
+                        <li>El catálogo se refresca cada 5 minutos: un GIF recién añadido puede tardar ese tiempo en
+                            aparecer.</li>
+                        <li>Es un servicio gratuito. Si tu bot depende de él, maneja los errores para que una caída no
+                            lo detenga.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section class="section page-shell" id="categorias">
+            <div class="section-heading reveal">
+                <p class="eyebrow"><span></span> Catálogo</p>
+                <h2>Categorías</h2>
+                <p>Úsalas tal cual en la ruta. La lista se genera desde el catálogo, así que siempre está al día.</p>
+            </div>
+            <div class="category-groups">
+                <div class="category-group reveal">
+                    <h3>Acciones <span class="count"><%= actions.length %></span></h3>
+                    <p>Para dirigirse a otra persona: abrazos, besos, palmaditas…</p>
+                    <ul class="chips" aria-label="Categorías de acción">
+                        <% actions.forEach((category) => { %>
+                            <li><code><%= category %></code></li>
+                        <% }) %>
+                    </ul>
+                </div>
+                <div class="category-group reveal">
+                    <h3>Reacciones <span class="count"><%= reactions.length %></span></h3>
+                    <p>Para expresar cómo te sientes, sin nadie al otro lado.</p>
+                    <ul class="chips" aria-label="Categorías de reacción">
+                        <% reactions.forEach((category) => { %>
+                            <li><code><%= category %></code></li>
+                        <% }) %>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section class="doc-section" id="paquete">
+            <div class="page-shell package-layout">
+                <div class="section-heading reveal">
+                    <p class="eyebrow"><span></span> Para Node.js</p>
+                    <h2>El paquete <span translate="no">neekuro</span></h2>
+                    <p>Hace las peticiones por ti, trae los tipos de TypeScript y guarda cada lista 5 minutos para
+                        ahorrar llamadas, sin repetir el mismo GIF dos veces seguidas.</p>
+                    <a class="text-link" href="https://www.npmjs.com/package/neekuro" target="_blank"
+                        rel="noreferrer">Ver en npm <span aria-hidden="true">→</span></a>
+                </div>
+                <div class="reveal">
+                    <div class="code-card">
+                        <div class="code-card-bar">
+                            <span>Terminal</span>
+                            <button class="copy-button" type="button" data-copy="#instalar">Copiar</button>
+                        </div>
+                        <pre><code id="instalar">npm install neekuro</code></pre>
+                        <div class="code-card-bar">
+                            <span>bot.js</span>
+                            <button class="copy-button" type="button" data-copy="#ejemplo-paquete">Copiar</button>
+                        </div>
+                        <pre><code id="ejemplo-paquete">const neekuro = require('neekuro')
+
+// El token se fija una vez para todo el paquete.
+new neekuro.User(process.env.NEEKURO_TOKEN)
+
+async function abrazo() {
+    const gif = await neekuro.SFW.getGif('action', 'hug')
+    console.log(gif.getUrl(), gif.getAnime())
+}
+
+abrazo()</code></pre>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="section page-shell">
+            <div class="community-card reveal">
+                <div>
+                    <p class="eyebrow eyebrow-light"><span></span> Listo para empezar</p>
+                    <h2>Tu token está a un minuto.</h2>
+                    <p>Crea tu cuenta, genera el token y pega el ejemplo en tu bot.</p>
+                </div>
+                <div class="community-actions">
+                    <% if (isLoggedIn) { %>
+                        <a class="button button-light" href="/api/dashboard">Ir a mi cuenta</a>
+                    <% } else { %>
+                        <a class="button button-light" href="/api/register">Crear cuenta</a>
+                        <a class="support-link" href="/api/login">Ya tengo cuenta <span aria-hidden="true">→</span></a>
+                    <% } %>
+                </div>
+            </div>
+        </section>
+    </main>
+
+<%- include('partials/footer.html') %>
+
+    <script src="/js/index.js" defer></script>
+    <script src="/js/nko.js" defer></script>
 </body>
 
 </html>

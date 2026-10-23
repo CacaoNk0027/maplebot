@@ -5,19 +5,20 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const user_1 = __importDefault(require("../models/user"));
+const credentials_1 = require("./credentials");
 const router = express_1.default.Router();
-const usernameRegex = /^[A-Za-z0-9_-]{1,30}$/;
-const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[!@#$%^&*(),.?":{}|<>])[A-Za-z\d!@#$%^&*(),.?":{}|<>]{8,}$/;
 router.get('/', (req, res) => {
+    if (req.session.userId)
+        return res.redirect('/api/dashboard');
     res.render('api/register.html');
 });
 router.post('/', async (req, res) => {
     const { username, password } = req.body;
-    if (typeof username !== 'string' || !usernameRegex.test(username)) {
-        return res.status(400).json({ message: 'Nombre de usuario invalido', code: res.statusCode });
+    if (!(0, credentials_1.isValidUsername)(username)) {
+        return res.status(400).json({ message: credentials_1.USERNAME_RULE, code: res.statusCode });
     }
-    if (typeof password !== 'string' || !passwordRegex.test(password)) {
-        return res.status(400).json({ message: 'Contrasena invalida', code: res.statusCode });
+    if (!(0, credentials_1.isValidPassword)(password)) {
+        return res.status(400).json({ message: credentials_1.PASSWORD_RULE, code: res.statusCode });
     }
     try {
         if (await user_1.default.exists({ username })) {
@@ -31,7 +32,7 @@ router.post('/', async (req, res) => {
             }
             ;
             req.session.userId = user._id;
-            return res.status(201).json({ message: 'Usuario registrado correctamente', code: res.statusCode, redirect: '/api' });
+            return res.status(201).json({ message: 'Usuario registrado correctamente', code: res.statusCode, redirect: '/api/dashboard' });
         });
     }
     catch (error) {

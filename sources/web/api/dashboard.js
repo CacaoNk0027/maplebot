@@ -6,23 +6,17 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const token_1 = __importDefault(require("../models/token"));
 const user_1 = __importDefault(require("../models/user"));
 const express_1 = __importDefault(require("express"));
+const credentials_1 = require("./credentials");
 const router = express_1.default.Router();
 router.get('/', async (req, res) => {
-    if (!req.session.userId) {
-        return res.status(401).json({
-            message: 'No autorizado',
-            code: res.statusCode
-        });
-    }
+    if (!req.session.userId)
+        return res.redirect('/api/login');
     let user = await user_1.default.findById(req.session.userId);
     if (!user) {
         // La cuenta se eliminó desde otra sesión: esta ya no representa a nadie.
         return req.session.destroy(() => {
             res.clearCookie('maplebot.sid');
-            res.status(401).json({
-                message: 'No autorizado',
-                code: res.statusCode
-            });
+            res.redirect('/api/login');
         });
     }
     let token = await token_1.default.findOne({ userId: req.session.userId });
@@ -39,10 +33,9 @@ router.post('/chgname', async (req, res) => {
             message: 'No autenticado',
             code: res.statusCode
         });
-    const usernameRegex = /^[A-Za-z0-9_-]{1,30}$/;
-    if (!usernameRegex.test(newUsername))
+    if (!(0, credentials_1.isValidUsername)(newUsername))
         return res.status(400).json({
-            message: 'El nombre de usuario solo puede contener letras, números, guiones y guiones bajos, y debe tener un máximo de 30 caracteres.',
+            message: credentials_1.USERNAME_RULE,
             code: res.statusCode
         });
     try {
@@ -61,6 +54,11 @@ router.post('/chgname', async (req, res) => {
         if (user.username === newUsername)
             return res.status(400).json({
                 message: 'nombre de usuario identico al actual'
+            });
+        if (await user_1.default.exists({ username: newUsername }))
+            return res.status(400).json({
+                message: 'Ese nombre de usuario ya está en uso',
+                code: res.statusCode
             });
         user.username = newUsername;
         await user.save();
@@ -85,10 +83,9 @@ router.post('/chgpass', async (req, res) => {
             message: 'No autenticado',
             code: res.statusCode
         });
-    const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[!@#$%^&*(),.?":{}|<>])[A-Za-z\d!@#$%^&*(),.?":{}|<>]{8,}$/;
-    if (!passwordRegex.test(newPassword))
+    if (!(0, credentials_1.isValidPassword)(newPassword))
         return res.status(400).json({
-            message: 'La contraseña nueva debe tener al menos 8 caracteres, contener letras, números y caracteres especiales.',
+            message: credentials_1.PASSWORD_RULE,
             code: res.statusCode
         });
     try {

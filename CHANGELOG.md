@@ -6,6 +6,29 @@ El formato está basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1
 
 ## [Sin publicar]
 
+## [4.5.5] - 2026-10-22
+
+### Cambiado
+
+- La sección de la API de GIFs (NeeKuro) se rediseñó con la identidad de Maple, y su página de inicio es ahora la documentación de la API: URL base, autenticación, rutas, errores, el paquete `neekuro` y la lista de categorías, que se mantiene al día sola.
+- Las páginas de cuenta de NeeKuro muestran los errores dentro del formulario en lugar de ventanas emergentes. El token se genera confirmando la contraseña en el propio panel y tiene un botón para copiarlo.
+- La web carga más rápido: las imágenes se sirven al tamaño en que se muestran y la animación de la portada es un video en lugar de un GIF de 3.4 MB.
+- El panel de `logs` explica que el texto de un mensaje borrado o editado solo aparece si el mensaje estaba en la caché del bot. Discord concedió el acceso al contenido de los mensajes, así que esos registros ya incluyen el texto.
+- La ayuda de los comandos ya no muestra el campo «Filtro NSFW», que siempre decía desactivado.
+
+### Corregido
+
+- El registro y el cambio de contraseña de NeeKuro rechazaban las contraseñas con símbolos como `=` o `-`, habituales en las que sugiere el navegador. Ahora se acepta cualquier símbolo, con un máximo de 72 caracteres.
+- Cambiar el nombre de usuario de NeeKuro a uno ya en uso devolvía un error del servidor en lugar de avisar.
+- La retención de 30 días del historial de infracciones, anunciada en la `4.5.4`, no surtía efecto en una base de datos ya existente. El bot ajusta ahora el plazo al arrancar.
+- Las vistas previas de los enlaces a la web vuelven a mostrar la imagen de Maple.
+- La web es más accesible: foco visible al navegar con el teclado, enlace para saltar al contenido, colores con el contraste mínimo de WCAG AA y contenido visible aunque falle JavaScript.
+- El menú de la portada ya no deja el título de cada sección tapado por la barra superior.
+
+### Seguridad
+
+- Maple exige una versión de Node.js con las correcciones de seguridad del 21 de octubre de 2026 (22.23.4, 24.22.1 o 26.12.1 en adelante): CVE-2026-111497 en el descompresor Brotli, CVE-2026-105483 y CVE-2026-106069 en la validación de certificados TLS, y CVE-2026-105482 en el procesamiento de nombres DNS.
+
 ## [4.5.4] - 2026-10-07
 
 ### Cambiado

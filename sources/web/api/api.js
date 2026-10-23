@@ -11,6 +11,8 @@ const token_1 = __importDefault(require("./token"));
 const login_1 = __importDefault(require("./login"));
 const delete_account_1 = __importDefault(require("./delete_account"));
 const sfw_1 = __importDefault(require("./categorias/sfw"));
+const action_1 = require("../models/action");
+const reaction_1 = require("../models/reaction");
 const express_rate_limit_1 = require("express-rate-limit");
 const router = express_1.default.Router();
 const authenticationLimiter = (0, express_rate_limit_1.rateLimit)({
@@ -27,8 +29,15 @@ router.use('/logout', logout_1.default);
 router.use('/login', authenticationLimiter, login_1.default);
 router.use('/delacc', authenticationLimiter, delete_account_1.default);
 router.use('/sfw', sfw_1.default);
+// La documentación lista las categorías desde el schema, igual que la lista blanca del API.
+const actions = [...action_1.ACTION_CATEGORIES].sort();
+const reactions = [...reaction_1.REACTION_CATEGORIES].sort();
 router.get('/', (req, res) => {
-    let isLoggedIn = req.session.userId ? true : false;
-    res.render('api/index.html', { isLoggedIn });
+    res.render('api/index.html', {
+        isLoggedIn: Boolean(req.session.userId),
+        baseUrl: `${req.protocol}://${req.get('host')}/api/sfw`,
+        actions,
+        reactions
+    });
 });
 exports.default = router;
