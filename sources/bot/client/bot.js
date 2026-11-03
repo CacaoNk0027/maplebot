@@ -47,7 +47,7 @@ const user = new neekuro.User(process.env.NEEKURO);
 // dominio obligaría a publicar una versión nueva y a que todos la instalaran.
 // Fijarla aquí desacopla al bot de eso, y la variable permite apuntar a otro
 // entorno sin tocar el código.
-neekuro.SFW.setBaseURL(process.env.NEEKURO_API?.trim() || 'https://api.maplebot.fyi/api/sfw');
+neekuro.SFW.setBaseURL(process.env.NEEKURO_API?.trim() || 'https://api.maplebot.fyi/sfw');
 client.start();
 process.on('unhandledRejection', (reason, promise) => {
     console.error('Unhandled Rejection at:', promise, 'reason:', reason);

@@ -6,6 +6,13 @@ El formato está basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1
 
 ## [Sin publicar]
 
+## [4.5.7] - 2026-11-02
+
+### Cambiado
+
+- La API de GIFs (NeeKuro) se acorta a `https://api.maplebot.fyi/sfw`, sin el `/api` repetido. La ruta anterior, `https://api.maplebot.fyi/api/sfw`, sigue funcionando, así que nada deja de responder. La versión `2.3.3` del paquete `neekuro` usa ya la nueva.
+- La dirección `https://api.maplebot.fyi/` responde con las rutas de la API y un enlace a su documentación, en lugar de un error.
+
 ## [4.5.6] - 2026-11-02
 
 ### Cambiado

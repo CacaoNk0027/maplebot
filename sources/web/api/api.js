@@ -34,7 +34,7 @@ const reactions = [...reaction_1.REACTION_CATEGORIES].sort();
 // deducir del dominio de la página; NEEKURO_API es la misma variable que usa el bot.
 function apiBaseUrl(req) {
     return process.env.NEEKURO_API?.trim().replace(/\/$/, '')
-        || `${req.protocol}://${req.get('host')}/api/sfw`;
+        || `${req.protocol}://${req.get('host')}/sfw`;
 }
 router.get('/', (req, res) => {
     res.render('api/index.html', {

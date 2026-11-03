@@ -37,7 +37,24 @@ function main(modules) {
     // El API va antes de las sesiones: sus clientes se autentican con token y
     // no necesitan pasar por el almacén de sesiones.
     if (modules.has('api')) {
-        app.use('/api/sfw', sfw_1.default);
+        // `/sfw` es la ruta oficial desde la 4.5.7. `/api/sfw` se conserva porque
+        // la usan por defecto `neekuro` 2.3.2 y anteriores: quitarla los dejaría
+        // sin GIFs. No se documenta, pero no debe retirarse antes de la 6.0.
+        app.use(['/sfw', '/api/sfw'], sfw_1.default);
+        // Sin la web, la raíz del dominio es la del API: en vez de un 404,
+        // indica dónde están las rutas y dónde la documentación.
+        if (!modules.has('web')) {
+            app.get('/', (_req, res) => {
+                res.status(200).json({
+                    message: 'API de NeeKuro',
+                    code: res.statusCode,
+                    data: {
+                        sfw: '/sfw',
+                        docs: 'https://maplebot.fyi/api'
+                    }
+                });
+            });
+        }
     }
     if (modules.has('web')) {
         app.set('views', 'sources/web/views');

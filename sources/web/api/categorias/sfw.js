@@ -86,13 +86,15 @@ const routes = [
         readCatalog: exports.getReactionCatalog
     }
 ];
-router.get('/', authorization_1.default, async (_req, res) => {
+router.get('/', authorization_1.default, async (req, res) => {
+    // baseUrl es la ruta por la que se entró (`/sfw` o `/api/sfw`), así que el
+    // índice devuelve rutas que funcionan desde donde se pidió.
     res.status(200).json({
         message: 'Acceso a SFW',
         code: res.statusCode,
         data: {
-            action: '/api/sfw/action',
-            reaction: '/api/sfw/reaction'
+            action: `${req.baseUrl}/action`,
+            reaction: `${req.baseUrl}/reaction`
         }
     });
 });
