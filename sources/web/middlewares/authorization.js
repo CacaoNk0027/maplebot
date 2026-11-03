@@ -6,7 +6,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.invalidateTokenCache = invalidateTokenCache;
 const crypto_1 = __importDefault(require("crypto"));
 const token_1 = __importDefault(require("../models/token"));
-const VALID_TOKEN_TTL = 5 * 60 * 1000;
+// Cuando la web y el API corren en procesos distintos, invalidateTokenCache solo
+// limpia la caché del proceso que la llama, no la del API. Este TTL es entonces
+// cuánto puede seguir funcionando un token regenerado o borrado.
+const VALID_TOKEN_TTL = 60 * 1000;
 const INVALID_TOKEN_TTL = 30 * 1000;
 const MAX_CACHED_TOKENS = 1_000;
 const tokenCache = new Map();

@@ -26,7 +26,7 @@ router.post('/', async (req, res) => {
         if (previousToken?.tokenHash)
             (0, authorization_1.invalidateTokenCache)([previousToken.tokenHash]);
         return res.status(201).json({
-            message: 'Token generado correctamente. Guardalo ahora: no podra volver a mostrarse.',
+            message: 'Token generado correctamente. Guardalo ahora: no podra volver a mostrarse. El anterior deja de funcionar en un minuto como maximo.',
             code: res.statusCode,
             data: { token }
         });

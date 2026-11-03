@@ -26,8 +26,8 @@ router.post('/', async (req, res) => {
             return res.status(400).json({ message: 'Contraseña incorrecta', code: res.statusCode });
         }
         // El token va primero: si luego fallara el borrado del usuario, no debe
-        // quedar un token vivo. La caché de autorización lo seguiría aceptando
-        // hasta 5 minutos, así que además se invalida en el acto.
+        // quedar un token vivo. Se invalida además en la caché de autorización;
+        // si el API corre en otro proceso, allí caduca solo en un minuto.
         const token = await token_1.default.findOneAndDelete({ userId }).lean();
         if (token?.tokenHash)
             (0, authorization_1.invalidateTokenCache)([token.tokenHash]);
