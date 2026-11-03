@@ -3,14 +3,16 @@ allowBuilds:
 minimumReleaseAgeExclude:
   - neekuro@2.2.0 || 2.3.0
 overrides:
-  body-parser: 2.3.0
+  body-parser: 2.4.0
   bn.js: 4.12.3
   brace-expansion: 2.1.7
   lodash: 4.18.1
+  # minimatch se queda en la 5: el parche de GHSA-g3hv-75wg-m249 exige la 11,
+  # y solo lo usa la CLI de ejs (jake), que la web nunca carga.
   minimatch: 5.1.8
-  ip-address: 10.7.1
+  ip-address: 10.7.5
   path-to-regexp: 8.4.0
   proxy-addr: 2.0.8
-  qs: 6.16.0
-  undici: 6.28.1
+  qs: 6.16.2
+  undici: 6.29.1
   ws: 8.21.0

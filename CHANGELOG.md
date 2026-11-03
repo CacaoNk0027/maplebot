@@ -6,6 +6,13 @@ El formato está basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1
 
 ## [Sin publicar]
 
+## [4.5.8] - 2026-11-02
+
+### Seguridad
+
+- Once avisos de dependencias cerrados, cinco de ellos altos. El más relevante es `undici` `6.29.1`, la librería con la que el bot se conecta a Discord: corrige una forma de saltarse la validación de certificados TLS ([GHSA-2m5v-pch6-74hx](https://github.com/advisories/GHSA-2m5v-pch6-74hx)) y cuatro denegaciones de servicio. También se actualizan `body-parser` `2.4.0` ([GHSA-27r3-jxmh-p828](https://github.com/advisories/GHSA-27r3-jxmh-p828), denegación de servicio en la web y la API con cuerpos mal formados), `systeminformation` `5.33.19` (tres avisos, uno de ellos alto que solo afecta a Windows), `qs` `6.16.2` e `ip-address` `10.7.5`.
+- Queda abierto un aviso moderado de `minimatch` ([GHSA-g3hv-75wg-m249](https://github.com/advisories/GHSA-g3hv-75wg-m249)): solo lo usa la herramienta de línea de comandos de `ejs`, que Maple nunca ejecuta, y corregirlo exige un salto de versión mayor.
+
 ## [4.5.7] - 2026-11-02
 
 ### Cambiado
