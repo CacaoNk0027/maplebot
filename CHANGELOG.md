@@ -6,6 +6,13 @@ El formato está basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1
 
 ## [Sin publicar]
 
+## [4.5.9] - 2026-11-11
+
+### Seguridad
+
+- Cuatro avisos de `mongoose`, la librería con la que el bot y la API leen la base de datos, cerrados con la `8.24.8`. Dos son altos: un filtro de saneamiento de consultas configurado en la conexión que no se aplicaba ([GHSA-gg4r-jv3p-qx3c](https://github.com/advisories/GHSA-gg4r-jv3p-qx3c)) y un recorrido de propiedades heredadas al cargar documentos que permitía denegaciones de servicio ([GHSA-8332-j7wj-wjw4](https://github.com/advisories/GHSA-8332-j7wj-wjw4)). Los otros dos, moderados, son formas de contaminación de prototipos ([GHSA-wr5m-5jph-8m96](https://github.com/advisories/GHSA-wr5m-5jph-8m96) y [GHSA-6972-9mcm-vhwj](https://github.com/advisories/GHSA-6972-9mcm-vhwj)).
+- Maple exige una versión de Node.js con las correcciones de seguridad del 10 de noviembre de 2026 (22.23.5, 24.22.3 o 26.13.1 en adelante), que cierran dieciséis fallos, siete de ellos altos, casi todos en TLS y HTTP/2.
+
 ## [4.5.8] - 2026-11-02
 
 ### Seguridad
