@@ -1,0 +1,3979 @@
+{
+  "version": "4.5.10",
+  "prefijo": "m!",
+  "total": 87,
+  "categorias": [
+    {
+      "id": "001",
+      "nombre": {
+        "es": "Información",
+        "en": "Information"
+      },
+      "descripcion": {
+        "es": "Información relevante sobre Maple, usuarios y servidores",
+        "en": "Relevant information about Maple, users, and servers"
+      },
+      "comandos": [
+        {
+          "id": "001.008",
+          "nombre": "features",
+          "alias": [
+            "novedades",
+            "changelog"
+          ],
+          "descripcion": {
+            "es": "Muestra las novedades de la version actual de Maple",
+            "en": "Show what is new in the current version of Maple"
+          },
+          "enfriamiento": 5,
+          "slash": true,
+          "prefijo": true,
+          "inactivo": false,
+          "permisos": {
+            "usuario": [],
+            "bot": [
+              "SendMessages",
+              "EmbedLinks",
+              "ReadMessageHistory"
+            ]
+          },
+          "opciones": [
+            {
+              "nombre": "notices",
+              "tipo": "booleano",
+              "descripcion": {
+                "es": "Activa o desactiva el aviso de nuevas versiones en este servidor",
+                "en": "Enable or disable the new version notice in this server"
+              }
+            }
+          ]
+        },
+        {
+          "id": "001.002",
+          "nombre": "help",
+          "alias": [
+            "h",
+            "ayuda"
+          ],
+          "descripcion": {
+            "es": "Muestra un menú de ayuda interactivo",
+            "en": "Display an interactive help menu"
+          },
+          "enfriamiento": 3,
+          "slash": true,
+          "prefijo": true,
+          "inactivo": false,
+          "permisos": {
+            "usuario": [],
+            "bot": [
+              "SendMessages",
+              "EmbedLinks",
+              "ReadMessageHistory"
+            ]
+          },
+          "opciones": [
+            {
+              "nombre": "command",
+              "tipo": "texto",
+              "descripcion": {
+                "es": "Comando del que deseas consultar información",
+                "en": "Command whose information you want to view"
+              }
+            }
+          ]
+        },
+        {
+          "id": "001.003",
+          "nombre": "info",
+          "alias": [
+            "botinfo",
+            "maplebot",
+            "infobot",
+            "bot",
+            "informacion",
+            "maple"
+          ],
+          "descripcion": {
+            "es": "Aprende más sobre mí y mis estadísticas",
+            "en": "Learn more about me and my statistics"
+          },
+          "enfriamiento": 3,
+          "slash": true,
+          "prefijo": true,
+          "inactivo": false,
+          "permisos": {
+            "usuario": [],
+            "bot": [
+              "SendMessages",
+              "EmbedLinks",
+              "ReadMessageHistory"
+            ]
+          },
+          "opciones": []
+        },
+        {
+          "id": "001.001",
+          "nombre": "ping",
+          "alias": [
+            "latencia",
+            "latency"
+          ],
+          "descripcion": {
+            "es": "Responde con pong! y muestra la latencia del bot",
+            "en": "Responds with pong! and shows the bot latency"
+          },
+          "enfriamiento": 3,
+          "slash": true,
+          "prefijo": true,
+          "inactivo": false,
+          "permisos": {
+            "usuario": [],
+            "bot": [
+              "SendMessages",
+              "EmbedLinks",
+              "ReadMessageHistory"
+            ]
+          },
+          "opciones": []
+        },
+        {
+          "id": "001.007",
+          "nombre": "roleinfo",
+          "alias": [
+            "role",
+            "rolinfo",
+            "rol"
+          ],
+          "descripcion": {
+            "es": "Muestra la información de un rol",
+            "en": "Shows the information of a role"
+          },
+          "enfriamiento": 5,
+          "slash": true,
+          "prefijo": true,
+          "inactivo": false,
+          "permisos": {
+            "usuario": [],
+            "bot": [
+              "SendMessages",
+              "EmbedLinks",
+              "ReadMessageHistory"
+            ]
+          },
+          "opciones": [
+            {
+              "nombre": "role",
+              "tipo": "rol",
+              "descripcion": {
+                "es": "El rol del que quieres ver la información",
+                "en": "The role you want to see the information of"
+              },
+              "requerido": true
+            }
+          ]
+        },
+        {
+          "id": "001.005",
+          "nombre": "server",
+          "alias": [
+            "servidor",
+            "sv",
+            "serverinfo",
+            "svinfo"
+          ],
+          "descripcion": {
+            "es": "Muestra información del servidor actual",
+            "en": "Shows information about the current server"
+          },
+          "enfriamiento": 3,
+          "slash": true,
+          "prefijo": true,
+          "inactivo": false,
+          "permisos": {
+            "usuario": [],
+            "bot": [
+              "SendMessages",
+              "EmbedLinks",
+              "ReadMessageHistory"
+            ]
+          },
+          "opciones": [
+            {
+              "nombre": "info",
+              "tipo": "subcomando",
+              "descripcion": {
+                "es": "la información general",
+                "en": "the general information"
+              }
+            },
+            {
+              "nombre": "icon",
+              "tipo": "subcomando",
+              "descripcion": {
+                "es": "Muestra el ícono del servidor",
+                "en": "Shows the server icon"
+              }
+            },
+            {
+              "nombre": "banner",
+              "tipo": "subcomando",
+              "descripcion": {
+                "es": "Muestra el banner del servidor",
+                "en": "Shows the server banner"
+              }
+            }
+          ]
+        },
+        {
+          "id": "001.004",
+          "nombre": "stats",
+          "alias": [
+            "estadisticas",
+            "metrics",
+            "metricas",
+            "sts"
+          ],
+          "descripcion": {
+            "es": "Muestra estadísticas como uso de ram, uso de cpu, entre otros.",
+            "en": "Shows statistics such as RAM usage, CPU usage, among others."
+          },
+          "enfriamiento": 3,
+          "slash": true,
+          "prefijo": true,
+          "inactivo": false,
+          "permisos": {
+            "usuario": [],
+            "bot": [
+              "SendMessages",
+              "EmbedLinks",
+              "ReadMessageHistory"
+            ]
+          },
+          "opciones": []
+        },
+        {
+          "id": "001.006",
+          "nombre": "user",
+          "alias": [],
+          "descripcion": {
+            "es": "Muestra tu información o la de un usuario",
+            "en": "Shows your information or that of a user"
+          },
+          "enfriamiento": 3,
+          "slash": true,
+          "prefijo": true,
+          "inactivo": false,
+          "permisos": {
+            "usuario": [],
+            "bot": [
+              "SendMessages",
+              "EmbedLinks",
+              "ReadMessageHistory"
+            ]
+          },
+          "opciones": [
+            {
+              "nombre": "info",
+              "tipo": "subcomando",
+              "descripcion": {
+                "es": "la información general",
+                "en": "the general information"
+              },
+              "opciones": [
+                {
+                  "nombre": "user",
+                  "tipo": "usuario",
+                  "descripcion": {
+                    "es": "El usuario a mostrar",
+                    "en": "The user to show"
+                  }
+                }
+              ]
+            },
+            {
+              "nombre": "avatar",
+              "tipo": "subcomando",
+              "descripcion": {
+                "es": "Muestra el avatar del usuario",
+                "en": "Shows the user's avatar"
+              },
+              "opciones": [
+                {
+                  "nombre": "user",
+                  "tipo": "usuario",
+                  "descripcion": {
+                    "es": "El usuario a mostrar",
+                    "en": "The user to show"
+                  }
+                }
+              ]
+            },
+            {
+              "nombre": "banner",
+              "tipo": "subcomando",
+              "descripcion": {
+                "es": "Muestra tu banner o el de un usuario",
+                "en": "Shows your banner or that of a user"
+              },
+              "opciones": [
+                {
+                  "nombre": "user",
+                  "tipo": "usuario",
+                  "descripcion": {
+                    "es": "El usuario a mostrar",
+                    "en": "The user to show"
+                  }
+                }
+              ]
+            },
+            {
+              "nombre": "member",
+              "tipo": "subcomando",
+              "descripcion": {
+                "es": "Muestra tu perfil como miembro o el de un usuario",
+                "en": "Shows your profile as a member or that of a user"
+              },
+              "opciones": [
+                {
+                  "nombre": "user",
+                  "tipo": "usuario",
+                  "descripcion": {
+                    "es": "El usuario a mostrar",
+                    "en": "The user to show"
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "002",
+      "nombre": {
+        "es": "Utilidades",
+        "en": "Utilities"
+      },
+      "descripcion": {
+        "es": "Herramientas útiles para actividades cotidianas",
+        "en": "Useful tools for everyday activities"
+      },
+      "comandos": [
+        {
+          "id": "002.001",
+          "nombre": "avatar",
+          "alias": [
+            "imagen",
+            "av"
+          ],
+          "descripcion": {
+            "es": "Muestra tu avatar o el de un usuario",
+            "en": "Shows your avatar or another user's avatar"
+          },
+          "enfriamiento": 3,
+          "slash": true,
+          "prefijo": true,
+          "inactivo": false,
+          "permisos": {
+            "usuario": [],
+            "bot": [
+              "SendMessages",
+              "EmbedLinks",
+              "ReadMessageHistory"
+            ]
+          },
+          "opciones": [
+            {
+              "nombre": "global",
+              "tipo": "subcomando",
+              "descripcion": {
+                "es": "Muestra el avatar global",
+                "en": "Shows the global avatar"
+              },
+              "opciones": [
+                {
+                  "nombre": "user",
+                  "tipo": "usuario",
+                  "descripcion": {
+                    "es": "El usuario a mostrar",
+                    "en": "The user to show"
+                  }
+                }
+              ]
+            },
+            {
+              "nombre": "server",
+              "tipo": "subcomando",
+              "descripcion": {
+                "es": "Muestra el avatar del servidor",
+                "en": "Shows the server avatar"
+              },
+              "opciones": [
+                {
+                  "nombre": "user",
+                  "tipo": "usuario",
+                  "descripcion": {
+                    "es": "El usuario a mostrar",
+                    "en": "The user to show"
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "002.002",
+          "nombre": "banner",
+          "alias": [
+            "fondo"
+          ],
+          "descripcion": {
+            "es": "Muestra tu banner o el de un usuario",
+            "en": "Shows your banner or another user's banner"
+          },
+          "enfriamiento": 3,
+          "slash": true,
+          "prefijo": true,
+          "inactivo": false,
+          "permisos": {
+            "usuario": [],
+            "bot": [
+              "SendMessages",
+              "EmbedLinks",
+              "ReadMessageHistory"
+            ]
+          },
+          "opciones": [
+            {
+              "nombre": "global",
+              "tipo": "subcomando",
+              "descripcion": {
+                "es": "Muestra el banner global",
+                "en": "Shows the global banner"
+              },
+              "opciones": [
+                {
+                  "nombre": "user",
+                  "tipo": "usuario",
+                  "descripcion": {
+                    "es": "El usuario a mostrar",
+                    "en": "The user to show"
+                  }
+                }
+              ]
+            },
+            {
+              "nombre": "server",
+              "tipo": "subcomando",
+              "descripcion": {
+                "es": "Muestra el banner del servidor",
+                "en": "Shows the server banner"
+              },
+              "opciones": [
+                {
+                  "nombre": "user",
+                  "tipo": "usuario",
+                  "descripcion": {
+                    "es": "El usuario a mostrar",
+                    "en": "The user to show"
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "002.007",
+          "nombre": "color",
+          "alias": [
+            "co",
+            "colour"
+          ],
+          "descripcion": {
+            "es": "Convierte un color hex a RGB, HSL o viceversa",
+            "en": "Converts a hex color to RGB, HSL or vice versa"
+          },
+          "enfriamiento": 5,
+          "slash": true,
+          "prefijo": true,
+          "inactivo": false,
+          "permisos": {
+            "usuario": [],
+            "bot": [
+              "SendMessages",
+              "EmbedLinks",
+              "ReadMessageHistory"
+            ]
+          },
+          "opciones": [
+            {
+              "nombre": "color",
+              "tipo": "texto",
+              "descripcion": {
+                "es": "El color que quieres convertir",
+                "en": "The color you want to convert"
+              },
+              "requerido": true
+            }
+          ]
+        },
+        {
+          "id": "002.008",
+          "nombre": "embed",
+          "alias": [
+            "embeds",
+            "incrustado"
+          ],
+          "descripcion": {
+            "es": "Crea un embed personalizado y envíalo a un canal",
+            "en": "Builds a custom embed and sends it to a channel"
+          },
+          "enfriamiento": 5,
+          "slash": true,
+          "prefijo": true,
+          "inactivo": false,
+          "permisos": {
+            "usuario": [
+              "ManageMessages"
+            ],
+            "bot": [
+              "SendMessages",
+              "EmbedLinks",
+              "ReadMessageHistory",
+              "EmbedLinks"
+            ]
+          },
+          "opciones": [
+            {
+              "nombre": "message",
+              "tipo": "texto",
+              "descripcion": {
+                "es": "ID de un mensaje mío para editar su embed",
+                "en": "ID of one of my messages to edit its embed"
+              }
+            }
+          ]
+        },
+        {
+          "id": "002.005",
+          "nombre": "emoji",
+          "alias": [
+            "emote",
+            "e"
+          ],
+          "descripcion": {
+            "es": "Muestra un emoji personalizado",
+            "en": "Shows a custom emoji"
+          },
+          "enfriamiento": 3,
+          "slash": true,
+          "prefijo": true,
+          "inactivo": false,
+          "permisos": {
+            "usuario": [],
+            "bot": [
+              "SendMessages",
+              "EmbedLinks",
+              "ReadMessageHistory"
+            ]
+          },
+          "opciones": [
+            {
+              "nombre": "emoji",
+              "tipo": "texto",
+              "descripcion": {
+                "es": "El emoji a mostrar",
+                "en": "The emoji to show"
+              },
+              "requerido": true
+            },
+            {
+              "nombre": "info",
+              "tipo": "booleano",
+              "descripcion": {
+                "es": "¿Mostrar información del emoji?",
+                "en": "Show emoji information?"
+              }
+            }
+          ]
+        },
+        {
+          "id": "002.004",
+          "nombre": "icon",
+          "alias": [
+            "icono"
+          ],
+          "descripcion": {
+            "es": "Muestra el icono del servidor",
+            "en": "Shows the server icon"
+          },
+          "enfriamiento": 3,
+          "slash": true,
+          "prefijo": true,
+          "inactivo": false,
+          "permisos": {
+            "usuario": [],
+            "bot": [
+              "SendMessages",
+              "EmbedLinks",
+              "ReadMessageHistory"
+            ]
+          },
+          "opciones": []
+        },
+        {
+          "id": "002.003",
+          "nombre": "member",
+          "alias": [
+            "miembro"
+          ],
+          "descripcion": {
+            "es": "Muestra información sobre un miembro del servidor",
+            "en": "Shows information about a server member"
+          },
+          "enfriamiento": 3,
+          "slash": true,
+          "prefijo": true,
+          "inactivo": false,
+          "permisos": {
+            "usuario": [],
+            "bot": [
+              "SendMessages",
+              "EmbedLinks",
+              "ReadMessageHistory"
+            ]
+          },
+          "opciones": [
+            {
+              "nombre": "user",
+              "tipo": "usuario",
+              "descripcion": {
+                "es": "El usuario a mostrar",
+                "en": "The user to show"
+              }
+            }
+          ]
+        },
+        {
+          "id": "002.006",
+          "nombre": "say",
+          "alias": [
+            "decir"
+          ],
+          "descripcion": {
+            "es": "Envía un mensaje a mi nombre",
+            "en": "Sends a message as me"
+          },
+          "enfriamiento": 3,
+          "slash": true,
+          "prefijo": true,
+          "inactivo": false,
+          "permisos": {
+            "usuario": [],
+            "bot": [
+              "SendMessages",
+              "EmbedLinks",
+              "ReadMessageHistory"
+            ]
+          },
+          "opciones": [
+            {
+              "nombre": "message",
+              "tipo": "texto",
+              "descripcion": {
+                "es": "El mensaje a enviar",
+                "en": "The message to send"
+              },
+              "requerido": true,
+              "longitudMaxima": 2000
+            },
+            {
+              "nombre": "reference",
+              "tipo": "texto",
+              "descripcion": {
+                "es": "ID de un mensaje al cual responder",
+                "en": "ID of a message to reply to"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "003",
+      "nombre": {
+        "es": "Moderación",
+        "en": "Moderation"
+      },
+      "descripcion": {
+        "es": "Herramientas para moderar y administrar tu servidor",
+        "en": "Tools to moderate and manage your server"
+      },
+      "comandos": [
+        {
+          "id": "003.001",
+          "nombre": "addrol",
+          "alias": [
+            "roladd",
+            "addrole",
+            "arol",
+            "arole",
+            "agregarrol",
+            "anadirrol"
+          ],
+          "descripcion": {
+            "es": "Añade uno o varios roles a un miembro",
+            "en": "Add one or more roles to a member"
+          },
+          "enfriamiento": 5,
+          "slash": true,
+          "prefijo": true,
+          "inactivo": false,
+          "permisos": {
+            "usuario": [
+              "ManageRoles"
+            ],
+            "bot": [
+              "SendMessages",
+              "EmbedLinks",
+              "ReadMessageHistory",
+              "ManageRoles"
+            ]
+          },
+          "opciones": [
+            {
+              "nombre": "user",
+              "tipo": "usuario",
+              "descripcion": {
+                "es": "Miembro al que se añadirán los roles",
+                "en": "Member who will receive the roles"
+              },
+              "requerido": true
+            },
+            {
+              "nombre": "role",
+              "tipo": "rol",
+              "descripcion": {
+                "es": "Rol que se añadirá; omítelo para abrir el selector",
+                "en": "Role to add; omit it to open the selector"
+              }
+            }
+          ]
+        },
+        {
+          "id": "003.002",
+          "nombre": "automod",
+          "alias": [
+            "automoderacion",
+            "automoderation",
+            "adm"
+          ],
+          "descripcion": {
+            "es": "Administra la configuración de AutoMod del servidor",
+            "en": "Manage the server's AutoMod configuration"
+          },
+          "enfriamiento": 5,
+          "slash": true,
+          "prefijo": true,
+          "inactivo": false,
+          "permisos": {
+            "usuario": [
+              "ManageGuild"
+            ],
+            "bot": [
+              "SendMessages",
+              "EmbedLinks",
+              "ReadMessageHistory",
+              "ManageGuild"
+            ]
+          },
+          "opciones": [
+            {
+              "nombre": "status",
+              "tipo": "subcomando",
+              "descripcion": {
+                "es": "Muestra el estado y la capacidad de AutoMod",
+                "en": "Show AutoMod status and rule capacity"
+              }
+            },
+            {
+              "nombre": "list",
+              "tipo": "subcomando",
+              "descripcion": {
+                "es": "Muestra todas las reglas de AutoMod",
+                "en": "Show every AutoMod rule"
+              }
+            },
+            {
+              "nombre": "view",
+              "tipo": "subcomando",
+              "descripcion": {
+                "es": "Muestra los detalles de una regla de AutoMod",
+                "en": "Show the details of an AutoMod rule"
+              },
+              "opciones": [
+                {
+                  "nombre": "rule",
+                  "tipo": "texto",
+                  "descripcion": {
+                    "es": "ID o nombre exacto de la regla",
+                    "en": "Exact rule ID or name"
+                  },
+                  "requerido": true
+                }
+              ]
+            },
+            {
+              "nombre": "enable",
+              "tipo": "subcomando",
+              "descripcion": {
+                "es": "Activa una regla de AutoMod mediante su ID",
+                "en": "Enable an AutoMod rule using its ID"
+              },
+              "opciones": [
+                {
+                  "nombre": "rule",
+                  "tipo": "texto",
+                  "descripcion": {
+                    "es": "ID exacto de la regla",
+                    "en": "Exact rule ID"
+                  },
+                  "requerido": true
+                }
+              ]
+            },
+            {
+              "nombre": "disable",
+              "tipo": "subcomando",
+              "descripcion": {
+                "es": "Desactiva una regla de AutoMod mediante su ID",
+                "en": "Disable an AutoMod rule using its ID"
+              },
+              "opciones": [
+                {
+                  "nombre": "rule",
+                  "tipo": "texto",
+                  "descripcion": {
+                    "es": "ID exacto de la regla",
+                    "en": "Exact rule ID"
+                  },
+                  "requerido": true
+                }
+              ]
+            },
+            {
+              "nombre": "delete",
+              "tipo": "subcomando",
+              "descripcion": {
+                "es": "Elimina una regla de AutoMod mediante su ID",
+                "en": "Delete an AutoMod rule using its ID"
+              },
+              "opciones": [
+                {
+                  "nombre": "rule",
+                  "tipo": "texto",
+                  "descripcion": {
+                    "es": "ID exacto de la regla",
+                    "en": "Exact rule ID"
+                  },
+                  "requerido": true
+                }
+              ]
+            },
+            {
+              "nombre": "edit",
+              "tipo": "subcomando",
+              "descripcion": {
+                "es": "Edita una regla existente campo por campo",
+                "en": "Edit an existing rule field by field"
+              },
+              "opciones": [
+                {
+                  "nombre": "rule",
+                  "tipo": "texto",
+                  "descripcion": {
+                    "es": "ID exacto de la regla",
+                    "en": "Exact rule ID"
+                  },
+                  "requerido": true
+                }
+              ]
+            },
+            {
+              "nombre": "create-keyword",
+              "tipo": "subcomando",
+              "descripcion": {
+                "es": "Crea una regla de AutoMod para palabras personalizadas",
+                "en": "Create an AutoMod rule for custom keywords"
+              },
+              "opciones": [
+                {
+                  "nombre": "name",
+                  "tipo": "texto",
+                  "descripcion": {
+                    "es": "Nombre de la nueva regla",
+                    "en": "Name of the new rule"
+                  },
+                  "requerido": true,
+                  "longitudMinima": 1,
+                  "longitudMaxima": 100
+                },
+                {
+                  "nombre": "keywords",
+                  "tipo": "texto",
+                  "descripcion": {
+                    "es": "Palabras opcionales separadas por comas o saltos de línea",
+                    "en": "Optional keywords separated by commas or line breaks"
+                  },
+                  "longitudMinima": 1,
+                  "longitudMaxima": 6000
+                },
+                {
+                  "nombre": "regex",
+                  "tipo": "texto",
+                  "descripcion": {
+                    "es": "Expresiones separadas por saltos de línea o por dos punto y coma",
+                    "en": "Patterns separated by line breaks or two semicolons"
+                  },
+                  "longitudMaxima": 3000
+                },
+                {
+                  "nombre": "allow-list",
+                  "tipo": "texto",
+                  "descripcion": {
+                    "es": "Palabras permitidas separadas por comas o saltos de línea",
+                    "en": "Allowed terms separated by commas or line breaks"
+                  },
+                  "longitudMaxima": 6000
+                },
+                {
+                  "nombre": "custom-message",
+                  "tipo": "texto",
+                  "descripcion": {
+                    "es": "Mensaje mostrado cuando Discord bloquea el contenido",
+                    "en": "Message shown when Discord blocks the content"
+                  },
+                  "longitudMaxima": 150
+                },
+                {
+                  "nombre": "alert-channel",
+                  "tipo": "canal",
+                  "descripcion": {
+                    "es": "Canal donde Discord enviará las alertas de esta regla",
+                    "en": "Channel where Discord will send alerts from this rule"
+                  }
+                },
+                {
+                  "nombre": "timeout-minutes",
+                  "tipo": "entero",
+                  "descripcion": {
+                    "es": "Minutos de aislamiento al activar la regla, hasta cuatro semanas",
+                    "en": "Timeout minutes when the rule triggers, up to four weeks"
+                  },
+                  "minimo": 1,
+                  "maximo": 40320
+                },
+                {
+                  "nombre": "exempt-roles",
+                  "tipo": "texto",
+                  "descripcion": {
+                    "es": "Menciones o IDs de los roles que quedarán exentos",
+                    "en": "Mentions or IDs of roles that will be exempt"
+                  },
+                  "longitudMaxima": 1000
+                },
+                {
+                  "nombre": "exempt-channels",
+                  "tipo": "texto",
+                  "descripcion": {
+                    "es": "Menciones o IDs de los canales que quedarán exentos",
+                    "en": "Mentions or IDs of channels that will be exempt"
+                  },
+                  "longitudMaxima": 2000
+                },
+                {
+                  "nombre": "enabled",
+                  "tipo": "booleano",
+                  "descripcion": {
+                    "es": "Crea la regla activa; de forma predeterminada queda inactiva",
+                    "en": "Create the rule enabled; it is disabled by default"
+                  }
+                }
+              ]
+            },
+            {
+              "nombre": "create-mention-spam",
+              "tipo": "subcomando",
+              "descripcion": {
+                "es": "Crea una regla para bloquear el spam de menciones",
+                "en": "Create a rule to block mention spam"
+              },
+              "opciones": [
+                {
+                  "nombre": "name",
+                  "tipo": "texto",
+                  "descripcion": {
+                    "es": "Nombre de la nueva regla",
+                    "en": "Name of the new rule"
+                  },
+                  "requerido": true,
+                  "longitudMinima": 1,
+                  "longitudMaxima": 100
+                },
+                {
+                  "nombre": "mention-limit",
+                  "tipo": "entero",
+                  "descripcion": {
+                    "es": "Cantidad máxima de menciones únicas permitidas por mensaje",
+                    "en": "Maximum number of unique mentions allowed per message"
+                  },
+                  "requerido": true,
+                  "minimo": 1,
+                  "maximo": 50
+                },
+                {
+                  "nombre": "raid-protection",
+                  "tipo": "booleano",
+                  "descripcion": {
+                    "es": "Activa la detección automática de ataques de menciones",
+                    "en": "Enable automatic mention raid detection"
+                  }
+                },
+                {
+                  "nombre": "custom-message",
+                  "tipo": "texto",
+                  "descripcion": {
+                    "es": "Mensaje mostrado cuando Discord bloquea el contenido",
+                    "en": "Message shown when Discord blocks the content"
+                  },
+                  "longitudMaxima": 150
+                },
+                {
+                  "nombre": "alert-channel",
+                  "tipo": "canal",
+                  "descripcion": {
+                    "es": "Canal donde Discord enviará las alertas de esta regla",
+                    "en": "Channel where Discord will send alerts from this rule"
+                  }
+                },
+                {
+                  "nombre": "timeout-minutes",
+                  "tipo": "entero",
+                  "descripcion": {
+                    "es": "Minutos de aislamiento al activar la regla, hasta cuatro semanas",
+                    "en": "Timeout minutes when the rule triggers, up to four weeks"
+                  },
+                  "minimo": 1,
+                  "maximo": 40320
+                },
+                {
+                  "nombre": "exempt-roles",
+                  "tipo": "texto",
+                  "descripcion": {
+                    "es": "Menciones o IDs de los roles que quedarán exentos",
+                    "en": "Mentions or IDs of roles that will be exempt"
+                  },
+                  "longitudMaxima": 1000
+                },
+                {
+                  "nombre": "exempt-channels",
+                  "tipo": "texto",
+                  "descripcion": {
+                    "es": "Menciones o IDs de los canales que quedarán exentos",
+                    "en": "Mentions or IDs of channels that will be exempt"
+                  },
+                  "longitudMaxima": 2000
+                },
+                {
+                  "nombre": "enabled",
+                  "tipo": "booleano",
+                  "descripcion": {
+                    "es": "Crea la regla activa; de forma predeterminada queda inactiva",
+                    "en": "Create the rule enabled; it is disabled by default"
+                  }
+                }
+              ]
+            },
+            {
+              "nombre": "create-preset",
+              "tipo": "subcomando",
+              "descripcion": {
+                "es": "Crea una regla usando las categorías de palabras de Discord",
+                "en": "Create a rule using Discord's preset word categories"
+              },
+              "opciones": [
+                {
+                  "nombre": "name",
+                  "tipo": "texto",
+                  "descripcion": {
+                    "es": "Nombre de la nueva regla",
+                    "en": "Name of the new rule"
+                  },
+                  "requerido": true,
+                  "longitudMinima": 1,
+                  "longitudMaxima": 100
+                },
+                {
+                  "nombre": "profanity",
+                  "tipo": "booleano",
+                  "descripcion": {
+                    "es": "Incluye palabras que pueden considerarse ofensivas o maldiciones",
+                    "en": "Include words that may be considered profanity or swearing"
+                  }
+                },
+                {
+                  "nombre": "sexual-content",
+                  "tipo": "booleano",
+                  "descripcion": {
+                    "es": "Incluye palabras relacionadas con contenido sexual explícito",
+                    "en": "Include words related to sexually explicit content"
+                  }
+                },
+                {
+                  "nombre": "slurs",
+                  "tipo": "booleano",
+                  "descripcion": {
+                    "es": "Incluye insultos y expresiones discriminatorias",
+                    "en": "Include insults and discriminatory expressions"
+                  }
+                },
+                {
+                  "nombre": "allow-list",
+                  "tipo": "texto",
+                  "descripcion": {
+                    "es": "Palabras permitidas separadas por comas o saltos de línea",
+                    "en": "Allowed terms separated by commas or line breaks"
+                  },
+                  "longitudMaxima": 6000
+                },
+                {
+                  "nombre": "custom-message",
+                  "tipo": "texto",
+                  "descripcion": {
+                    "es": "Mensaje mostrado cuando Discord bloquea el contenido",
+                    "en": "Message shown when Discord blocks the content"
+                  },
+                  "longitudMaxima": 150
+                },
+                {
+                  "nombre": "alert-channel",
+                  "tipo": "canal",
+                  "descripcion": {
+                    "es": "Canal donde Discord enviará las alertas de esta regla",
+                    "en": "Channel where Discord will send alerts from this rule"
+                  }
+                },
+                {
+                  "nombre": "exempt-roles",
+                  "tipo": "texto",
+                  "descripcion": {
+                    "es": "Menciones o IDs de los roles que quedarán exentos",
+                    "en": "Mentions or IDs of roles that will be exempt"
+                  },
+                  "longitudMaxima": 1000
+                },
+                {
+                  "nombre": "exempt-channels",
+                  "tipo": "texto",
+                  "descripcion": {
+                    "es": "Menciones o IDs de los canales que quedarán exentos",
+                    "en": "Mentions or IDs of channels that will be exempt"
+                  },
+                  "longitudMaxima": 2000
+                },
+                {
+                  "nombre": "enabled",
+                  "tipo": "booleano",
+                  "descripcion": {
+                    "es": "Crea la regla activa; de forma predeterminada queda inactiva",
+                    "en": "Create the rule enabled; it is disabled by default"
+                  }
+                }
+              ]
+            },
+            {
+              "nombre": "create-spam",
+              "tipo": "subcomando",
+              "descripcion": {
+                "es": "Crea una regla usando el detector de spam general de Discord",
+                "en": "Create a rule using Discord's generic spam detector"
+              },
+              "opciones": [
+                {
+                  "nombre": "name",
+                  "tipo": "texto",
+                  "descripcion": {
+                    "es": "Nombre de la nueva regla",
+                    "en": "Name of the new rule"
+                  },
+                  "requerido": true,
+                  "longitudMinima": 1,
+                  "longitudMaxima": 100
+                },
+                {
+                  "nombre": "custom-message",
+                  "tipo": "texto",
+                  "descripcion": {
+                    "es": "Mensaje mostrado cuando Discord bloquea el contenido",
+                    "en": "Message shown when Discord blocks the content"
+                  },
+                  "longitudMaxima": 150
+                },
+                {
+                  "nombre": "alert-channel",
+                  "tipo": "canal",
+                  "descripcion": {
+                    "es": "Canal donde Discord enviará las alertas de esta regla",
+                    "en": "Channel where Discord will send alerts from this rule"
+                  }
+                },
+                {
+                  "nombre": "exempt-roles",
+                  "tipo": "texto",
+                  "descripcion": {
+                    "es": "Menciones o IDs de los roles que quedarán exentos",
+                    "en": "Mentions or IDs of roles that will be exempt"
+                  },
+                  "longitudMaxima": 1000
+                },
+                {
+                  "nombre": "exempt-channels",
+                  "tipo": "texto",
+                  "descripcion": {
+                    "es": "Menciones o IDs de los canales que quedarán exentos",
+                    "en": "Mentions or IDs of channels that will be exempt"
+                  },
+                  "longitudMaxima": 2000
+                },
+                {
+                  "nombre": "enabled",
+                  "tipo": "booleano",
+                  "descripcion": {
+                    "es": "Crea la regla activa; de forma predeterminada queda inactiva",
+                    "en": "Create the rule enabled; it is disabled by default"
+                  }
+                }
+              ]
+            },
+            {
+              "nombre": "create-member-profile",
+              "tipo": "subcomando",
+              "descripcion": {
+                "es": "Crea una regla que filtra nombres y apodos de los miembros",
+                "en": "Create a rule that filters member names and nicknames"
+              },
+              "opciones": [
+                {
+                  "nombre": "name",
+                  "tipo": "texto",
+                  "descripcion": {
+                    "es": "Nombre de la nueva regla",
+                    "en": "Name of the new rule"
+                  },
+                  "requerido": true,
+                  "longitudMinima": 1,
+                  "longitudMaxima": 100
+                },
+                {
+                  "nombre": "keywords",
+                  "tipo": "texto",
+                  "descripcion": {
+                    "es": "Palabras opcionales separadas por comas o saltos de línea",
+                    "en": "Optional keywords separated by commas or line breaks"
+                  }
+                },
+                {
+                  "nombre": "regex",
+                  "tipo": "texto",
+                  "descripcion": {
+                    "es": "Expresiones separadas por saltos de línea o por dos punto y coma",
+                    "en": "Patterns separated by line breaks or two semicolons"
+                  }
+                },
+                {
+                  "nombre": "allow-list",
+                  "tipo": "texto",
+                  "descripcion": {
+                    "es": "Palabras permitidas separadas por comas o saltos de línea",
+                    "en": "Allowed terms separated by commas or line breaks"
+                  }
+                },
+                {
+                  "nombre": "exempt-roles",
+                  "tipo": "texto",
+                  "descripcion": {
+                    "es": "Menciones o IDs de los roles que quedarán exentos",
+                    "en": "Mentions or IDs of roles that will be exempt"
+                  }
+                },
+                {
+                  "nombre": "enabled",
+                  "tipo": "booleano",
+                  "descripcion": {
+                    "es": "Crea la regla activa; de forma predeterminada queda inactiva",
+                    "en": "Create the rule enabled; it is disabled by default"
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "003.011",
+          "nombre": "ban",
+          "alias": [
+            "banear",
+            "baneo"
+          ],
+          "descripcion": {
+            "es": "Banea usuarios, con variantes de purga y baneo por ID",
+            "en": "Ban users, with purge and ban-by-ID variants"
+          },
+          "enfriamiento": 5,
+          "slash": true,
+          "prefijo": true,
+          "inactivo": false,
+          "permisos": {
+            "usuario": [
+              "BanMembers"
+            ],
+            "bot": [
+              "SendMessages",
+              "EmbedLinks",
+              "ReadMessageHistory",
+              "BanMembers"
+            ]
+          },
+          "opciones": [
+            {
+              "nombre": "add",
+              "tipo": "subcomando",
+              "descripcion": {
+                "es": "Banea a un usuario del servidor",
+                "en": "Ban a user from the server"
+              },
+              "opciones": [
+                {
+                  "nombre": "user",
+                  "tipo": "texto",
+                  "descripcion": {
+                    "es": "Usuario o ID al que aplicar la sanción",
+                    "en": "User or ID to sanction"
+                  },
+                  "requerido": true
+                },
+                {
+                  "nombre": "days",
+                  "tipo": "entero",
+                  "descripcion": {
+                    "es": "Días de mensajes a borrar (0 a 7)",
+                    "en": "Days of messages to delete (0 to 7)"
+                  },
+                  "minimo": 0,
+                  "maximo": 7
+                },
+                {
+                  "nombre": "reason",
+                  "tipo": "texto",
+                  "descripcion": {
+                    "es": "Motivo que quedará en el registro de auditoría",
+                    "en": "Reason recorded in the audit log"
+                  }
+                }
+              ]
+            },
+            {
+              "nombre": "soft",
+              "tipo": "subcomando",
+              "descripcion": {
+                "es": "Banea y desbanea al instante para purgar sus mensajes",
+                "en": "Ban and immediately unban to purge their messages"
+              },
+              "opciones": [
+                {
+                  "nombre": "user",
+                  "tipo": "texto",
+                  "descripcion": {
+                    "es": "Usuario o ID al que aplicar la sanción",
+                    "en": "User or ID to sanction"
+                  },
+                  "requerido": true
+                },
+                {
+                  "nombre": "days",
+                  "tipo": "entero",
+                  "descripcion": {
+                    "es": "Días de mensajes a borrar (0 a 7)",
+                    "en": "Days of messages to delete (0 to 7)"
+                  },
+                  "minimo": 0,
+                  "maximo": 7
+                },
+                {
+                  "nombre": "reason",
+                  "tipo": "texto",
+                  "descripcion": {
+                    "es": "Motivo que quedará en el registro de auditoría",
+                    "en": "Reason recorded in the audit log"
+                  }
+                }
+              ]
+            },
+            {
+              "nombre": "remove",
+              "tipo": "subcomando",
+              "descripcion": {
+                "es": "Retira el baneo de un usuario",
+                "en": "Remove a user's ban"
+              },
+              "opciones": [
+                {
+                  "nombre": "user",
+                  "tipo": "texto",
+                  "descripcion": {
+                    "es": "Usuario o ID al que aplicar la sanción",
+                    "en": "User or ID to sanction"
+                  },
+                  "requerido": true
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "003.010",
+          "nombre": "escalation",
+          "alias": [
+            "escalado",
+            "sanciones"
+          ],
+          "descripcion": {
+            "es": "Configura las sanciones automáticas por reincidencia en AutoMod",
+            "en": "Configure automatic sanctions for repeated AutoMod infractions"
+          },
+          "enfriamiento": 5,
+          "slash": true,
+          "prefijo": true,
+          "inactivo": false,
+          "permisos": {
+            "usuario": [
+              "ManageGuild"
+            ],
+            "bot": [
+              "SendMessages",
+              "EmbedLinks",
+              "ReadMessageHistory",
+              "ModerateMembers"
+            ]
+          },
+          "opciones": [
+            {
+              "nombre": "status",
+              "tipo": "subcomando",
+              "descripcion": {
+                "es": "Muestra la escalera de sanciones configurada",
+                "en": "Show the configured sanction ladder"
+              }
+            },
+            {
+              "nombre": "enable",
+              "tipo": "subcomando",
+              "descripcion": {
+                "es": "Activa las sanciones automáticas",
+                "en": "Enable automatic sanctions"
+              }
+            },
+            {
+              "nombre": "disable",
+              "tipo": "subcomando",
+              "descripcion": {
+                "es": "Desactiva las sanciones automáticas",
+                "en": "Disable automatic sanctions"
+              }
+            },
+            {
+              "nombre": "set",
+              "tipo": "subcomando",
+              "descripcion": {
+                "es": "Define o actualiza un escalón de la escalera",
+                "en": "Define or update a step of the ladder"
+              },
+              "opciones": [
+                {
+                  "nombre": "threshold",
+                  "tipo": "entero",
+                  "descripcion": {
+                    "es": "Número de infracciones que activa este escalón",
+                    "en": "Number of infractions that triggers this step"
+                  },
+                  "requerido": true,
+                  "minimo": 1,
+                  "maximo": 1000
+                },
+                {
+                  "nombre": "action",
+                  "tipo": "texto",
+                  "descripcion": {
+                    "es": "Sanción a aplicar: aviso o aislamiento",
+                    "en": "Sanction to apply: warning or timeout"
+                  },
+                  "requerido": true,
+                  "valores": [
+                    {
+                      "nombre": {
+                        "es": "warn",
+                        "en": "warn"
+                      },
+                      "valor": "warn"
+                    },
+                    {
+                      "nombre": {
+                        "es": "timeout",
+                        "en": "timeout"
+                      },
+                      "valor": "timeout"
+                    }
+                  ]
+                },
+                {
+                  "nombre": "minutes",
+                  "tipo": "entero",
+                  "descripcion": {
+                    "es": "Duración del aislamiento en minutos",
+                    "en": "Timeout duration in minutes"
+                  },
+                  "minimo": 1,
+                  "maximo": 40320
+                }
+              ]
+            },
+            {
+              "nombre": "remove",
+              "tipo": "subcomando",
+              "descripcion": {
+                "es": "Quita un escalón de la escalera",
+                "en": "Remove a step from the ladder"
+              },
+              "opciones": [
+                {
+                  "nombre": "threshold",
+                  "tipo": "entero",
+                  "descripcion": {
+                    "es": "Número de infracciones que activa este escalón",
+                    "en": "Number of infractions that triggers this step"
+                  },
+                  "requerido": true,
+                  "minimo": 1,
+                  "maximo": 1000
+                }
+              ]
+            },
+            {
+              "nombre": "window",
+              "tipo": "subcomando",
+              "descripcion": {
+                "es": "Cambia los días en los que se cuenta la reincidencia",
+                "en": "Change the number of days used to count repeat offences"
+              },
+              "opciones": [
+                {
+                  "nombre": "days",
+                  "tipo": "entero",
+                  "descripcion": {
+                    "es": "Días de la ventana de reincidencia",
+                    "en": "Days in the repeat-offence window"
+                  },
+                  "requerido": true,
+                  "minimo": 1,
+                  "maximo": 90
+                }
+              ]
+            },
+            {
+              "nombre": "reset",
+              "tipo": "subcomando",
+              "descripcion": {
+                "es": "Restaura la escalera de sanciones por defecto",
+                "en": "Restore the default sanction ladder"
+              }
+            }
+          ]
+        },
+        {
+          "id": "003.009",
+          "nombre": "infractions",
+          "alias": [
+            "infracciones",
+            "historial"
+          ],
+          "descripcion": {
+            "es": "Consulta el historial de infracciones de AutoMod",
+            "en": "View the AutoMod infraction history"
+          },
+          "enfriamiento": 5,
+          "slash": true,
+          "prefijo": true,
+          "inactivo": false,
+          "permisos": {
+            "usuario": [
+              "ModerateMembers"
+            ],
+            "bot": [
+              "SendMessages",
+              "EmbedLinks",
+              "ReadMessageHistory"
+            ]
+          },
+          "opciones": [
+            {
+              "nombre": "user",
+              "tipo": "subcomando",
+              "descripcion": {
+                "es": "Muestra las infracciones de un usuario",
+                "en": "Show a user's infractions"
+              },
+              "opciones": [
+                {
+                  "nombre": "user",
+                  "tipo": "usuario",
+                  "descripcion": {
+                    "es": "Usuario del que quieres ver el historial",
+                    "en": "User whose history you want to see"
+                  },
+                  "requerido": true
+                }
+              ]
+            },
+            {
+              "nombre": "server",
+              "tipo": "subcomando",
+              "descripcion": {
+                "es": "Muestra el resumen de infracciones del servidor",
+                "en": "Show the server's infraction summary"
+              }
+            }
+          ]
+        },
+        {
+          "id": "003.012",
+          "nombre": "kick",
+          "alias": [
+            "expulsar",
+            "echar"
+          ],
+          "descripcion": {
+            "es": "Expulsa a un miembro del servidor",
+            "en": "Kicks a member from the server"
+          },
+          "enfriamiento": 5,
+          "slash": true,
+          "prefijo": true,
+          "inactivo": false,
+          "permisos": {
+            "usuario": [
+              "KickMembers"
+            ],
+            "bot": [
+              "SendMessages",
+              "EmbedLinks",
+              "ReadMessageHistory",
+              "KickMembers"
+            ]
+          },
+          "opciones": [
+            {
+              "nombre": "user",
+              "tipo": "usuario",
+              "descripcion": {
+                "es": "Miembro al que expulsar",
+                "en": "Member to kick"
+              },
+              "requerido": true
+            },
+            {
+              "nombre": "reason",
+              "tipo": "texto",
+              "descripcion": {
+                "es": "Motivo que quedará en el registro de auditoría",
+                "en": "Reason that will appear in the audit log"
+              }
+            }
+          ]
+        },
+        {
+          "id": "003.003",
+          "nombre": "lock",
+          "alias": [
+            "lock_channel",
+            "lockchannel",
+            "cerrar",
+            "bloquear",
+            "lck"
+          ],
+          "descripcion": {
+            "es": "Bloquea el envío de mensajes de @everyone en un canal",
+            "en": "Block @everyone from sending messages in a channel"
+          },
+          "enfriamiento": 5,
+          "slash": true,
+          "prefijo": true,
+          "inactivo": false,
+          "permisos": {
+            "usuario": [
+              "ManageChannels"
+            ],
+            "bot": [
+              "SendMessages",
+              "EmbedLinks",
+              "ReadMessageHistory",
+              "ManageChannels"
+            ]
+          },
+          "opciones": [
+            {
+              "nombre": "channel",
+              "tipo": "canal",
+              "descripcion": {
+                "es": "Canal de texto que se bloqueará",
+                "en": "Text channel to lock"
+              }
+            }
+          ]
+        },
+        {
+          "id": "003.004",
+          "nombre": "mute",
+          "alias": [
+            "muteo",
+            "aislar",
+            "tmo",
+            "timeout"
+          ],
+          "descripcion": {
+            "es": "Aplica un aislamiento temporal a un miembro",
+            "en": "Temporarily time out a member"
+          },
+          "enfriamiento": 5,
+          "slash": true,
+          "prefijo": true,
+          "inactivo": false,
+          "permisos": {
+            "usuario": [
+              "ModerateMembers"
+            ],
+            "bot": [
+              "SendMessages",
+              "EmbedLinks",
+              "ReadMessageHistory",
+              "ModerateMembers"
+            ]
+          },
+          "opciones": [
+            {
+              "nombre": "user",
+              "tipo": "usuario",
+              "descripcion": {
+                "es": "Miembro que será aislado",
+                "en": "Member to time out"
+              },
+              "requerido": true
+            },
+            {
+              "nombre": "time",
+              "tipo": "texto",
+              "descripcion": {
+                "es": "Duración: 60s, 30m, 2h, 1d o 1w; máximo 28d",
+                "en": "Duration: 60s, 30m, 2h, 1d, or 1w; maximum 28d"
+              }
+            },
+            {
+              "nombre": "reason",
+              "tipo": "texto",
+              "descripcion": {
+                "es": "Razón del aislamiento",
+                "en": "Reason for the timeout"
+              },
+              "longitudMaxima": 400
+            }
+          ]
+        },
+        {
+          "id": "003.008",
+          "nombre": "purgue",
+          "alias": [
+            "pg",
+            "bulkdelete",
+            "purge",
+            "purgar",
+            "limpiar"
+          ],
+          "descripcion": {
+            "es": "Elimina entre 2 y 100 mensajes recientes",
+            "en": "Delete between 2 and 100 recent messages"
+          },
+          "enfriamiento": 5,
+          "slash": true,
+          "prefijo": true,
+          "inactivo": false,
+          "permisos": {
+            "usuario": [
+              "ManageMessages"
+            ],
+            "bot": [
+              "SendMessages",
+              "EmbedLinks",
+              "ReadMessageHistory",
+              "ManageMessages"
+            ]
+          },
+          "opciones": [
+            {
+              "nombre": "number",
+              "tipo": "entero",
+              "descripcion": {
+                "es": "Cantidad de mensajes que se eliminarán",
+                "en": "Number of messages to delete"
+              },
+              "requerido": true,
+              "minimo": 2,
+              "maximo": 100
+            }
+          ]
+        },
+        {
+          "id": "003.007",
+          "nombre": "removerol",
+          "alias": [
+            "rolremove",
+            "removerole",
+            "rrole",
+            "rrol",
+            "quitarrol"
+          ],
+          "descripcion": {
+            "es": "Retira un rol de un miembro",
+            "en": "Remove a role from a member"
+          },
+          "enfriamiento": 5,
+          "slash": true,
+          "prefijo": true,
+          "inactivo": false,
+          "permisos": {
+            "usuario": [
+              "ManageRoles"
+            ],
+            "bot": [
+              "SendMessages",
+              "EmbedLinks",
+              "ReadMessageHistory",
+              "ManageRoles"
+            ]
+          },
+          "opciones": [
+            {
+              "nombre": "user",
+              "tipo": "usuario",
+              "descripcion": {
+                "es": "Miembro al que se retirará el rol",
+                "en": "Member whose role will be removed"
+              },
+              "requerido": true
+            },
+            {
+              "nombre": "role",
+              "tipo": "rol",
+              "descripcion": {
+                "es": "Rol que se retirará del miembro",
+                "en": "Role to remove from the member"
+              },
+              "requerido": true
+            }
+          ]
+        },
+        {
+          "id": "003.006",
+          "nombre": "unlock",
+          "alias": [
+            "unlock_channel",
+            "unlockchannel",
+            "abrir",
+            "desbloquear",
+            "ulck"
+          ],
+          "descripcion": {
+            "es": "Restaura la herencia de mensajes de @everyone en un canal",
+            "en": "Restore inherited @everyone message permissions in a channel"
+          },
+          "enfriamiento": 5,
+          "slash": true,
+          "prefijo": true,
+          "inactivo": false,
+          "permisos": {
+            "usuario": [
+              "ManageChannels"
+            ],
+            "bot": [
+              "SendMessages",
+              "EmbedLinks",
+              "ReadMessageHistory",
+              "ManageChannels"
+            ]
+          },
+          "opciones": [
+            {
+              "nombre": "channel",
+              "tipo": "canal",
+              "descripcion": {
+                "es": "Canal de texto que se desbloqueará",
+                "en": "Text channel to unlock"
+              }
+            }
+          ]
+        },
+        {
+          "id": "003.005",
+          "nombre": "unmute",
+          "alias": [
+            "desaislar",
+            "utmo",
+            "untimeout",
+            "untmo"
+          ],
+          "descripcion": {
+            "es": "Retira el aislamiento temporal de un miembro",
+            "en": "Remove a member's timeout"
+          },
+          "enfriamiento": 5,
+          "slash": true,
+          "prefijo": true,
+          "inactivo": false,
+          "permisos": {
+            "usuario": [
+              "ModerateMembers"
+            ],
+            "bot": [
+              "SendMessages",
+              "EmbedLinks",
+              "ReadMessageHistory",
+              "ModerateMembers"
+            ]
+          },
+          "opciones": [
+            {
+              "nombre": "user",
+              "tipo": "usuario",
+              "descripcion": {
+                "es": "Miembro al que se retirará el aislamiento",
+                "en": "Member whose timeout will be removed"
+              },
+              "requerido": true
+            },
+            {
+              "nombre": "reason",
+              "tipo": "texto",
+              "descripcion": {
+                "es": "Razón para retirar el aislamiento",
+                "en": "Reason for removing the timeout"
+              },
+              "longitudMaxima": 400
+            }
+          ]
+        },
+        {
+          "id": "003.013",
+          "nombre": "warn",
+          "alias": [
+            "advertir",
+            "avisar",
+            "advertencia"
+          ],
+          "descripcion": {
+            "es": "Avisa a miembros y permite retirar el último aviso",
+            "en": "Warns members and lets you remove the latest warning"
+          },
+          "enfriamiento": 5,
+          "slash": true,
+          "prefijo": true,
+          "inactivo": false,
+          "permisos": {
+            "usuario": [
+              "ModerateMembers"
+            ],
+            "bot": [
+              "SendMessages",
+              "EmbedLinks",
+              "ReadMessageHistory"
+            ]
+          },
+          "opciones": [
+            {
+              "nombre": "add",
+              "tipo": "subcomando",
+              "descripcion": {
+                "es": "Registra un aviso para un miembro",
+                "en": "Warns a member"
+              },
+              "opciones": [
+                {
+                  "nombre": "user",
+                  "tipo": "usuario",
+                  "descripcion": {
+                    "es": "Miembro al que avisar",
+                    "en": "Member to warn"
+                  },
+                  "requerido": true
+                },
+                {
+                  "nombre": "reason",
+                  "tipo": "texto",
+                  "descripcion": {
+                    "es": "Motivo del aviso",
+                    "en": "Reason for the warning"
+                  }
+                }
+              ]
+            },
+            {
+              "nombre": "remove",
+              "tipo": "subcomando",
+              "descripcion": {
+                "es": "Retira el último aviso de un miembro",
+                "en": "Removes a member's latest warning"
+              },
+              "opciones": [
+                {
+                  "nombre": "user",
+                  "tipo": "usuario",
+                  "descripcion": {
+                    "es": "Miembro al que avisar",
+                    "en": "Member to warn"
+                  },
+                  "requerido": true
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "004",
+      "nombre": {
+        "es": "Configuración",
+        "en": "Configuration"
+      },
+      "descripcion": {
+        "es": "Configura Maple y sus sistemas dentro del servidor",
+        "en": "Configure Maple and its systems within the server"
+      },
+      "comandos": [
+        {
+          "id": "004.003",
+          "nombre": "farewell",
+          "alias": [
+            "despedida",
+            "set-farewell",
+            "setfrw",
+            "frw"
+          ],
+          "descripcion": {
+            "es": "Configura el sistema de despedidas",
+            "en": "Configures the farewell system"
+          },
+          "enfriamiento": 3,
+          "slash": true,
+          "prefijo": true,
+          "inactivo": false,
+          "permisos": {
+            "usuario": [
+              "ManageGuild"
+            ],
+            "bot": [
+              "SendMessages",
+              "EmbedLinks",
+              "ReadMessageHistory",
+              "AttachFiles"
+            ]
+          },
+          "opciones": [
+            {
+              "nombre": "configure",
+              "tipo": "subcomando",
+              "descripcion": {
+                "es": "Abre el menú de configuración",
+                "en": "Opens the configuration menu"
+              }
+            },
+            {
+              "nombre": "test",
+              "tipo": "subcomando",
+              "descripcion": {
+                "es": "Prueba la configuración actual",
+                "en": "Tests the current configuration"
+              }
+            }
+          ]
+        },
+        {
+          "id": "004.004",
+          "nombre": "language",
+          "alias": [
+            "lang",
+            "idioma"
+          ],
+          "descripcion": {
+            "es": "Consulta o cambia el idioma del servidor",
+            "en": "View or change the server language"
+          },
+          "enfriamiento": 5,
+          "slash": true,
+          "prefijo": true,
+          "inactivo": false,
+          "permisos": {
+            "usuario": [
+              "ManageGuild"
+            ],
+            "bot": [
+              "SendMessages",
+              "EmbedLinks",
+              "ReadMessageHistory"
+            ]
+          },
+          "opciones": [
+            {
+              "nombre": "language",
+              "tipo": "texto",
+              "descripcion": {
+                "es": "Idioma que usará el bot en este servidor",
+                "en": "Language the bot will use in this server"
+              },
+              "valores": [
+                {
+                  "nombre": {
+                    "es": "Español",
+                    "en": "Español"
+                  },
+                  "valor": "es-ES"
+                },
+                {
+                  "nombre": {
+                    "es": "English",
+                    "en": "English"
+                  },
+                  "valor": "en-US"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "004.005",
+          "nombre": "logs",
+          "alias": [
+            "registros",
+            "log"
+          ],
+          "descripcion": {
+            "es": "Configura los canales de registro del servidor",
+            "en": "Configure the server log channels"
+          },
+          "enfriamiento": 5,
+          "slash": true,
+          "prefijo": true,
+          "inactivo": false,
+          "permisos": {
+            "usuario": [
+              "ManageGuild"
+            ],
+            "bot": [
+              "SendMessages",
+              "EmbedLinks",
+              "ReadMessageHistory",
+              "EmbedLinks"
+            ]
+          },
+          "opciones": []
+        },
+        {
+          "id": "004.001",
+          "nombre": "prefix",
+          "alias": [
+            "px",
+            "prefijo"
+          ],
+          "descripcion": {
+            "es": "Consulta o establece el prefijo del bot",
+            "en": "View or set the bot prefix"
+          },
+          "enfriamiento": 5,
+          "slash": true,
+          "prefijo": true,
+          "inactivo": false,
+          "permisos": {
+            "usuario": [
+              "ManageGuild"
+            ],
+            "bot": [
+              "SendMessages",
+              "EmbedLinks",
+              "ReadMessageHistory"
+            ]
+          },
+          "opciones": [
+            {
+              "nombre": "new-prefix",
+              "tipo": "texto",
+              "descripcion": {
+                "es": "Nuevo prefijo; usa m! para restablecerlo",
+                "en": "New prefix; use m! to reset it"
+              },
+              "longitudMinima": 1,
+              "longitudMaxima": 4
+            }
+          ]
+        },
+        {
+          "id": "004.002",
+          "nombre": "welcome",
+          "alias": [
+            "bienvenida",
+            "set-welcome",
+            "setwlc",
+            "wlc"
+          ],
+          "descripcion": {
+            "es": "Configura el sistema de bienvenidas",
+            "en": "Configures the welcome system"
+          },
+          "enfriamiento": 3,
+          "slash": true,
+          "prefijo": true,
+          "inactivo": false,
+          "permisos": {
+            "usuario": [
+              "ManageGuild"
+            ],
+            "bot": [
+              "SendMessages",
+              "EmbedLinks",
+              "ReadMessageHistory",
+              "AttachFiles"
+            ]
+          },
+          "opciones": [
+            {
+              "nombre": "configure",
+              "tipo": "subcomando",
+              "descripcion": {
+                "es": "Abre el menú de configuración",
+                "en": "Opens the configuration menu"
+              }
+            },
+            {
+              "nombre": "test",
+              "tipo": "subcomando",
+              "descripcion": {
+                "es": "Prueba la configuración actual",
+                "en": "Tests the current configuration"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "005",
+      "nombre": {
+        "es": "Acción",
+        "en": "Action"
+      },
+      "descripcion": {
+        "es": "Acciones para interactuar con otros usuarios",
+        "en": "Actions for interacting with other users"
+      },
+      "comandos": [
+        {
+          "id": "005.001",
+          "nombre": "cook",
+          "alias": [
+            "cocinar"
+          ],
+          "descripcion": {
+            "es": "Cocina algo para ti o para otra persona",
+            "en": "Cook something for yourself or someone else"
+          },
+          "enfriamiento": 5,
+          "slash": false,
+          "prefijo": true,
+          "inactivo": false,
+          "permisos": {
+            "usuario": [],
+            "bot": [
+              "SendMessages",
+              "EmbedLinks",
+              "ReadMessageHistory"
+            ]
+          },
+          "opciones": [
+            {
+              "nombre": "user",
+              "tipo": "usuario",
+              "descripcion": {
+                "es": "Menciona al usuario con quien realizarás la acción",
+                "en": "Mention the user you want to perform the action with"
+              }
+            }
+          ]
+        },
+        {
+          "id": "005.002",
+          "nombre": "cuddle",
+          "alias": [
+            "acurrucarse",
+            "acurrucar",
+            "cud"
+          ],
+          "descripcion": {
+            "es": "Acurrúcate con alguien y demuéstrale tu cariño",
+            "en": "Cuddle with someone and show them affection"
+          },
+          "enfriamiento": 5,
+          "slash": false,
+          "prefijo": true,
+          "inactivo": false,
+          "permisos": {
+            "usuario": [],
+            "bot": [
+              "SendMessages",
+              "EmbedLinks",
+              "ReadMessageHistory"
+            ]
+          },
+          "opciones": [
+            {
+              "nombre": "user",
+              "tipo": "usuario",
+              "descripcion": {
+                "es": "Menciona al usuario con quien realizarás la acción",
+                "en": "Mention the user you want to perform the action with"
+              },
+              "requerido": true
+            }
+          ]
+        },
+        {
+          "id": "005.003",
+          "nombre": "cure",
+          "alias": [
+            "curar",
+            "sanar"
+          ],
+          "descripcion": {
+            "es": "Cúrate o ayuda a curar a otra persona",
+            "en": "Heal yourself or help heal someone else"
+          },
+          "enfriamiento": 5,
+          "slash": false,
+          "prefijo": true,
+          "inactivo": false,
+          "permisos": {
+            "usuario": [],
+            "bot": [
+              "SendMessages",
+              "EmbedLinks",
+              "ReadMessageHistory"
+            ]
+          },
+          "opciones": [
+            {
+              "nombre": "user",
+              "tipo": "usuario",
+              "descripcion": {
+                "es": "Menciona al usuario con quien realizarás la acción",
+                "en": "Mention the user you want to perform the action with"
+              }
+            }
+          ]
+        },
+        {
+          "id": "005.004",
+          "nombre": "draw",
+          "alias": [
+            "dibujar"
+          ],
+          "descripcion": {
+            "es": "Toma el lápiz y comienza a dibujar",
+            "en": "Pick up a pencil and start drawing"
+          },
+          "enfriamiento": 5,
+          "slash": false,
+          "prefijo": true,
+          "inactivo": false,
+          "permisos": {
+            "usuario": [],
+            "bot": [
+              "SendMessages",
+              "EmbedLinks",
+              "ReadMessageHistory"
+            ]
+          },
+          "opciones": []
+        },
+        {
+          "id": "005.005",
+          "nombre": "drive",
+          "alias": [
+            "conducir",
+            "manejar"
+          ],
+          "descripcion": {
+            "es": "Sal a conducir a toda marcha",
+            "en": "Go for a drive at full speed"
+          },
+          "enfriamiento": 5,
+          "slash": false,
+          "prefijo": true,
+          "inactivo": false,
+          "permisos": {
+            "usuario": [],
+            "bot": [
+              "SendMessages",
+              "EmbedLinks",
+              "ReadMessageHistory"
+            ]
+          },
+          "opciones": []
+        },
+        {
+          "id": "005.006",
+          "nombre": "eat",
+          "alias": [
+            "comer"
+          ],
+          "descripcion": {
+            "es": "Disfruta de algo delicioso",
+            "en": "Enjoy something delicious"
+          },
+          "enfriamiento": 5,
+          "slash": false,
+          "prefijo": true,
+          "inactivo": false,
+          "permisos": {
+            "usuario": [],
+            "bot": [
+              "SendMessages",
+              "EmbedLinks",
+              "ReadMessageHistory"
+            ]
+          },
+          "opciones": []
+        },
+        {
+          "id": "005.030",
+          "nombre": "explosion",
+          "alias": [
+            "explotar",
+            "boom"
+          ],
+          "descripcion": {
+            "es": "Haz que todo vuele por los aires",
+            "en": "Blow everything up"
+          },
+          "enfriamiento": 5,
+          "slash": false,
+          "prefijo": true,
+          "inactivo": false,
+          "permisos": {
+            "usuario": [],
+            "bot": [
+              "SendMessages",
+              "EmbedLinks",
+              "ReadMessageHistory"
+            ]
+          },
+          "opciones": []
+        },
+        {
+          "id": "005.007",
+          "nombre": "feed",
+          "alias": [
+            "alimentar"
+          ],
+          "descripcion": {
+            "es": "Alimenta a otra persona",
+            "en": "Feed someone else"
+          },
+          "enfriamiento": 5,
+          "slash": false,
+          "prefijo": true,
+          "inactivo": false,
+          "permisos": {
+            "usuario": [],
+            "bot": [
+              "SendMessages",
+              "EmbedLinks",
+              "ReadMessageHistory"
+            ]
+          },
+          "opciones": [
+            {
+              "nombre": "user",
+              "tipo": "usuario",
+              "descripcion": {
+                "es": "Menciona al usuario con quien realizarás la acción",
+                "en": "Mention the user you want to perform the action with"
+              },
+              "requerido": true
+            }
+          ]
+        },
+        {
+          "id": "005.031",
+          "nombre": "handhold",
+          "alias": [
+            "tomarmano",
+            "manos"
+          ],
+          "descripcion": {
+            "es": "Toma de la mano a alguien",
+            "en": "Hold someone's hand"
+          },
+          "enfriamiento": 5,
+          "slash": false,
+          "prefijo": true,
+          "inactivo": false,
+          "permisos": {
+            "usuario": [],
+            "bot": [
+              "SendMessages",
+              "EmbedLinks",
+              "ReadMessageHistory"
+            ]
+          },
+          "opciones": [
+            {
+              "nombre": "user",
+              "tipo": "usuario",
+              "descripcion": {
+                "es": "Menciona al usuario con quien realizarás la acción",
+                "en": "Mention the user you want to perform the action with"
+              },
+              "requerido": true
+            }
+          ]
+        },
+        {
+          "id": "005.032",
+          "nombre": "highfive",
+          "alias": [
+            "cinco",
+            "chocacinco"
+          ],
+          "descripcion": {
+            "es": "Choca los cinco con alguien",
+            "en": "High five someone"
+          },
+          "enfriamiento": 5,
+          "slash": false,
+          "prefijo": true,
+          "inactivo": false,
+          "permisos": {
+            "usuario": [],
+            "bot": [
+              "SendMessages",
+              "EmbedLinks",
+              "ReadMessageHistory"
+            ]
+          },
+          "opciones": [
+            {
+              "nombre": "user",
+              "tipo": "usuario",
+              "descripcion": {
+                "es": "Menciona al usuario con quien realizarás la acción",
+                "en": "Mention the user you want to perform the action with"
+              },
+              "requerido": true
+            }
+          ]
+        },
+        {
+          "id": "005.009",
+          "nombre": "hug",
+          "alias": [
+            "abrazo",
+            "abrazar"
+          ],
+          "descripcion": {
+            "es": "Dale un abrazo a alguien",
+            "en": "Give someone a hug"
+          },
+          "enfriamiento": 5,
+          "slash": false,
+          "prefijo": true,
+          "inactivo": false,
+          "permisos": {
+            "usuario": [],
+            "bot": [
+              "SendMessages",
+              "EmbedLinks",
+              "ReadMessageHistory"
+            ]
+          },
+          "opciones": [
+            {
+              "nombre": "user",
+              "tipo": "usuario",
+              "descripcion": {
+                "es": "Menciona al usuario con quien realizarás la acción",
+                "en": "Mention the user you want to perform the action with"
+              },
+              "requerido": true
+            }
+          ]
+        },
+        {
+          "id": "005.010",
+          "nombre": "kickbut",
+          "alias": [
+            "patada",
+            "patear"
+          ],
+          "descripcion": {
+            "es": "Dale una patada a alguien",
+            "en": "Kick someone"
+          },
+          "enfriamiento": 5,
+          "slash": false,
+          "prefijo": true,
+          "inactivo": false,
+          "permisos": {
+            "usuario": [],
+            "bot": [
+              "SendMessages",
+              "EmbedLinks",
+              "ReadMessageHistory"
+            ]
+          },
+          "opciones": [
+            {
+              "nombre": "user",
+              "tipo": "usuario",
+              "descripcion": {
+                "es": "Menciona al usuario con quien realizarás la acción",
+                "en": "Mention the user you want to perform the action with"
+              },
+              "requerido": true
+            }
+          ]
+        },
+        {
+          "id": "005.011",
+          "nombre": "kill",
+          "alias": [
+            "matar",
+            "asesinar"
+          ],
+          "descripcion": {
+            "es": "Acaba dramáticamente con la vida de alguien",
+            "en": "Dramatically end someone's life"
+          },
+          "enfriamiento": 5,
+          "slash": false,
+          "prefijo": true,
+          "inactivo": false,
+          "permisos": {
+            "usuario": [],
+            "bot": [
+              "SendMessages",
+              "EmbedLinks",
+              "ReadMessageHistory"
+            ]
+          },
+          "opciones": [
+            {
+              "nombre": "user",
+              "tipo": "usuario",
+              "descripcion": {
+                "es": "Menciona al usuario con quien realizarás la acción",
+                "en": "Mention the user you want to perform the action with"
+              },
+              "requerido": true
+            }
+          ]
+        },
+        {
+          "id": "005.012",
+          "nombre": "kiss",
+          "alias": [
+            "besar"
+          ],
+          "descripcion": {
+            "es": "Dale un beso a alguien especial",
+            "en": "Give someone special a kiss"
+          },
+          "enfriamiento": 5,
+          "slash": false,
+          "prefijo": true,
+          "inactivo": false,
+          "permisos": {
+            "usuario": [],
+            "bot": [
+              "SendMessages",
+              "EmbedLinks",
+              "ReadMessageHistory"
+            ]
+          },
+          "opciones": [
+            {
+              "nombre": "user",
+              "tipo": "usuario",
+              "descripcion": {
+                "es": "Menciona al usuario con quien realizarás la acción",
+                "en": "Mention the user you want to perform the action with"
+              },
+              "requerido": true
+            }
+          ]
+        },
+        {
+          "id": "005.013",
+          "nombre": "lick",
+          "alias": [
+            "lamer"
+          ],
+          "descripcion": {
+            "es": "Lame a la persona que elijas",
+            "en": "Lick the person you choose"
+          },
+          "enfriamiento": 5,
+          "slash": false,
+          "prefijo": true,
+          "inactivo": false,
+          "permisos": {
+            "usuario": [],
+            "bot": [
+              "SendMessages",
+              "EmbedLinks",
+              "ReadMessageHistory"
+            ]
+          },
+          "opciones": [
+            {
+              "nombre": "user",
+              "tipo": "usuario",
+              "descripcion": {
+                "es": "Menciona al usuario con quien realizarás la acción",
+                "en": "Mention the user you want to perform the action with"
+              },
+              "requerido": true
+            }
+          ]
+        },
+        {
+          "id": "005.014",
+          "nombre": "pat",
+          "alias": [
+            "acariciar",
+            "caricia"
+          ],
+          "descripcion": {
+            "es": "Acaricia a alguien con mucho cariño",
+            "en": "Pat someone affectionately"
+          },
+          "enfriamiento": 5,
+          "slash": false,
+          "prefijo": true,
+          "inactivo": false,
+          "permisos": {
+            "usuario": [],
+            "bot": [
+              "SendMessages",
+              "EmbedLinks",
+              "ReadMessageHistory"
+            ]
+          },
+          "opciones": [
+            {
+              "nombre": "user",
+              "tipo": "usuario",
+              "descripcion": {
+                "es": "Menciona al usuario con quien realizarás la acción",
+                "en": "Mention the user you want to perform the action with"
+              },
+              "requerido": true
+            }
+          ]
+        },
+        {
+          "id": "005.015",
+          "nombre": "peek",
+          "alias": [
+            "espiar",
+            "vistazo"
+          ],
+          "descripcion": {
+            "es": "Echa un vistazo a alguien con disimulo",
+            "en": "Sneak a peek at someone"
+          },
+          "enfriamiento": 5,
+          "slash": false,
+          "prefijo": true,
+          "inactivo": false,
+          "permisos": {
+            "usuario": [],
+            "bot": [
+              "SendMessages",
+              "EmbedLinks",
+              "ReadMessageHistory"
+            ]
+          },
+          "opciones": [
+            {
+              "nombre": "user",
+              "tipo": "usuario",
+              "descripcion": {
+                "es": "Menciona al usuario con quien realizarás la acción",
+                "en": "Mention the user you want to perform the action with"
+              },
+              "requerido": true
+            }
+          ]
+        },
+        {
+          "id": "005.016",
+          "nombre": "play",
+          "alias": [
+            "jugar",
+            "playing"
+          ],
+          "descripcion": {
+            "es": "Juega a solas o en compañía",
+            "en": "Play alone or with someone"
+          },
+          "enfriamiento": 5,
+          "slash": false,
+          "prefijo": true,
+          "inactivo": false,
+          "permisos": {
+            "usuario": [],
+            "bot": [
+              "SendMessages",
+              "EmbedLinks",
+              "ReadMessageHistory"
+            ]
+          },
+          "opciones": [
+            {
+              "nombre": "user",
+              "tipo": "usuario",
+              "descripcion": {
+                "es": "Menciona al usuario con quien realizarás la acción",
+                "en": "Mention the user you want to perform the action with"
+              }
+            }
+          ]
+        },
+        {
+          "id": "005.017",
+          "nombre": "poke",
+          "alias": [
+            "molestar",
+            "fastidio",
+            "fastidiar"
+          ],
+          "descripcion": {
+            "es": "Molesta amistosamente a alguien",
+            "en": "Playfully annoy someone"
+          },
+          "enfriamiento": 5,
+          "slash": false,
+          "prefijo": true,
+          "inactivo": false,
+          "permisos": {
+            "usuario": [],
+            "bot": [
+              "SendMessages",
+              "EmbedLinks",
+              "ReadMessageHistory"
+            ]
+          },
+          "opciones": [
+            {
+              "nombre": "user",
+              "tipo": "usuario",
+              "descripcion": {
+                "es": "Menciona al usuario con quien realizarás la acción",
+                "en": "Mention the user you want to perform the action with"
+              },
+              "requerido": true
+            }
+          ]
+        },
+        {
+          "id": "005.018",
+          "nombre": "punch",
+          "alias": [
+            "golpear"
+          ],
+          "descripcion": {
+            "es": "Golpea a alguien con fuerza",
+            "en": "Punch someone hard"
+          },
+          "enfriamiento": 5,
+          "slash": false,
+          "prefijo": true,
+          "inactivo": false,
+          "permisos": {
+            "usuario": [],
+            "bot": [
+              "SendMessages",
+              "EmbedLinks",
+              "ReadMessageHistory"
+            ]
+          },
+          "opciones": [
+            {
+              "nombre": "user",
+              "tipo": "usuario",
+              "descripcion": {
+                "es": "Menciona al usuario con quien realizarás la acción",
+                "en": "Mention the user you want to perform the action with"
+              },
+              "requerido": true
+            }
+          ]
+        },
+        {
+          "id": "005.019",
+          "nombre": "read",
+          "alias": [
+            "leer"
+          ],
+          "descripcion": {
+            "es": "Ponte a leer algo interesante",
+            "en": "Read something interesting"
+          },
+          "enfriamiento": 5,
+          "slash": false,
+          "prefijo": true,
+          "inactivo": false,
+          "permisos": {
+            "usuario": [],
+            "bot": [
+              "SendMessages",
+              "EmbedLinks",
+              "ReadMessageHistory"
+            ]
+          },
+          "opciones": []
+        },
+        {
+          "id": "005.020",
+          "nombre": "run",
+          "alias": [
+            "correr"
+          ],
+          "descripcion": {
+            "es": "Comienza a correr",
+            "en": "Start running"
+          },
+          "enfriamiento": 5,
+          "slash": false,
+          "prefijo": true,
+          "inactivo": false,
+          "permisos": {
+            "usuario": [],
+            "bot": [
+              "SendMessages",
+              "EmbedLinks",
+              "ReadMessageHistory"
+            ]
+          },
+          "opciones": []
+        },
+        {
+          "id": "005.021",
+          "nombre": "sape",
+          "alias": [
+            "zape"
+          ],
+          "descripcion": {
+            "es": "Dale un sape a un usuario",
+            "en": "Give someone a playful smack on the head"
+          },
+          "enfriamiento": 5,
+          "slash": false,
+          "prefijo": true,
+          "inactivo": false,
+          "permisos": {
+            "usuario": [],
+            "bot": [
+              "SendMessages",
+              "EmbedLinks",
+              "ReadMessageHistory"
+            ]
+          },
+          "opciones": [
+            {
+              "nombre": "user",
+              "tipo": "usuario",
+              "descripcion": {
+                "es": "Menciona al usuario con quien realizarás la acción",
+                "en": "Mention the user you want to perform the action with"
+              },
+              "requerido": true
+            }
+          ]
+        },
+        {
+          "id": "005.022",
+          "nombre": "shot",
+          "alias": [
+            "disparar"
+          ],
+          "descripcion": {
+            "es": "Dispara a algo o a alguien",
+            "en": "Shoot at something or someone"
+          },
+          "enfriamiento": 5,
+          "slash": false,
+          "prefijo": true,
+          "inactivo": false,
+          "permisos": {
+            "usuario": [],
+            "bot": [
+              "SendMessages",
+              "EmbedLinks",
+              "ReadMessageHistory"
+            ]
+          },
+          "opciones": [
+            {
+              "nombre": "user",
+              "tipo": "usuario",
+              "descripcion": {
+                "es": "Menciona al usuario con quien realizarás la acción",
+                "en": "Mention the user you want to perform the action with"
+              }
+            }
+          ]
+        },
+        {
+          "id": "005.023",
+          "nombre": "sip",
+          "alias": [
+            "beber"
+          ],
+          "descripcion": {
+            "es": "Toma alguna bebida",
+            "en": "Have a drink"
+          },
+          "enfriamiento": 5,
+          "slash": false,
+          "prefijo": true,
+          "inactivo": false,
+          "permisos": {
+            "usuario": [],
+            "bot": [
+              "SendMessages",
+              "EmbedLinks",
+              "ReadMessageHistory"
+            ]
+          },
+          "opciones": []
+        },
+        {
+          "id": "005.024",
+          "nombre": "slap",
+          "alias": [
+            "bofetear"
+          ],
+          "descripcion": {
+            "es": "Dale una bofetada a una persona",
+            "en": "Slap someone"
+          },
+          "enfriamiento": 5,
+          "slash": false,
+          "prefijo": true,
+          "inactivo": false,
+          "permisos": {
+            "usuario": [],
+            "bot": [
+              "SendMessages",
+              "EmbedLinks",
+              "ReadMessageHistory"
+            ]
+          },
+          "opciones": [
+            {
+              "nombre": "user",
+              "tipo": "usuario",
+              "descripcion": {
+                "es": "Menciona al usuario con quien realizarás la acción",
+                "en": "Mention the user you want to perform the action with"
+              },
+              "requerido": true
+            }
+          ]
+        },
+        {
+          "id": "005.025",
+          "nombre": "sleep",
+          "alias": [
+            "dormir"
+          ],
+          "descripcion": {
+            "es": "Duerme a solas o junto a alguien",
+            "en": "Sleep alone or beside someone"
+          },
+          "enfriamiento": 5,
+          "slash": false,
+          "prefijo": true,
+          "inactivo": false,
+          "permisos": {
+            "usuario": [],
+            "bot": [
+              "SendMessages",
+              "EmbedLinks",
+              "ReadMessageHistory"
+            ]
+          },
+          "opciones": [
+            {
+              "nombre": "user",
+              "tipo": "usuario",
+              "descripcion": {
+                "es": "Menciona al usuario con quien realizarás la acción",
+                "en": "Mention the user you want to perform the action with"
+              }
+            }
+          ]
+        },
+        {
+          "id": "005.026",
+          "nombre": "stare",
+          "alias": [
+            "mirar",
+            "observar"
+          ],
+          "descripcion": {
+            "es": "Mira fijamente a algo o a alguien",
+            "en": "Stare at something or someone"
+          },
+          "enfriamiento": 5,
+          "slash": false,
+          "prefijo": true,
+          "inactivo": false,
+          "permisos": {
+            "usuario": [],
+            "bot": [
+              "SendMessages",
+              "EmbedLinks",
+              "ReadMessageHistory"
+            ]
+          },
+          "opciones": [
+            {
+              "nombre": "user",
+              "tipo": "usuario",
+              "descripcion": {
+                "es": "Menciona al usuario con quien realizarás la acción",
+                "en": "Mention the user you want to perform the action with"
+              }
+            }
+          ]
+        },
+        {
+          "id": "005.027",
+          "nombre": "tickle",
+          "alias": [
+            "cosquillas"
+          ],
+          "descripcion": {
+            "es": "Hazle cosquillas a alguien",
+            "en": "Tickle someone"
+          },
+          "enfriamiento": 5,
+          "slash": false,
+          "prefijo": true,
+          "inactivo": false,
+          "permisos": {
+            "usuario": [],
+            "bot": [
+              "SendMessages",
+              "EmbedLinks",
+              "ReadMessageHistory"
+            ]
+          },
+          "opciones": [
+            {
+              "nombre": "user",
+              "tipo": "usuario",
+              "descripcion": {
+                "es": "Menciona al usuario con quien realizarás la acción",
+                "en": "Mention the user you want to perform the action with"
+              },
+              "requerido": true
+            }
+          ]
+        },
+        {
+          "id": "005.028",
+          "nombre": "travel",
+          "alias": [
+            "viajar"
+          ],
+          "descripcion": {
+            "es": "Alista las maletas y emprende un viaje",
+            "en": "Pack your bags and start a journey"
+          },
+          "enfriamiento": 5,
+          "slash": false,
+          "prefijo": true,
+          "inactivo": false,
+          "permisos": {
+            "usuario": [],
+            "bot": [
+              "SendMessages",
+              "EmbedLinks",
+              "ReadMessageHistory"
+            ]
+          },
+          "opciones": []
+        },
+        {
+          "id": "005.033",
+          "nombre": "wave",
+          "alias": [
+            "saludar",
+            "saludo"
+          ],
+          "descripcion": {
+            "es": "Saluda, o salúdale a alguien",
+            "en": "Wave, or wave at someone"
+          },
+          "enfriamiento": 5,
+          "slash": false,
+          "prefijo": true,
+          "inactivo": false,
+          "permisos": {
+            "usuario": [],
+            "bot": [
+              "SendMessages",
+              "EmbedLinks",
+              "ReadMessageHistory"
+            ]
+          },
+          "opciones": [
+            {
+              "nombre": "user",
+              "tipo": "usuario",
+              "descripcion": {
+                "es": "Menciona al usuario con quien realizarás la acción",
+                "en": "Mention the user you want to perform the action with"
+              }
+            }
+          ]
+        },
+        {
+          "id": "005.029",
+          "nombre": "write",
+          "alias": [
+            "escribir"
+          ],
+          "descripcion": {
+            "es": "Ponte a escribir algo",
+            "en": "Start writing something"
+          },
+          "enfriamiento": 5,
+          "slash": false,
+          "prefijo": true,
+          "inactivo": false,
+          "permisos": {
+            "usuario": [],
+            "bot": [
+              "SendMessages",
+              "EmbedLinks",
+              "ReadMessageHistory"
+            ]
+          },
+          "opciones": []
+        }
+      ]
+    },
+    {
+      "id": "006",
+      "nombre": {
+        "es": "Reacción",
+        "en": "Reaction"
+      },
+      "descripcion": {
+        "es": "Reacciones para expresar cómo te sientes",
+        "en": "Reactions to express how you feel"
+      },
+      "comandos": [
+        {
+          "id": "006.001",
+          "nombre": "angry",
+          "alias": [
+            "enojado",
+            "enojo"
+          ],
+          "descripcion": {
+            "es": "Enójate, o échale la culpa a alguien",
+            "en": "Get angry, or blame someone for it"
+          },
+          "enfriamiento": 5,
+          "slash": false,
+          "prefijo": true,
+          "inactivo": false,
+          "permisos": {
+            "usuario": [],
+            "bot": [
+              "SendMessages",
+              "EmbedLinks",
+              "ReadMessageHistory"
+            ]
+          },
+          "opciones": [
+            {
+              "nombre": "user",
+              "tipo": "usuario",
+              "descripcion": {
+                "es": "Menciona al usuario hacia quien va la reacción",
+                "en": "Mention the user your reaction is directed at"
+              }
+            }
+          ]
+        },
+        {
+          "id": "006.002",
+          "nombre": "blush",
+          "alias": [
+            "sonrojo",
+            "sonrojarse"
+          ],
+          "descripcion": {
+            "es": "Sonrójate, o culpa a alguien de ello",
+            "en": "Blush, or blame someone for it"
+          },
+          "enfriamiento": 5,
+          "slash": false,
+          "prefijo": true,
+          "inactivo": false,
+          "permisos": {
+            "usuario": [],
+            "bot": [
+              "SendMessages",
+              "EmbedLinks",
+              "ReadMessageHistory"
+            ]
+          },
+          "opciones": [
+            {
+              "nombre": "user",
+              "tipo": "usuario",
+              "descripcion": {
+                "es": "Menciona al usuario hacia quien va la reacción",
+                "en": "Mention the user your reaction is directed at"
+              }
+            }
+          ]
+        },
+        {
+          "id": "006.003",
+          "nombre": "bored",
+          "alias": [
+            "aburrido"
+          ],
+          "descripcion": {
+            "es": "Cuando no hay nada que hacer",
+            "en": "When there is nothing to do"
+          },
+          "enfriamiento": 5,
+          "slash": false,
+          "prefijo": true,
+          "inactivo": false,
+          "permisos": {
+            "usuario": [],
+            "bot": [
+              "SendMessages",
+              "EmbedLinks",
+              "ReadMessageHistory"
+            ]
+          },
+          "opciones": []
+        },
+        {
+          "id": "006.004",
+          "nombre": "confused",
+          "alias": [
+            "confundido"
+          ],
+          "descripcion": {
+            "es": "No entiendas nada, o no entiendas a alguien",
+            "en": "Get confused, or blame someone for it"
+          },
+          "enfriamiento": 5,
+          "slash": false,
+          "prefijo": true,
+          "inactivo": false,
+          "permisos": {
+            "usuario": [],
+            "bot": [
+              "SendMessages",
+              "EmbedLinks",
+              "ReadMessageHistory"
+            ]
+          },
+          "opciones": [
+            {
+              "nombre": "user",
+              "tipo": "usuario",
+              "descripcion": {
+                "es": "Menciona al usuario hacia quien va la reacción",
+                "en": "Mention the user your reaction is directed at"
+              }
+            }
+          ]
+        },
+        {
+          "id": "006.005",
+          "nombre": "cry",
+          "alias": [
+            "llorar",
+            "llanto"
+          ],
+          "descripcion": {
+            "es": "Llora, o culpa a alguien de tus lágrimas",
+            "en": "Cry, or blame someone for your tears"
+          },
+          "enfriamiento": 5,
+          "slash": false,
+          "prefijo": true,
+          "inactivo": false,
+          "permisos": {
+            "usuario": [],
+            "bot": [
+              "SendMessages",
+              "EmbedLinks",
+              "ReadMessageHistory"
+            ]
+          },
+          "opciones": [
+            {
+              "nombre": "user",
+              "tipo": "usuario",
+              "descripcion": {
+                "es": "Menciona al usuario hacia quien va la reacción",
+                "en": "Mention the user your reaction is directed at"
+              }
+            }
+          ]
+        },
+        {
+          "id": "006.006",
+          "nombre": "dance",
+          "alias": [
+            "bailar"
+          ],
+          "descripcion": {
+            "es": "Ponte a bailar",
+            "en": "Start dancing"
+          },
+          "enfriamiento": 5,
+          "slash": false,
+          "prefijo": true,
+          "inactivo": false,
+          "permisos": {
+            "usuario": [],
+            "bot": [
+              "SendMessages",
+              "EmbedLinks",
+              "ReadMessageHistory"
+            ]
+          },
+          "opciones": []
+        },
+        {
+          "id": "006.007",
+          "nombre": "disgust",
+          "alias": [
+            "asco"
+          ],
+          "descripcion": {
+            "es": "Muestra tu asco, o dirígelo a alguien",
+            "en": "Show your disgust, or aim it at someone"
+          },
+          "enfriamiento": 5,
+          "slash": false,
+          "prefijo": true,
+          "inactivo": false,
+          "permisos": {
+            "usuario": [],
+            "bot": [
+              "SendMessages",
+              "EmbedLinks",
+              "ReadMessageHistory"
+            ]
+          },
+          "opciones": [
+            {
+              "nombre": "user",
+              "tipo": "usuario",
+              "descripcion": {
+                "es": "Menciona al usuario hacia quien va la reacción",
+                "en": "Mention the user your reaction is directed at"
+              }
+            }
+          ]
+        },
+        {
+          "id": "006.008",
+          "nombre": "facepalm",
+          "alias": [
+            "palmada"
+          ],
+          "descripcion": {
+            "es": "Llévate la mano a la cara, o hazlo por alguien",
+            "en": "Facepalm, or do it because of someone"
+          },
+          "enfriamiento": 5,
+          "slash": false,
+          "prefijo": true,
+          "inactivo": false,
+          "permisos": {
+            "usuario": [],
+            "bot": [
+              "SendMessages",
+              "EmbedLinks",
+              "ReadMessageHistory"
+            ]
+          },
+          "opciones": [
+            {
+              "nombre": "user",
+              "tipo": "usuario",
+              "descripcion": {
+                "es": "Menciona al usuario hacia quien va la reacción",
+                "en": "Mention the user your reaction is directed at"
+              }
+            }
+          ]
+        },
+        {
+          "id": "006.009",
+          "nombre": "happy",
+          "alias": [
+            "feliz",
+            "alegre"
+          ],
+          "descripcion": {
+            "es": "Muestra tu alegría, o alégrate por alguien",
+            "en": "Show your joy, or be happy for someone"
+          },
+          "enfriamiento": 5,
+          "slash": false,
+          "prefijo": true,
+          "inactivo": false,
+          "permisos": {
+            "usuario": [],
+            "bot": [
+              "SendMessages",
+              "EmbedLinks",
+              "ReadMessageHistory"
+            ]
+          },
+          "opciones": [
+            {
+              "nombre": "user",
+              "tipo": "usuario",
+              "descripcion": {
+                "es": "Menciona al usuario hacia quien va la reacción",
+                "en": "Mention the user your reaction is directed at"
+              }
+            }
+          ]
+        },
+        {
+          "id": "006.010",
+          "nombre": "laugh",
+          "alias": [
+            "reir",
+            "risa"
+          ],
+          "descripcion": {
+            "es": "Ríete, o ríete de alguien",
+            "en": "Laugh, or laugh at someone"
+          },
+          "enfriamiento": 5,
+          "slash": false,
+          "prefijo": true,
+          "inactivo": false,
+          "permisos": {
+            "usuario": [],
+            "bot": [
+              "SendMessages",
+              "EmbedLinks",
+              "ReadMessageHistory"
+            ]
+          },
+          "opciones": [
+            {
+              "nombre": "user",
+              "tipo": "usuario",
+              "descripcion": {
+                "es": "Menciona al usuario hacia quien va la reacción",
+                "en": "Mention the user your reaction is directed at"
+              }
+            }
+          ]
+        },
+        {
+          "id": "006.011",
+          "nombre": "love",
+          "alias": [
+            "amor",
+            "enamorado"
+          ],
+          "descripcion": {
+            "es": "Enamórate, o enamórate de alguien",
+            "en": "Fall in love, or fall for someone"
+          },
+          "enfriamiento": 5,
+          "slash": false,
+          "prefijo": true,
+          "inactivo": false,
+          "permisos": {
+            "usuario": [],
+            "bot": [
+              "SendMessages",
+              "EmbedLinks",
+              "ReadMessageHistory"
+            ]
+          },
+          "opciones": [
+            {
+              "nombre": "user",
+              "tipo": "usuario",
+              "descripcion": {
+                "es": "Menciona al usuario hacia quien va la reacción",
+                "en": "Mention the user your reaction is directed at"
+              }
+            }
+          ]
+        },
+        {
+          "id": "006.012",
+          "nombre": "nervous",
+          "alias": [
+            "nervioso"
+          ],
+          "descripcion": {
+            "es": "Los nervios te traicionan",
+            "en": "Nerves get the better of you"
+          },
+          "enfriamiento": 5,
+          "slash": false,
+          "prefijo": true,
+          "inactivo": false,
+          "permisos": {
+            "usuario": [],
+            "bot": [
+              "SendMessages",
+              "EmbedLinks",
+              "ReadMessageHistory"
+            ]
+          },
+          "opciones": []
+        },
+        {
+          "id": "006.013",
+          "nombre": "pout",
+          "alias": [
+            "puchero"
+          ],
+          "descripcion": {
+            "es": "Haz un puchero, o dedícaselo a alguien",
+            "en": "Pout, or pout at someone"
+          },
+          "enfriamiento": 5,
+          "slash": false,
+          "prefijo": true,
+          "inactivo": false,
+          "permisos": {
+            "usuario": [],
+            "bot": [
+              "SendMessages",
+              "EmbedLinks",
+              "ReadMessageHistory"
+            ]
+          },
+          "opciones": [
+            {
+              "nombre": "user",
+              "tipo": "usuario",
+              "descripcion": {
+                "es": "Menciona al usuario hacia quien va la reacción",
+                "en": "Mention the user your reaction is directed at"
+              }
+            }
+          ]
+        },
+        {
+          "id": "006.014",
+          "nombre": "scream",
+          "alias": [
+            "gritar",
+            "grito"
+          ],
+          "descripcion": {
+            "es": "Grita del susto",
+            "en": "Scream in fright"
+          },
+          "enfriamiento": 5,
+          "slash": false,
+          "prefijo": true,
+          "inactivo": false,
+          "permisos": {
+            "usuario": [],
+            "bot": [
+              "SendMessages",
+              "EmbedLinks",
+              "ReadMessageHistory"
+            ]
+          },
+          "opciones": []
+        },
+        {
+          "id": "006.015",
+          "nombre": "shrug",
+          "alias": [
+            "encoger",
+            "noseh"
+          ],
+          "descripcion": {
+            "es": "Encógete de hombros, o hazlo ante alguien",
+            "en": "Shrug, or shrug at someone"
+          },
+          "enfriamiento": 5,
+          "slash": false,
+          "prefijo": true,
+          "inactivo": false,
+          "permisos": {
+            "usuario": [],
+            "bot": [
+              "SendMessages",
+              "EmbedLinks",
+              "ReadMessageHistory"
+            ]
+          },
+          "opciones": [
+            {
+              "nombre": "user",
+              "tipo": "usuario",
+              "descripcion": {
+                "es": "Menciona al usuario hacia quien va la reacción",
+                "en": "Mention the user your reaction is directed at"
+              }
+            }
+          ]
+        },
+        {
+          "id": "006.016",
+          "nombre": "smug",
+          "alias": [
+            "presumido"
+          ],
+          "descripcion": {
+            "es": "Presume, o presume ante alguien",
+            "en": "Look smug, or be smug at someone"
+          },
+          "enfriamiento": 5,
+          "slash": false,
+          "prefijo": true,
+          "inactivo": false,
+          "permisos": {
+            "usuario": [],
+            "bot": [
+              "SendMessages",
+              "EmbedLinks",
+              "ReadMessageHistory"
+            ]
+          },
+          "opciones": [
+            {
+              "nombre": "user",
+              "tipo": "usuario",
+              "descripcion": {
+                "es": "Menciona al usuario hacia quien va la reacción",
+                "en": "Mention the user your reaction is directed at"
+              }
+            }
+          ]
+        },
+        {
+          "id": "006.017",
+          "nombre": "surprised",
+          "alias": [
+            "sorprendido",
+            "sorpresa"
+          ],
+          "descripcion": {
+            "es": "Sorpréndete, o sorpréndete por alguien",
+            "en": "Be surprised, or be surprised by someone"
+          },
+          "enfriamiento": 5,
+          "slash": false,
+          "prefijo": true,
+          "inactivo": false,
+          "permisos": {
+            "usuario": [],
+            "bot": [
+              "SendMessages",
+              "EmbedLinks",
+              "ReadMessageHistory"
+            ]
+          },
+          "opciones": [
+            {
+              "nombre": "user",
+              "tipo": "usuario",
+              "descripcion": {
+                "es": "Menciona al usuario hacia quien va la reacción",
+                "en": "Mention the user your reaction is directed at"
+              }
+            }
+          ]
+        },
+        {
+          "id": "006.018",
+          "nombre": "think",
+          "alias": [
+            "pensar"
+          ],
+          "descripcion": {
+            "es": "Ponte a pensar, o piensa en alguien",
+            "en": "Think, or think about someone"
+          },
+          "enfriamiento": 5,
+          "slash": false,
+          "prefijo": true,
+          "inactivo": false,
+          "permisos": {
+            "usuario": [],
+            "bot": [
+              "SendMessages",
+              "EmbedLinks",
+              "ReadMessageHistory"
+            ]
+          },
+          "opciones": [
+            {
+              "nombre": "user",
+              "tipo": "usuario",
+              "descripcion": {
+                "es": "Menciona al usuario hacia quien va la reacción",
+                "en": "Mention the user your reaction is directed at"
+              }
+            }
+          ]
+        },
+        {
+          "id": "006.019",
+          "nombre": "thumbsup",
+          "alias": [
+            "like",
+            "pulgar",
+            "pulgararriba"
+          ],
+          "descripcion": {
+            "es": "Da el visto bueno, o dáselo a alguien",
+            "en": "Give a thumbs up, or give it to someone"
+          },
+          "enfriamiento": 5,
+          "slash": false,
+          "prefijo": true,
+          "inactivo": false,
+          "permisos": {
+            "usuario": [],
+            "bot": [
+              "SendMessages",
+              "EmbedLinks",
+              "ReadMessageHistory"
+            ]
+          },
+          "opciones": [
+            {
+              "nombre": "user",
+              "tipo": "usuario",
+              "descripcion": {
+                "es": "Menciona al usuario hacia quien va la reacción",
+                "en": "Mention the user your reaction is directed at"
+              }
+            }
+          ]
+        },
+        {
+          "id": "006.020",
+          "nombre": "vomit",
+          "alias": [
+            "vomitar"
+          ],
+          "descripcion": {
+            "es": "Devuelve lo que comiste",
+            "en": "Throw up what you ate"
+          },
+          "enfriamiento": 5,
+          "slash": false,
+          "prefijo": true,
+          "inactivo": false,
+          "permisos": {
+            "usuario": [],
+            "bot": [
+              "SendMessages",
+              "EmbedLinks",
+              "ReadMessageHistory"
+            ]
+          },
+          "opciones": []
+        },
+        {
+          "id": "006.021",
+          "nombre": "wink",
+          "alias": [
+            "guino",
+            "guiño"
+          ],
+          "descripcion": {
+            "es": "Guiña un ojo, o guíñaselo a alguien",
+            "en": "Wink, or wink at someone"
+          },
+          "enfriamiento": 5,
+          "slash": false,
+          "prefijo": true,
+          "inactivo": false,
+          "permisos": {
+            "usuario": [],
+            "bot": [
+              "SendMessages",
+              "EmbedLinks",
+              "ReadMessageHistory"
+            ]
+          },
+          "opciones": [
+            {
+              "nombre": "user",
+              "tipo": "usuario",
+              "descripcion": {
+                "es": "Menciona al usuario hacia quien va la reacción",
+                "en": "Mention the user your reaction is directed at"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

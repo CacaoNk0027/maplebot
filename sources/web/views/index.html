@@ -42,6 +42,7 @@
                 <a href="#funciones">Novedades <%= version %></a>
                 <a href="#historia">Historia</a>
                 <a href="#comunidad">Comunidad</a>
+                <a href="/comandos">Comandos</a>
                 <a href="<%= support %>" target="_blank" rel="noreferrer">Soporte</a>
             </nav>
 
@@ -67,10 +68,11 @@
                         <a class="button"
                             href="<%= invite %>"
                             target="_blank" rel="noreferrer">Añadir a Discord</a>
-                        <a class="button button-secondary" href="#funciones">Conocer a Maple</a>
+                        <a class="button button-secondary" href="/comandos">Ver comandos</a>
                     </div>
                     <ul class="hero-notes" aria-label="Características principales">
-                        <li>87 comandos activos</li>
+                        <%# El total sale de la documentación de comandos que genera el build. %>
+                        <li><a class="hero-note-link" href="/comandos"><%= commandTotal ? `${commandTotal} comandos activos` : 'Todos los comandos' %></a></li>
                         <li>Español + English</li>
                         <li>Configuración sencilla</li>
                     </ul>
@@ -198,6 +200,7 @@
             </div>
             <nav aria-label="Enlaces del pie de página">
                 <a href="#funciones">Funciones</a>
+                <a href="/comandos">Comandos</a>
                 <a href="<%= support %>" target="_blank" rel="noreferrer">Soporte</a>
                 <a href="/privacy">Privacidad</a>
                 <a href="/terms">Términos</a>

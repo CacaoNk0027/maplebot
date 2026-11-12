@@ -1,0 +1,184 @@
+<%_ const support = 'https://discord.gg/E3kzS5cYzN' _%>
+<%_ function renderOptions(options, depth) { _%>
+<ul class="cmd-options<%= depth ? ' cmd-options-nested' : '' %>">
+    <%_ for (const option of options) { _%>
+    <%_ const isSub = option.tipo === 'subcomando' || option.tipo === 'grupo' _%>
+    <li>
+        <div class="cmd-option-head">
+            <code translate="no"><%= option.nombre %></code>
+            <%_ if (!isSub) { _%>
+            <span class="cmd-option-meta"><%= optionType(option.tipo) %> · <%= option.requerido ? t.required : t.optional %></span>
+            <%_ } _%>
+        </div>
+        <p><%= option.descripcion[lang] %></p>
+        <%_ if (option.valores) { _%>
+        <p class="cmd-option-extra"><%= t.values %>: <%= option.valores.map(v => v.nombre[lang]).join(', ') %></p>
+        <%_ } _%>
+        <%_ if (option.minimo !== undefined || option.maximo !== undefined) { _%>
+        <p class="cmd-option-extra"><%= t.range(option.minimo, option.maximo) %></p>
+        <%_ } _%>
+        <%_ if (option.longitudMinima !== undefined || option.longitudMaxima !== undefined) { _%>
+        <p class="cmd-option-extra"><%= t.length(option.longitudMinima, option.longitudMaxima) %></p>
+        <%_ } _%>
+        <%_ if (option.opciones && option.opciones.length) { renderOptions(option.opciones, depth + 1) } _%>
+    </li>
+    <%_ } _%>
+</ul>
+<%_ } _%>
+<!doctype html>
+<html lang="<%= t.htmlLang %>">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#fbf8f2">
+    <meta name="color-scheme" content="light">
+    <meta name="description" content="<%= t.description %>">
+    <title><%= selected ? `${selected.nombre[lang]} — ` : '' %><%= t.title %> — Maple Bot</title>
+    <link rel="icon" href="/favicon.ico">
+    <link rel="alternate" hreflang="es" href="/comandos">
+    <link rel="alternate" hreflang="en" href="/commands">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&amp;family=Manrope:wght@600;700;800&amp;display=swap">
+    <script>document.documentElement.classList.add('js')</script>
+    <link rel="stylesheet" href="/css/index.css">
+    <link rel="stylesheet" href="/css/comandos.css">
+</head>
+
+<body>
+    <a class="skip-link" href="#contenido"><%= t.skip %></a>
+
+    <header class="site-header scrolled">
+        <div class="nav-shell">
+            <a class="brand" href="/" aria-label="Maple, <%= t.home %>"><img src="/images/mapleavatar-96.webp" alt=""
+                    width="44" height="44"><span>Maple</span></a>
+            <button class="menu-toggle" type="button" aria-label="<%= t.openMenu %>" aria-expanded="false"
+                data-label-open="<%= t.openMenu %>" data-label-close="<%= t.closeMenu %>"
+                aria-controls="main-navigation" data-menu-toggle>
+                <span></span><span></span><span></span>
+            </button>
+            <nav class="main-nav" id="main-navigation" aria-label="<%= t.title %>" data-navigation>
+                <a href="/"><%= t.home %></a>
+                <a href="<%= support %>" target="_blank" rel="noreferrer"><%= t.support %></a>
+                <a href="<%= otherHref %>" hreflang="<%= lang === 'es' ? 'en' : 'es' %>"
+                    aria-label="<%= t.otherLangLabel %>"><%= t.otherLang %></a>
+            </nav>
+            <a class="button button-small header-action cmd-header-action" href="/"><%= t.backHome %></a>
+        </div>
+    </header>
+
+    <main id="contenido">
+        <section class="cmd-hero">
+            <div class="page-shell">
+                <p class="eyebrow"><span></span> <%= t.eyebrow %></p>
+                <h1><%= t.title %></h1>
+                <%_ if (docs) { _%>
+                <p class="cmd-lead"><%= t.lead(docs.total, docs.prefijo) %></p>
+                <%_ } _%>
+            </div>
+        </section>
+
+        <div class="page-shell cmd-shell">
+            <%_ if (!docs) { _%>
+            <p class="cmd-unavailable" role="status"><%= t.unavailable %></p>
+            <%_ } else { _%>
+            <nav class="cmd-index" aria-label="<%= t.categories %>">
+                <strong><%= t.categories %></strong>
+                <%_ for (const item of nav) { _%>
+                <a href="<%= item.href %>"<%- item.active ? ' aria-current="page"' : '' %>><%= item.name %>
+                    <span><%= item.count %></span></a>
+                <%_ } _%>
+            </nav>
+
+            <div class="cmd-content">
+                <div class="cmd-search" data-search hidden>
+                    <label for="buscar-comando"><%= t.searchLabel %></label>
+                    <input id="buscar-comando" name="q" type="search" autocomplete="off" spellcheck="false"
+                        placeholder="<%= t.searchPlaceholder %>" data-search-input>
+                    <%# La región está siempre presente: comandos.js solo cambia su texto, para que se anuncie. %>
+                    <p class="cmd-no-results" role="status" aria-live="polite" data-search-empty
+                        data-empty-text="<%= t.noResults %>"></p>
+                </div>
+
+                <%_ for (const category of shown) { _%>
+                <section class="cmd-category" data-category>
+                    <div class="cmd-category-head">
+                        <h2><%= category.nombre[lang] %></h2>
+                        <p><%= category.descripcion[lang] %> · <%= t.commands(category.comandos.length) %></p>
+                    </div>
+
+                    <%_ for (const command of category.comandos) { _%>
+                    <details class="cmd" id="cmd-<%= command.nombre %>" data-command
+                        data-terms="<%= [command.nombre, ...command.alias].join(' ').toLowerCase() %>">
+                        <summary>
+                            <span class="cmd-name"><code translate="no"><%= docs.prefijo %><%= command.nombre %></code></span>
+                            <span class="cmd-summary"><%= command.descripcion[lang] %></span>
+                            <span class="cmd-badges">
+                                <span class="cmd-badge<%= command.slash ? ' cmd-badge-slash' : '' %>"><%= command.slash ? t.slashAndPrefix : t.prefixOnly %></span>
+                                <%_ if (command.inactivo) { _%><span class="cmd-badge cmd-badge-off"><%= t.inactive %></span><%_ } _%>
+                            </span>
+                        </summary>
+                        <div class="cmd-body">
+                            <dl class="cmd-facts">
+                                <%_ if (command.alias.length) { _%>
+                                <div>
+                                    <dt><%= t.aliases %></dt>
+                                    <dd class="cmd-chips"><%_ for (const alias of command.alias) { _%><code translate="no"><%= alias %></code><%_ } _%></dd>
+                                </div>
+                                <%_ } _%>
+                                <%_ if (command.enfriamiento) { _%>
+                                <div>
+                                    <dt><%= t.cooldown %></dt>
+                                    <dd class="cmd-number"><%= t.seconds(command.enfriamiento) %></dd>
+                                </div>
+                                <%_ } _%>
+                                <%_ if (command.permisos.usuario.length) { _%>
+                                <div>
+                                    <dt><%= t.userPermissions %></dt>
+                                    <dd><%= command.permisos.usuario.map(permission).join(', ') %></dd>
+                                </div>
+                                <%_ } _%>
+                                <div>
+                                    <dt><%= t.botPermissions %></dt>
+                                    <dd><%= command.permisos.bot.map(permission).join(', ') %></dd>
+                                </div>
+                            </dl>
+                            <%_ const subcommands = command.opciones.some(o => o.tipo === 'subcomando' || o.tipo === 'grupo') _%>
+                            <h3><%= subcommands ? t.subcommands : t.options %></h3>
+                            <%_ if (command.opciones.length) { renderOptions(command.opciones, 0) } else { _%>
+                            <p class="cmd-empty"><%= t.noOptions %></p>
+                            <%_ } _%>
+                        </div>
+                    </details>
+                    <%_ } _%>
+                </section>
+                <%_ } _%>
+                <p class="cmd-version"><%= t.version(docs.version) %></p>
+            </div>
+            <%_ } _%>
+        </div>
+    </main>
+
+    <footer class="site-footer">
+        <div class="page-shell footer-layout">
+            <div class="footer-brand">
+                <a class="brand" href="/"><img src="/images/mapleavatar-96.webp" alt="" width="40"
+                        height="40"><span>Maple</span></a>
+                <p><%= t.footer %></p>
+            </div>
+            <nav aria-label="<%= t.title %>">
+                <a href="<%= support %>" target="_blank" rel="noreferrer"><%= t.support %></a>
+                <a href="/privacy"><%= t.privacy %></a>
+                <a href="/terms"><%= t.terms %></a>
+            </nav>
+            <p class="copyright">© <%= new Date().getFullYear() %> Maple Bot</p>
+        </div>
+    </footer>
+
+    <script src="/js/index.js" defer></script>
+    <script src="/js/comandos.js" defer></script>
+</body>
+
+</html>

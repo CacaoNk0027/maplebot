@@ -1,20 +1,23 @@
 const header = document.querySelector('[data-header]')
 const menuButton = document.querySelector('[data-menu-toggle]')
 const navigation = document.querySelector('[data-navigation]')
+// Las etiquetas salen del botón para que las páginas en inglés no las oigan en español.
+const openLabel = menuButton?.dataset.labelOpen ?? 'Abrir menú'
+const closeLabel = menuButton?.dataset.labelClose ?? 'Cerrar menú'
 
 const updateHeader = () => header?.classList.toggle('scrolled', window.scrollY > 12)
 
 const closeMenu = () => {
     navigation?.classList.remove('open')
     menuButton?.setAttribute('aria-expanded', 'false')
-    menuButton?.setAttribute('aria-label', 'Abrir menú')
+    menuButton?.setAttribute('aria-label', openLabel)
     document.body.classList.remove('menu-open')
 }
 
 menuButton?.addEventListener('click', () => {
     const isOpen = navigation?.classList.toggle('open') ?? false
     menuButton.setAttribute('aria-expanded', String(isOpen))
-    menuButton.setAttribute('aria-label', isOpen ? 'Cerrar menú' : 'Abrir menú')
+    menuButton.setAttribute('aria-label', isOpen ? closeLabel : openLabel)
     document.body.classList.toggle('menu-open', isOpen)
 })
 

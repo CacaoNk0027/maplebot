@@ -284,6 +284,18 @@ h1 {
     font-size: 14px;
 }
 
+.hero-note-link {
+    text-decoration: underline;
+    text-decoration-color: var(--line);
+    text-underline-offset: 3px;
+    transition: color .2s ease, text-decoration-color .2s ease;
+}
+
+.hero-note-link:hover {
+    color: var(--maple-dark);
+    text-decoration-color: currentColor;
+}
+
 .hero-notes li::before {
     content: '✓';
     margin-right: 8px;

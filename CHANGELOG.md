@@ -6,6 +6,16 @@ El formato está basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1
 
 ## [Sin publicar]
 
+## [4.5.10] - 2026-11-12
+
+### Añadido
+
+- Página de comandos en la web: [maplebot.fyi/comandos](https://maplebot.fyi/comandos) (y [maplebot.fyi/commands](https://maplebot.fyi/commands) en inglés) reúne todos los comandos de Maple por categoría, con sus alias, opciones, tiempos de espera y los permisos que necesitas tú y los que necesita Maple. Tiene un buscador por nombre o alias, y se genera a partir del propio bot en cada versión, así que siempre coincide con lo que está publicado.
+
+### Cambiado
+
+- El botón principal de la portada pasa a ser «Ver comandos» y lleva a esa página. La portada muestra además el número real de comandos.
+
 ## [4.5.9] - 2026-11-11
 
 ### Seguridad
