@@ -12,6 +12,7 @@ const https_proxy_1 = __importDefault(require("./middlewares/https_proxy"));
 const router_1 = __importDefault(require("./router/router"));
 const sfw_1 = __importDefault(require("./api/categorias/sfw"));
 const db_connect_1 = __importDefault(require("../shared/config/db_connect"));
+const package_json_1 = __importDefault(require("../../package.json"));
 exports.HTTP_MODULES = ['web', 'api'];
 const app = (0, express_1.default)();
 // La conexión se abre aquí y no al importar el módulo, para que `web/index.ts`
@@ -60,6 +61,10 @@ function main(modules) {
         app.set('views', 'sources/web/views');
         app.set('view engine', 'ejs');
         app.engine('html', ejs_1.default.renderFile);
+        // Las vistas piden /css/… y /js/… con ?v=<versión>: cada versión es una URL
+        // nueva, así que ni Cloudflare ni el navegador sirven una hoja vieja con el
+        // HTML nuevo (Cloudflare fuerza 4 h de caché en el navegador).
+        app.locals.assetVersion = package_json_1.default.version;
         (0, sessions_1.default)(app);
         app.use(router_1.default);
         app.use('/', express_1.default.static('sources/web/public'));

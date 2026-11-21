@@ -6,6 +6,12 @@ El formato está basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1
 
 ## [Sin publicar]
 
+## [5.0.1] - 2026-11-21
+
+### Corregido
+
+- Tras publicar una versión, la web podía verse a medias durante unas horas: el navegador combinaba la página nueva con estilos y scripts guardados de la anterior. En la 5.0.0, por ejemplo, el botón de cambio de tema no aparecía hasta recargar sin caché. Ahora cada versión pide sus propios archivos, así que la web se ve completa desde el primer momento.
+
 ## [5.0.0] - 2026-11-21
 
 ### Añadido
