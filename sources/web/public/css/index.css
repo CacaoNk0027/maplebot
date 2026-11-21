@@ -1,15 +1,111 @@
+/* Colores base. Cada uno lleva su par claro y oscuro con light-dark(), y
+   color-scheme decide cuál se usa: por defecto el del sistema, y data-theme
+   en <html> fuerza uno (js/theme.js). Ninguna regla de componente debe llevar
+   un color suelto que cambie con el tema: añádelo aquí. Ver DESIGN.md. */
 :root {
-    --ink: #24211d;
-    --muted: #6e675e;
-    --paper: #fbf8f2;
-    --paper-deep: #f2ece2;
-    --card: #fffdf9;
-    --line: #e8dfd2;
+    color-scheme: light dark;
     --maple: #e68a2e;
-    --maple-dark: #9c4c1a;
-    --maple-soft: #f8d6a7;
     --forest: #2f5144;
-    --shadow: 0 24px 70px rgba(80, 55, 28, .12);
+    --on-maple: #2b1a0c;
+    --online-dot: #55a86d;
+    --ink: light-dark(#24211d, #f2ece3);
+    --ink-soft: light-dark(#554f47, #d6cdc1);
+    --muted: light-dark(#6e675e, #b3a899);
+    --prose: light-dark(#5f584f, #c8bdb0);
+    --paper: light-dark(#fbf8f2, #1b1815);
+    --paper-deep: light-dark(#f2ece2, #221e1a);
+    --card: light-dark(#fffdf9, #26221d);
+    --surface: light-dark(#fff, #2c2722);
+    --line: light-dark(#e8dfd2, #3a332c);
+    --field-line: light-dark(#968a7d, #8c8174);
+    --maple-dark: light-dark(#9c4c1a, #f0a65c);
+    --maple-soft: light-dark(#f8d6a7, #4a321d);
+    --maple-tint: light-dark(#f8e5c9, #3d2a18);
+    --forest-ink: light-dark(#2f5144, #8fc9ab);
+    --glass: light-dark(rgba(255, 255, 255, .62), rgba(255, 255, 255, .06));
+    --header-bg: light-dark(rgba(251, 248, 242, .9), rgba(27, 24, 21, .88));
+    --header-line: light-dark(rgba(220, 207, 190, .75), rgba(58, 51, 44, .8));
+    --footer-bg: light-dark(#f4eee4, #1f1b17);
+    --hero-from: light-dark(#fcf9f2, #1e1a16);
+    --hero-to: light-dark(#f7ead8, #2a2119);
+    --glow-one: light-dark(#f3bd72, #6b4320);
+    --glow-two: light-dark(#f1d2a5, #4d3722);
+    --hero-card-bg: light-dark(rgba(255, 253, 249, .78), rgba(38, 34, 29, .82));
+    --hero-card-line: light-dark(rgba(255, 255, 255, .8), rgba(255, 255, 255, .08));
+    --feature-from: light-dark(#fffaf1, #2a241d);
+    --feature-to: light-dark(#f4e2c7, #33281c);
+    --mini-line: light-dark(rgba(190, 130, 64, .2), rgba(240, 166, 92, .22));
+    --mini-bg: light-dark(rgba(255, 255, 255, .7), rgba(255, 255, 255, .04));
+    --online-bg: light-dark(#e7f2e8, #1f3328);
+    --notice-bg: light-dark(#fff7ea, #2a221a);
+    --legal-to: light-dark(#f5e6d1, #2b2219);
+    --shadow: 0 24px 70px light-dark(rgba(80, 55, 28, .12), rgba(0, 0, 0, .4));
+    --shadow-card: 0 20px 45px light-dark(rgba(78, 55, 32, .09), rgba(0, 0, 0, .35));
+    --shadow-header: 0 10px 35px light-dark(rgba(70, 50, 30, .07), rgba(0, 0, 0, .3));
+    --shadow-small: 0 8px 25px light-dark(rgba(56, 41, 26, .08), rgba(0, 0, 0, .3));
+    --shadow-avatar: 0 16px 40px light-dark(rgba(79, 52, 26, .2), rgba(0, 0, 0, .45));
+    --shadow-menu: 0 20px 35px light-dark(rgba(40, 30, 20, .1), rgba(0, 0, 0, .4));
+}
+
+:root[data-theme="light"] {
+    color-scheme: light;
+}
+
+:root[data-theme="dark"] {
+    color-scheme: dark;
+}
+
+/* Navegadores sin light-dark(): se quedan en claro. */
+@supports not (color: light-dark(#000, #fff)) {
+    :root {
+        --ink: #24211d;
+        --ink-soft: #554f47;
+        --muted: #6e675e;
+        --prose: #5f584f;
+        --paper: #fbf8f2;
+        --paper-deep: #f2ece2;
+        --card: #fffdf9;
+        --surface: #fff;
+        --line: #e8dfd2;
+        --field-line: #968a7d;
+        --maple-dark: #9c4c1a;
+        --maple-soft: #f8d6a7;
+        --maple-tint: #f8e5c9;
+        --forest-ink: #2f5144;
+        --glass: rgba(255, 255, 255, .62);
+        --header-bg: rgba(251, 248, 242, .9);
+        --header-line: rgba(220, 207, 190, .75);
+        --footer-bg: #f4eee4;
+        --hero-from: #fcf9f2;
+        --hero-to: #f7ead8;
+        --glow-one: #f3bd72;
+        --glow-two: #f1d2a5;
+        --hero-card-bg: rgba(255, 253, 249, .78);
+        --hero-card-line: rgba(255, 255, 255, .8);
+        --feature-from: #fffaf1;
+        --feature-to: #f4e2c7;
+        --mini-line: rgba(190, 130, 64, .2);
+        --mini-bg: rgba(255, 255, 255, .7);
+        --online-bg: #e7f2e8;
+        --notice-bg: #fff7ea;
+        --legal-to: #f5e6d1;
+        --shadow: 0 24px 70px rgba(80, 55, 28, .12);
+        --shadow-card: 0 20px 45px rgba(78, 55, 32, .09);
+        --shadow-header: 0 10px 35px rgba(70, 50, 30, .07);
+        --shadow-small: 0 8px 25px rgba(56, 41, 26, .08);
+        --shadow-avatar: 0 16px 40px rgba(79, 52, 26, .2);
+        --shadow-menu: 0 20px 35px rgba(40, 30, 20, .1);
+    }
+
+    /* Controles nativos y barras en claro también, aunque haya un tema
+       oscuro guardado; y sin oscuro que elegir, el selector sobra. */
+    :root, :root[data-theme] {
+        color-scheme: light;
+    }
+
+    .theme-toggle {
+        display: none !important;
+    }
 }
 
 * {
@@ -65,7 +161,7 @@ button {
     padding: 10px 16px;
     border-radius: 12px;
     background: var(--ink);
-    color: #fff;
+    color: var(--paper);
     font-weight: 700;
     transform: translateY(-200%);
 }
@@ -88,9 +184,9 @@ button {
 }
 
 .site-header.scrolled {
-    background: rgba(251, 248, 242, .9);
-    border-color: rgba(220, 207, 190, .75);
-    box-shadow: 0 10px 35px rgba(70, 50, 30, .07);
+    background: var(--header-bg);
+    border-color: var(--header-line);
+    box-shadow: var(--shadow-header);
     backdrop-filter: blur(16px);
 }
 
@@ -122,7 +218,7 @@ button {
 }
 
 .main-nav a {
-    color: #554f47;
+    color: var(--ink-soft);
     font-size: 15px;
     font-weight: 600;
     transition: color .2s;
@@ -147,6 +243,74 @@ button {
     background: var(--ink);
 }
 
+/* Selector de tema (views/partials/theme-toggle.html + js/theme.js). Va entre
+   el menú y el botón del header; en móvil, junto a la hamburguesa. */
+.main-nav {
+    order: 1;
+}
+
+.theme-toggle {
+    order: 2;
+    display: inline-grid;
+    flex-shrink: 0;
+    place-items: center;
+    width: 42px;
+    height: 42px;
+    padding: 0;
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    color: var(--ink);
+    background: var(--glass);
+    cursor: pointer;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+    transition: border-color .2s, color .2s;
+}
+
+/* Texto solo para lectores de pantalla. */
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    padding: 0;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+    border: 0;
+}
+
+.theme-toggle:hover {
+    border-color: var(--field-line);
+    color: var(--maple-dark);
+}
+
+.theme-toggle svg {
+    display: none;
+    width: 20px;
+    height: 20px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.8;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+.theme-toggle[data-state="system"] [data-icon="system"],
+.theme-toggle[data-state="light"] [data-icon="light"],
+.theme-toggle[data-state="dark"] [data-icon="dark"] {
+    display: block;
+}
+
+/* Sin JavaScript no podría cambiar nada: se oculta y manda el sistema. */
+html:not(.js) .theme-toggle {
+    display: none;
+}
+
+.nav-shell>.button {
+    order: 3;
+}
+
 .button {
     display: inline-flex;
     min-height: 50px;
@@ -156,7 +320,7 @@ button {
     border: 1px solid var(--maple);
     border-radius: 14px;
     /* Texto oscuro: el blanco sobre este naranja no llega a 4.5:1. */
-    color: #2b1a0c;
+    color: var(--on-maple);
     background: linear-gradient(135deg, #f2a64a, var(--maple));
     box-shadow: 0 10px 24px rgba(190, 96, 28, .2);
     font-weight: 700;
@@ -177,7 +341,7 @@ button {
 
 .button-secondary {
     color: var(--ink);
-    background: rgba(255, 255, 255, .62);
+    background: var(--glass);
     border-color: var(--line);
     box-shadow: none;
 }
@@ -187,7 +351,7 @@ button {
     min-height: 760px;
     padding: 155px 0 100px;
     overflow: hidden;
-    background: linear-gradient(145deg, #fcf9f2 20%, #f7ead8 100%);
+    background: linear-gradient(145deg, var(--hero-from) 20%, var(--hero-to) 100%);
 }
 
 .hero::after {
@@ -210,7 +374,7 @@ button {
     height: 480px;
     right: -170px;
     top: 80px;
-    background: radial-gradient(circle, #f3bd72, transparent 70%);
+    background: radial-gradient(circle, var(--glow-one), transparent 70%);
 }
 
 .hero-glow-two {
@@ -218,7 +382,7 @@ button {
     height: 300px;
     left: -150px;
     bottom: 20px;
-    background: radial-gradient(circle, #f1d2a5, transparent 70%);
+    background: radial-gradient(circle, var(--glow-two), transparent 70%);
 }
 
 .hero-layout {
@@ -299,7 +463,7 @@ h1 {
 .hero-notes li::before {
     content: '✓';
     margin-right: 8px;
-    color: var(--forest);
+    color: var(--forest-ink);
     font-weight: 800;
 }
 
@@ -314,9 +478,9 @@ h1 {
     position: relative;
     width: min(400px, 90%);
     padding: 32px;
-    border: 1px solid rgba(255, 255, 255, .8);
+    border: 1px solid var(--hero-card-line);
     border-radius: 34px;
-    background: rgba(255, 253, 249, .78);
+    background: var(--hero-card-bg);
     box-shadow: var(--shadow);
     backdrop-filter: blur(14px);
     transform: rotate(2deg);
@@ -326,10 +490,10 @@ h1 {
     width: 190px;
     height: 190px;
     margin: 5px auto 27px;
-    border: 8px solid #fff;
+    border: 8px solid var(--surface);
     border-radius: 50%;
     object-fit: cover;
-    box-shadow: 0 16px 40px rgba(79, 52, 26, .2);
+    box-shadow: var(--shadow-avatar);
 }
 
 .online-pill {
@@ -341,8 +505,8 @@ h1 {
     gap: 7px;
     padding: 7px 12px;
     border-radius: 30px;
-    color: var(--forest);
-    background: #e7f2e8;
+    color: var(--forest-ink);
+    background: var(--online-bg);
     font-size: 12px;
     font-weight: 800;
 }
@@ -351,15 +515,15 @@ h1 {
     width: 8px;
     height: 8px;
     border-radius: 50%;
-    background: #55a86d;
+    background: var(--online-dot);
 }
 
 .welcome-preview {
     padding: 20px;
     border-left: 4px solid var(--maple);
     border-radius: 4px 15px 15px 4px;
-    background: #fff;
-    box-shadow: 0 8px 25px rgba(56, 41, 26, .08);
+    background: var(--surface);
+    box-shadow: var(--shadow-small);
 }
 
 .welcome-preview p {
@@ -430,14 +594,14 @@ h2 {
 
 .feature-card:hover {
     transform: translateY(-4px);
-    box-shadow: 0 20px 45px rgba(78, 55, 32, .09);
+    box-shadow: var(--shadow-card);
 }
 
 .feature-card-large {
     grid-row: span 2;
     display: flex;
     flex-direction: column;
-    background: linear-gradient(150deg, #fffaf1, #f4e2c7);
+    background: linear-gradient(150deg, var(--feature-from), var(--feature-to));
 }
 
 .feature-icon {
@@ -477,9 +641,9 @@ h2 {
     align-items: center;
     margin-top: auto;
     padding: 18px;
-    border: 1px solid rgba(190, 130, 64, .2);
+    border: 1px solid var(--mini-line);
     border-radius: 16px;
-    background: rgba(255, 255, 255, .7);
+    background: var(--mini-bg);
 }
 
 .mini-message img {
@@ -621,7 +785,7 @@ h2 {
 .site-footer {
     padding: 48px 0;
     border-top: 1px solid var(--line);
-    background: #f4eee4;
+    background: var(--footer-bg);
 }
 
 .footer-layout {
@@ -676,8 +840,17 @@ h2 {
 
     .menu-toggle {
         display: block;
+        order: 3;
         margin-left: auto;
         cursor: pointer;
+    }
+
+    .theme-toggle {
+        margin-left: auto;
+    }
+
+    .nav-shell:has(.theme-toggle) .menu-toggle {
+        margin-left: -14px;
     }
 
     .main-nav {
@@ -690,7 +863,7 @@ h2 {
         gap: 8px;
         background: var(--paper);
         border-bottom: 1px solid var(--line);
-        box-shadow: 0 20px 35px rgba(40, 30, 20, .1);
+        box-shadow: var(--shadow-menu);
     }
 
     .main-nav.open {

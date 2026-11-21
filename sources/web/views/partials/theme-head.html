@@ -1,0 +1,17 @@
+    <%# Tema: va antes de las hojas de estilo para que no parpadee el claro al cargar.
+        Sin elección guardada manda el sistema; js/theme.js mantiene esto al cambiarlo. %>
+    <meta name="color-scheme" content="light dark">
+    <meta name="theme-color" content="#fbf8f2" media="(prefers-color-scheme: light)" data-scheme="light">
+    <meta name="theme-color" content="#1b1815" media="(prefers-color-scheme: dark)" data-scheme="dark">
+    <script>(function () {
+        var root = document.documentElement
+        root.classList.add('js')
+        try {
+            var theme = localStorage.getItem('tema')
+            if (theme !== 'light' && theme !== 'dark') return
+            root.dataset.theme = theme
+            document.querySelectorAll('meta[name="theme-color"]').forEach(function (meta) {
+                meta.media = meta.dataset.scheme === theme ? 'all' : 'not all'
+            })
+        } catch (error) { }
+    })()</script>

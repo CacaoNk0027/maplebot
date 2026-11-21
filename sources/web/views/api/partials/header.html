@@ -27,6 +27,8 @@
                 <% } %>
             </nav>
 
+            <%- include('../../partials/theme-toggle.html') %>
+
             <% if (isLoggedIn) { %>
                 <a class="button button-small header-action" href="/api/dashboard">Mi cuenta</a>
             <% } else { %>

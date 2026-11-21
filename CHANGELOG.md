@@ -6,6 +6,18 @@ El formato está basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1
 
 ## [Sin publicar]
 
+## [5.0.0] - 2026-11-21
+
+### Añadido
+
+- Modo oscuro en toda la web de Maple y de NeeKuro. Por defecto sigue el tema de tu sistema, y un botón en la cabecera permite fijar el claro o el oscuro; la elección se recuerda en tu navegador.
+- Página de apoyo en [maplebot.fyi/donations](https://maplebot.fyi/donations): explica a dónde va lo que se aporta, deja claro que donar no compra funciones y enlaza a Ko-fi. Está enlazada desde el pie de todas las páginas.
+
+### Cambiado
+
+- Maple 5.0 cierra la reorganización que empezó en la 4.5.6: el bot y la API de GIFs funcionan por un lado y la web por otro, cada uno con su dirección (`maplebot.fyi` y `api.maplebot.fyi`), y los datos se respaldan a diario, cifrados y fuera del hosting. Los comandos no cambian.
+- Quien use la API con una versión de `neekuro` anterior a la `2.3.2` dejó de recibir GIFs en la 4.5.6: debe actualizar el paquete, o fijar la dirección con `SFW.setBaseURL()`. La ruta antigua `/api/sfw` sigue respondiendo.
+
 ## [4.5.10] - 2026-11-12
 
 ### Añadido

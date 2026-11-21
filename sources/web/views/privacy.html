@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="theme-color" content="#fbf8f2">
+    <%- include('partials/theme-head.html') %>
     <meta name="description" content="Política de privacidad de Maple Bot.">
     <title>Política de privacidad — Maple Bot</title>
     <link rel="icon" href="/favicon.ico">
@@ -21,8 +21,9 @@
         <div class="nav-shell"><a class="brand" href="/"><img src="/images/mapleavatar-96.webp" alt="" width="44"
                     height="44"><span>Maple</span></a>
             <nav class="main-nav"><a href="/">Inicio</a><a href="/terms">Términos</a><a
-                    href="https://discord.gg/E3kzS5cYzN" target="_blank" rel="noreferrer">Soporte</a></nav><a
-                class="button button-small legal-header-action" href="/">Volver a Maple</a>
+                    href="https://discord.gg/E3kzS5cYzN" target="_blank" rel="noreferrer">Soporte</a></nav>
+            <%- include('partials/theme-toggle.html') %>
+            <a class="button button-small legal-header-action" href="/">Volver a Maple</a>
         </div>
     </header>
     <main>
@@ -180,6 +181,7 @@
             <p class="copyright">© 2026 Maple Bot</p>
         </div>
     </footer>
+    <script src="/js/theme.js" defer></script>
 </body>
 
 </html>

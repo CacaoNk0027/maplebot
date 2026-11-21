@@ -31,8 +31,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="theme-color" content="#fbf8f2">
-    <meta name="color-scheme" content="light">
+    <%- include('partials/theme-head.html') %>
     <meta name="description" content="<%= t.description %>">
     <title><%= selected ? `${selected.nombre[lang]} — ` : '' %><%= t.title %> — Maple Bot</title>
     <link rel="icon" href="/favicon.ico">
@@ -42,7 +41,6 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="stylesheet"
         href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&amp;family=Manrope:wght@600;700;800&amp;display=swap">
-    <script>document.documentElement.classList.add('js')</script>
     <link rel="stylesheet" href="/css/index.css">
     <link rel="stylesheet" href="/css/comandos.css">
 </head>
@@ -65,6 +63,7 @@
                 <a href="<%= otherHref %>" hreflang="<%= lang === 'es' ? 'en' : 'es' %>"
                     aria-label="<%= t.otherLangLabel %>"><%= t.otherLang %></a>
             </nav>
+            <%- include('partials/theme-toggle.html', { themeLabels: t.theme }) %>
             <a class="button button-small header-action cmd-header-action" href="/"><%= t.backHome %></a>
         </div>
     </header>
@@ -170,6 +169,7 @@
             </div>
             <nav aria-label="<%= t.title %>">
                 <a href="<%= support %>" target="_blank" rel="noreferrer"><%= t.support %></a>
+                <a href="/donations" hreflang="es"><%= t.donate %></a>
                 <a href="/privacy"><%= t.privacy %></a>
                 <a href="/terms"><%= t.terms %></a>
             </nav>
@@ -179,6 +179,7 @@
 
     <script src="/js/index.js" defer></script>
     <script src="/js/comandos.js" defer></script>
+    <script src="/js/theme.js" defer></script>
 </body>
 
 </html>

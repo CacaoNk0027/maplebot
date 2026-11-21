@@ -6,7 +6,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="theme-color" content="#fbf8f2">
+    <%- include('partials/theme-head.html') %>
     <meta name="description"
         content="Maple <%= version %> es un bot de Discord bilingüe con automoderación, registros configurables, historial de infracciones, utilidades, acciones, reacciones y bienvenidas personalizables.">
     <meta property="og:site_name" content="Maple Bot">
@@ -14,8 +14,6 @@
     <meta property="og:description" content="Configura, modera y dale personalidad a tu servidor en español o inglés.">
     <meta property="og:image" content="https://maplebot.fyi/images/mapleavatar.webp">
     <title>Maple Bot — Tu comunidad, más acogedora</title>
-    <!-- Sin JS, .reveal no se oculta y el contenido se ve igual. -->
-    <script>document.documentElement.classList.add('js')</script>
     <link rel="icon" href="/favicon.ico">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -46,6 +44,7 @@
                 <a href="<%= support %>" target="_blank" rel="noreferrer">Soporte</a>
             </nav>
 
+            <%- include('partials/theme-toggle.html') %>
             <a class="button button-small header-action"
                 href="<%= invite %>"
                 target="_blank" rel="noreferrer">
@@ -202,6 +201,7 @@
                 <a href="#funciones">Funciones</a>
                 <a href="/comandos">Comandos</a>
                 <a href="<%= support %>" target="_blank" rel="noreferrer">Soporte</a>
+                <a href="/donations">Donar</a>
                 <a href="/privacy">Privacidad</a>
                 <a href="/terms">Términos</a>
             </nav>
@@ -210,6 +210,7 @@
     </footer>
 
     <script src="/js/index.js" defer></script>
+    <script src="/js/theme.js" defer></script>
 </body>
 
 </html>

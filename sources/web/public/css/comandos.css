@@ -83,9 +83,9 @@
     width: 100%;
     max-width: 480px;
     padding: 12px 14px;
-    border: 1px solid #968a7d;
+    border: 1px solid var(--field-line);
     border-radius: 12px;
-    background: #fff;
+    background: var(--surface);
     color: var(--ink);
     font: inherit;
 }
@@ -282,7 +282,7 @@
 .cmd-header-action {
     color: var(--ink);
     border-color: var(--line);
-    background: rgba(255, 255, 255, .6);
+    background: var(--glass);
     box-shadow: none;
 }
 

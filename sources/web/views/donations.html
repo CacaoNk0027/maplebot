@@ -1,0 +1,170 @@
+<!doctype html>
+<%_ const kofi = 'https://ko-fi.com/maple_bot'
+   const support = 'https://discord.gg/E3kzS5cYzN'
+   const invite = 'https://discord.com/oauth2/authorize?client_id=821452429409124451&permissions=1477740719158&integration_type=0&scope=applications.commands+bot' _%>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <%- include('partials/theme-head.html') %>
+    <meta name="description"
+        content="Maple es gratis y es igual para todos. Si quieres ayudar a mantenerla en línea, puedes apoyarla en Ko-fi.">
+    <meta property="og:site_name" content="Maple Bot">
+    <meta property="og:title" content="Apoya a Maple">
+    <meta property="og:description" content="Ayuda a mantener a Maple y a NeeKuro en línea, gratis para todos.">
+    <meta property="og:image" content="https://maplebot.fyi/images/mapleavatar.webp">
+    <title>Apoya a Maple — Maple Bot</title>
+    <link rel="icon" href="/favicon.ico">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&amp;family=Manrope:wght@600;700;800&amp;display=swap">
+    <link rel="stylesheet" href="/css/index.css">
+    <link rel="stylesheet" href="/css/donations.css">
+</head>
+
+<body>
+    <a class="skip-link" href="#contenido">Saltar al contenido</a>
+
+    <header class="site-header scrolled">
+        <div class="nav-shell">
+            <a class="brand" href="/" aria-label="Maple, inicio"><img src="/images/mapleavatar-96.webp" alt=""
+                    width="44" height="44"><span>Maple</span></a>
+            <button class="menu-toggle" type="button" aria-label="Abrir menú" aria-expanded="false"
+                aria-controls="main-navigation" data-menu-toggle>
+                <span></span><span></span><span></span>
+            </button>
+            <nav class="main-nav" id="main-navigation" aria-label="Navegación principal" data-navigation>
+                <a href="/">Inicio</a>
+                <a href="/comandos">Comandos</a>
+                <a href="<%= support %>" target="_blank" rel="noreferrer">Soporte</a>
+            </nav>
+            <%- include('partials/theme-toggle.html') %>
+            <a class="button button-small header-action don-header-action" href="/">Volver a Maple</a>
+        </div>
+    </header>
+
+    <main id="contenido">
+        <section class="don-hero">
+            <div class="page-shell">
+                <p class="eyebrow"><span></span> Apoya a Maple</p>
+                <h1>Maple es gratis. Ayúdala a seguir así.</h1>
+                <p class="don-lead">Maple y su API de GIFs, NeeKuro, los mantiene una sola persona en su tiempo libre.
+                    Lo que aportes va directo a que sigan en línea y a que sigan creciendo.</p>
+                <div class="hero-actions">
+                    <a class="button" href="<%= kofi %>" target="_blank" rel="noreferrer">Donar en Ko-fi</a>
+                    <a class="button button-secondary" href="#sin-gastar">Ayudar sin gastar</a>
+                </div>
+                <p class="don-note">Ko-fi acepta tarjeta y PayPal, y no necesitas crear una cuenta.</p>
+            </div>
+        </section>
+
+        <section class="page-shell don-section" aria-labelledby="destino">
+            <div class="section-heading reveal">
+                <p class="eyebrow"><span></span> A dónde va tu apoyo</p>
+                <h2 id="destino">Lo que cuesta mantener a Maple encendida.</h2>
+            </div>
+            <div class="don-grid">
+                <article class="feature-card reveal">
+                    <div class="feature-icon" aria-hidden="true">✦</div>
+                    <h3>El servidor del bot</h3>
+                    <p>El hosting donde viven Maple y NeeKuro, encendidas a todas horas para responder en cada
+                        servidor y a cada bot que usa la API.</p>
+                </article>
+                <article class="feature-card reveal">
+                    <div class="feature-icon" aria-hidden="true">◇</div>
+                    <h3>Dominio y respaldos</h3>
+                    <p>La dirección maplebot.fyi y los respaldos diarios y cifrados de la base de datos, para que la
+                        configuración de tu servidor no se pierda.</p>
+                </article>
+                <article class="feature-card reveal">
+                    <div class="feature-icon" aria-hidden="true">♡</div>
+                    <h3>Tiempo para lo que viene</h3>
+                    <p>Comandos nuevos, más categorías de GIFs y el panel web para configurar tu servidor sin escribir
+                        comandos.</p>
+                </article>
+            </div>
+        </section>
+
+        <section class="page-shell don-section" aria-labelledby="promesa">
+            <div class="don-promise reveal">
+                <div>
+                    <p class="eyebrow"><span></span> Lo que no cambia</p>
+                    <h2 id="promesa">Donar no compra funciones.</h2>
+                    <p>Maple es la misma para todos los servidores, aporten o no. Tu apoyo es un regalo al proyecto, no
+                        una suscripción.</p>
+                </div>
+                <ul class="don-list">
+                    <li>Todos los comandos, gratis y para todos.</li>
+                    <li>Sin anuncios en el bot ni en la web.</li>
+                    <li>Maple nunca te enviará mensajes directos para pedirte dinero.</li>
+                </ul>
+            </div>
+        </section>
+
+        <section class="page-shell don-section" id="sin-gastar" aria-labelledby="titulo-sin-gastar">
+            <div class="section-heading reveal">
+                <p class="eyebrow"><span></span> Ayudar sin gastar</p>
+                <h2 id="titulo-sin-gastar">También ayuda, y mucho.</h2>
+            </div>
+            <div class="don-grid">
+                <article class="feature-card reveal">
+                    <h3>Invítala a tu servidor</h3>
+                    <p>Cada comunidad nueva hace crecer a Maple.</p>
+                    <a class="text-link" href="<%= invite %>" target="_blank" rel="noreferrer">Añadir a Discord
+                        <span aria-hidden="true">→</span></a>
+                </article>
+                <article class="feature-card reveal">
+                    <h3>Cuéntanos qué falla</h3>
+                    <p>Un error reportado o una idea para un comando valen tanto como una donación.</p>
+                    <a class="text-link" href="<%= support %>" target="_blank" rel="noreferrer">Ir al servidor de
+                        soporte <span aria-hidden="true">→</span></a>
+                </article>
+                <article class="feature-card reveal">
+                    <h3>Compártela</h3>
+                    <p>Recomiéndala a quien administre una comunidad. Así llega Maple a la mayoría de servidores.</p>
+                    <a class="text-link" href="/comandos">Ver lo que sabe hacer <span aria-hidden="true">→</span></a>
+                </article>
+            </div>
+        </section>
+
+        <section class="section page-shell">
+            <div class="community-card reveal">
+                <div>
+                    <p class="eyebrow eyebrow-light"><span></span> Gracias por estar aquí</p>
+                    <h2>Cada aporte, por pequeño que sea, mantiene a Maple en línea.</h2>
+                    <p>Si Maple le hace la vida más fácil a tu comunidad, invítale un café.</p>
+                </div>
+                <div class="community-actions">
+                    <a class="button button-light" href="<%= kofi %>" target="_blank" rel="noreferrer">Donar en
+                        Ko-fi</a>
+                    <a class="support-link" href="<%= support %>" target="_blank" rel="noreferrer">Tengo una pregunta
+                        <span aria-hidden="true">→</span></a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <div class="page-shell footer-layout">
+            <div class="footer-brand">
+                <a class="brand" href="/"><img src="/images/mapleavatar-96.webp" alt="" width="40"
+                        height="40"><span>Maple</span></a>
+                <p>Una compañera para tu comunidad de Discord.</p>
+            </div>
+            <nav aria-label="Enlaces del pie de página">
+                <a href="/comandos">Comandos</a>
+                <a href="<%= support %>" target="_blank" rel="noreferrer">Soporte</a>
+                <a href="/privacy">Privacidad</a>
+                <a href="/terms">Términos</a>
+            </nav>
+            <p class="copyright">© <%= new Date().getFullYear() %> Maple Bot</p>
+        </div>
+    </footer>
+
+    <script src="/js/index.js" defer></script>
+    <script src="/js/theme.js" defer></script>
+</body>
+
+</html>

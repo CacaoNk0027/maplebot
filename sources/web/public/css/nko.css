@@ -1,19 +1,48 @@
 /* NeeKuro usa la base de Maple (index.css) con su propio acento verde. */
 .nko {
-    --maple-dark: #1f6650;
+    --maple-dark: light-dark(#1f6650, #6fd3a9);
     --accent: #2a7d63;
-    --accent-soft: #dcefe6;
-    --code-bg: #1f2521;
+    --accent-soft: light-dark(#dcefe6, #1c3a30);
+    --code-bg: light-dark(#1f2521, #141815);
     --code-ink: #e4efe8;
-    --danger: #b3261e;
+    /* --danger es texto; el fondo del botón rojo no cambia, porque lleva texto blanco. */
+    --danger: light-dark(#b3261e, #ff8f85);
+    --danger-bg: #b3261e;
+    --danger-line: light-dark(#efc9c4, #5c2b27);
+    --note-bg: light-dark(#eef6f1, #1a2b24);
+    --note-line: light-dark(#bcd9cb, #2d5546);
+    --status-ink: light-dark(#8a3d12, #f3b98a);
+    --status-bg: light-dark(#f8e2cf, #3d2618);
+    --nko-from: light-dark(#fbf8f2, #1b1815);
+    --nko-to: light-dark(#e3eee6, #17271f);
+    --token-from: light-dark(#fbfdfb, #22261f);
+    --token-to: light-dark(#e5f1ea, #1c2c25);
     --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+}
+
+@supports not (color: light-dark(#000, #fff)) {
+    .nko {
+        --maple-dark: #1f6650;
+        --accent-soft: #dcefe6;
+        --code-bg: #1f2521;
+        --danger: #b3261e;
+        --danger-line: #efc9c4;
+        --note-bg: #eef6f1;
+        --note-line: #bcd9cb;
+        --status-ink: #8a3d12;
+        --status-bg: #f8e2cf;
+        --nko-from: #fbf8f2;
+        --nko-to: #e3eee6;
+        --token-from: #fbfdfb;
+        --token-to: #e5f1ea;
+    }
 }
 
 /* :where() deja la especificidad baja para que .button-danger la pise sin más. */
 .nko :where(.button:not(.button-secondary, .button-light)) {
     border-color: var(--accent);
     color: #fff;
-    background: linear-gradient(135deg, var(--accent), var(--maple-dark));
+    background: linear-gradient(135deg, var(--accent), #1f6650);
     box-shadow: 0 10px 24px rgba(31, 102, 80, .2);
 }
 
@@ -21,13 +50,14 @@
     box-shadow: 0 14px 30px rgba(31, 102, 80, .28);
 }
 
+/* El botón claro es blanco en los dos temas: su texto no sigue al acento. */
 .nko .button-light {
-    color: var(--maple-dark);
+    color: #1f6650;
 }
 
 .nko .button-danger {
-    border-color: var(--danger);
-    background: var(--danger);
+    border-color: var(--danger-bg);
+    background: var(--danger-bg);
     box-shadow: none;
 }
 
@@ -69,7 +99,7 @@ code {
 .nav-button {
     padding: 0;
     border: 0;
-    color: #554f47;
+    color: var(--ink-soft);
     background: none;
     font-size: 15px;
     font-weight: 600;
@@ -95,7 +125,7 @@ code {
 /* Portada de la API */
 .nko-hero {
     padding: 150px 0 90px;
-    background: linear-gradient(145deg, #fbf8f2 25%, #e3eee6 100%);
+    background: linear-gradient(145deg, var(--nko-from) 25%, var(--nko-to) 100%);
 }
 
 .nko-hero-layout {
@@ -249,8 +279,8 @@ pre {
 }
 
 .note {
-    border-color: #bcd9cb;
-    background: #eef6f1;
+    border-color: var(--note-line);
+    background: var(--note-bg);
 }
 
 .inline-code {
@@ -321,8 +351,8 @@ td code {
 }
 
 .status {
-    color: #8a3d12;
-    background: #f8e2cf;
+    color: var(--status-ink);
+    background: var(--status-bg);
 }
 
 /* Categorías */
@@ -424,10 +454,10 @@ td code {
     width: 100%;
     min-height: 48px;
     padding: 0 14px;
-    border: 1px solid #968a7d;
+    border: 1px solid var(--field-line);
     border-radius: 12px;
     color: var(--ink);
-    background: #fff;
+    background: var(--surface);
     font: inherit;
     transition: border-color .2s, box-shadow .2s;
 }
@@ -456,7 +486,7 @@ td code {
 .check input {
     width: 18px;
     height: 18px;
-    accent-color: var(--danger);
+    accent-color: var(--danger-bg);
 }
 
 .form-status {
@@ -501,7 +531,7 @@ td code {
 
 .panel-token {
     grid-column: 1/-1;
-    background: linear-gradient(150deg, #fbfdfb, #e5f1ea);
+    background: linear-gradient(150deg, var(--token-from), var(--token-to));
 }
 
 .panel-token form {
@@ -537,7 +567,7 @@ td code {
 
 .panel-danger {
     grid-column: 1/-1;
-    border-color: #efc9c4;
+    border-color: var(--danger-line);
 }
 
 .panel-danger form {
@@ -550,7 +580,7 @@ td code {
 
 /* Ingresar y crear cuenta */
 .auth-page {
-    background: linear-gradient(145deg, #fbf8f2 25%, #e3eee6 100%);
+    background: linear-gradient(145deg, var(--nko-from) 25%, var(--nko-to) 100%);
 }
 
 .auth-shell {

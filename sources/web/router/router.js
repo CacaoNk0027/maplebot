@@ -20,6 +20,9 @@ router.get(['/privacy', '/privacy-policy'], async (req, res) => {
 });
 router.get(['/comandos', '/comandos/'], (0, comandos_1.renderCommands)('es'));
 router.get(['/commands', '/commands/'], (0, comandos_1.renderCommands)('en'));
+router.get(['/donations', '/donaciones'], async (req, res) => {
+    res.render('donations.html');
+});
 router.get('/kmzkuro', async (req, res) => {
     res.render('kmzkuro.html');
 });

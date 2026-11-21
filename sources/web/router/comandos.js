@@ -100,6 +100,8 @@ const STRINGS = {
         footer: 'Una compañera para tu comunidad de Discord.',
         privacy: 'Privacidad',
         terms: 'Términos',
+        donate: 'Donar',
+        theme: { label: 'Tema', next: 'Cambiar a', system: 'el del sistema', light: 'claro', dark: 'oscuro' },
         version: (v) => `Generada de la versión ${v}.`
     },
     en: {
@@ -143,6 +145,8 @@ const STRINGS = {
         footer: 'A companion for your Discord community.',
         privacy: 'Privacy',
         terms: 'Terms',
+        donate: 'Donate',
+        theme: { label: 'Theme', next: 'Switch to', system: 'system', light: 'light', dark: 'dark' },
         version: (v) => `Generated from version ${v}.`
     }
 };

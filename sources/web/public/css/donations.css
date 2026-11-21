@@ -1,0 +1,133 @@
+/* Página de donaciones (/donations). Variante Maple: solo tokens y
+   componentes de index.css; ver DESIGN.md. */
+
+.don-hero {
+    padding: 150px 0 30px;
+}
+
+.don-hero h1 {
+    max-width: 820px;
+    font-size: clamp(36px, 5vw, 56px);
+}
+
+.don-lead {
+    max-width: 720px;
+    margin: 22px 0 0;
+    color: var(--muted);
+    font-size: 19px;
+}
+
+.don-note {
+    margin: 14px 0 0;
+    color: var(--muted);
+    font-size: 14px;
+}
+
+.don-section {
+    padding-block: 80px 0;
+}
+
+.don-section .section-heading {
+    margin-bottom: 32px;
+}
+
+.don-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 18px;
+}
+
+.don-grid .feature-card {
+    display: flex;
+    flex-direction: column;
+}
+
+.don-grid .feature-card .text-link {
+    margin-top: auto;
+    padding-top: 18px;
+}
+
+/* Lo que no cambia: tarjeta clara con la lista de compromisos. */
+.don-promise {
+    display: grid;
+    grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+    gap: 48px;
+    align-items: center;
+    padding: 48px;
+    border: 1px solid var(--line);
+    border-radius: 30px;
+    background: var(--paper-deep);
+}
+
+.don-promise h2 {
+    font-size: clamp(30px, 4vw, 42px);
+}
+
+.don-promise p {
+    margin: 0;
+    color: var(--muted);
+    font-size: 17px;
+}
+
+.don-list {
+    display: grid;
+    gap: 14px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.don-list li {
+    position: relative;
+    padding: 16px 18px 16px 48px;
+    border: 1px solid var(--line);
+    border-radius: 18px;
+    background: var(--card);
+    font-weight: 600;
+}
+
+.don-list li::before {
+    content: "✓";
+    content: "✓" / "";
+    position: absolute;
+    top: 50%;
+    left: 18px;
+    transform: translateY(-50%);
+    color: var(--forest-ink);
+    font-weight: 800;
+}
+
+.don-header-action {
+    color: var(--ink);
+    border-color: var(--line);
+    background: var(--glass);
+    box-shadow: none;
+}
+
+@media (max-width: 860px) {
+    .don-grid, .don-promise {
+        grid-template-columns: 1fr;
+    }
+
+    .don-promise {
+        gap: 28px;
+    }
+}
+
+@media (max-width: 620px) {
+    .don-hero {
+        padding-top: 120px;
+    }
+
+    .don-lead {
+        font-size: 17px;
+    }
+
+    .don-section {
+        padding-top: 60px;
+    }
+
+    .don-promise {
+        padding: 28px 22px;
+    }
+}
