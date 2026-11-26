@@ -10,8 +10,8 @@ const config_1 = require("../../config/config");
 const moderation_1 = require("../../structs/moderation");
 const command = {
     data: new command_data_1.default()
-        .setName('purgue')
-        .setAliases('pg', 'bulkdelete', 'purge', 'purgar', 'limpiar')
+        .setName('purge')
+        .setAliases('pg', 'bulkdelete', 'purgue', 'purgar', 'limpiar')
         .setId('008', '003')
         .setDescription((0, config_1.text)('es-ES', 'cmd.003.008.description'))
         .setDescriptionLocalization('en-US', (0, config_1.text)('en-US', 'cmd.003.008.description'))

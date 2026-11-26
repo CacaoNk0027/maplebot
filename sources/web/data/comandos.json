@@ -1,7 +1,7 @@
 {
-  "version": "5.0.1",
+  "version": "5.0.2",
   "prefijo": "m!",
-  "total": 87,
+  "total": 89,
   "categorias": [
     {
       "id": "001",
@@ -14,6 +14,33 @@
         "en": "Relevant information about Maple, users, and servers"
       },
       "comandos": [
+        {
+          "id": "001.009",
+          "nombre": "donate",
+          "alias": [
+            "donar",
+            "donacion",
+            "donaciones",
+            "kofi"
+          ],
+          "descripcion": {
+            "es": "Dona a MapleBot",
+            "en": "Donate to MapleBot"
+          },
+          "enfriamiento": 3,
+          "slash": true,
+          "prefijo": true,
+          "inactivo": false,
+          "permisos": {
+            "usuario": [],
+            "bot": [
+              "SendMessages",
+              "EmbedLinks",
+              "ReadMessageHistory"
+            ]
+          },
+          "opciones": []
+        },
         {
           "id": "001.008",
           "nombre": "features",
@@ -345,6 +372,32 @@
               ]
             }
           ]
+        },
+        {
+          "id": "001.010",
+          "nombre": "vote",
+          "alias": [
+            "votar",
+            "voto",
+            "votos"
+          ],
+          "descripcion": {
+            "es": "Vota por MapleBot en Top.gg",
+            "en": "Vote for MapleBot on Top.gg"
+          },
+          "enfriamiento": 5,
+          "slash": true,
+          "prefijo": true,
+          "inactivo": false,
+          "permisos": {
+            "usuario": [],
+            "bot": [
+              "SendMessages",
+              "EmbedLinks",
+              "ReadMessageHistory"
+            ]
+          },
+          "opciones": []
         }
       ]
     },
@@ -1799,11 +1852,11 @@
         },
         {
           "id": "003.008",
-          "nombre": "purgue",
+          "nombre": "purge",
           "alias": [
             "pg",
             "bulkdelete",
-            "purge",
+            "purgue",
             "purgar",
             "limpiar"
           ],

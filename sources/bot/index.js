@@ -2,6 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const discord_js_1 = require("discord.js");
 const env_1 = require("../shared/config/env");
+const topgg_1 = require("./structs/topgg");
 // Entrada del bot. Arranca sola (`pnpm run start:bot`) o lanzada por el
 // supervisor de `src/index.ts`. No depende de la web: los GIFs salen del API
 // al que apunta NEEKURO_API, esté donde esté.
@@ -21,7 +22,12 @@ manager.on('shardCreate', (shard) => {
         shard.kill();
     process.exit(0);
 });
-manager.spawn().catch((error) => {
+manager.spawn().then(() => {
+    // Top.gg es opcional: un fallo suyo no debe tocar las shards.
+    (0, topgg_1.startServerCountUpdates)(manager).catch((error) => {
+        console.error('[TopGG:ERR] No se pudo iniciar la publicación de servidores:', error);
+    });
+}).catch((error) => {
     console.error('[bot] No se pudieron lanzar las shards:', error);
     for (const shard of manager.shards.values())
         shard.kill();

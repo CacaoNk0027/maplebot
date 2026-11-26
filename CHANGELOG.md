@@ -6,6 +6,18 @@ El formato está basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1
 
 ## [Sin publicar]
 
+## [5.0.2] - 2026-11-26
+
+### Añadido
+
+- `donate`: muestra cómo apoyar a Maple en Ko-fi. Donar no es obligatorio ni compra funciones: Maple sigue siendo gratis e igual para todos.
+- `vote`: enlaza a la página de Maple en Top.gg para votar, y te dice si ya tienes un voto activo y cuándo puedes volver a votar.
+- La página de Maple en Top.gg muestra ahora el número real de servidores, que se actualiza cada 30 minutos.
+
+### Cambiado
+
+- El comando `/purgue` pasa a llamarse `/purge`, que es como se escribe. Con el prefijo sigue funcionando `purgue` como alias, además de `purge`, `purgar` y `limpiar`.
+
 ## [5.0.1] - 2026-11-21
 
 ### Corregido
